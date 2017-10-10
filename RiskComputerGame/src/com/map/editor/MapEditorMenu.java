@@ -13,7 +13,6 @@ public class MapEditorMenu {
 		JButton jbuttonCreateMap = new JButton("Create Map");
 		JButton jbuttonEditMap = new JButton("Edit Map");
 		JButton jbuttonMainMenu = new JButton("Main Menu");
-		//MainMenu objMainMenu = new MainMenu();
 		jbuttonCreateMap.setBounds(200, 150, 200, 30);
 		jbuttonEditMap.setBounds(200, 200, 200, 30);
 		jbuttonMainMenu.setBounds(200, 250, 200, 30);
@@ -30,7 +29,7 @@ public class MapEditorMenu {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				CreateMap.configureContinent();
 			}
 		});
 
@@ -38,10 +37,10 @@ public class MapEditorMenu {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 			}
 		});
-		
+
 		jbuttonMainMenu.addActionListener(new ActionListener() {
 
 			@Override
@@ -49,7 +48,7 @@ public class MapEditorMenu {
 				MainMenu.main(null);
 			}
 		});
-		
+
 	}
 
 }

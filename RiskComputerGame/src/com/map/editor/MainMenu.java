@@ -44,7 +44,7 @@ public class MainMenu {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 			}
 		});
 	}
