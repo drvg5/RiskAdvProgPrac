@@ -1,13 +1,14 @@
 package com.map.editor;
 
 import java.awt.event.ActionEvent;
+import com.map.play.PlayGame;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
 public class MainMenu {
 	public static void main(String args[]) {
-
+		
 		JFrame jframeMain = new JFrame("Risk Game");
 		JButton jbuttonNewGame = new JButton("New Game");
 		JButton jbuttonMapEditor = new JButton("Map Editor");
@@ -28,8 +29,7 @@ public class MainMenu {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-
+				PlayGame.LoadMap();
 			}
 		});
 
