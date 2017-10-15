@@ -25,7 +25,7 @@ public class PlayGame {
 
 	public static void LoadMap(JDesktopPane desktop) {
 		HashMap<String, List<String>> continentHashMap = new HashMap<String, List<String>>();
-		HashMap<String,Integer> continentCount = new HashMap<String, Integer>();
+		HashMap<String, Integer> continentCount = new HashMap<String, Integer>();
 		final String strTerritory = "[Territories]";
 		final String strMap = "[Map]";
 		final String strContinet = "[Continents]";
@@ -59,31 +59,19 @@ public class PlayGame {
 								&& Maplist.contains("[Territories]") && Maplist.get(2).contains("bmp")
 								&& FileFormat.matches("map")) {
 
-							// for (int i = 0; i < Maplist.size(); i++) {
-							// System.out.println(Maplist.get(i));
-							// if (Maplist.get(i).isEmpty()) {
-							// EmptyLinesCount.add(i);
-							// }
-							// }
-							// System.out.println("Empty lines location:" + EmptyLinesCount);
-
 							for (int i = 0; i < Maplist.size(); i++) {
 								if (Maplist.get(i).startsWith(strMap.trim())) {
-									// System.out.println("\nLine:" + i + "\n" + Maplist.get(i));
-									// System.out.println("\nNext line to Maps:" + Maplist.get(i + 1));
 								}
 								if (Maplist.get(i).startsWith(strContinet.trim())) {
-									// System.out.println("\nLine:" + i + "\n" + Maplist.get(i));
-									// System.out.println("\nNext line to Continent:" + Maplist.get(i + 1));
-									
+
 									for (int j = i + 1; j <= 20; j++) {
-										if ((Maplist.get(j).isEmpty()))
-										{
+										if ((Maplist.get(j).isEmpty())) {
 											break;
 										}
 										String strContinentCount = Maplist.get(j);
 										String[] arrayContinentCount = strContinentCount.split("=");
-										continentCount.put(arrayContinentCount[0], Integer.parseInt(arrayContinentCount[1]));
+										continentCount.put(arrayContinentCount[0],
+												Integer.parseInt(arrayContinentCount[1]));
 									}
 									System.out.println(continentCount);
 								}
@@ -124,7 +112,6 @@ public class PlayGame {
 								System.out.println("\nMap doest contain bmp image");
 							}
 						}
-						// scanner.close();
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}

@@ -98,7 +98,7 @@ public class MainMenu extends JFrame implements ActionListener {
 	// Event handling for menu selections.
 	public void actionPerformed(ActionEvent e) {
 		if ("New Game".equals(e.getActionCommand())) { // new
-			 PlayGame.LoadMap(desktop);
+			PlayGame.LoadMap(desktop);
 		} else if ("Map Editor".equals(e.getActionCommand())) {
 			MapEditorMenu.mapEditorNavigation(desktop);
 		} else {
