@@ -2,20 +2,17 @@ package com.map.editor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.StringJoiner;
 
-import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -29,18 +26,20 @@ public class CreateMap {
 	static HashMap<String, List<String>> territoryHashMap = new HashMap<String, List<String>>();
 	static String TxtCountry;
 	static String TxtAdjCountry;
-	static JFrame jframeContinent = new JFrame();
+	static JInternalFrame jframeContinent = new JInternalFrame();
+	static JDesktopPane desktopCreateMap;
 
-	public static void configureContinent() {
-		
+
+	public static void configureContinent(JDesktopPane desktop) {
+
 		JTable tableContinent = new JTable();
 		List<String> continentList = new ArrayList<String>();
-		DefaultTableModel modelContinent = new DefaultTableModel(new Object[] { "Continent List", "Configure"}, 0);
+		DefaultTableModel modelContinent = new DefaultTableModel(new Object[] { "Continent List", "Configure Continent" }, 0);
 		JTextField textContinent = new JTextField();
 		textContinent.setBounds(20, 220, 100, 25);
 		JButton btnAdd = new JButton("Add Continent");
 		btnAdd.setBounds(150, 220, 200, 25);
-		JButton btnAddCountry = new JButton("Configure Countries");
+		JButton btnAddCountry = new JButton("Configure");
 		btnAddCountry.setBounds(150, 270, 200, 25);
 		// for (Map.Entry<?, ?> entry : continentHashMap.entrySet())
 		for (int counter = 0; counter < continentList.size(); counter++) {
@@ -57,7 +56,7 @@ public class CreateMap {
 
 				String continent = textContinent.getText();
 				continentList.add(continent);
-				modelContinent.addRow(new Object[] { continent,"Configure Continents" });
+				modelContinent.addRow(new Object[] { continent, "Configure" });
 				// continentHashMap.put(continent, territoryHashMap);
 				// System.out.println(continentHashMap);
 				// System.out.println(continentList);
@@ -71,37 +70,37 @@ public class CreateMap {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-				//addCountry(continentList);
+				// addCountry(continentList);
 			}
 		});
 		JScrollPane panel = new JScrollPane(tableContinent);
 		panel.setBounds(0, 0, 880, 220);
-		jframeContinent = new JFrame("Add Continent");
+		jframeContinent = new JInternalFrame("Add Continent");
 		jframeContinent.setLayout(null);
 		jframeContinent.add(panel);
 		jframeContinent.add(textContinent);
 		jframeContinent.add(btnAdd);
-		//jframeContinent.add(btnAddCountry);
+		// jframeContinent.add(btnAddCountry);
 		jframeContinent.setSize(700, 400);
-		jframeContinent.setLocationRelativeTo(null);
 		jframeContinent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jframeContinent.setVisible(true);
-
+		desktop.add(jframeContinent);
+		desktopCreateMap=desktop;
 	}
 
-	//public static void addCountry(List<String> continentList)
-	public static void addCountry(String strContinent){
+	// public static void addCountry(List<String> continentList)
+	public static void addCountry(String strContinent) {
 
-		JFrame frameCountry = new JFrame();
+		JInternalFrame frameCountry = new JInternalFrame();
 		JTable tableCountry = new JTable();
 		String country;
 		DefaultTableModel modelContinent = new DefaultTableModel(
 				new Object[] { "Continent", "Country", "Adjacent Countries" }, 0);
 		tableCountry.setModel(modelContinent);
 		TableColumn columnContinent = tableCountry.getColumnModel().getColumn(0);
-		//JComboBox<String> comboContinent = new JComboBox<String>();
-		//comboContinent.setModel(new DefaultComboBoxModel(continentList.toArray()));
-		//columnContinent.setCellEditor(new DefaultCellEditor(comboContinent));
+		// JComboBox<String> comboContinent = new JComboBox<String>();
+		// comboContinent.setModel(new DefaultComboBoxModel(continentList.toArray()));
+		// columnContinent.setCellEditor(new DefaultCellEditor(comboContinent));
 		JLabel textCountryLabel = new JLabel("Country:");
 		textCountryLabel.setBounds(20, 220, 50, 25);
 		JLabel textAdjLabel = new JLabel("Ajacent List:");
@@ -125,28 +124,28 @@ public class CreateMap {
 				String concatString = joiner.toString();
 				List<String> adjCountryList = new ArrayList<String>();
 				adjCountryList = new ArrayList<String>(Arrays.asList(TxtAdjCountry.split(",")));
-				modelContinent.addRow(new Object[] {strContinent , TxtCountry, adjCountryList });
+				modelContinent.addRow(new Object[] { strContinent, TxtCountry, adjCountryList });
 				territoryHashMap.put(concatString, adjCountryList);
 				textCountry.setText(null);
 				textAdjacent.setText(null);
 			}
 		});
 
-//		comboContinent.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// TODO Auto-generated method stub
-//				// System.out.println(e.getItem() + " " + e.getStateChange() );
-//				//System.out.println(e.getActionCommand());
-//				String newSelection = (String) comboContinent.getSelectedItem();
-//				StringJoiner joiner = new StringJoiner(",");
-//				joiner.add(newSelection).add(TxtCountry);
-//				String concatString = joiner.toString();
-//				territoryHashMap.put(concatString, adjCountryList);
-//				System.out.println(territoryHashMap);
-//			}
-//		});
+		// comboContinent.addActionListener(new ActionListener() {
+		//
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// // TODO Auto-generated method stub
+		// // System.out.println(e.getItem() + " " + e.getStateChange() );
+		// //System.out.println(e.getActionCommand());
+		// String newSelection = (String) comboContinent.getSelectedItem();
+		// StringJoiner joiner = new StringJoiner(",");
+		// joiner.add(newSelection).add(TxtCountry);
+		// String concatString = joiner.toString();
+		// territoryHashMap.put(concatString, adjCountryList);
+		// System.out.println(territoryHashMap);
+		// }
+		// });
 
 		JScrollPane panelCountry = new JScrollPane(tableCountry);
 		panelCountry.setBounds(0, 0, 880, 220);
@@ -159,16 +158,21 @@ public class CreateMap {
 		frameCountry.add(btnAdd);
 		frameCountry.add(btnComplete);
 		frameCountry.setSize(1000, 400);
-		frameCountry.setLocationRelativeTo(null);
-		frameCountry.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+ 		frameCountry.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frameCountry.setVisible(true);
+		desktopCreateMap.add(frameCountry);
+
 
 		btnComplete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				try {
+					frameCountry.setClosed(true);
+				} catch (PropertyVetoException e1) {
+					e1.printStackTrace();
+				}
 				
-				frameCountry.dispose();
-				frameCountry.setVisible(false);
-				jframeContinent.setVisible(true);
+				//jframeContinent.setVisible(true);
 			}
 		});
 
