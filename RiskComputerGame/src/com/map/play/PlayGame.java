@@ -35,7 +35,7 @@ public class PlayGame {
 
 		jframeUpload.setSize(300, 300);
 		jframeUpload.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JButton buttonSelectFile = new JButton("Select File");
+		JButton buttonSelectFile = new JButton("Upload");
 		buttonSelectFile.setBounds(100, 100, 100, 30);
 		JButton buttonCloseUpload = new JButton("Close");
 		buttonCloseUpload.setBounds(100, 150, 100, 30);
