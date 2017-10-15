@@ -40,7 +40,7 @@ public class PlayerClass {
 	
 	
 	
-	public static void startUpPhase(int players,HashMap<String, HashMap<String, List<String>>> continentMap ){
+	public static void startUpPhase(int players,HashMap<String, List<String>> territoryMap ){
 		
 		//TreeSet to track whether a country has been alloted or not
 		//Takes in input a String of (country+"-"+(0 or 1))
@@ -56,35 +56,38 @@ public class PlayerClass {
 		int count = 0;
 		
 		
-		//populate terrPerCont, countryTaken and contTerr
-		for(String continent : continentMap.keySet()){
+		//populate countryTaken and terrCont
+		for(String terrMapKey : territoryMap.keySet()){
 			
 			String continentCount = null;
+			totalTerr++;
 			count = 0;
+			String[] keySplit = terrMapKey.split(",");
+			String continent = keySplit[0];
+			String territory = keySplit[1];
 			
-			for(String country : continentMap.get(continent).keySet()){
-				count ++ ;
-				totalTerr++;
-				
-				
 				//populate countryTaken
-				countryTaken.add(country+"-"+0);
-				//populate contTerr
-				terrCont.put(country, continent);
+				countryTaken.add(territory+"-"+0);
+				//populate TerrCont
+				terrCont.put(territory, continent);
 			
-			}
-			continentCount = continent + "-" +count;
+			//continentCount = continent + "-" +count;
 			
 			//populate terrPerCont
-			terrPerCont.add(continentCount);
+			//terrPerCont.add(continentCount);
 			
 			
 		}
 		
+	
+		if(players > totalTerr){
+			System.out.println("Players can not be greater than the number of territories");
+			return;
+		}
+		terrPerPlayerPopulate(players,totalTerr);
+		System.out.println("Territory per player-->"+terrPerPlayer);
 		
-		terrPerPlayerPopulate(3,totalTerr);
-		System.out.println("T per p"+terrPerPlayer);
-		assignTerritories(3, terrPerCont, countryTaken, totalTerr);
+		assignTerritories(players, countryTaken, totalTerr);
 		
 		for(String k : playerInfo.keySet())
 			System.out.println("key:"+k+":::::::value:"+playerInfo.get(k));
@@ -92,9 +95,11 @@ public class PlayerClass {
 		
 	}
 	
+	
 	public static void terrPerPlayerPopulate(int players, int totalTerr){
 		
 		int initialUnit = totalTerr/players;
+		
 	      for(int pl =1; pl<= players;pl++){
 	    	  terrPerPlayer.put(String.valueOf(pl), initialUnit);
 	      }
@@ -121,7 +126,7 @@ public class PlayerClass {
 	
 	
 	
-	public static void assignTerritories(int players,TreeSet<String> terrPerCont,TreeSet<String> countryTaken,int totalTerr){
+	public static void assignTerritories(int players,TreeSet<String> countryTaken,int totalTerr){
 		
 	      // Creating a List of TreeSet countryTaken elements
 	      
@@ -158,7 +163,7 @@ public class PlayerClass {
 		    	  	  List<String> list = new ArrayList<String>(countryTaken);
 		    	  	  //get territory randomly from list of country taken
 			    	  String randomVal =  list.get(random.nextInt(list.size()));
-			    	  System.out.println("here:"+randomVal);
+			    	  System.out.println("Randomly chosen :"+randomVal);
 			    	  String[] randomTerr = randomVal.split("-");
 			    	  
 			    	  String randomTerrContinent = null ;
@@ -211,24 +216,29 @@ public class PlayerClass {
 	
 	public static void main(String [] args){
 		
-		HashMap<String, HashMap<String, List<String>>> continentMap = new HashMap<String, HashMap<String, List<String>>>();
-		HashMap<String,List<String>> country = new HashMap(); 
-			country.put("India", null);
-			country.put("China", null);
-			country.put("Pakistan", null);
-			country.put("Japan", null);
+	//	HashMap<String, HashMap<String, List<String>>> continentMap = new HashMap<String, HashMap<String, List<String>>>();
+		HashMap<String,List<String>> territoryMap = new HashMap(); 
+			territoryMap.put("Asia,India", null);
+			territoryMap.put("Asia,China", null);
+			territoryMap.put("Asia,Pakistan", null);
+			territoryMap.put("Asia,Japan", null);
+			 
+			territoryMap.put("Europe,England", null);
+			territoryMap.put("Europe,France", null);
+			territoryMap.put("Europe,Spain", null);
+			territoryMap.put("Europe,Germany", null);
 			
-			continentMap.put("Asia", country);
-			country = new HashMap(); 
-			country.put("England", null);
-			country.put("France", null);
-			country.put("Spain", null);
-			country.put("Germany", null);
+			territoryMap.put("North America,Mexico", null);
+			territoryMap.put("North America,USA", null);
+			territoryMap.put("North America,Canada", null);
 			
-			continentMap.put("Europe", country);
+			territoryMap.put("South America,Brazil", null);
+			territoryMap.put("South America,Colombia", null);
+			
+			
 		//	continentMap.put("Asia,3", null);
 		//	continentMap.put("Asia,4", null);
-			startUpPhase(4,continentMap);
+			startUpPhase(6,territoryMap);
 	}
 	
 }
