@@ -117,9 +117,9 @@ public class PlayGame {
 								System.out.println("\nFile format(map) is not correct");
 							} else if (!(Maplist.contains("[Map]") && Maplist.contains("[Continents]")
 									&& Maplist.contains("[Territories]"))) {
-								System.out.println("\nFile doesnt contain either Territories or Continents or Maps");
+								System.out.println("\nFile does not contain either Territories or Continents or Maps");
 							} else if (!(Maplist.get(2).contains("bmp"))) {
-								System.out.println("\nMap doest contain bmp image");
+								System.out.println("\nMap does not contain bmp image");
 							}
 						}
 					} catch (FileNotFoundException e) {

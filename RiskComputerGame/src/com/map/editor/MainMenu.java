@@ -13,6 +13,21 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+/**
+ * Game starter class for initiating the application 
+ * 
+ * The tasks performed by this class are:
+ * <ul>
+ * <li>Initializing a virtual desktop
+ * <li>Populate a menu drop-down
+ * <li>Implement action listeners for dropdown options
+ * </ul>
+ * 
+ * 
+ * @author drvg5
+ * @see JFrame, ActionListener
+ *
+ */
 public class MainMenu extends JFrame implements ActionListener {
 
 	/**
