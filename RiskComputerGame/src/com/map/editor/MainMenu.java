@@ -1,6 +1,7 @@
 package com.map.editor;
 
 import java.awt.Dimension;
+import com.map.play.PlayGame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -101,6 +102,7 @@ public class MainMenu extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if ("New Game".equals(e.getActionCommand())) { // new
 			// createNewGameFrame();
+			PlayGame.LoadMap(desktop);
 		} else if ("Map Editor".equals(e.getActionCommand())) {
 			MapEditorMenu.mapEditorNavigation(desktop);
 		} else {  
