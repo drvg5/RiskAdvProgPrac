@@ -1,15 +1,15 @@
 package com.gameplay;
 
 import java.util.*;
-import java.util.Map.Entry;
+
 
 public class PlayerClass {
 
 	/**
-	 * playerInfo HashMap stores the values corresponding to a particular player
+	 *playerInfo HashMap stores the values corresponding to a particular player
 	 * <p>
-	 * It stores in <strong>KEY</strong> as a  String of combination of player number, territory, continent
-	 * each separated by a hyphen "-"
+	 *It stores in <strong>KEY</strong> as a  String of combination of player number, territory, continent
+	 *each separated by a hyphen "-"
 	 *</p>
 	 *Examples 
 	 *<ul>
@@ -33,76 +33,133 @@ public class PlayerClass {
 	 */
 	public static HashMap<String,String> terrCont = new HashMap<String,String>();
 	
+	
 	/**
-	 *This TreeSet stores the number of territories per continent.
+	 *This TreeMap stores the number of territories per continent.
 	 */
-	public static TreeSet<String> terrPerCont = new TreeSet<String>();
+	public static TreeMap<String,Integer> terrPerCont = new TreeMap<String,Integer>();
 	
 	
+	/**
+	 *This TreeSet is used to track whether a country has been alloted or not
+	 *<p>
+	 *Takes in input a String of (country+"-"+(0 or 1))
+	 *0 if not taken; 1 if taken</p>
+	 */
+	public static TreeSet<String> countryTaken = new TreeSet<String>();
 	
-	public static void startUpPhase(int players,HashMap<String, List<String>> territoryMap ){
-		
-		//TreeSet to track whether a country has been alloted or not
-		//Takes in input a String of (country+"-"+(0 or 1))
-		//0 if not taken; 1 if taken
-		TreeSet<String> countryTaken = new TreeSet<String>();
-		
-		
+	
+	/**
+	 * This method populates {@link PlayerClass#countryTaken} TreeSet and  {@link PlayerClass#terrCont}  HashMap and HashMap to Number of Territories per Continent
+	 * <p>
+	 * This method calls method {@link PlayerClass#terrPerPlayerPopulate} to populate the {@link PlayerClass#terrPerPlayer} HashMap 
+	 * and then calls {@link PlayerClass#assignTerritories} to assign territories randomly
+	 * </p>
+	 * @param numberOfPlayers Total number of players in a game
+	 * @param territoryMap    HashMap which stores the Game Map values
+	 */
+	public static void startUpPhase(int numberOfPlayers,HashMap<String, List<String>> territoryMap ){
+	
 		
 		//Total no. of territories
 		int totalTerr = 0;
-
-		
-		int count = 0;
-		
 		
 		//populate countryTaken and terrCont
 		for(String terrMapKey : territoryMap.keySet()){
 			
-			String continentCount = null;
+			//String continentCount = null;
 			totalTerr++;
-			count = 0;
+			
 			String[] keySplit = terrMapKey.split(",");
 			String continent = keySplit[0];
 			String territory = keySplit[1];
 			
-				//populate countryTaken
-				countryTaken.add(territory+"-"+0);
-				//populate TerrCont
-				terrCont.put(territory, continent);
+			//populate countryTaken
+			countryTaken.add(territory+"-"+0);
 			
-			//continentCount = continent + "-" +count;
+			//populate TerrCont
+			terrCont.put(territory, continent);
 			
 			//populate terrPerCont
-			//terrPerCont.add(continentCount);
+			int continentCount = 0;
+			if(terrPerCont.containsKey(continent)){
+				
+				continentCount = terrPerCont.get(continent);
+				
+			}
 			
-			
+			terrPerCont.put(continent, continentCount + 1);
+				
+
 		}
 		
 	
-		if(players > totalTerr){
+		if(numberOfPlayers > totalTerr){
 			System.out.println("Players can not be greater than the number of territories");
 			return;
 		}
 		
-		terrPerPlayerPopulate(players,totalTerr);
+		
+		terrPerPlayerPopulate(numberOfPlayers,totalTerr);
 		System.out.println("Territory per player-->"+terrPerPlayer);
 		
-		assignTerritories(players, countryTaken, totalTerr);
+		assignTerritories(numberOfPlayers, countryTaken, totalTerr);
 		
-		for(String k : playerInfo.keySet())
-			System.out.println("key:"+k+":::::::value:"+playerInfo.get(k));
+		for(String k : playerInfo.keySet()){
+			String [] ksplit = k.split("-");
+			if(ksplit[0].equals("1"))
+			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
+		}
+		System.out.println("----------------------------------------------------");
+		for(String k : playerInfo.keySet()){
+			String [] ksplit = k.split("-");
+			if(ksplit[0].equals("2"))
+			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
+		}
+		System.out.println("----------------------------------------------------");
+		for(String k : playerInfo.keySet()){
+			String [] ksplit = k.split("-");
+			if(ksplit[0].equals("3"))
+			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
+		}
+		System.out.println("----------------------------------------------------");
+		for(String k : playerInfo.keySet()){
+			String [] ksplit = k.split("-");
+			if(ksplit[0].equals("4"))
+			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
+		}
+		System.out.println("----------------------------------------------------");
+		for(String k : playerInfo.keySet()){
+			String [] ksplit = k.split("-");
+			if(ksplit[0].equals("5"))
+			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
+		}
+		System.out.println("----------------------------------------------------");
+		for(String k : playerInfo.keySet()){
+			String [] ksplit = k.split("-");
+			if(ksplit[0].equals("6"))
+			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
+		}
+		System.out.println("----------------------------------------------------");
+		System.out.println("----------------------------------------------------");
+		System.out.println(playerInfo);
+		System.out.println(terrPerCont);
 		
 		
 	}
 	
 	
-	public static void terrPerPlayerPopulate(int numberOfPlayers, int numberOfTerr)
-	{
+	/**
+	 * This method populates the {@link PlayerClass#terrPerPlayer} HashMap
+	 * @param numberOfPlayers Number of Players in a game
+	 * @param numberOfTerr	Number of territories in a whole map
+	 */
+	public static void terrPerPlayerPopulate(int numberOfPlayers, int numberOfTerr){
+		
 			int initialTerr = numberOfTerr/numberOfPlayers;
 		
 			int roundUpNumber= (int) Math.ceil((double)numberOfTerr/numberOfPlayers);
-			System.out.println(roundUpNumber);
+			
 			
 		      for(int pl =1; pl<= numberOfPlayers;pl++)
 		      {
@@ -138,123 +195,139 @@ public class PlayerClass {
 		      }
 		
 		
-	}
+	} //end terrPerPlayerPopulate
 	
 	
-	
-	public static void assignTerritories(int players,TreeSet<String> countryTaken,int totalTerr){
+	/**
+	 * This method assigns territories randomly to the players
+	 * and populate the {@link PlayerClass#playerInfo} HashMap
+	 * <p>
+	 * This method while assigning also checks whether a country has already been assigned or not
+	 * and that a player does not get all the countries in a continent
+	 * </p>
+	 * @param numberOfPlayers
+	 * @param countryTaken
+	 * @param numberOfTerr
+	 */
+	public static void assignTerritories(int numberOfPlayers,TreeSet<String> countryTaken,int numberOfTerr){
 		
 	      // Creating a List of TreeSet countryTaken elements
 	      
 	      
 	      Random random = new Random();
 	      
-	      int loop = 0;
-	      for(int i = 1;i<=players;i++){
+	      for(int pl = 1;pl<=numberOfPlayers;pl++){
 	    	  
-	    	  loop = i;
-	    	  //count of territories each player can have
+	    	  //count of total territories each player can have in a map
 	    	  int countPT = 0;
-	    	  
-	    	  //count of territories each player have in a continent
-	    	  int playerContCount = 0;
-	    	
-	    	  
+	    	 
 	    	  for(String plyr : terrPerPlayer.keySet()){
 	    		  
-	    		  if(plyr.equals(Integer.toString(i)) || plyr == String.valueOf(i)){
+	    		  if(plyr.equals(Integer.toString(pl)) || plyr == String.valueOf(pl)){
 		    		  countPT = terrPerPlayer.get(plyr);
-		    		  System.out.println("countPT for "+i+" is "+countPT);
-		    		 // break;
+		    		 
 	    		  }
 	    		  else
-	    			  continue;
-	    		  
+	    			  continue;  
 	    	  }
 	    	  
 	    	  
+	    	//loop until the player gets the randomly decided total number of territories in a map 
+	    	
 		      while(countPT != 0){
 		    	 
-		    	  
 		    	  	  List<String> list = new ArrayList<String>(countryTaken);
 		    	  	  //get territory randomly from list of country taken
 			    	  String randomVal =  list.get(random.nextInt(list.size()));
-			    	  System.out.println("Randomly chosen :"+randomVal);
+			    	 
 			    	  String[] randomTerr = randomVal.split("-");
 			    	  
-			    	  String randomTerrContinent = null ;
+			    	//get continent for randomCountry from terrCont
+					   
+			    	  String randomTerrContinent = terrCont.get(randomTerr[0]);
+			    	  
+			    	//get randomTerrContinent count
+			    	  int randomTerrContinentCount =  0 ;
+			    	  randomTerrContinentCount = terrPerCont.get(randomTerrContinent);
+			    	 
+			    	  
+			    	  //playerInfo HashMap iterate to calculate the randomTerrContinent count the player has
+			    	  int continentTerrPlayerCount = 0;
+			    	  
+			    	  for(String plyrVals : playerInfo.keySet()){
+			    		  String[] plyrInfo = plyrVals.split("-");
+			    		  if(plyrInfo[0].equals(Integer.toString(pl)) || plyrInfo[0] == String.valueOf(pl)){
+				    		  if(randomTerrContinent.equals(plyrInfo[2]) || randomTerrContinent == plyrInfo[2]){
+				    			  continentTerrPlayerCount++;
+				    		  }
+			    		  }
+			    	  }
+			    	  
+			    	  
 			    	  String playerKey = null;
 			    	
-			    	  
-			    	  //check to make sure not all territories of a continent has been assigned to a player
-			    	  //REMAINING
-			    	  
-			    	  
-			    	  
-			    	  //check to make sure player is assigned already randomly decided number of territories
-			    	  if(countPT != 0){
-			    		  
-				    	  //check if a territory has been assigned or not 
-				    	  if(randomTerr[1].equals("0")){
-				    		  
-				    		  
-					    	  
-					    	  //get continent for randomCountry from terrCont
-					   
-					    		  randomTerrContinent = terrCont.get(randomTerr[0]);
-					    	  
-					    	  
-					    	  playerKey = String.valueOf(i)+"-"+randomTerr[0] + "-" + randomTerrContinent;
+ 
+			    	  if(randomTerr[1].equals("0")){
+				    	 
+				    	 //Compare the continent territories value and the player has territories already in a continent
+			    		//to make sure not all territories of a continent has been assigned to a player
+				    	int terr = randomTerrContinentCount-1;
+				   
+					    if(continentTerrPlayerCount < terr){
+						    	continentTerrPlayerCount = 0;
+						    	
+						    
+				    	
+					    	  playerKey = String.valueOf(pl)+"-"+randomTerr[0] + "-" + randomTerrContinent;
 					    	  playerInfo.put(playerKey,0);
+					    	  
 					    	  //modify countryTaken to indicate that country has been assigned to a player
 					    	  countryTaken.add(randomTerr[0]+"-1");
 					    	 
 					    	  countryTaken.remove(randomVal);
-					    	  System.out.println(countryTaken);
+					    
 					    	  
-					    	  //decrease number of terr each player can have now
+					    	  //decrease number of territory each player further can have 
 					    	  countPT--;
-				    	  }
-			    	  
-			    	  }
-			    	  
-			    
-			    	//  System.out.println("Random Country--" + randomTerr[0] +": "+randomTerr[1]);
-			    	 // j++;
-			    	 
-		      }
+					   } //end if(continentTerrPlayerCount < terr)
+					    
+				    	  
+			    	  } //end if(randomTerr[1].equals("0"))
+		 
+		      } //end while(countPT != 0)
 			
 	    	  
-	      }
+	      }//end for(int pl = 1;pl<=numberOfPlayers;pl++)
 	     
-	}
+	}//end assignTerritories
 	
 	
 	public static void main(String [] args){
 		
-	//	HashMap<String, HashMap<String, List<String>>> continentMap = new HashMap<String, HashMap<String, List<String>>>();
-		HashMap<String,List<String>> territoryMap = new HashMap(); 
+
+		HashMap<String,List<String>> territoryMap = new HashMap<String,List<String>>(); 
 			territoryMap.put("Asia,India", null);
 			territoryMap.put("Asia,China", null);
 			territoryMap.put("Asia,Pakistan", null);
 			territoryMap.put("Asia,Japan", null);
+			territoryMap.put("Asia,Afghanistan", null);
 			 
 			territoryMap.put("Europe,England", null);
 			territoryMap.put("Europe,France", null);
 			territoryMap.put("Europe,Spain", null);
 			territoryMap.put("Europe,Germany", null);
-			
+			territoryMap.put("Europe,Italy", null);
+		
 			territoryMap.put("North America,Mexico", null);
 			territoryMap.put("North America,USA", null);
-			territoryMap.put("North America,Canada", null);
+			
 			
 			territoryMap.put("South America,Brazil", null);
 			territoryMap.put("South America,Colombia", null);
+		
 			
-			
-		//	continentMap.put("Asia,3", null);
-		//	continentMap.put("Asia,4", null);
-			startUpPhase(5,territoryMap);
+		int numberOfPlayers = 6;
+			startUpPhase(numberOfPlayers,territoryMap);
 	}
 	
 }
