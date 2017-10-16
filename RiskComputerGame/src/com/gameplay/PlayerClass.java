@@ -84,6 +84,7 @@ public class PlayerClass {
 			System.out.println("Players can not be greater than the number of territories");
 			return;
 		}
+		
 		terrPerPlayerPopulate(players,totalTerr);
 		System.out.println("Territory per player-->"+terrPerPlayer);
 		
@@ -96,32 +97,47 @@ public class PlayerClass {
 	}
 	
 	
-	public static void terrPerPlayerPopulate(int players, int totalTerr){
+	public static void terrPerPlayerPopulate(int numberOfPlayers, int numberOfTerr)
+	{
+			int initialTerr = numberOfTerr/numberOfPlayers;
 		
-		int initialUnit = totalTerr/players;
+			int roundUpNumber= (int) Math.ceil((double)numberOfTerr/numberOfPlayers);
+			System.out.println(roundUpNumber);
+			
+		      for(int pl =1; pl<= numberOfPlayers;pl++)
+		      {
+		    	  terrPerPlayer.put(String.valueOf(pl), initialTerr);
+		      }
+		      
+		      int remainingTerr = numberOfTerr - (initialTerr * numberOfPlayers);
+		      
+		    
+		      Random randomPlayer = new Random();
+		      List<String> listOfPlayerKeys = new ArrayList<String>(terrPerPlayer.keySet());
+		      
+		      int remCount = remainingTerr;
+		      
+		      	      
+		      
+		     
+		    //get random Players and assign them remaining countries one by one
+		      while(remCount!=0)
+		      {
+		    
+		    	    String randomPlayerKey = listOfPlayerKeys.get(randomPlayer.nextInt(numberOfPlayers) );
+		    	    
+		    	    if(terrPerPlayer.get(randomPlayerKey) < roundUpNumber )
+		    	    {
+		    	    	int newPlayerArmies = terrPerPlayer.get(randomPlayerKey) + 1;
+			    	    terrPerPlayer.put(randomPlayerKey, newPlayerArmies);
+			    	    remCount--;
+		    	    }
+		    	  	  
+		    	    
+		    	  
+		      }
 		
-	      for(int pl =1; pl<= players;pl++){
-	    	  terrPerPlayer.put(String.valueOf(pl), initialUnit);
-	      }
-	      
-	      int remUnit = totalTerr - (initialUnit * players);
-	      
-	    
-	      Random randomPl = new Random();
-	      List<String> keyPl = new ArrayList<String>(terrPerPlayer.keySet());
-	      
-	      int remCount = remUnit;
-	      
-	    //get random Players and assign them remaining countries one by one
-	      while(remCount!=0){
-	    	  
-	    	  String randomPlKey = keyPl.get(randomPl.nextInt(keyPl.size() ) );
-	    	  int randomPlUnits = terrPerPlayer.get(randomPlKey) + 1;
-	    	  terrPerPlayer.put(randomPlKey, randomPlUnits);
-	    	  remCount--;
-	    	  
-	      }
-	      
+		
 	}
 	
 	
@@ -238,7 +254,7 @@ public class PlayerClass {
 			
 		//	continentMap.put("Asia,3", null);
 		//	continentMap.put("Asia,4", null);
-			startUpPhase(6,territoryMap);
+			startUpPhase(5,territoryMap);
 	}
 	
 }
