@@ -170,6 +170,7 @@ public class EditMap {
 		btnDelete.setBounds(600, 290, 100, 25);
 		JButton btnSave = new JButton("Delete");
 		btnSave.setBounds(600, 320, 100, 25);
+		//check for push
 		for (Map.Entry<String, Integer> temp : continentControlValueHashMapToEdit.entrySet()) {
 
 			continentListToEdit.add(temp.getKey());
