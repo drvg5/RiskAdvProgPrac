@@ -1,6 +1,7 @@
 package com.map.editor;
 
 import java.awt.Dimension;
+import com.map.play.PlayGame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
