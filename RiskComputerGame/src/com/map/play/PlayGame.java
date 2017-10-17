@@ -15,6 +15,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -25,26 +26,27 @@ public class PlayGame {
 
 	public static void LoadMap(JDesktopPane desktop) {
 		HashMap<String, List<String>> continentHashMap = new HashMap<String, List<String>>();
-		HashMap<String,Integer> continentCount = new HashMap<String, Integer>();
+		HashMap<String, Integer> continentCount = new HashMap<String, Integer>();
 		final String strTerritory = "[Territories]";
 		final String strMap = "[Map]";
-		final String strContinet = "[Continents]";
+		final String strContinent = "[Continents]";
 		JInternalFrame jframeUpload = new JInternalFrame("Upload");
-		jframeUpload.setSize(300, 300);
+		jframeUpload.setSize(150, 100);
 		jframeUpload.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JButton buttonSelectFile = new JButton("Select File");
-		buttonSelectFile.setBounds(10, 10, 20, 30);
+		buttonSelectFile.setBounds(10, 10, 80, 30);
 
 		buttonSelectFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setBounds(10, 20, 30, 100);
+				fileChooser.setBounds(10, 20, 10, 10);
 				int returnValue = fileChooser.showOpenDialog(null);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					jframeUpload.setVisible(false);
 					File selectedFile = fileChooser.getSelectedFile();
 					String UploadFileName = selectedFile.getName();
 					String FileFormat = FilenameUtils.getExtension(UploadFileName);
-					System.out.println("\nUploadFileName:" + UploadFileName);
+					//System.out.println("\nUploadFileName:" + UploadFileName + FileFormat );
 
 					try {
 						Scanner scanner = new Scanner(selectedFile);
@@ -55,35 +57,40 @@ public class PlayGame {
 							Maplist.add(line);
 						}
 						scanner.close();
-						if (Maplist.contains("[Map]") && Maplist.contains("[Continents]")
-								&& Maplist.contains("[Territories]") && Maplist.get(2).contains("bmp")
-								&& FileFormat.matches("map")) {
 
-							// for (int i = 0; i < Maplist.size(); i++) {
-							// System.out.println(Maplist.get(i));
-							// if (Maplist.get(i).isEmpty()) {
-							// EmptyLinesCount.add(i);
-							// }
-							// }
-							// System.out.println("Empty lines location:" + EmptyLinesCount);
+						if (!((FileFormat.equals("map") || (FileFormat.equals("txt"))))) {
+							JOptionPane.showMessageDialog(null, "File extension is wrong", "Upload Error",
+									JOptionPane.ERROR_MESSAGE);
+						}
 
+						else if (!((Maplist.contains("[Map]") && Maplist.contains("[Continents]")
+								&& Maplist.contains("[Territories]")))) {
+
+							JOptionPane.showMessageDialog(null, "File is missing Map or Continent or Territory section",
+									"Upload Error", JOptionPane.ERROR_MESSAGE);
+
+						}
+						// for (int i = 0; i < Maplist.size(); i++) {
+						// System.out.println(Maplist.get(i));
+						// if (Maplist.get(i).isEmpty()) {
+						// EmptyLinesCount.add(i);
+						// }
+						// }
+						// System.out.println("Empty lines location:" + EmptyLinesCount);
+						else {
 							for (int i = 0; i < Maplist.size(); i++) {
 								if (Maplist.get(i).startsWith(strMap.trim())) {
-									// System.out.println("\nLine:" + i + "\n" + Maplist.get(i));
-									// System.out.println("\nNext line to Maps:" + Maplist.get(i + 1));
 								}
-								if (Maplist.get(i).startsWith(strContinet.trim())) {
-									// System.out.println("\nLine:" + i + "\n" + Maplist.get(i));
-									// System.out.println("\nNext line to Continent:" + Maplist.get(i + 1));
-									
+								if (Maplist.get(i).startsWith(strContinent.trim())) {
+
 									for (int j = i + 1; j <= 20; j++) {
-										if ((Maplist.get(j).isEmpty()))
-										{
+										if ((Maplist.get(j).isEmpty())) {
 											break;
 										}
 										String strContinentCount = Maplist.get(j);
 										String[] arrayContinentCount = strContinentCount.split("=");
-										continentCount.put(arrayContinentCount[0], Integer.parseInt(arrayContinentCount[1]));
+										continentCount.put(arrayContinentCount[0],
+												Integer.parseInt(arrayContinentCount[1]));
 									}
 									System.out.println(continentCount);
 								}
@@ -106,25 +113,11 @@ public class PlayGame {
 											continentHashMap.put(concatString, adjCountries);
 										}
 									}
-
 								}
-
 							}
-							System.out.println("\nMap Status:");
-							System.out.println("\nMap is uploaded successfully");
 							System.out.println(continentHashMap);
 
-						} else {
-							if (!(FileFormat.matches("map"))) {
-								System.out.println("\nFile format(map) is not correct");
-							} else if (!(Maplist.contains("[Map]") && Maplist.contains("[Continents]")
-									&& Maplist.contains("[Territories]"))) {
-								System.out.println("\nFile doesnt contain either Territories or Continents or Maps");
-							} else if (!(Maplist.get(2).contains("bmp"))) {
-								System.out.println("\nMap doest contain bmp image");
-							}
 						}
-						// scanner.close();
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
