@@ -6,7 +6,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -32,10 +31,10 @@ public class MainMenu extends JFrame implements ActionListener {
 		// indenting from each edge of the computer screen.
 		int inset = 100;
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setBounds(inset, inset, screenSize.width - inset * 2, screenSize.height - inset *2);
+		setBounds(inset, inset, screenSize.width - inset * 2, screenSize.height - inset * 2);
 
 		// Setting up the GUI.
-		desktop = new JDesktopPane(); 
+		desktop = new JDesktopPane();
 		setContentPane(desktop);
 		setJMenuBar(populateMenuDropdown());
 
@@ -105,12 +104,12 @@ public class MainMenu extends JFrame implements ActionListener {
 			PlayGame.LoadMap(desktop);
 		} else if ("Map Editor".equals(e.getActionCommand())) {
 			MapEditorMenu.mapEditorNavigation(desktop);
-		} else {  
+		} else {
 			quit();
 		}
 	}
 
-		// close the application.
+	// close the application.
 	protected void quit() {
 		System.exit(0);
 	}

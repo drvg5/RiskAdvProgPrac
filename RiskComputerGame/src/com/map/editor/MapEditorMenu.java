@@ -10,7 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 
 public class MapEditorMenu {
-
+	
+	
 	public static void mapEditorNavigation(JDesktopPane desktop) {
 		JInternalFrame jframeMapEditor = new JInternalFrame("Map Editor");
 		JButton jbuttonCreateMap = new JButton("Create Map");
@@ -45,7 +46,12 @@ public class MapEditorMenu {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				try {
+					jframeMapEditor.setClosed(true);
+				} catch (PropertyVetoException e1) {
+					e1.printStackTrace();
+				}
+				EditMap.fetchMap(desktop);
 			}
 		});
 
