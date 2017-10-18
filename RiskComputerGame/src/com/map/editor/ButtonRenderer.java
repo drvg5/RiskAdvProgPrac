@@ -22,6 +22,7 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
 			System.out.println("Count:" + i);
 			String strContinent = (String) table.getModel().getValueAt(row, column - 1);
 			System.out.println(strContinent);
+			// 
 			// CreateMap.addCountry(strContinent);
 			// CreateMap.AddCountry(strContinent);
 		}

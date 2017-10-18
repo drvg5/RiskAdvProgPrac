@@ -3,6 +3,7 @@ package com.map.editor;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -29,6 +30,11 @@ import org.apache.commons.io.FilenameUtils;
 public class EditMap {
 
 	static JInternalFrame jframeContinent = new JInternalFrame();
+	static DefaultTableModel modelToEdit = new DefaultTableModel(
+			new Object[] { "Continent List", "Country", "Adjacent List" }, 0);
+	static HashMap<String, List<String>> continentHashMapToEdit = new HashMap<String, List<String>>();
+	static HashMap<String, Integer> continentControlValueHashMapToEdit = new HashMap<String, Integer>();
+	static List<String> continentListToEdit = new ArrayList<String>();
 
 	public static void fetchMap(JDesktopPane desktop) {
 		HashMap<String, List<String>> continentHashMap = new HashMap<String, List<String>>();
@@ -52,7 +58,6 @@ public class EditMap {
 					File selectedFile = fileChooser.getSelectedFile();
 					String UploadFileName = selectedFile.getName();
 					String FileFormat = FilenameUtils.getExtension(UploadFileName);
-					// System.out.println("\nUploadFileName:" + UploadFileName);
 
 					try {
 						Scanner scanner = new Scanner(selectedFile);
@@ -137,40 +142,40 @@ public class EditMap {
 		desktop.add(jframeUpload);
 	}
 
-	public static void editMap(HashMap<String, List<String>> continentHashMapToEdit,
-			HashMap<String, Integer> continentControlValueHashMapToEdit, JDesktopPane desktop) {
+	public static void editMap(HashMap<String, List<String>> continentHashMap,
+			HashMap<String, Integer> continentControlValueHashMap, JDesktopPane desktop) {
 
+		continentHashMapToEdit = continentHashMap;
+		continentControlValueHashMapToEdit = continentControlValueHashMap;
 		JTable tableContinent = new JTable();
 		List<String> continentList = new ArrayList<String>();
-		List<String> continentListToEdit = new ArrayList<String>();
-		DefaultTableModel modelContinent = new DefaultTableModel(
-				new Object[] { "Continent List", "Country", "Adjacent List" }, 0);
-		JLabel labelContinent = new JLabel("Continent");
-		labelContinent.setBounds(20, 260, 60, 25);
-		JTextField textContinent = new JTextField();
-		textContinent.setBounds(150, 260, 100, 25);
-		JLabel labelCountry = new JLabel("Country");
-		labelCountry.setBounds(20, 290, 60, 25);
-		JTextField textCountry = new JTextField();
-		textCountry.setBounds(150, 290, 100, 25);
-		JLabel labelContinentControlValue = new JLabel("Control Value");
-		labelContinentControlValue.setBounds(20, 350, 130, 25);
-		JTextField textContinentControlValue = new JTextField();
-		textContinentControlValue.setBounds(150, 350, 50, 25);
-		JLabel labelAdjList = new JLabel("Adjacent Countries");
-		labelAdjList.setBounds(20, 320, 130, 25);
-		JTextField textAdjList = new JTextField();
-		textAdjList.setBounds(150, 320, 200, 25);
-		JLabel labelAdjMessage = new JLabel("<-----Please Enter Comma seperated");
-		labelAdjMessage.setForeground(Color.RED);
-		labelAdjMessage.setBounds(360, 320, 300, 25);
+		
+		JLabel labelContinentToEdit = new JLabel("Continent");
+		labelContinentToEdit.setBounds(20, 260, 60, 25);
+		JTextField textContinentToEdit = new JTextField();
+		textContinentToEdit.setBounds(150, 260, 100, 25);
+		JLabel labelCountryToEdit = new JLabel("Country");
+		labelCountryToEdit.setBounds(20, 290, 60, 25);
+		JTextField textCountryToEdit = new JTextField();
+		textCountryToEdit.setBounds(150, 290, 100, 25);
+		JLabel labelContinentControlValueToEdit = new JLabel("Control Value");
+		labelContinentControlValueToEdit.setBounds(20, 350, 130, 25);
+		JTextField textContinentControlValueToEdit = new JTextField();
+		textContinentControlValueToEdit.setBounds(150, 350, 50, 25);
+		JLabel labelAdjListToEdit = new JLabel("Adjacent Countries");
+		labelAdjListToEdit.setBounds(20, 320, 130, 25);
+		JTextField textAdjListToEdit = new JTextField();
+		textAdjListToEdit.setBounds(150, 320, 200, 25);
+		JLabel labelAdjMessageToEdit = new JLabel("<-----Please Enter Comma seperated");
+		labelAdjMessageToEdit.setForeground(Color.RED);
+		labelAdjMessageToEdit.setBounds(360, 320, 300, 25);
 		JButton btnAddAll = new JButton("Add");
 		btnAddAll.setBounds(600, 260, 100, 25);
-		JButton btnDelete = new JButton("Update");
-		btnDelete.setBounds(600, 290, 100, 25);
-		JButton btnSave = new JButton("Delete");
-		btnSave.setBounds(600, 320, 100, 25);
-		//check for push
+		JButton btnDeleteContinent = new JButton("Delete Continent");
+		btnDeleteContinent.setBounds(600, 290, 200, 25);
+		JButton btnDeleteCountry = new JButton("Delete Country");
+		btnDeleteCountry.setBounds(600, 320, 200, 25);
+		// check for push
 		for (Map.Entry<String, Integer> temp : continentControlValueHashMapToEdit.entrySet()) {
 
 			continentListToEdit.add(temp.getKey());
@@ -184,34 +189,145 @@ public class EditMap {
 				String[] strKeyArrayToEdit = strKey.split(",");
 				if (obj.equals(strKeyArrayToEdit[0])) {
 					String printWithoutBraces = entry.getValue().toString().replaceAll("(^\\[|\\s|\\]$)", "");
-					modelContinent
-							.addRow(new Object[] { strKeyArrayToEdit[0], strKeyArrayToEdit[1], printWithoutBraces });
+					modelToEdit.addRow(new Object[] { strKeyArrayToEdit[0], strKeyArrayToEdit[1], printWithoutBraces });
 				}
 
 			}
 		}
-		tableContinent.setModel(modelContinent);
+
+		btnAddAll.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String strContinentToAdd = textContinentToEdit.getText().trim().toLowerCase();
+				String strCountryToAdd = textCountryToEdit.getText().trim().toLowerCase();
+				String strAdjListToAdd = textAdjListToEdit.getText().toLowerCase();
+				String strControlValueToAdd = textContinentControlValueToEdit.getText().trim();
+				String strContinentCapitalize = strContinentToAdd.substring(0, 1).toUpperCase()
+						+ strContinentToAdd.substring(1);
+				String strCountryCapitalize = strCountryToAdd.substring(0, 1).toUpperCase()
+						+ strCountryToAdd.substring(1);
+				List<String> listAdjCountryToAdd = new ArrayList<String>();
+				List<String> listAdjCountrytoAddCapitalize = new ArrayList<String>();
+				listAdjCountryToAdd = new ArrayList<String>(Arrays.asList(strAdjListToAdd.split(",")));
+				for (String capital : listAdjCountryToAdd) {
+					capital = capital.substring(0, 1).toUpperCase() + capital.substring(1);
+					listAdjCountrytoAddCapitalize.add(capital);
+				}
+				int continetControlValue = Integer.parseInt(strControlValueToAdd);
+				StringJoiner joiner = new StringJoiner(",");
+				joiner.add(strContinentCapitalize).add(strCountryCapitalize);
+				String concatString = joiner.toString();
+				modelToEdit.addRow(new Object[] { strContinentCapitalize, strCountryCapitalize,
+						listAdjCountrytoAddCapitalize, continetControlValue });
+				continentHashMapToEdit.put(concatString, listAdjCountrytoAddCapitalize);
+				continentControlValueHashMapToEdit.put(strContinentCapitalize, continetControlValue);
+				System.out.println(continentHashMapToEdit);
+				System.out.println(continentControlValueHashMapToEdit);
+				textCountryToEdit.setText(null);
+				textAdjListToEdit.setText(null);
+				textContinentControlValueToEdit.setText(null);
+			}
+		});
+		
+		tableContinent.addMouseListener(new MouseAdapter() {
+		});
+
+		btnDeleteContinent.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int row = tableContinent.getSelectedRow();
+				String strtextContinentToDelete = modelToEdit.getValueAt(row, 0).toString();
+				for (Map.Entry<String, List<String>> iterate : continentHashMap.entrySet() )
+				{
+					String strKey = iterate.getKey();
+					String[] strKeyArrayToEdit = strKey.split(",");
+					if(strKeyArrayToEdit[0].equals(strtextContinentToDelete))
+					{
+						continentHashMapToEdit.remove(strKey);
+					}
+				}
+				continentControlValueHashMapToEdit.remove(strtextContinentToDelete);
+				//continentHashMapToEdit.remove(strtextContinentToDelete);
+				//modelToEdit.removeRow(row);
+				reloadModel();
+				System.out.println("Delete continent" + continentHashMapToEdit);
+			}
+		});
+
+		btnDeleteCountry.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int row = tableContinent.getSelectedRow();
+				String strtextCountryToDelete = modelToEdit.getValueAt(row, 1).toString();
+				for (Map.Entry<String, List<String>> iterate : continentHashMap.entrySet() )
+				{
+					String key = iterate.getKey();
+					List<String> countryToDelete = new ArrayList<String>();
+					List<String> valueList = new ArrayList<String>();
+					countryToDelete = iterate.getValue();
+					for(String s: countryToDelete)
+					{
+						if(strtextCountryToDelete.equals(s))
+						{
+							countryToDelete.remove(s);
+							valueList = countryToDelete;
+						}
+					}
+					continentHashMap.put(key, valueList);
+				}
+				reloadModel();
+				System.out.println("Deleterow"+ continentHashMap);
+			}
+		});
+
+		tableContinent.setModel(modelToEdit);
 		JScrollPane panel = new JScrollPane(tableContinent);
 		panel.setVisible(true);
 		panel.setBounds(0, 0, 780, 250);
 		jframeContinent = new JInternalFrame("Add Continent");
 		jframeContinent.setLayout(null);
 		jframeContinent.add(panel);
-		jframeContinent.add(labelContinent);
-		jframeContinent.add(labelCountry);
-		jframeContinent.add(labelContinentControlValue);
-		jframeContinent.add(labelAdjList);
-		jframeContinent.add(labelAdjMessage);
-		jframeContinent.add(textContinent);
-		jframeContinent.add(textCountry);
-		jframeContinent.add(textContinentControlValue);
-		jframeContinent.add(textAdjList);
+		jframeContinent.add(labelContinentToEdit);
+		jframeContinent.add(labelCountryToEdit);
+		jframeContinent.add(labelContinentControlValueToEdit);
+		jframeContinent.add(labelAdjListToEdit);
+		jframeContinent.add(labelAdjMessageToEdit);
+		jframeContinent.add(textContinentToEdit);
+		jframeContinent.add(textCountryToEdit);
+		jframeContinent.add(textContinentControlValueToEdit);
+		jframeContinent.add(textAdjListToEdit);
 		jframeContinent.add(btnAddAll);
-		jframeContinent.add(btnSave);
-		jframeContinent.add(btnDelete);
+		jframeContinent.add(btnDeleteContinent);
+		jframeContinent.add(btnDeleteCountry);
 		jframeContinent.setSize(800, 600);
 		jframeContinent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jframeContinent.setVisible(true);
 		desktop.add(jframeContinent);
 	}
-}
+
+	public static void reloadModel() {
+		modelToEdit.setRowCount(0);
+		for (Map.Entry<String, Integer> temp : continentControlValueHashMapToEdit.entrySet()) {
+
+			continentListToEdit.add(temp.getKey());
+
+		}
+
+		for (String obj : continentListToEdit) {
+
+			for (Map.Entry<String, List<String>> entry : continentHashMapToEdit.entrySet()) {
+				String strKey = entry.getKey();
+				String[] strKeyArrayToEdit = strKey.split(",");
+				if (obj.equals(strKeyArrayToEdit[0])) {
+					String printWithoutBraces = entry.getValue().toString().replaceAll("(^\\[|\\s|\\]$)", "");
+					modelToEdit.addRow(new Object[] { strKeyArrayToEdit[0], strKeyArrayToEdit[1], printWithoutBraces });
+				}
+
+			}
+		}
+		}
+	}

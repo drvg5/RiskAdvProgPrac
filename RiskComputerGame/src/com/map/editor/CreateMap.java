@@ -37,6 +37,9 @@ public class CreateMap {
 	static String TxtAdjCountry;
 	static JInternalFrame jframeContinent = new JInternalFrame();
 	static JDesktopPane desktopCreateMap;
+	static List<String> strToCheckDuplicateCountry = new ArrayList<String>();
+	static List<String> strToCheckDuplicateCountryAdj = new ArrayList<String>();
+	static int checkCount = 0;
 
 	public static void configureContinent(JDesktopPane desktop) {
 
@@ -89,8 +92,11 @@ public class CreateMap {
 				String strCountry = textCountry.getText().trim();
 				String strAdjList = textAdjList.getText();
 				String strControlValue = textContinentControlValue.getText().trim();
+				strToCheckDuplicateCountry.add(strCountry);
+				strToCheckDuplicateCountryAdj.add(strAdjList);
 
-				if ((strContinent.isEmpty()) || (strCountry.isEmpty()) || (strControlValue.isEmpty() || (strAdjList.isEmpty()))) {
+				if ((strContinent.isEmpty()) || (strCountry.isEmpty())
+						|| (strControlValue.isEmpty() || (strAdjList.isEmpty()))) {
 					JOptionPane.showMessageDialog(null, "Oops!Please enter values", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 
@@ -109,7 +115,27 @@ public class CreateMap {
 							JOptionPane.ERROR_MESSAGE);
 				}
 
+				else if (checkCount > 0) {
+					for (String str : strToCheckDuplicateCountry) {
+						if (str.trim().contains(strCountry)) {
+							JOptionPane.showMessageDialog(null,
+									"Invalid Map!" + strCountry + " already exists in Country List", "Error",
+									JOptionPane.ERROR_MESSAGE);
+						}
+						break;
+					}
+					for (String str : strToCheckDuplicateCountryAdj) {
+						if (str.trim().contains(strAdjList)) {
+							JOptionPane.showMessageDialog(null,
+									"Invalid Map!" + str + " already exists in Country List", "Error",
+									JOptionPane.ERROR_MESSAGE);
+						}
+						break;
+					}
+				}
+
 				else {
+
 					StringJoiner joiner = new StringJoiner(",");
 					joiner.add(strContinent).add(strCountry);
 					String concatString = joiner.toString();
@@ -120,6 +146,7 @@ public class CreateMap {
 					textCountry.setText(null);
 					textAdjList.setText(null);
 					textContinentControlValue.setEnabled(false);
+					checkCount++;
 				}
 
 			}

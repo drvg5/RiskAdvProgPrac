@@ -10,8 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 
 public class MapEditorMenu {
-	
-	
+
 	public static void mapEditorNavigation(JDesktopPane desktop) {
 		JInternalFrame jframeMapEditor = new JInternalFrame("Map Editor");
 		JButton jbuttonCreateMap = new JButton("Create Map");
@@ -38,7 +37,8 @@ public class MapEditorMenu {
 				} catch (PropertyVetoException e1) {
 					e1.printStackTrace();
 				}
-				CreateMap.configureContinent(desktop);
+				// CreateMap.configureContinent(desktop);
+				ConfigureMap.createContinetandCountry(desktop);
 			}
 		});
 

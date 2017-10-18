@@ -46,7 +46,7 @@ public class PlayGame {
 					File selectedFile = fileChooser.getSelectedFile();
 					String UploadFileName = selectedFile.getName();
 					String FileFormat = FilenameUtils.getExtension(UploadFileName);
-					//System.out.println("\nUploadFileName:" + UploadFileName + FileFormat );
+					// System.out.println("\nUploadFileName:" + UploadFileName + FileFormat );
 
 					try {
 						Scanner scanner = new Scanner(selectedFile);
