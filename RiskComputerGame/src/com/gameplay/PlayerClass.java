@@ -96,94 +96,24 @@ public class PlayerClass {
 	
 		if(numberOfPlayers > totalTerr){
 			System.out.println("Players can not be greater than the number of territories");
+			
+			GamePlay.playerGTTerr = 0;
+			
 			return;
 		}
 		
 		
+		
+		GamePlay.playerGTTerr = 1;
+		
 		terrPerPlayerPopulate(numberOfPlayers,totalTerr);
-		System.out.println("Territory per player-->"+terrPerPlayer);
+		
 		
 		assignTerritories(numberOfPlayers, countryTaken, totalTerr);
 		
 		
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("1"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("2"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("3"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("4"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("5"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("6"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		System.out.println("----------------------------------------------------");
-		
-		
 		deployArmiesRandomly(numberOfPlayers);
 		
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("1"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("2"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("3"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("4"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("5"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("6"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		System.out.println("----------------------------------------------------");
 		
 		
 		
