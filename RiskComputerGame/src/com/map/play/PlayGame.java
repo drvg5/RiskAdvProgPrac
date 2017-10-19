@@ -2,6 +2,7 @@ package com.map.play;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -35,10 +36,19 @@ public class PlayGame {
 		final String strMap = "[Map]";
 		final String strContinent = "[Continents]";
 		JInternalFrame jframeUpload = new JInternalFrame("Upload");
-		jframeUpload.setSize(150, 100);
+
+		jframeUpload.setLayout(null);
+
+		jframeUpload.setSize(300, 300);
 		jframeUpload.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JButton buttonSelectFile = new JButton("Select File");
-		buttonSelectFile.setBounds(10, 10, 80, 30);
+		JButton buttonSelectFile = new JButton("Upload");
+		buttonSelectFile.setBounds(100, 100, 100, 30);
+		JButton buttonCloseUpload = new JButton("Close");
+		buttonCloseUpload.setBounds(100, 150, 100, 30);
+		jframeUpload.add(buttonSelectFile);
+		jframeUpload.add(buttonCloseUpload);
+		jframeUpload.setVisible(true);
+		desktop.add(jframeUpload);
 
 		buttonSelectFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -46,7 +56,9 @@ public class PlayGame {
 				String[] strCheckDuplicateArray;
 				boolean checkDuplicate;
 				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setBounds(10, 20, 10, 10);
+
+				fileChooser.setBounds(10, 20, 30, 100);
+ 
 				int returnValue = fileChooser.showOpenDialog(null);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					jframeUpload.setVisible(false);
@@ -83,6 +95,7 @@ public class PlayGame {
 								}
 								if (Maplist.get(i).startsWith(strContinent.trim())) {
 
+
 									for (int j = i + 1; j <= 20; j++) {
 										if ((Maplist.get(j).isEmpty())) {
 											break;
@@ -115,6 +128,7 @@ public class PlayGame {
 								}
 							}
 
+
 						}
 
 						System.out.println(continentHashMap);
@@ -124,10 +138,23 @@ public class PlayGame {
 				}
 			}
 		});
+		
+		
+		buttonCloseUpload.addActionListener(new ActionListener() {
 
-		jframeUpload.add(buttonSelectFile);
-		jframeUpload.setVisible(true);
-		desktop.add(jframeUpload);
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					jframeUpload.setClosed(true);
+				} catch (PropertyVetoException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+
+
 	}
 
+
 }
+
