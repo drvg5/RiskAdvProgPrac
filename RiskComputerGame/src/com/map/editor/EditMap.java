@@ -4,11 +4,15 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -20,12 +24,24 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.io.FilenameUtils;
+
+/**
+ * <h1>Edit Map</h1>
+ * <p>
+ * <b>This class consists static methods to save map file to local folder </b>
+ * User would be able to configure Adjacency between Countries.
+ * <p>
+ * 
+ * @author Khashyap
+ * @version 1.0
+ */
 
 public class EditMap {
 
@@ -35,6 +51,19 @@ public class EditMap {
 	static HashMap<String, List<String>> continentHashMapToEdit = new HashMap<String, List<String>>();
 	static HashMap<String, Integer> continentControlValueHashMapToEdit = new HashMap<String, Integer>();
 	static List<String> continentListToEdit = new ArrayList<String>();
+	static String UploadFileName;
+
+	/**
+	 * <p>
+	 * This method is used to fetch text or map file from local folder to Edit User
+	 * can edit Continents, Countries and adjacency links between Countries. File is
+	 * already loaded in Default local folder location User can select from existing
+	 * files
+	 * 
+	 * @param desktop
+	 *            This is to bind the InternalFrame with Main window frame
+	 * 
+	 */
 
 	public static void fetchMap(JDesktopPane desktop) {
 		HashMap<String, List<String>> continentHashMap = new HashMap<String, List<String>>();
@@ -48,6 +77,9 @@ public class EditMap {
 		JButton buttonSelectFile = new JButton("Select File");
 		buttonSelectFile.setBounds(10, 10, 80, 30);
 
+		// Button to upload file and populate in Default Model.
+		// This will call Edit Map method after fetching data
+
 		buttonSelectFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				JFileChooser fileChooser = new JFileChooser();
@@ -56,7 +88,7 @@ public class EditMap {
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					jframeUpload.setVisible(false);
 					File selectedFile = fileChooser.getSelectedFile();
-					String UploadFileName = selectedFile.getName();
+					UploadFileName = selectedFile.getName();
 					String FileFormat = FilenameUtils.getExtension(UploadFileName);
 
 					try {
@@ -71,14 +103,6 @@ public class EditMap {
 						if ((Maplist.contains("[Map]") && Maplist.contains("[Continents]")
 								&& Maplist.contains("[Territories]"))
 								&& (FileFormat.matches("map") || (FileFormat.matches("txt")))) {
-
-							// for (int i = 0; i < Maplist.size(); i++) {
-							// System.out.println(Maplist.get(i));
-							// if (Maplist.get(i).isEmpty()) {
-							// EmptyLinesCount.add(i);
-							// }
-							// }
-							// System.out.println("Empty lines location:" + EmptyLinesCount);
 
 							for (int i = 0; i < Maplist.size(); i++) {
 								if (Maplist.get(i).startsWith(strMap.trim())) {
@@ -116,17 +140,15 @@ public class EditMap {
 									}
 								}
 							}
-							System.out.println(continentHashMap);
 							editMap(continentHashMap, continentControlValueHashMap, desktop);
 
 						} else {
-							if (!(FileFormat.matches("map"))) {
-								System.out.println("\nFile format(map) is not correct");
+							if (!((FileFormat.equals("map") || (FileFormat.equals("txt"))))) {
+								JOptionPane.showMessageDialog(null, "File extension is wrong", "Upload Error",
+										JOptionPane.ERROR_MESSAGE);
 							} else if (!(Maplist.contains("[Map]") && Maplist.contains("[Continents]")
 									&& Maplist.contains("[Territories]"))) {
-								System.out.println("\nFile doesnt contain either Territories or Continents or Maps");
-							} else if (!(Maplist.get(2).contains("bmp"))) {
-								System.out.println("\nMap doest contain bmp image");
+
 							}
 						}
 						// scanner.close();
@@ -142,14 +164,29 @@ public class EditMap {
 		desktop.add(jframeUpload);
 	}
 
+	/**
+	 * <p>
+	 * This method is used to Edit Map attributes like Continents, Countries and
+	 * adjacency links After update, changes is saved to same text files which is
+	 * loaded initially
+	 * 
+	 * @param continentHashMap
+	 *            Contains all attribute values
+	 * 
+	 * @param continentControlValueHashMap
+	 *            Contains Continent and its control value.
+	 * 
+	 * @param desktop
+	 *            This is to bind the InternalFrame with Main window frame
+	 * 
+	 */
+
 	public static void editMap(HashMap<String, List<String>> continentHashMap,
 			HashMap<String, Integer> continentControlValueHashMap, JDesktopPane desktop) {
 
 		continentHashMapToEdit = continentHashMap;
 		continentControlValueHashMapToEdit = continentControlValueHashMap;
 		JTable tableContinent = new JTable();
-		List<String> continentList = new ArrayList<String>();
-		
 		JLabel labelContinentToEdit = new JLabel("Continent");
 		labelContinentToEdit.setBounds(20, 260, 60, 25);
 		JTextField textContinentToEdit = new JTextField();
@@ -175,15 +212,16 @@ public class EditMap {
 		btnDeleteContinent.setBounds(600, 290, 200, 25);
 		JButton btnDeleteCountry = new JButton("Delete Country");
 		btnDeleteCountry.setBounds(600, 320, 200, 25);
-		// check for push
+		JButton btnSaveEditedMap = new JButton("Save");
+		btnSaveEditedMap.setBounds(600, 350, 200, 25);
+
+		// Populates fetched value from file to model
+
 		for (Map.Entry<String, Integer> temp : continentControlValueHashMapToEdit.entrySet()) {
-
 			continentListToEdit.add(temp.getKey());
-
 		}
 
 		for (String obj : continentListToEdit) {
-
 			for (Map.Entry<String, List<String>> entry : continentHashMapToEdit.entrySet()) {
 				String strKey = entry.getKey();
 				String[] strKeyArrayToEdit = strKey.split(",");
@@ -191,9 +229,10 @@ public class EditMap {
 					String printWithoutBraces = entry.getValue().toString().replaceAll("(^\\[|\\s|\\]$)", "");
 					modelToEdit.addRow(new Object[] { strKeyArrayToEdit[0], strKeyArrayToEdit[1], printWithoutBraces });
 				}
-
 			}
 		}
+
+		// Button to add all attribute values to Map
 
 		btnAddAll.addActionListener(new ActionListener() {
 
@@ -222,16 +261,14 @@ public class EditMap {
 						listAdjCountrytoAddCapitalize, continetControlValue });
 				continentHashMapToEdit.put(concatString, listAdjCountrytoAddCapitalize);
 				continentControlValueHashMapToEdit.put(strContinentCapitalize, continetControlValue);
-				System.out.println(continentHashMapToEdit);
-				System.out.println(continentControlValueHashMapToEdit);
 				textCountryToEdit.setText(null);
 				textAdjListToEdit.setText(null);
 				textContinentControlValueToEdit.setText(null);
 			}
 		});
-		
-		tableContinent.addMouseListener(new MouseAdapter() {
-		});
+
+		// Button to Delete Continent. Selects value in row and deletes continent
+		// completely
 
 		btnDeleteContinent.addActionListener(new ActionListener() {
 
@@ -240,47 +277,104 @@ public class EditMap {
 				// TODO Auto-generated method stub
 				int row = tableContinent.getSelectedRow();
 				String strtextContinentToDelete = modelToEdit.getValueAt(row, 0).toString();
-				for (Map.Entry<String, List<String>> iterate : continentHashMap.entrySet() )
-				{
+				List<String> ToDelete = new ArrayList<String>();
+				for (Map.Entry<String, List<String>> iterate : continentHashMap.entrySet()) {
 					String strKey = iterate.getKey();
 					String[] strKeyArrayToEdit = strKey.split(",");
-					if(strKeyArrayToEdit[0].equals(strtextContinentToDelete))
-					{
-						continentHashMapToEdit.remove(strKey);
+					if (strKeyArrayToEdit[0].equals(strtextContinentToDelete)) {
+						ToDelete.add(strKey);
 					}
 				}
+
+				for (String str : ToDelete) {
+					continentHashMap.remove(str);
+				}
 				continentControlValueHashMapToEdit.remove(strtextContinentToDelete);
-				//continentHashMapToEdit.remove(strtextContinentToDelete);
-				//modelToEdit.removeRow(row);
+				// continentHashMapToEdit.remove(strtextContinentToDelete);
+				// modelToEdit.removeRow(row);
 				reloadModel();
-				System.out.println("Delete continent" + continentHashMapToEdit);
 			}
 		});
+
+		// Button to Delete Country. Selects value in row and deletes Country and its
+		// adjacency completely
 
 		btnDeleteCountry.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int row = tableContinent.getSelectedRow();
+				String strtextContinentToDelete = modelToEdit.getValueAt(row, 0).toString();
 				String strtextCountryToDelete = modelToEdit.getValueAt(row, 1).toString();
-				for (Map.Entry<String, List<String>> iterate : continentHashMap.entrySet() )
-				{
-					String key = iterate.getKey();
-					List<String> countryToDelete = new ArrayList<String>();
-					List<String> valueList = new ArrayList<String>();
-					countryToDelete = iterate.getValue();
-					for(String s: countryToDelete)
-					{
-						if(strtextCountryToDelete.equals(s))
-						{
-							countryToDelete.remove(s);
-							valueList = countryToDelete;
+				String Key = strtextContinentToDelete + "," + strtextCountryToDelete;
+				continentHashMap.remove(Key);
+
+				Iterator<Map.Entry<String, List<String>>> iter = continentHashMap.entrySet().iterator();
+				while (iter.hasNext()) {
+					Map.Entry<String, List<String>> entry = iter.next();
+					List<String> list = entry.getValue();
+					for (int i = 0; i < list.size(); i++) {
+						if (list.get(i).equals(strtextCountryToDelete)) {
+							list.remove(i);
 						}
 					}
-					continentHashMap.put(key, valueList);
 				}
 				reloadModel();
-				System.out.println("Deleterow"+ continentHashMap);
+			}
+		});
+
+		btnSaveEditedMap.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+				// TODO Auto-generated method stub
+				FileWriter fstream;
+				BufferedWriter out;
+				List<String> continentListToPrint = new ArrayList<String>();
+				String textFileName;
+				textFileName = UploadFileName;
+				String textFileNameToSave = textFileName.split("\\.", 2)[0];
+				try {
+
+					fstream = new FileWriter("C:/Users/Khashyap/Documents/Maps/" + textFileName);
+					out = new BufferedWriter(fstream);
+					out.write("[Map]");
+					out.write(System.getProperty("line.separator"));
+					out.write(System.getProperty("line.separator"));
+					out.write("[Continents]");
+					out.write(System.getProperty("line.separator"));
+					for (Map.Entry<String, Integer> temp : continentControlValueHashMapToEdit.entrySet()) {
+
+						continentListToPrint.add(temp.getKey());
+						out.write(temp.getKey() + "=" + temp.getValue());
+						out.write(System.getProperty("line.separator"));
+					}
+					out.write(System.getProperty("line.separator"));
+					out.write("[Territories]");
+					out.write(System.getProperty("line.separator"));
+					for (String obj : continentListToPrint) {
+						for (Map.Entry<String, List<String>> iterate : continentHashMapToEdit.entrySet()) {
+							String strKey = iterate.getKey();
+							String[] strKeyArray = strKey.split(",");
+							if (obj.equals(strKeyArray[0])) {
+								String printWithoutBraces = iterate.getValue().toString().replaceAll("(^\\[|\\s|\\]$)",
+										"");
+								out.write(strKeyArray[1] + "," + "50" + "," + "50" + "," + strKeyArray[0] + ","
+										+ printWithoutBraces);
+								out.write(System.getProperty("line.separator"));
+							}
+
+						}
+						out.write(System.getProperty("line.separator"));
+					}
+					out.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				JOptionPane.showMessageDialog(null, textFileNameToSave + " \t is saved");
+
 			}
 		});
 
@@ -303,21 +397,29 @@ public class EditMap {
 		jframeContinent.add(btnAddAll);
 		jframeContinent.add(btnDeleteContinent);
 		jframeContinent.add(btnDeleteCountry);
+		jframeContinent.add(btnSaveEditedMap);
 		jframeContinent.setSize(800, 600);
 		jframeContinent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jframeContinent.setVisible(true);
 		desktop.add(jframeContinent);
 	}
 
+	/**
+	 * <p>
+	 * This method is used to reload Data model after changes in HashMap value
+	 * 
+	 */
+
 	public static void reloadModel() {
 		modelToEdit.setRowCount(0);
+		List<String> tempList = new ArrayList<String>();
 		for (Map.Entry<String, Integer> temp : continentControlValueHashMapToEdit.entrySet()) {
 
-			continentListToEdit.add(temp.getKey());
+			tempList.add(temp.getKey());
 
 		}
 
-		for (String obj : continentListToEdit) {
+		for (String obj : tempList) {
 
 			for (Map.Entry<String, List<String>> entry : continentHashMapToEdit.entrySet()) {
 				String strKey = entry.getKey();
@@ -329,5 +431,5 @@ public class EditMap {
 
 			}
 		}
-		}
 	}
+}
