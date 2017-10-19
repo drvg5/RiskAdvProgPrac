@@ -19,11 +19,10 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
 			i++;
 			// JOptionPane.showMessageDialog(button, "Column with Value: " +
 			// System.out.println(table.getModel());
-			System.out.println("Count:" + i);
+		
 			String strContinent = (String) table.getModel().getValueAt(row, column - 1);
-			System.out.println(strContinent);
-			CreateMap.addCountry(strContinent);
-			// CreateMap.AddCountry(strContinent);
+						CreateMap.addCountry(strContinent);
+
 		}
 		setText((value == null) ? "" : value.toString());
 		return this;

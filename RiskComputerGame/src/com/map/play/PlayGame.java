@@ -8,8 +8,11 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.StringJoiner;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -28,6 +31,7 @@ public class PlayGame {
 	public static void LoadMap(JDesktopPane desktop) {
 		HashMap<String, List<String>> continentHashMap = new HashMap<String, List<String>>();
 		HashMap<String, Integer> continentCount = new HashMap<String, Integer>();
+		List<String> checkDuplicates = new ArrayList<String>();
 		final String strTerritory = "[Territories]";
 		final String strMap = "[Map]";
 		final String strContinent = "[Continents]";
@@ -48,6 +52,9 @@ public class PlayGame {
 
 		buttonSelectFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				String strCheckDuplicates;
+				String[] strCheckDuplicateArray;
+				boolean checkDuplicate;
 				JFileChooser fileChooser = new JFileChooser();
 
 				fileChooser.setBounds(10, 20, 30, 100);
@@ -58,7 +65,7 @@ public class PlayGame {
 					File selectedFile = fileChooser.getSelectedFile();
 					String UploadFileName = selectedFile.getName();
 					String FileFormat = FilenameUtils.getExtension(UploadFileName);
-					//System.out.println("\nUploadFileName:" + UploadFileName + FileFormat );
+					// System.out.println("\nUploadFileName:" + UploadFileName + FileFormat );
 
 					try {
 						Scanner scanner = new Scanner(selectedFile);
@@ -71,25 +78,18 @@ public class PlayGame {
 						scanner.close();
 
 						if (!((FileFormat.equals("map") || (FileFormat.equals("txt"))))) {
-							JOptionPane.showMessageDialog(null, "File extension is wrong", "Upload Error",
+							JOptionPane.showMessageDialog(null, "Invalid Map!File extension is wrong", "Upload Error",
 									JOptionPane.ERROR_MESSAGE);
 						}
 
 						else if (!((Maplist.contains("[Map]") && Maplist.contains("[Continents]")
 								&& Maplist.contains("[Territories]")))) {
 
-							JOptionPane.showMessageDialog(null, "File is missing Map or Continent or Territory section",
+							JOptionPane.showMessageDialog(null,
+									"Invalid Map! File is missing Map or Continent or Territory section",
 									"Upload Error", JOptionPane.ERROR_MESSAGE);
 
-						}
-						// for (int i = 0; i < Maplist.size(); i++) {
-						// System.out.println(Maplist.get(i));
-						// if (Maplist.get(i).isEmpty()) {
-						// EmptyLinesCount.add(i);
-						// }
-						// }
-						// System.out.println("Empty lines location:" + EmptyLinesCount);
-						else {
+						} else {
 							for (int i = 0; i < Maplist.size(); i++) {
 								if (Maplist.get(i).startsWith(strMap.trim())) {
 								}
@@ -105,7 +105,6 @@ public class PlayGame {
 										continentCount.put(arrayContinentCount[0],
 												Integer.parseInt(arrayContinentCount[1]));
 									}
-									System.out.println(continentCount);
 								}
 								if (Maplist.get(i).startsWith(strTerritory.trim())) {
 
@@ -128,10 +127,11 @@ public class PlayGame {
 									}
 								}
 							}
-							System.out.println(continentHashMap);
 
 
 						}
+
+						System.out.println(continentHashMap);
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
@@ -154,4 +154,7 @@ public class PlayGame {
 
 
 	}
+
+
 }
+

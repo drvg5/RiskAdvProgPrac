@@ -37,7 +37,8 @@ public class MapEditorMenu {
 				} catch (PropertyVetoException e1) {
 					e1.printStackTrace();
 				}
-				CreateMap.configureContinent(desktop);
+				// CreateMap.configureContinent(desktop);
+				ConfigureMap.createContinetandCountry(desktop);
 			}
 		});
 
@@ -45,7 +46,12 @@ public class MapEditorMenu {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				try {
+					jframeMapEditor.setClosed(true);
+				} catch (PropertyVetoException e1) {
+					e1.printStackTrace();
+				}
+				EditMap.fetchMap(desktop);
 			}
 		});
 
