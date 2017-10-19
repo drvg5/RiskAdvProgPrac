@@ -96,54 +96,25 @@ public class PlayerClass {
 	
 		if(numberOfPlayers > totalTerr){
 			System.out.println("Players can not be greater than the number of territories");
+			
+			GamePlay.playerGTTerr = 0;
+			
 			return;
 		}
 		
 		
+		
+		GamePlay.playerGTTerr = 1;
+		
 		terrPerPlayerPopulate(numberOfPlayers,totalTerr);
-		System.out.println("Territory per player-->"+terrPerPlayer);
+		
 		
 		assignTerritories(numberOfPlayers, countryTaken, totalTerr);
 		
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("1"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("2"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("3"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("4"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("5"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("6"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		System.out.println("----------------------------------------------------");
-		System.out.println(playerInfo);
-		System.out.println(terrPerCont);
+		
+		deployArmiesRandomly(numberOfPlayers);
+		
+		
 		
 		
 	}
@@ -302,6 +273,58 @@ public class PlayerClass {
 	}//end assignTerritories
 	
 	
+	
+	/**
+	 * This method initially assigns armies to the territories randomly 
+	 * and add these to appropriate places in the {@link PlayerClass#playerInfo} HashMap
+	 * <p>
+	 * Each player is given 10 armies initially
+	 * </p>
+	 * @param numberOfPlayers
+	 * @param numberOfTerr
+	 */
+	public static void deployArmiesRandomly(int numberOfPlayers){
+			
+		
+		Random randomCountry = new Random();
+		
+		
+		
+		
+		 for(int pl = 1;pl<=numberOfPlayers;pl++){
+			 
+			 List<String> playerCountryList = new ArrayList<String>();
+			 
+			 int armiesCount = 10;
+			 
+			 //populate playerCountryList
+			 for(String playerInfo : PlayerClass.playerInfo.keySet()){
+				 
+				 String [] playerInfoArr = playerInfo.split("-");
+				 if(playerInfoArr[0].equals(Integer.toString(pl)) || playerInfoArr[0] == Integer.toString(pl)){
+					 playerCountryList.add(playerInfo);
+				 }
+			 }
+			 
+			 //assign armies to territories until armiesCount is 0 for a player
+			 while(armiesCount != 0){
+				 
+				//choose territory randomly to put armies into
+				String randomChosenCountry = playerCountryList.get(randomCountry.nextInt(playerCountryList.size()) );
+				 
+				int playerInfoValue = PlayerClass.playerInfo.get(randomChosenCountry);
+				playerInfoValue = playerInfoValue + 1;
+				
+				PlayerClass.playerInfo.put(randomChosenCountry, playerInfoValue);
+				
+				armiesCount--;
+			 }//end while(armiesCount != 0)
+			 
+		 }//end for(int pl = 1;pl<=numberOfPlayers;pl++)
+		
+	}//end deployArmiesRandoml(int numberOfPlayers)
+	
+	
 	public static void main(String [] args){
 		
 
@@ -326,7 +349,7 @@ public class PlayerClass {
 			territoryMap.put("South America,Colombia", null);
 		
 			
-		int numberOfPlayers = 6;
+			int numberOfPlayers = 6;
 			startUpPhase(numberOfPlayers,territoryMap);
 	}
 	
