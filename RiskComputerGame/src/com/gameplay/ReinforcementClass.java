@@ -1,7 +1,10 @@
 package com.gameplay;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
+import java.util.TreeSet;
 
 public class ReinforcementClass {
 
@@ -44,23 +47,44 @@ public class ReinforcementClass {
 	}
 	
 	
-	public void reinforceRandom(String player){
+	public static void reinforceRandom(String player){
 		
 		
 		int reinforcementArmies = reinforcement.get(player);
 		
+		
+		//create a treeset of list of keys from playerInfo HashMap 
+		//for only the player concerned
+		List<String> playerInfoKeyList = new ArrayList<String>();
+		
+		for(String playerInfoKey : PlayerClass.playerInfo.keySet()){
+			
+			String [] playerVals = playerInfoKey.split("-");
+			if(playerVals[0].equals(player) || playerVals[0] == player){
+				
+				playerInfoKeyList.add(playerInfoKey);
+			}
+			
+		}
+		
+		
+		Random randomKey = new Random();
+	      
+		
 		//loop until all reinforcement armies have been assigned
 		while(reinforcementArmies != 0){
 			
+			
 			//choose territory randomly to put armies into
-			for(String playerInfoKey : PlayerClass.playerInfo.keySet()){
-				
-				String [] playerVals = playerInfoKey.split("-");
-				if(playerVals[0].equals(player) || playerVals[0] == player){
-					
-					reinforcementArmies--;
-				}
-			}
+			String randomPlayerKey = playerInfoKeyList.get(randomKey.nextInt(playerInfoKeyList.size()) );
+			
+			int playerInfoValue = PlayerClass.playerInfo.get(randomPlayerKey);
+			playerInfoValue = playerInfoValue + 1;
+			
+			
+			PlayerClass.playerInfo.put(randomPlayerKey, playerInfoValue);
+			
+			reinforcementArmies--;
 			
 			
 		}
@@ -113,5 +137,11 @@ public class ReinforcementClass {
 			calculateReinforcement("1");
 			calculateReinforcement("2");
 			calculateReinforcement("3");
+			
+			System.out.println("----------------------------------------");
+			reinforceRandom("1");
+			reinforceRandom("2");
+			reinforceRandom("3");
+			System.out.println(PlayerClass.playerInfo);
 	}
 }
