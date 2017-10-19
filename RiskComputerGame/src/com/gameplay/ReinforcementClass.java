@@ -42,8 +42,6 @@ public class ReinforcementClass {
 		
 		reinforcement.put(player,reinforcementArmies);
 		
-		System.out.println("############################################");
-		System.out.println(reinforcement);
 	}
 	
 	

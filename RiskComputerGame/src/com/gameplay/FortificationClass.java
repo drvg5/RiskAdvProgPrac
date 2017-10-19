@@ -11,6 +11,7 @@ public class FortificationClass {
 	
 	public static TreeSet<String> fortifySet = new TreeSet<String>();
 	
+
 	/**
 	 * This method allows the player to move the armies after attack phase has been completed.
 	 * <p>
@@ -19,6 +20,9 @@ public class FortificationClass {
 	 * </p>
 	 * @author Navjot
 	 */
+
+	public static int fortifySetEmpty = 0;
+
 	
 	public static void createFortifySet(String player, HashMap<String, List<String>> territoryMap){
 		
@@ -69,6 +73,17 @@ public class FortificationClass {
 		
 		List<String> fortifyList = new ArrayList<String>(fortifySet);
 		
+
+		fortifySetEmpty = 0;
+		
+		if(fortifyList.isEmpty()){
+			
+			fortifySetEmpty = 1;
+			return;
+			
+		}
+		
+
 		String randomPath = fortifyList.get(random.nextInt(fortifyList.size()));
 		
 		System.out.println("Path chosen:"+randomPath);
@@ -229,7 +244,9 @@ public class FortificationClass {
 	*/
 		
 		
-		int numberOfPlayers = 3;
+
+		int numberOfPlayers = 6;
+
 		PlayerClass.startUpPhase(numberOfPlayers,territoryMap);
 		
 		ReinforcementClass.calculateReinforcement("1");
