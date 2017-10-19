@@ -11,6 +11,15 @@ public class FortificationClass {
 	
 	public static TreeSet<String> fortifySet = new TreeSet<String>();
 	
+	/**
+	 * This method allows the player to move the armies after attack phase has been completed.
+	 * <p>
+	 * The armies will only be moved if the there is adjacency between two countries and also
+	 * If each territory has armies equal to or more than one.
+	 * </p>
+	 * @author Navjot
+	 */
+	
 	public static void createFortifySet(String player, HashMap<String, List<String>> territoryMap){
 		
 	   fortifySet.clear();
