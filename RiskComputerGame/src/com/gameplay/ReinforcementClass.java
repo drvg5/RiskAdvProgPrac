@@ -53,7 +53,7 @@ public class ReinforcementClass {
 		int reinforcementArmies = reinforcement.get(player);
 		
 		
-		//create a treeset of list of keys from playerInfo HashMap 
+		//create a list of keys from playerInfo HashMap 
 		//for only the player concerned
 		List<String> playerInfoKeyList = new ArrayList<String>();
 		
