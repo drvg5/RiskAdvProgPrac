@@ -1,4 +1,4 @@
-package com.map.editor;
+package com.risk.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +8,9 @@ import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+
+import com.risk.model.ConfigureMap;
+import com.risk.model.EditMap;
 
 public class MapEditorMenu {
 

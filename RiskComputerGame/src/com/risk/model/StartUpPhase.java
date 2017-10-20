@@ -1,9 +1,11 @@
-package com.gameplay;
+package com.risk.model;
 
 import java.util.*;
 
+import com.risk.utility.RiskConstants;
 
-public class PlayerClass {
+
+public class StartUpPhase {
 
 	/**
 	 *playerInfo HashMap stores the values corresponding to a particular player
@@ -50,10 +52,10 @@ public class PlayerClass {
 	
 	
 	/**
-	 * This method populates {@link PlayerClass#countryTaken} TreeSet and  {@link PlayerClass#terrCont}  HashMap and HashMap to Number of Territories per Continent
+	 * This method populates {@link StartUpPhase#countryTaken} TreeSet and  {@link StartUpPhase#terrCont}  HashMap and HashMap to Number of Territories per Continent
 	 * <p>
-	 * This method calls method {@link PlayerClass#terrPerPlayerPopulate} to populate the {@link PlayerClass#terrPerPlayer} HashMap 
-	 * and then calls {@link PlayerClass#assignTerritories} to assign territories randomly
+	 * This method calls method {@link StartUpPhase#terrPerPlayerPopulate} to populate the {@link StartUpPhase#terrPerPlayer} HashMap 
+	 * and then calls {@link StartUpPhase#assignTerritories} to assign territories randomly
 	 * </p>
 	 * @param numberOfPlayers Total number of players in a game
 	 * @param territoryMap    HashMap which stores the Game Map values
@@ -96,61 +98,32 @@ public class PlayerClass {
 	
 		if(numberOfPlayers > totalTerr){
 			System.out.println("Players can not be greater than the number of territories");
+			
+			GameDriver.playerGTTerr = 0;
+			
 			return;
 		}
 		
 		
+		
+		GameDriver.playerGTTerr = 1;
+		
 		terrPerPlayerPopulate(numberOfPlayers,totalTerr);
-		System.out.println("Territory per player-->"+terrPerPlayer);
+		
 		
 		assignTerritories(numberOfPlayers, countryTaken, totalTerr);
 		
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("1"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("2"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("3"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("4"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("5"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		for(String k : playerInfo.keySet()){
-			String [] ksplit = k.split("-");
-			if(ksplit[0].equals("6"))
-			System.out.println("key:"+k+"-value:"+playerInfo.get(k));
-		}
-		System.out.println("----------------------------------------------------");
-		System.out.println("----------------------------------------------------");
-		System.out.println(playerInfo);
-		System.out.println(terrPerCont);
+		
+		deployArmiesRandomly(numberOfPlayers);
+		
+		
 		
 		
 	}
 	
 	
 	/**
-	 * This method populates the {@link PlayerClass#terrPerPlayer} HashMap
+	 * This method populates the {@link StartUpPhase#terrPerPlayer} HashMap
 	 * @param numberOfPlayers Number of Players in a game
 	 * @param numberOfTerr	Number of territories in a whole map
 	 */
@@ -200,7 +173,7 @@ public class PlayerClass {
 	
 	/**
 	 * This method assigns territories randomly to the players
-	 * and populate the {@link PlayerClass#playerInfo} HashMap
+	 * and populate the {@link StartUpPhase#playerInfo} HashMap
 	 * <p>
 	 * This method while assigning also checks whether a country has already been assigned or not
 	 * and that a player does not get all the countries in a continent
@@ -302,6 +275,56 @@ public class PlayerClass {
 	}//end assignTerritories
 	
 	
+	
+	/**
+	 * This method initially assigns armies to the territories randomly 
+	 * and add these to appropriate places in the {@link StartUpPhase#playerInfo} HashMap
+	 * <p>
+	 * Each player is given 10 armies initially
+	 * </p>
+	 * @param numberOfPlayers
+	 * @param numberOfTerr
+	 */
+	public static void deployArmiesRandomly(int numberOfPlayers){
+			
+		
+		Random randomCountry = new Random();
+		
+		
+		
+		
+		 for(int pl = 1;pl<=numberOfPlayers;pl++){
+			 
+			 List<String> playerCountryList = new ArrayList<String>();
+			 
+ 			 //populate playerCountryList
+			 for(String playerInfo : StartUpPhase.playerInfo.keySet()){
+				 
+				 String [] playerInfoArr = playerInfo.split("-");
+				 if(playerInfoArr[0].equals(Integer.toString(pl)) || playerInfoArr[0] == Integer.toString(pl)){
+					 playerCountryList.add(playerInfo);
+				 }
+			 }
+			 
+			 //assign armies to territories until armiesCount is 0 for a player
+			 while(RiskConstants.MAX_ARMIES != 0){
+				 
+				//choose territory randomly to put armies into
+				String randomChosenCountry = playerCountryList.get(randomCountry.nextInt(playerCountryList.size()) );
+				 
+				int playerInfoValue = StartUpPhase.playerInfo.get(randomChosenCountry);
+				playerInfoValue = playerInfoValue + 1;
+				
+				StartUpPhase.playerInfo.put(randomChosenCountry, playerInfoValue);
+				
+				RiskConstants.MAX_ARMIES--;
+			 }//end while(armiesCount != 0)
+			 
+		 }//end for(int pl = 1;pl<=numberOfPlayers;pl++)
+		
+	}//end deployArmiesRandoml(int numberOfPlayers)
+	
+	
 	public static void main(String [] args){
 		
 
@@ -326,7 +349,7 @@ public class PlayerClass {
 			territoryMap.put("South America,Colombia", null);
 		
 			
-		int numberOfPlayers = 6;
+			int numberOfPlayers = 6;
 			startUpPhase(numberOfPlayers,territoryMap);
 	}
 	

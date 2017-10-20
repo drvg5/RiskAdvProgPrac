@@ -1,13 +1,10 @@
-package com.map.editor;
+package com.risk.ui;
 
 import java.awt.Dimension;
-import com.map.play.PlayGame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import javax.swing.JButton;
-import com.map.play.PlayGame;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -116,7 +113,7 @@ public class MainMenu extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if ("New Game".equals(e.getActionCommand())) { // new
 
-			PlayGame.LoadMap(desktop);
+			LoadGame.LoadMap(desktop);
 		} else if ("Map Editor".equals(e.getActionCommand())) {
 			MapEditorMenu.mapEditorNavigation(desktop);
 

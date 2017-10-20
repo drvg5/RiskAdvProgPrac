@@ -1,4 +1,4 @@
-package com.map.editor;
+package com.risk.model;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
