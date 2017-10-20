@@ -6,7 +6,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class GamePlay {
+public class GameDriver {
 
 	public static int playerGTTerr = 0;
 	
@@ -121,7 +121,7 @@ public class GamePlay {
 				try{
 					numberOfPlayers = enterPlayersMenu();
 					
-					PlayerClass.startUpPhase(numberOfPlayers,territoryMap);
+					StartUpPhase.startUpPhase(numberOfPlayers,territoryMap);
 					
 					if(playerGTTerr == 0){
 						continue;
@@ -210,7 +210,7 @@ public class GamePlay {
 	public static void playerInfoDisplay(String player, HashMap<String,List<String>> territoryMap){
 		
 		
-		for(String playerInfoKey : PlayerClass.playerInfo.keySet()){
+		for(String playerInfoKey : StartUpPhase.playerInfo.keySet()){
 			
 			String[] playerInfoVal = playerInfoKey.split("-");
 			
@@ -221,7 +221,7 @@ public class GamePlay {
 				
 				System.out.println("\t\t" + "Continent : " + playerInfoVal[2]);
 				
-				System.out.println("\t\t" + "Armies : " + PlayerClass.playerInfo.get(playerInfoKey));
+				System.out.println("\t\t" + "Armies : " + StartUpPhase.playerInfo.get(playerInfoKey));
 				
 				System.out.printf("\t\t"+"Adjacent Countries : ");
 				

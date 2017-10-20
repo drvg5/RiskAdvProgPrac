@@ -20,7 +20,7 @@ public class ReinforcementClass {
 		int playerTerr = 0;
 		
 		//calculate reinforcement armies by number of countries owned
-		for(String plyrVal : PlayerClass.playerInfo.keySet()){
+		for(String plyrVal : StartUpPhase.playerInfo.keySet()){
 			String plyrInfo [] = plyrVal.split("-");
 			if(plyrInfo[0].equals(player) || plyrInfo[0] == player){
 				playerTerr ++ ; 
@@ -55,7 +55,7 @@ public class ReinforcementClass {
 		//for only the player concerned
 		List<String> playerInfoKeyList = new ArrayList<String>();
 		
-		for(String playerInfoKey : PlayerClass.playerInfo.keySet()){
+		for(String playerInfoKey : StartUpPhase.playerInfo.keySet()){
 			
 			String [] playerVals = playerInfoKey.split("-");
 			if(playerVals[0].equals(player) || playerVals[0] == player){
@@ -76,11 +76,11 @@ public class ReinforcementClass {
 			//choose territory randomly to put armies into
 			String randomPlayerKey = playerInfoKeyList.get(randomKey.nextInt(playerInfoKeyList.size()) );
 			
-			int playerInfoValue = PlayerClass.playerInfo.get(randomPlayerKey);
+			int playerInfoValue = StartUpPhase.playerInfo.get(randomPlayerKey);
 			playerInfoValue = playerInfoValue + 1;
 			
 			
-			PlayerClass.playerInfo.put(randomPlayerKey, playerInfoValue);
+			StartUpPhase.playerInfo.put(randomPlayerKey, playerInfoValue);
 			
 			reinforcementArmies--;
 			
@@ -130,7 +130,7 @@ public class ReinforcementClass {
 		
 			
 			int numberOfPlayers = 3;
-			PlayerClass.startUpPhase(numberOfPlayers,territoryMap);
+			StartUpPhase.startUpPhase(numberOfPlayers,territoryMap);
 			
 			calculateReinforcement("1");
 			calculateReinforcement("2");
@@ -140,6 +140,6 @@ public class ReinforcementClass {
 			reinforceRandom("1");
 			reinforceRandom("2");
 			reinforceRandom("3");
-			System.out.println(PlayerClass.playerInfo);
+			System.out.println(StartUpPhase.playerInfo);
 	}
 }

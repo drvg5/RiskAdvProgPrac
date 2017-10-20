@@ -28,14 +28,14 @@ public class FortificationClass {
 		
 	   fortifySet.clear();
 		
-       for(String playerInfoKey : PlayerClass.playerInfo.keySet()){
+       for(String playerInfoKey : StartUpPhase.playerInfo.keySet()){
     	   
     	   String[] keyArray = playerInfoKey.split("-");
 
     	   if(keyArray[0].equals(player) || keyArray[0] == player){
     		   
     		   
-	    	   if(PlayerClass.playerInfo.get(playerInfoKey) >= 1){
+	    	   if(StartUpPhase.playerInfo.get(playerInfoKey) >= 1){
 	    		   
 	    		   
 	    		   
@@ -49,9 +49,9 @@ public class FortificationClass {
 	    		   //check if player own any adjacent territory to one which already owns
 	    		   for(String adjacentTerr : adjacencyList){
 	    			   
-	    			   String key = player + "-" + adjacentTerr + "-" + PlayerClass.terrCont.get(adjacentTerr);
+	    			   String key = player + "-" + adjacentTerr + "-" + StartUpPhase.terrCont.get(adjacentTerr);
 	    			   
-	    			   if(PlayerClass.playerInfo.containsKey(key)){
+	    			   if(StartUpPhase.playerInfo.containsKey(key)){
 	    				   
 	    				   fortifySet.add(territory + "-" +adjacentTerr);
 	    			   }
@@ -94,17 +94,17 @@ public class FortificationClass {
 		
 		String toTerr = randomTerr[1];
 		
-		String fromCont = PlayerClass.terrCont.get(fromTerr);
+		String fromCont = StartUpPhase.terrCont.get(fromTerr);
 		
-		String toCont = PlayerClass.terrCont.get(toTerr);
+		String toCont = StartUpPhase.terrCont.get(toTerr);
 		
 		String from = player + "-" + fromTerr + "-" + fromCont;
 		
 		String to = player + "-" + toTerr + "-" + toCont;
 		
-		int fromArmies = PlayerClass.playerInfo.get(from);
+		int fromArmies = StartUpPhase.playerInfo.get(from);
 		
-		int toArmies = PlayerClass.playerInfo.get(to);
+		int toArmies = StartUpPhase.playerInfo.get(to);
 		
 		int value = 0;
 		
@@ -118,9 +118,9 @@ public class FortificationClass {
 		
 		toArmies = toArmies + value;
 		
-		PlayerClass.playerInfo.put(from, fromArmies);
+		StartUpPhase.playerInfo.put(from, fromArmies);
 		
-		PlayerClass.playerInfo.put(to, toArmies);
+		StartUpPhase.playerInfo.put(to, toArmies);
 		
 	}
 	
@@ -247,7 +247,7 @@ public class FortificationClass {
 
 		int numberOfPlayers = 6;
 
-		PlayerClass.startUpPhase(numberOfPlayers,territoryMap);
+		StartUpPhase.startUpPhase(numberOfPlayers,territoryMap);
 		
 		ReinforcementClass.calculateReinforcement("1");
 		ReinforcementClass.calculateReinforcement("2");
@@ -259,29 +259,29 @@ public class FortificationClass {
 		ReinforcementClass.reinforceRandom("3");
 		
 		
-		System.out.println(PlayerClass.playerInfo);
+		System.out.println(StartUpPhase.playerInfo);
 		
 		createFortifySet("1",territoryMap);
 		System.out.println("--------\nPlayer1 ::"+fortifySet);
-		System.out.println("--------\n"+PlayerClass.playerInfo);
+		System.out.println("--------\n"+StartUpPhase.playerInfo);
 		
 		randomFortification("1");
-		System.out.println("--------\nAfter::"+PlayerClass.playerInfo);
+		System.out.println("--------\nAfter::"+StartUpPhase.playerInfo);
 		
 		createFortifySet("2",territoryMap);
 		System.out.println("--------\nPlayer2 ::"+fortifySet);
-		System.out.println("--------\n"+PlayerClass.playerInfo);
+		System.out.println("--------\n"+StartUpPhase.playerInfo);
 		
 		randomFortification("2");
-		System.out.println("--------\nAfter::"+PlayerClass.playerInfo);
+		System.out.println("--------\nAfter::"+StartUpPhase.playerInfo);
 		
 		createFortifySet("3",territoryMap);
 		System.out.println("--------\nPlayer3 ::"+fortifySet);
-		System.out.println("--------\n"+PlayerClass.playerInfo);
+		System.out.println("--------\n"+StartUpPhase.playerInfo);
 		
 
 		randomFortification("3");
-		System.out.println("--------\nAfter::"+PlayerClass.playerInfo);
+		System.out.println("--------\nAfter::"+StartUpPhase.playerInfo);
 	}
 	
 	

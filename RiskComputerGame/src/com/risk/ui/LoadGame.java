@@ -1,4 +1,4 @@
-package com.risk.model;
+package com.risk.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FilenameUtils;
 
-public class PlayGame {
+public class LoadGame {
 
 	public static void LoadMap(JDesktopPane desktop) {
 		HashMap<String, List<String>> continentHashMap = new HashMap<String, List<String>>();
@@ -131,7 +131,10 @@ public class PlayGame {
 							if (continentHashMap.isEmpty()) {
 								jframeUpload.setVisible(true);
 							} else {
-								System.out.println(continentHashMap);
+								//System.out.println(continentHashMap);
+								
+								
+								
 							}
 						}
 
