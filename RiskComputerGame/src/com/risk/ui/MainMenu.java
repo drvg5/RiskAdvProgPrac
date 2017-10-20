@@ -35,7 +35,7 @@ public class MainMenu extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 6123466052474474690L;
 
 	// Container for creating creating a multiple-document interface
-	JDesktopPane desktop;
+	public JDesktopPane desktop;
 
 	public MainMenu() {
 		super("RISK");
@@ -62,7 +62,7 @@ public class MainMenu extends JFrame implements ActionListener {
 	/**
 	 * GUI for Risk game displayed.
 	 */
-	private static void startGame() {
+	public static void startGame() {
 		// Decorating the window.
 		JFrame.setDefaultLookAndFeelDecorated(true);
 
@@ -113,7 +113,7 @@ public class MainMenu extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if ("New Game".equals(e.getActionCommand())) { // new
 
-			LoadGame.LoadMap(desktop);
+			new LoadGame().LoadMap(desktop);
 		} else if ("Map Editor".equals(e.getActionCommand())) {
 			MapEditorMenu.mapEditorNavigation(desktop);
 

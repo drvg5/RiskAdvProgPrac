@@ -14,7 +14,7 @@ public class ReinforcementPhase {
 	//public static int reinforcment;
 	
 	
-	public static void calculateReinforcement(String player){
+	public static int calculateReinforcement(String player){
 		
 		int reinforcementArmies = 0;
 		int playerTerr = 0;
@@ -40,7 +40,8 @@ public class ReinforcementPhase {
 		
 		//calculate reinforcement armies if the player owns the whole continent
 		
-		reinforcement.put(player,reinforcementArmies);
+		 reinforcement.put(player,reinforcementArmies);
+		return reinforcementArmies;
 		
 	}
 	
