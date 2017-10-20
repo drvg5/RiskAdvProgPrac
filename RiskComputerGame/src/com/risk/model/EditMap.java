@@ -389,6 +389,16 @@ public class EditMap {
 			}
 		});
 		
+		btnUpdate.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		
 		btnDeleteContinent.addActionListener(new ActionListener() {
 
 			@Override

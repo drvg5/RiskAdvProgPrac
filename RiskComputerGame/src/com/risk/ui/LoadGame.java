@@ -19,8 +19,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-
+import com.risk.model.GameDriver;
 import org.apache.commons.io.FilenameUtils;
+
+import com.risk.model.GameDriver;
 
 public class LoadGame {
 
@@ -132,8 +134,12 @@ public class LoadGame {
 								jframeUpload.setVisible(true);
 							} else {
 								//System.out.println(continentHashMap);
-								
-								
+								try {
+									GameDriver.startGame(continentHashMap);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 								
 							}
 						}

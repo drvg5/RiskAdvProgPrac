@@ -292,8 +292,9 @@ public class StartUpPhase {
 		
 		
 		
-		
 		 for(int pl = 1;pl<=numberOfPlayers;pl++){
+			 
+			 int maxArmies = RiskConstants.MAX_ARMIES ;
 			 
 			 List<String> playerCountryList = new ArrayList<String>();
 			 
@@ -307,7 +308,7 @@ public class StartUpPhase {
 			 }
 			 
 			 //assign armies to territories until armiesCount is 0 for a player
-			 while(RiskConstants.MAX_ARMIES != 0){
+			 while(maxArmies!= 0){
 				 
 				//choose territory randomly to put armies into
 				String randomChosenCountry = playerCountryList.get(randomCountry.nextInt(playerCountryList.size()) );
@@ -317,7 +318,7 @@ public class StartUpPhase {
 				
 				StartUpPhase.playerInfo.put(randomChosenCountry, playerInfoValue);
 				
-				RiskConstants.MAX_ARMIES--;
+				maxArmies--;
 			 }//end while(armiesCount != 0)
 			 
 		 }//end for(int pl = 1;pl<=numberOfPlayers;pl++)
