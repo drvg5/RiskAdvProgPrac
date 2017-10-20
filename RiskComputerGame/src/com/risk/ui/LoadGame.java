@@ -88,15 +88,23 @@ public class LoadGame {
 								if (Maplist.get(i).startsWith(strMap.trim())) {
 								}
 								if (Maplist.get(i).startsWith(strContinent.trim())) {
-
+									int count=0;
 									for (int j = i + 1; j <= 20; j++) {
+										if ((Maplist.get(j).isEmpty()) && count == 0) {
+											JOptionPane.showMessageDialog(null, "Invalid Map!Invalid Map!Empty space after Continent ",
+													"Load Error", JOptionPane.ERROR_MESSAGE);
+											break mainloop;
+										}
 										if ((Maplist.get(j).isEmpty())) {
 											break;
+											
 										}
 										String strContinentCount = Maplist.get(j);
 										String[] arrayContinentCount = strContinentCount.split("=");
 										continentCount.put(arrayContinentCount[0],
 												Integer.parseInt(arrayContinentCount[1]));
+										count++;
+										
 									}
 								}
 								if (Maplist.get(i).startsWith(strTerritory.trim())) {
@@ -135,6 +143,7 @@ public class LoadGame {
 							} else {
 								//System.out.println(continentHashMap);
 								try {
+									System.out.println(continentHashMap);
 									GameDriver.startGame(continentHashMap);
 								} catch (InterruptedException e) {
 									// TODO Auto-generated catch block

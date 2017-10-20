@@ -238,13 +238,32 @@ public class ConfigureMap {
 			public void actionPerformed(ActionEvent e) {
 				int row = tableContinent.getSelectedRow();
 				if (row > -1) {
-					String strContinentToUpdate = textContinent.getText().toString().toLowerCase();
+					String strContinentToUpdate = textContinent.getText().toString().toLowerCase();					
+					String strCountryToUpdate = textCountry.getText().toString().toLowerCase();					
+					String strContinentControlValueToUpdate = textContinentControlValue.getText();
+					
+					if ((strContinentToUpdate.isEmpty()) || (strCountryToUpdate.isEmpty()) || (strContinentControlValueToUpdate.isEmpty())
+							|| (strContinentControlValueToUpdate.isEmpty())) {
+						JOptionPane.showMessageDialog(null, "Oops!Please enter values", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+
+					else if (!(strContinentToUpdate.matches("^[a-zA-Z]+$"))
+							|| !(strCountryToUpdate.matches("^[a-zA-Z]+$"))) {
+						JOptionPane.showMessageDialog(null, "Only Alphabets are allowed",
+								"Error in Continent and Country", JOptionPane.ERROR_MESSAGE);
+					}
+
+					else if (!(strContinentControlValueToUpdate.matches("^[0-9]+$"))) {
+						JOptionPane.showMessageDialog(null, "Only Numbers are  allowed", "Error in Control Value",
+								JOptionPane.ERROR_MESSAGE);
+					}
+					
+					else {
 					String strContinentToUpdateCapitalize = strContinentToUpdate.substring(0, 1).toUpperCase()
 							+ strContinentToUpdate.substring(1);
-					String strCountryToUpdate = textCountry.getText().toString().toLowerCase();
 					String strCountryToUpdateCapitalize = strCountryToUpdate.substring(0, 1).toUpperCase()
 							+ strCountryToUpdate.substring(1);
-					String strContinentControlValueToUpdate = textContinentControlValue.getText();
 					modelContinent.setValueAt(strContinentToUpdateCapitalize, row, 0);
 					modelContinent.setValueAt(strCountryToUpdateCapitalize, row, 1);
 					modelContinent.setValueAt(strContinentControlValueToUpdate, row, 2);
@@ -260,6 +279,7 @@ public class ConfigureMap {
 					listToCheckDuplicateCountryCapitalize.add(strCountryToUpdateCapitalize);
 					textCountry.setText(null);
 					textContinentControlValue.setEnabled(false);
+					}
 
 				} else {
 					JOptionPane.showMessageDialog(null, "Please select a row to Update", "Error",
