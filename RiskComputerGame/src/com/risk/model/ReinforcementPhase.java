@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.TreeSet;
 
-public class ReinforcementClass {
+public class ReinforcementPhase {
 
 	public static HashMap<String,Integer> reinforcement = new HashMap<String,Integer>();
 	public static HashMap<String,String> playerCards = new HashMap<String,String>();
@@ -14,7 +14,7 @@ public class ReinforcementClass {
 	//public static int reinforcment;
 	
 	
-	public static void calculateReinforcement(String player){
+	public static int calculateReinforcement(String player){
 		
 		int reinforcementArmies = 0;
 		int playerTerr = 0;
@@ -40,7 +40,8 @@ public class ReinforcementClass {
 		
 		//calculate reinforcement armies if the player owns the whole continent
 		
-		reinforcement.put(player,reinforcementArmies);
+		 reinforcement.put(player,reinforcementArmies);
+		return reinforcementArmies;
 		
 	}
 	

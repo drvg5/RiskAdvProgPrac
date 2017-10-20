@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.TreeSet;
 
-public class FortificationClass {
+public class FortificationPhase {
 
 	
 	public static TreeSet<String> fortifySet = new TreeSet<String>();
@@ -249,14 +249,14 @@ public class FortificationClass {
 
 		StartUpPhase.startUpPhase(numberOfPlayers,territoryMap);
 		
-		ReinforcementClass.calculateReinforcement("1");
-		ReinforcementClass.calculateReinforcement("2");
-		ReinforcementClass.calculateReinforcement("3");
+		ReinforcementPhase.calculateReinforcement("1");
+		ReinforcementPhase.calculateReinforcement("2");
+		ReinforcementPhase.calculateReinforcement("3");
 		
 		System.out.println("----------------------------------------");
-		ReinforcementClass.reinforceRandom("1");
-		ReinforcementClass.reinforceRandom("2");
-		ReinforcementClass.reinforceRandom("3");
+		ReinforcementPhase.reinforceRandom("1");
+		ReinforcementPhase.reinforceRandom("2");
+		ReinforcementPhase.reinforceRandom("3");
 		
 		
 		System.out.println(StartUpPhase.playerInfo);
