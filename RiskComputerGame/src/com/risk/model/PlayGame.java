@@ -1,4 +1,4 @@
-package com.map.play;
+package com.risk.model;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -25,9 +24,6 @@ import org.apache.commons.io.FilenameUtils;
 
 public class PlayGame {
 
-	public static void main(String[] args) {
-	}
-
 	public static void LoadMap(JDesktopPane desktop) {
 		HashMap<String, List<String>> continentHashMap = new HashMap<String, List<String>>();
 		HashMap<String, Integer> continentCount = new HashMap<String, Integer>();
@@ -36,9 +32,7 @@ public class PlayGame {
 		final String strMap = "[Map]";
 		final String strContinent = "[Continents]";
 		JInternalFrame jframeUpload = new JInternalFrame("Upload");
-
 		jframeUpload.setLayout(null);
-
 		jframeUpload.setSize(300, 300);
 		jframeUpload.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JButton buttonSelectFile = new JButton("Upload");
@@ -52,13 +46,9 @@ public class PlayGame {
 
 		buttonSelectFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				String strCheckDuplicates;
-				String[] strCheckDuplicateArray;
 				boolean checkDuplicate;
 				JFileChooser fileChooser = new JFileChooser();
-
 				fileChooser.setBounds(10, 20, 30, 100);
- 
 				int returnValue = fileChooser.showOpenDialog(null);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					jframeUpload.setVisible(false);
@@ -80,6 +70,7 @@ public class PlayGame {
 						if (!((FileFormat.equals("map") || (FileFormat.equals("txt"))))) {
 							JOptionPane.showMessageDialog(null, "Invalid Map!File extension is wrong", "Upload Error",
 									JOptionPane.ERROR_MESSAGE);
+							jframeUpload.setVisible(true);
 						}
 
 						else if (!((Maplist.contains("[Map]") && Maplist.contains("[Continents]")
@@ -88,13 +79,13 @@ public class PlayGame {
 							JOptionPane.showMessageDialog(null,
 									"Invalid Map! File is missing Map or Continent or Territory section",
 									"Upload Error", JOptionPane.ERROR_MESSAGE);
+							jframeUpload.setVisible(true);
 
 						} else {
-							for (int i = 0; i < Maplist.size(); i++) {
+							mainloop: for (int i = 0; i < Maplist.size(); i++) {
 								if (Maplist.get(i).startsWith(strMap.trim())) {
 								}
 								if (Maplist.get(i).startsWith(strContinent.trim())) {
-
 
 									for (int j = i + 1; j <= 20; j++) {
 										if ((Maplist.get(j).isEmpty())) {
@@ -115,6 +106,15 @@ public class PlayGame {
 										} else {
 											String strMapList = Maplist.get(temp);
 											String[] arrayMapList = strMapList.split(",");
+											checkDuplicates.add(arrayMapList[0]);
+											checkDuplicate = findDuplicates(checkDuplicates);
+											if (checkDuplicate) {
+												JOptionPane.showMessageDialog(null, "Invalid Map! Duplicate Countries",
+														"Load Error", JOptionPane.ERROR_MESSAGE);
+												checkDuplicates.clear();
+												continentHashMap.clear();
+												break mainloop;
+											}
 											String[] adjListArray = Arrays.copyOfRange(arrayMapList, 4,
 													arrayMapList.length);
 											List<String> adjCountries = new ArrayList<>();
@@ -128,18 +128,20 @@ public class PlayGame {
 								}
 							}
 
-
+							if (continentHashMap.isEmpty()) {
+								jframeUpload.setVisible(true);
+							} else {
+								System.out.println(continentHashMap);
+							}
 						}
 
-						System.out.println(continentHashMap);
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
 				}
 			}
 		});
-		
-		
+
 		buttonCloseUpload.addActionListener(new ActionListener() {
 
 			@Override
@@ -152,9 +154,16 @@ public class PlayGame {
 			}
 		});
 
-
 	}
 
-
+	public static boolean findDuplicates(List<String> listContainingDuplicates) {
+		final Set<String> set = new HashSet<String>();
+		boolean sendToValidate = false;
+		for (String str : listContainingDuplicates) {
+			if (!set.add(str)) {
+				sendToValidate = true;
+			}
+		}
+		return sendToValidate;
+	}
 }
-

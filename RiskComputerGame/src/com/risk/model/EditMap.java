@@ -1,9 +1,10 @@
-package com.map.editor;
+package com.risk.model;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.beans.PropertyVetoException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,10 +13,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.StringJoiner;
 
 import javax.swing.JButton;
@@ -47,11 +50,12 @@ public class EditMap {
 
 	static JInternalFrame jframeContinent = new JInternalFrame();
 	static DefaultTableModel modelToEdit = new DefaultTableModel(
-			new Object[] { "Continent List", "Country", "Adjacent List" }, 0);
+			new Object[] { "Continent List", "Country", "Adjacent List", "Control Value" }, 0);
 	static HashMap<String, List<String>> continentHashMapToEdit = new HashMap<String, List<String>>();
 	static HashMap<String, Integer> continentControlValueHashMapToEdit = new HashMap<String, Integer>();
 	static List<String> continentListToEdit = new ArrayList<String>();
 	static String UploadFileName;
+	static List<String> checkDuplicates = new ArrayList<String>();
 
 	/**
 	 * <p>
@@ -72,16 +76,24 @@ public class EditMap {
 		final String strMap = "[Map]";
 		final String strContinent = "[Continents]";
 		JInternalFrame jframeUpload = new JInternalFrame("Upload");
-		jframeUpload.setSize(150, 70);
+		jframeUpload.setLayout(null);
+		jframeUpload.setSize(300, 300);
 		jframeUpload.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JButton buttonSelectFile = new JButton("Select File");
-		buttonSelectFile.setBounds(10, 10, 80, 30);
+		JButton buttonSelectFile = new JButton("Upload");
+		buttonSelectFile.setBounds(100, 100, 100, 30);
+		JButton buttonCloseUpload = new JButton("Close");
+		buttonCloseUpload.setBounds(100, 150, 100, 30);
+		jframeUpload.add(buttonSelectFile);
+		jframeUpload.add(buttonCloseUpload);
+		jframeUpload.setVisible(true);
+		desktop.add(jframeUpload);
 
 		// Button to upload file and populate in Default Model.
 		// This will call Edit Map method after fetching data
 
 		buttonSelectFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				boolean checkDuplicate;
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setBounds(10, 20, 10, 10);
 				int returnValue = fileChooser.showOpenDialog(null);
@@ -100,11 +112,23 @@ public class EditMap {
 							Maplist.add(line);
 						}
 						scanner.close();
-						if ((Maplist.contains("[Map]") && Maplist.contains("[Continents]")
-								&& Maplist.contains("[Territories]"))
-								&& (FileFormat.matches("map") || (FileFormat.matches("txt")))) {
 
-							for (int i = 0; i < Maplist.size(); i++) {
+						if (!((FileFormat.equals("map") || (FileFormat.equals("txt"))))) {
+							JOptionPane.showMessageDialog(null, "Invalid Map!File extension is wrong", "Upload Error",
+									JOptionPane.ERROR_MESSAGE);
+							jframeUpload.setVisible(true);
+						}
+
+						else if (!((Maplist.contains("[Map]") && Maplist.contains("[Continents]")
+								&& Maplist.contains("[Territories]")))) {
+
+							JOptionPane.showMessageDialog(null,
+									"Invalid Map! File is missing Map or Continent or Territory section",
+									"Upload Error", JOptionPane.ERROR_MESSAGE);
+							jframeUpload.setVisible(true);
+
+						} else {
+							mainloop: for (int i = 0; i < Maplist.size(); i++) {
 								if (Maplist.get(i).startsWith(strMap.trim())) {
 								}
 								if (Maplist.get(i).startsWith(strContinent.trim())) {
@@ -115,7 +139,9 @@ public class EditMap {
 										}
 										String strContinentCount = Maplist.get(j);
 										String[] arrayContinentCount = strContinentCount.split("=");
-										continentControlValueHashMap.put(arrayContinentCount[0],
+										String strContinentCapitalize = arrayContinentCount[0].substring(0, 1)
+												.toUpperCase() + arrayContinentCount[0].substring(1);
+										continentControlValueHashMap.put(strContinentCapitalize,
 												Integer.parseInt(arrayContinentCount[1]));
 									}
 								}
@@ -128,30 +154,46 @@ public class EditMap {
 										} else {
 											String strMapList = Maplist.get(temp);
 											String[] arrayMapList = strMapList.split(",");
+											checkDuplicates.add(arrayMapList[0]);
+											checkDuplicate = findDuplicates(checkDuplicates);
+											if (checkDuplicate) {
+												JOptionPane.showMessageDialog(null, "Invalid Map! Duplicate Countries",
+														"Load Error", JOptionPane.ERROR_MESSAGE);
+												checkDuplicates.clear();
+												continentHashMap.clear();
+												break mainloop;
+											}
 											String[] adjListArray = Arrays.copyOfRange(arrayMapList, 4,
 													arrayMapList.length);
 											List<String> adjCountries = new ArrayList<>();
 											adjCountries.addAll(Arrays.asList(adjListArray));
+											List<String> adjCountriesCapitalize = new ArrayList<>();
+											for (String capital : adjCountries) {
+												capital = capital.substring(0, 1).toUpperCase() + capital.substring(1);
+												adjCountriesCapitalize.add(capital);
+											}
 											StringJoiner joiner = new StringJoiner(",");
-											joiner.add(arrayMapList[3]).add(arrayMapList[0]);
+											String strContinetCapitalize = arrayMapList[3].substring(0, 1).toUpperCase()
+													+ arrayMapList[3].substring(1);
+											;
+											String strCountryCapitalize = arrayMapList[0].substring(0, 1).toUpperCase()
+													+ arrayMapList[0].substring(1);
+											;
+											joiner.add(strContinetCapitalize).add(strCountryCapitalize);
 											String concatString = joiner.toString();
-											continentHashMap.put(concatString, adjCountries);
+											continentHashMap.put(concatString, adjCountriesCapitalize);
 										}
 									}
 								}
 							}
-							editMap(continentHashMap, continentControlValueHashMap, desktop);
 
-						} else {
-							if (!((FileFormat.equals("map") || (FileFormat.equals("txt"))))) {
-								JOptionPane.showMessageDialog(null, "File extension is wrong", "Upload Error",
-										JOptionPane.ERROR_MESSAGE);
-							} else if (!(Maplist.contains("[Map]") && Maplist.contains("[Continents]")
-									&& Maplist.contains("[Territories]"))) {
-
+							if (continentHashMap.isEmpty()) {
+								jframeUpload.setVisible(true);
+							} else {
+								editMap(continentHashMap, continentControlValueHashMap, desktop);
 							}
 						}
-						// scanner.close();
+
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
@@ -159,9 +201,17 @@ public class EditMap {
 			}
 		});
 
-		jframeUpload.add(buttonSelectFile);
-		jframeUpload.setVisible(true);
-		desktop.add(jframeUpload);
+		buttonCloseUpload.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					jframeUpload.setClosed(true);
+				} catch (PropertyVetoException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 	}
 
 	/**
@@ -186,6 +236,8 @@ public class EditMap {
 
 		continentHashMapToEdit = continentHashMap;
 		continentControlValueHashMapToEdit = continentControlValueHashMap;
+		List<String> listContinentToCheck = new ArrayList<String>();
+		List<String> listCountryToCheck = new ArrayList<String>();
 		JTable tableContinent = new JTable();
 		JLabel labelContinentToEdit = new JLabel("Continent");
 		labelContinentToEdit.setBounds(20, 260, 60, 25);
@@ -207,13 +259,17 @@ public class EditMap {
 		labelAdjMessageToEdit.setForeground(Color.RED);
 		labelAdjMessageToEdit.setBounds(360, 320, 300, 25);
 		JButton btnAddAll = new JButton("Add");
-		btnAddAll.setBounds(600, 260, 100, 25);
+		btnAddAll.setBounds(100, 400, 100, 25);
+		JButton btnUpdate = new JButton("Update");
+		btnUpdate.setBounds(200, 400, 100, 25);
 		JButton btnDeleteContinent = new JButton("Delete Continent");
-		btnDeleteContinent.setBounds(600, 290, 200, 25);
+		btnDeleteContinent.setBounds(570, 270, 180, 25);
 		JButton btnDeleteCountry = new JButton("Delete Country");
-		btnDeleteCountry.setBounds(600, 320, 200, 25);
+		btnDeleteCountry.setBounds(570, 310, 180, 25);
+		JButton btnDeleteAdj = new JButton("Delete Adjacency");
+		btnDeleteAdj.setBounds(570, 350, 180, 25);
 		JButton btnSaveEditedMap = new JButton("Save");
-		btnSaveEditedMap.setBounds(600, 350, 200, 25);
+		btnSaveEditedMap.setBounds(570, 390, 180, 25);
 
 		// Populates fetched value from file to model
 
@@ -227,9 +283,17 @@ public class EditMap {
 				String[] strKeyArrayToEdit = strKey.split(",");
 				if (obj.equals(strKeyArrayToEdit[0])) {
 					String printWithoutBraces = entry.getValue().toString().replaceAll("(^\\[|\\s|\\]$)", "");
-					modelToEdit.addRow(new Object[] { strKeyArrayToEdit[0], strKeyArrayToEdit[1], printWithoutBraces });
+					modelToEdit.addRow(new Object[] { strKeyArrayToEdit[0], strKeyArrayToEdit[1], printWithoutBraces,
+							continentControlValueHashMapToEdit.get(strKeyArrayToEdit[0]) });
 				}
 			}
+		}
+
+		for (Map.Entry<String, List<String>> hash : continentHashMapToEdit.entrySet()) {
+			String stringKeyToCheck = hash.getKey();
+			String[] strKeyArrayToCheck = stringKeyToCheck.split(",");
+			listContinentToCheck.add(strKeyArrayToCheck[0]);
+			listCountryToCheck.add(strKeyArrayToCheck[1]);
 		}
 
 		// Button to add all attribute values to Map
@@ -238,38 +302,93 @@ public class EditMap {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				boolean checkCountry = false;
 				String strContinentToAdd = textContinentToEdit.getText().trim().toLowerCase();
 				String strCountryToAdd = textCountryToEdit.getText().trim().toLowerCase();
 				String strAdjListToAdd = textAdjListToEdit.getText().toLowerCase();
 				String strControlValueToAdd = textContinentControlValueToEdit.getText().trim();
-				String strContinentCapitalize = strContinentToAdd.substring(0, 1).toUpperCase()
-						+ strContinentToAdd.substring(1);
-				String strCountryCapitalize = strCountryToAdd.substring(0, 1).toUpperCase()
-						+ strCountryToAdd.substring(1);
-				List<String> listAdjCountryToAdd = new ArrayList<String>();
-				List<String> listAdjCountrytoAddCapitalize = new ArrayList<String>();
-				listAdjCountryToAdd = new ArrayList<String>(Arrays.asList(strAdjListToAdd.split(",")));
-				for (String capital : listAdjCountryToAdd) {
-					capital = capital.substring(0, 1).toUpperCase() + capital.substring(1);
-					listAdjCountrytoAddCapitalize.add(capital);
+
+				if ((strContinentToAdd.isEmpty()) || (strCountryToAdd.isEmpty()) || (strAdjListToAdd.isEmpty())
+						|| (strControlValueToAdd.isEmpty())) {
+					JOptionPane.showMessageDialog(null, "Oops!Please enter values", "Error", JOptionPane.ERROR_MESSAGE);
 				}
-				int continetControlValue = Integer.parseInt(strControlValueToAdd);
-				StringJoiner joiner = new StringJoiner(",");
-				joiner.add(strContinentCapitalize).add(strCountryCapitalize);
-				String concatString = joiner.toString();
-				modelToEdit.addRow(new Object[] { strContinentCapitalize, strCountryCapitalize,
-						listAdjCountrytoAddCapitalize, continetControlValue });
-				continentHashMapToEdit.put(concatString, listAdjCountrytoAddCapitalize);
-				continentControlValueHashMapToEdit.put(strContinentCapitalize, continetControlValue);
-				textCountryToEdit.setText(null);
-				textAdjListToEdit.setText(null);
-				textContinentControlValueToEdit.setText(null);
+
+				else if (!(strContinentToAdd.matches("^[a-zA-Z]+$")) || !(strCountryToAdd.matches("^[a-zA-Z]+$"))) {
+					JOptionPane.showMessageDialog(null, "Only Alphabets are allowed", "Error in Continent and Country",
+							JOptionPane.ERROR_MESSAGE);
+				}
+
+				else if (!(strControlValueToAdd.matches("^[0-9]+$"))) {
+					JOptionPane.showMessageDialog(null, "Only Numbers are  allowed", "Error in Control Value",
+							JOptionPane.ERROR_MESSAGE);
+				}
+
+				else {
+
+					String strContinentCapitalize = strContinentToAdd.substring(0, 1).toUpperCase()
+							+ strContinentToAdd.substring(1);
+					String strCountryCapitalize = strCountryToAdd.substring(0, 1).toUpperCase()
+							+ strCountryToAdd.substring(1);
+					List<String> listAdjCountryToAdd = new ArrayList<String>();
+					List<String> listAdjCountrytoAddCapitalize = new ArrayList<String>();
+					listAdjCountryToAdd = new ArrayList<String>(Arrays.asList(strAdjListToAdd.split(",")));
+					for (String capital : listAdjCountryToAdd) {
+						capital = capital.substring(0, 1).toUpperCase() + capital.substring(1);
+						listAdjCountrytoAddCapitalize.add(capital);
+					}
+					int continetControlValue = Integer.parseInt(strControlValueToAdd);
+
+					if (!(listCountryToCheck.isEmpty())) {
+						for (String str : listCountryToCheck) {
+							if (str.equals(strCountryCapitalize)) {
+								checkCountry = true;
+							}
+						}
+					}
+
+					if (checkCountry) {
+						JOptionPane.showMessageDialog(null, "Invalid Map!" + strCountryCapitalize + " already exists in Country List",
+								"Error", JOptionPane.ERROR_MESSAGE);
+					}
+
+					else {
+						StringJoiner joiner = new StringJoiner(",");
+						joiner.add(strContinentCapitalize).add(strCountryCapitalize);
+						String concatString = joiner.toString();
+						//modelToEdit.addRow(new Object[] { strContinentCapitalize, strCountryCapitalize,
+						//		listAdjCountrytoAddCapitalize, continetControlValue });
+						continentHashMapToEdit.put(concatString, listAdjCountrytoAddCapitalize);
+						continentControlValueHashMapToEdit.put(strContinentCapitalize, continetControlValue);
+						
+						for (String str:listAdjCountrytoAddCapitalize)
+						{
+							String conc = strContinentCapitalize + "," + str ;
+							List<String> fetchLinks = new ArrayList<String>();
+							fetchLinks.add(strCountryCapitalize);
+							continentHashMapToEdit.put(conc, fetchLinks);
+						}
+						reloadModel();
+						
+						textCountryToEdit.setText(null);
+						textAdjListToEdit.setText(null);
+						textContinentControlValueToEdit.setText(null);
+					}
+				}
 			}
 		});
 
 		// Button to Delete Continent. Selects value in row and deletes continent
 		// completely
 
+		btnDeleteAdj.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		btnDeleteContinent.addActionListener(new ActionListener() {
 
 			@Override
@@ -323,6 +442,8 @@ public class EditMap {
 			}
 		});
 
+		// Button to save all edited changes to same Map file
+
 		btnSaveEditedMap.addActionListener(new ActionListener() {
 
 			@Override
@@ -335,7 +456,7 @@ public class EditMap {
 				List<String> continentListToPrint = new ArrayList<String>();
 				String textFileName;
 				textFileName = UploadFileName;
-				String textFileNameToSave = textFileName.split("\\.", 2)[0];
+				String textFileNameToShow = textFileName.split("\\.", 2)[0];
 				try {
 
 					fstream = new FileWriter("C:/Users/Khashyap/Documents/Maps/" + textFileName);
@@ -373,8 +494,8 @@ public class EditMap {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				JOptionPane.showMessageDialog(null, textFileNameToSave + " \t is saved");
-
+				JOptionPane.showMessageDialog(null, textFileNameToShow + " \t is saved");
+				jframeContinent.setVisible(false);
 			}
 		});
 
@@ -395,8 +516,10 @@ public class EditMap {
 		jframeContinent.add(textContinentControlValueToEdit);
 		jframeContinent.add(textAdjListToEdit);
 		jframeContinent.add(btnAddAll);
+		jframeContinent.add(btnUpdate);
 		jframeContinent.add(btnDeleteContinent);
 		jframeContinent.add(btnDeleteCountry);
+		jframeContinent.add(btnDeleteAdj);
 		jframeContinent.add(btnSaveEditedMap);
 		jframeContinent.setSize(800, 600);
 		jframeContinent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -426,10 +549,21 @@ public class EditMap {
 				String[] strKeyArrayToEdit = strKey.split(",");
 				if (obj.equals(strKeyArrayToEdit[0])) {
 					String printWithoutBraces = entry.getValue().toString().replaceAll("(^\\[|\\s|\\]$)", "");
-					modelToEdit.addRow(new Object[] { strKeyArrayToEdit[0], strKeyArrayToEdit[1], printWithoutBraces });
+					modelToEdit.addRow(new Object[] { strKeyArrayToEdit[0], strKeyArrayToEdit[1], printWithoutBraces,continentControlValueHashMapToEdit.get(strKeyArrayToEdit[0]) });
 				}
 
 			}
 		}
+	}
+
+	public static boolean findDuplicates(List<String> listContainingDuplicates) {
+		final Set<String> set = new HashSet<String>();
+		boolean sendToValidate = false;
+		for (String str : listContainingDuplicates) {
+			if (!set.add(str)) {
+				sendToValidate = true;
+			}
+		}
+		return sendToValidate;
 	}
 }

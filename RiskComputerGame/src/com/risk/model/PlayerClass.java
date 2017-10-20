@@ -1,4 +1,4 @@
-package com.gameplay;
+package com.risk.model;
 
 import java.util.*;
 
