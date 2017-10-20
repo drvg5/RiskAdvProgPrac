@@ -2,6 +2,8 @@ package com.risk.model;
 
 import java.util.*;
 
+import com.risk.utility.RiskConstants;
+
 
 public class StartUpPhase {
 
@@ -295,9 +297,7 @@ public class StartUpPhase {
 			 
 			 List<String> playerCountryList = new ArrayList<String>();
 			 
-			 int armiesCount = 10;
-			 
-			 //populate playerCountryList
+ 			 //populate playerCountryList
 			 for(String playerInfo : StartUpPhase.playerInfo.keySet()){
 				 
 				 String [] playerInfoArr = playerInfo.split("-");
@@ -307,7 +307,7 @@ public class StartUpPhase {
 			 }
 			 
 			 //assign armies to territories until armiesCount is 0 for a player
-			 while(armiesCount != 0){
+			 while(RiskConstants.MAX_ARMIES != 0){
 				 
 				//choose territory randomly to put armies into
 				String randomChosenCountry = playerCountryList.get(randomCountry.nextInt(playerCountryList.size()) );
@@ -317,7 +317,7 @@ public class StartUpPhase {
 				
 				StartUpPhase.playerInfo.put(randomChosenCountry, playerInfoValue);
 				
-				armiesCount--;
+				RiskConstants.MAX_ARMIES--;
 			 }//end while(armiesCount != 0)
 			 
 		 }//end for(int pl = 1;pl<=numberOfPlayers;pl++)
