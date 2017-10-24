@@ -64,14 +64,14 @@ public class RiskTest extends TestCase {
 		buttonSelectFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				// call made to check file validity
-				assertTrue(loadObj.uploadFileProcess());
+				assertTrue(loadObj.uploadProcess());
 			}
 		});
 		dummyJframe.setVisible(true);
 
 	}
 	
-	public void calcReinforcementArmies()
+	public void testCalcReinforcementArmies()
 	{
 		int armies = ReinforcementPhase.calculateReinforcement("1");
 		assertEquals(armies,ReinforcementPhase.calculateReinforcement("1"));
