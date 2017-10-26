@@ -9,10 +9,10 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 
-import com.risk.model.ConfigureMap;
-import com.risk.model.EditMap;
+import com.risk.model.ConfigureMapModel;
+import com.risk.model.EditMapModel;
 
-public class MapEditorMenu {
+public class MapEditorMenuUI {
 
 	public static void mapEditorNavigation(JDesktopPane desktop) {
 		JInternalFrame jframeMapEditor = new JInternalFrame("Map Editor");
@@ -41,7 +41,7 @@ public class MapEditorMenu {
 					e1.printStackTrace();
 				}
 				// CreateMap.configureContinent(desktop);
-				ConfigureMap.createContinetandCountry(desktop);
+				ConfigureMapModel.createContinentandCountry(desktop);
 			}
 		});
 
@@ -54,7 +54,7 @@ public class MapEditorMenu {
 				} catch (PropertyVetoException e1) {
 					e1.printStackTrace();
 				}
-				EditMap.fetchMap(desktop);
+				EditMapModel.fetchMap(desktop);
 			}
 		});
 

@@ -35,7 +35,7 @@ import javax.swing.table.DefaultTableModel;
  * @version 1.0
  */
 
-public class SaveMap {
+public class SaveMapModel {
 
 	static HashMap<String, List<String>> mainHashMap = new HashMap<String, List<String>>();
 	static HashMap<String, Integer> continentControlValueHashMap = new HashMap<String, Integer>();

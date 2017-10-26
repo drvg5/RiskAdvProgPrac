@@ -34,7 +34,7 @@ import javax.swing.table.DefaultTableModel;
  * @version 1.0
  */
 
-public class ConfigureMap {
+public class ConfigureMapModel {
 
 	static HashMap<String, Integer> continentControlValueHashMap = new HashMap<String, Integer>();
 	static JInternalFrame jframeContinent = new JInternalFrame();
@@ -55,7 +55,7 @@ public class ConfigureMap {
 	 * 
 	 */
 
-	public static void createContinetandCountry(JDesktopPane desktop) {
+	public static void createContinentandCountry(JDesktopPane desktop) {
 
 		JTable tableContinent = new JTable();
 		DefaultTableModel modelContinent = new DefaultTableModel(
@@ -279,7 +279,7 @@ public class ConfigureMap {
 				} catch (PropertyVetoException e1) {
 					e1.printStackTrace();
 				}
-				SaveMap.saveToFile(listKeyForHashMap, continentControlValueHashMap,
+				SaveMapModel.saveToFile(listKeyForHashMap, continentControlValueHashMap,
 						listToCheckDuplicateContinentCapitalize, listToCheckDuplicateCountryCapitalize, desktop);
 			}
 		});

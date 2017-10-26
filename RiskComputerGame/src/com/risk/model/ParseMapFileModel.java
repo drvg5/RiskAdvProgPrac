@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FilenameUtils;
 
-public class ParseMapFile {
+public class ParseMapFileModel {
 
 	HashMap<String, List<String>> continentHashMap = new HashMap<String, List<String>>();
 	HashMap<String, Integer> continentCount = new HashMap<String, Integer>();

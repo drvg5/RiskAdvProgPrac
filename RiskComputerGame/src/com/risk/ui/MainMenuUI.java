@@ -27,7 +27,7 @@ import javax.swing.KeyStroke;
  * @see JFrame, ActionListener
  *
  */
-public class MainMenu extends JFrame implements ActionListener {
+public class MainMenuUI extends JFrame implements ActionListener {
 
 	/**
 	 * id created for deserialization
@@ -37,7 +37,7 @@ public class MainMenu extends JFrame implements ActionListener {
 	// Container for creating creating a multiple-document interface
 	JDesktopPane desktop;
 
-	public MainMenu() {
+	public MainMenuUI() {
 		super("RISK");
 
 		// indenting from each edge of the computer screen.
@@ -67,7 +67,7 @@ public class MainMenu extends JFrame implements ActionListener {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 
 		// Window created.
-		MainMenu frame = new MainMenu();
+		MainMenuUI frame = new MainMenuUI();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Window displayed.
@@ -117,9 +117,9 @@ public class MainMenu extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if ("New Game".equals(e.getActionCommand())) { // new
 
-			UploadMap.LoadMap(desktop);
+			UploadMapUI.LoadMap(desktop);
 		} else if ("Map Editor".equals(e.getActionCommand())) {
-			MapEditorMenu.mapEditorNavigation(desktop);
+			MapEditorMenuUI.mapEditorNavigation(desktop);
 
 		} else {
 			quit();

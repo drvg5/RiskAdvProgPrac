@@ -6,7 +6,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class GameDriver {
+public class GameDriverModel {
 
 	public static int playerGTTerr = 0;
 	
@@ -121,7 +121,7 @@ public class GameDriver {
 				try{
 					numberOfPlayers = enterPlayersMenu();
 					
-					StartUpPhase.startUpPhase(numberOfPlayers,territoryMap);
+					StartUpPhaseModel.startUpPhase(numberOfPlayers,territoryMap);
 					
 					if(playerGTTerr == 0){
 						continue;
@@ -164,8 +164,8 @@ public class GameDriver {
 				System.out.println("PLAYER " + plyr + " : REINFORCEMENT");
 				
 				
-				ReinforcementPhase.calculateReinforcement(Integer.toString(plyr));
-				ReinforcementPhase.reinforceRandom(Integer.toString(plyr));
+				ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
+				ReinforcementPhaseModel.reinforceRandom(Integer.toString(plyr));
 				playerInfoDisplay(Integer.toString(plyr),territoryMap);
 				
 				Thread.sleep(5000);
@@ -174,10 +174,10 @@ public class GameDriver {
 				System.out.printf("--------------------------------------------------------\n");
 				System.out.println("PLAYER " + plyr + " : FORTIFICATION");
 				
-				FortificationPhase.createFortifySet(Integer.toString(plyr), territoryMap);
-				FortificationPhase.randomFortification(Integer.toString(plyr));
+				FortificationPhaseModel.createFortifySet(Integer.toString(plyr), territoryMap);
+				FortificationPhaseModel.randomFortification(Integer.toString(plyr));
 				
-				if(FortificationPhase.fortifySetEmpty == 1){
+				if(FortificationPhaseModel.fortifySetEmpty == 1){
 					System.out.printf("--------------------------------------------------------\n");
 					System.out.println("NO TWO ADJACENT TERRITORIES ARE OWNED BY PLAYER " + plyr);
 				}
@@ -210,7 +210,7 @@ public class GameDriver {
 	public static void playerInfoDisplay(String player, HashMap<String,List<String>> territoryMap){
 		
 		
-		for(String playerInfoKey : StartUpPhase.playerInfo.keySet()){
+		for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
 			
 			String[] playerInfoVal = playerInfoKey.split("-");
 			
@@ -221,7 +221,7 @@ public class GameDriver {
 				
 				System.out.println("\t\t" + "Continent : " + playerInfoVal[2]);
 				
-				System.out.println("\t\t" + "Armies : " + StartUpPhase.playerInfo.get(playerInfoKey));
+				System.out.println("\t\t" + "Armies : " + StartUpPhaseModel.playerInfo.get(playerInfoKey));
 				
 				System.out.printf("\t\t"+"Adjacent Countries : ");
 				

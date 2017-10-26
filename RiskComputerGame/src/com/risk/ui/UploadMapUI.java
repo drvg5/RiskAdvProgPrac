@@ -22,9 +22,9 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FilenameUtils;
 
-import com.risk.model.ParseMapFile;
+import com.risk.model.ParseMapFileModel;
 
-public class UploadMap {
+public class UploadMapUI {
 
 	public static void LoadMap(JDesktopPane desktop) {
 
@@ -46,7 +46,7 @@ public class UploadMap {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setBounds(10, 20, 30, 100);
 				int returnValue = fileChooser.showOpenDialog(null);
-				new ParseMapFile().getMapFile(returnValue, fileChooser);
+				new ParseMapFileModel().getMapFile(returnValue, fileChooser);
 			}
 		});
 

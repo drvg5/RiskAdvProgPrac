@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.TreeSet;
 
-public class ReinforcementPhase {
+public class ReinforcementPhaseModel {
 
 	public static HashMap<String,Integer> reinforcement = new HashMap<String,Integer>();
 	public static HashMap<String,String> playerCards = new HashMap<String,String>();
@@ -20,7 +20,7 @@ public class ReinforcementPhase {
 		int playerTerr = 0;
 		
 		//calculate reinforcement armies by number of countries owned
-		for(String plyrVal : StartUpPhase.playerInfo.keySet()){
+		for(String plyrVal : StartUpPhaseModel.playerInfo.keySet()){
 			String plyrInfo [] = plyrVal.split("-");
 			if(plyrInfo[0].equals(player) || plyrInfo[0] == player){
 				playerTerr ++ ; 
@@ -55,7 +55,7 @@ public class ReinforcementPhase {
 		//for only the player concerned
 		List<String> playerInfoKeyList = new ArrayList<String>();
 		
-		for(String playerInfoKey : StartUpPhase.playerInfo.keySet()){
+		for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
 			
 			String [] playerVals = playerInfoKey.split("-");
 			if(playerVals[0].equals(player) || playerVals[0] == player){
@@ -76,11 +76,11 @@ public class ReinforcementPhase {
 			//choose territory randomly to put armies into
 			String randomPlayerKey = playerInfoKeyList.get(randomKey.nextInt(playerInfoKeyList.size()) );
 			
-			int playerInfoValue = StartUpPhase.playerInfo.get(randomPlayerKey);
+			int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomPlayerKey);
 			playerInfoValue = playerInfoValue + 1;
 			
 			
-			StartUpPhase.playerInfo.put(randomPlayerKey, playerInfoValue);
+			StartUpPhaseModel.playerInfo.put(randomPlayerKey, playerInfoValue);
 			
 			reinforcementArmies--;
 			
@@ -130,7 +130,7 @@ public class ReinforcementPhase {
 		
 			
 			int numberOfPlayers = 3;
-			StartUpPhase.startUpPhase(numberOfPlayers,territoryMap);
+			StartUpPhaseModel.startUpPhase(numberOfPlayers,territoryMap);
 			
 			calculateReinforcement("1");
 			calculateReinforcement("2");
@@ -140,6 +140,6 @@ public class ReinforcementPhase {
 			reinforceRandom("1");
 			reinforceRandom("2");
 			reinforceRandom("3");
-			System.out.println(StartUpPhase.playerInfo);
+			System.out.println(StartUpPhaseModel.playerInfo);
 	}
 }

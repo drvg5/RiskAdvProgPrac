@@ -46,7 +46,7 @@ import org.apache.commons.io.FilenameUtils;
  * @version 1.0
  */
 
-public class EditMap {
+public class EditMapModel {
 
 	static JInternalFrame jframeContinent = new JInternalFrame();
 	static DefaultTableModel modelToEdit = new DefaultTableModel(

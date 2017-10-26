@@ -5,7 +5,7 @@ import java.util.*;
 import com.risk.utility.RiskConstants;
 
 
-public class StartUpPhase {
+public class StartUpPhaseModel {
 
 	/**
 	 *playerInfo HashMap stores the values corresponding to a particular player
@@ -52,10 +52,10 @@ public class StartUpPhase {
 	
 	
 	/**
-	 * This method populates {@link StartUpPhase#countryTaken} TreeSet and  {@link StartUpPhase#terrCont}  HashMap and HashMap to Number of Territories per Continent
+	 * This method populates {@link StartUpPhaseModel#countryTaken} TreeSet and  {@link StartUpPhaseModel#terrCont}  HashMap and HashMap to Number of Territories per Continent
 	 * <p>
-	 * This method calls method {@link StartUpPhase#terrPerPlayerPopulate} to populate the {@link StartUpPhase#terrPerPlayer} HashMap 
-	 * and then calls {@link StartUpPhase#assignTerritories} to assign territories randomly
+	 * This method calls method {@link StartUpPhaseModel#terrPerPlayerPopulate} to populate the {@link StartUpPhaseModel#terrPerPlayer} HashMap 
+	 * and then calls {@link StartUpPhaseModel#assignTerritories} to assign territories randomly
 	 * </p>
 	 * @param numberOfPlayers Total number of players in a game
 	 * @param territoryMap    HashMap which stores the Game Map values
@@ -99,14 +99,14 @@ public class StartUpPhase {
 		if(numberOfPlayers > totalTerr){
 			System.out.println("Players can not be greater than the number of territories");
 			
-			GameDriver.playerGTTerr = 0;
+			GameDriverModel.playerGTTerr = 0;
 			
 			return;
 		}
 		
 		
 		
-		GameDriver.playerGTTerr = 1;
+		GameDriverModel.playerGTTerr = 1;
 		
 		terrPerPlayerPopulate(numberOfPlayers,totalTerr);
 		
@@ -123,7 +123,7 @@ public class StartUpPhase {
 	
 	
 	/**
-	 * This method populates the {@link StartUpPhase#terrPerPlayer} HashMap
+	 * This method populates the {@link StartUpPhaseModel#terrPerPlayer} HashMap
 	 * @param numberOfPlayers Number of Players in a game
 	 * @param numberOfTerr	Number of territories in a whole map
 	 */
@@ -173,7 +173,7 @@ public class StartUpPhase {
 	
 	/**
 	 * This method assigns territories randomly to the players
-	 * and populate the {@link StartUpPhase#playerInfo} HashMap
+	 * and populate the {@link StartUpPhaseModel#playerInfo} HashMap
 	 * <p>
 	 * This method while assigning also checks whether a country has already been assigned or not
 	 * and that a player does not get all the countries in a continent
@@ -278,7 +278,7 @@ public class StartUpPhase {
 	
 	/**
 	 * This method initially assigns armies to the territories randomly 
-	 * and add these to appropriate places in the {@link StartUpPhase#playerInfo} HashMap
+	 * and add these to appropriate places in the {@link StartUpPhaseModel#playerInfo} HashMap
 	 * <p>
 	 * Each player is given 10 armies initially
 	 * </p>
@@ -298,7 +298,7 @@ public class StartUpPhase {
 			 List<String> playerCountryList = new ArrayList<String>();
 			 
  			 //populate playerCountryList
-			 for(String playerInfo : StartUpPhase.playerInfo.keySet()){
+			 for(String playerInfo : StartUpPhaseModel.playerInfo.keySet()){
 				 
 				 String [] playerInfoArr = playerInfo.split("-");
 				 if(playerInfoArr[0].equals(Integer.toString(pl)) || playerInfoArr[0] == Integer.toString(pl)){
@@ -312,10 +312,10 @@ public class StartUpPhase {
 				//choose territory randomly to put armies into
 				String randomChosenCountry = playerCountryList.get(randomCountry.nextInt(playerCountryList.size()) );
 				 
-				int playerInfoValue = StartUpPhase.playerInfo.get(randomChosenCountry);
+				int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomChosenCountry);
 				playerInfoValue = playerInfoValue + 1;
 				
-				StartUpPhase.playerInfo.put(randomChosenCountry, playerInfoValue);
+				StartUpPhaseModel.playerInfo.put(randomChosenCountry, playerInfoValue);
 				
 				RiskConstants.MAX_ARMIES--;
 			 }//end while(armiesCount != 0)
