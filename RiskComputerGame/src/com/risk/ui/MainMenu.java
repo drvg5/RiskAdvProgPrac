@@ -13,7 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 /**
- * Game starter class for initiating the application 
+ * Game starter class for initiating the application
  * 
  * The tasks performed by this class are:
  * <ul>
@@ -74,6 +74,10 @@ public class MainMenu extends JFrame implements ActionListener {
 		frame.setVisible(true);
 	}
 
+	/**
+	 * Method for populating the MEnu drop down
+	 * 
+	 */
 	protected JMenuBar populateMenuDropdown() {
 		JMenuBar menuBar = new JMenuBar();
 
@@ -113,7 +117,7 @@ public class MainMenu extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if ("New Game".equals(e.getActionCommand())) { // new
 
-			LoadGame.LoadMap(desktop);
+			UploadMap.LoadMap(desktop);
 		} else if ("Map Editor".equals(e.getActionCommand())) {
 			MapEditorMenu.mapEditorNavigation(desktop);
 
