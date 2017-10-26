@@ -385,8 +385,6 @@ public class EditMap {
 		// Button to Delete Continent. Selects value in row and deletes continent
 		// completely
 
-
-
 		btnDeleteContinent.addActionListener(new ActionListener() {
 
 			@Override
@@ -409,22 +407,20 @@ public class EditMap {
 					for (String str : ToDelete) {
 						continentHashMap.remove(str);
 					}
-					
+
 					Iterator<Map.Entry<String, List<String>>> iter = continentHashMap.entrySet().iterator();
 					while (iter.hasNext()) {
 						Map.Entry<String, List<String>> entry = iter.next();
 						List<String> list = entry.getValue();
-						for(String strTo: ToDeleteInOther)
-						{
-						for (int i = 0; i < list.size(); i++) {
-							if (list.get(i).equals(strTo)) {
-								list.remove(i);
+						for (String strTo : ToDeleteInOther) {
+							for (int i = 0; i < list.size(); i++) {
+								if (list.get(i).equals(strTo)) {
+									list.remove(i);
+								}
 							}
 						}
 					}
-					}
-					
-					
+
 					continentControlValueHashMapToEdit.remove(strtextContinentToDelete);
 					textContinentToEdit.setText(null);
 					textCountryToEdit.setText(null);
@@ -482,32 +478,35 @@ public class EditMap {
 				if (row > -1) {
 					String ToDelete = new String();
 					List<String> listAdjCountryToRemove = new ArrayList<String>();
+					List<String> listAdjCountryToRemoveCapitalize = new ArrayList<String>();
 					ToDelete = JOptionPane.showInputDialog("Please specify links to delete");
 					listAdjCountryToRemove = new ArrayList<String>(Arrays.asList(ToDelete.split(",")));
+					for (String capital : listAdjCountryToRemove) {
+						capital = capital.substring(0, 1).toUpperCase() + capital.substring(1);
+						listAdjCountryToRemoveCapitalize.add(capital);
+					}
 					String conti = modelToEdit.getValueAt(row, 0).toString();
 					String countr = modelToEdit.getValueAt(row, 1).toString();
 					StringJoiner joiner = new StringJoiner(",");
 					joiner.add(conti).add(countr);
 					String concatString = joiner.toString();
 
-					for (String str : listAdjCountryToRemove) {
+					for (String str : listAdjCountryToRemoveCapitalize) {
 
-						String key = conti + "," + str;
 						continentHashMap.get(concatString).remove(str);
 					}
-//					Iterator<Map.Entry<String, List<String>>> iter = continentHashMap.entrySet().iterator();
-//					while (iter.hasNext()) {
-//						Map.Entry<String, List<String>> entry = iter.next();
-//						List<String> list = entry.getValue();
-//						for (String str : listAdjCountryToRemove) {
-//						for (int i = 0; i < list.size(); i++) {
-//							if (list.get(i).equals(str)) {
-//								list.remove(i);
-//							}
-//						}
-//						}
-//					}
-					
+
+					for (String tempVar : listAdjCountryToRemoveCapitalize) {
+						Iterator<Map.Entry<String, List<String>>> iter = continentHashMap.entrySet().iterator();
+						while (iter.hasNext()) {
+							Map.Entry<String, List<String>> entry = iter.next();
+							String strKey = entry.getKey();
+							String[] strKeyArrayToDelete = strKey.split(",");
+							if (strKeyArrayToDelete[1].equals(tempVar)) {
+								continentHashMap.get(strKey).remove(countr);
+							}
+						}
+					}
 
 					reloadModel();
 				} else {
@@ -518,14 +517,15 @@ public class EditMap {
 		});
 
 		// Button to take to update and save page
-		
+
 		btnUpdateAll.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				jframeContinent.setVisible(false);
-				SaveMapAfterEdit.updateAndSave(continentHashMapToEdit,continentControlValueHashMapToEdit, desktop,UploadFileName);
+				SaveMapAfterEdit.updateAndSave(continentHashMapToEdit, continentControlValueHashMapToEdit, desktop,
+						UploadFileName);
 			}
 		});
 

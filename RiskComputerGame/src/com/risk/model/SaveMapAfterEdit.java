@@ -123,12 +123,8 @@ public class SaveMapAfterEdit {
 					
 				}
 				
-				
-				
-				
-				
-				continentList.remove(strtextContinentToChangeCapitalize);
-				countryList.remove(strtextCountryToChangeCapitalize);
+				//continentList.remove(strtextContinentToChangeCapitalize);
+			//	countryList.remove(strtextCountryToChangeCapitalize);
 				for (int t = 0; t < modelToUpdate.getRowCount(); t++) {
 					if (modelToUpdate.getValueAt(t, 0).equals(strtextContinentToUpdate)) {
 						count++;
@@ -207,22 +203,18 @@ public class SaveMapAfterEdit {
 							int continetControlValue = Integer.parseInt(strContinentControlValueToUpdate);
 							hashMapControlToUpdate.put(strContinentToUpdateCapitalize, continetControlValue);
 							hashMapToUpdate.put(concatString, listAdjCountryCapitalize);
-							List<String> fetchLinks = new ArrayList<String>();
-							List<String> fetchLinks2 = new ArrayList<String>();
 							for (String tempAdj : listAdjCountryCapitalize) {
 
 								for (Map.Entry<String, List<String>> maplist : hashMapToUpdate.entrySet()) {
+									List<String> fetchLinks = new ArrayList<String>();
+									List<String> fetchLinks2 = new ArrayList<String>();
 									String getAllKeys = maplist.getKey();
 									String[] getIndividual = getAllKeys.split(",");
 									if (getIndividual[1].equals(tempAdj)) {
-										String concatStringToUpdate = getIndividual[0] + "," + tempAdj;
-										fetchLinks.clear();
-										// fetchLinks = hashMapToUpdate.get(concatStringToUpdate);
-										fetchLinks = hashMapToUpdate.get(concatStringToUpdate);
-										fetchLinks2.clear();
+										fetchLinks = hashMapToUpdate.get(getAllKeys);
 										fetchLinks2.addAll(fetchLinks);
 										fetchLinks2.add(strCountryToUpdateCapitalize);
-										hashMapToUpdate.put(concatStringToUpdate, fetchLinks2);
+										hashMapToUpdate.replace(getAllKeys, fetchLinks2);
 									}
 								}
 

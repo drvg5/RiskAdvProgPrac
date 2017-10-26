@@ -1,5 +1,5 @@
 
- package com.risk.model;
+package com.risk.model;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
+
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -140,22 +142,24 @@ public class SaveMap {
 
 					else {
 						mainHashMap.put(strHashMapKey, listAdjCountryCapitalize);
-						List<String> fetchLinks = new ArrayList<String>();
-						List<String> fetchLinks2 = new ArrayList<String>();
-
+					
+						List<String> empty = new ArrayList<String>();
+						String getAllKeys;
+						String[] getIndividual;
 						for (String tempAdj : listAdjCountryCapitalize) {
 
 							for (Map.Entry<String, List<String>> maplist : mainHashMap.entrySet()) {
-								String getAllKeys = maplist.getKey();
-								String[] getIndividual = getAllKeys.split(",");
+								List<String> fetchLinks = new ArrayList<String>();
+								List<String> fetchLinks2 = new ArrayList<String>();
+								getAllKeys = maplist.getKey();
+								getIndividual= getAllKeys.split(",");
 								if (getIndividual[1].equals(tempAdj)) {
-									String concatString = getIndividual[0] + "," + tempAdj;
-									fetchLinks.clear();
-									fetchLinks = mainHashMap.get(concatString);
-									fetchLinks2.clear();
-									fetchLinks2.addAll(fetchLinks);
+									fetchLinks = mainHashMap.get(getAllKeys);
+									if (!fetchLinks.equals(empty)) {
+										fetchLinks2.addAll(fetchLinks);
+									}
 									fetchLinks2.add(strHashMapKeySplit[1]);
-									mainHashMap.put(concatString, fetchLinks2);
+									mainHashMap.replace(getAllKeys, fetchLinks2);
 								}
 							}
 
