@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.TreeSet;
 
-public class ReinforcementClass {
+public class ReinforcementPhase {
 
 	public static HashMap<String,Integer> reinforcement = new HashMap<String,Integer>();
 	public static HashMap<String,String> playerCards = new HashMap<String,String>();

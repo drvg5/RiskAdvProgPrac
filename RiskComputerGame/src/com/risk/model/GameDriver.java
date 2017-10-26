@@ -164,8 +164,8 @@ public class GameDriver {
 				System.out.println("PLAYER " + plyr + " : REINFORCEMENT");
 				
 				
-				ReinforcementClass.calculateReinforcement(Integer.toString(plyr));
-				ReinforcementClass.reinforceRandom(Integer.toString(plyr));
+				ReinforcementPhase.calculateReinforcement(Integer.toString(plyr));
+				ReinforcementPhase.reinforceRandom(Integer.toString(plyr));
 				playerInfoDisplay(Integer.toString(plyr),territoryMap);
 				
 				Thread.sleep(5000);
@@ -174,10 +174,10 @@ public class GameDriver {
 				System.out.printf("--------------------------------------------------------\n");
 				System.out.println("PLAYER " + plyr + " : FORTIFICATION");
 				
-				FortificationClass.createFortifySet(Integer.toString(plyr), territoryMap);
-				FortificationClass.randomFortification(Integer.toString(plyr));
+				FortificationPhase.createFortifySet(Integer.toString(plyr), territoryMap);
+				FortificationPhase.randomFortification(Integer.toString(plyr));
 				
-				if(FortificationClass.fortifySetEmpty == 1){
+				if(FortificationPhase.fortifySetEmpty == 1){
 					System.out.printf("--------------------------------------------------------\n");
 					System.out.println("NO TWO ADJACENT TERRITORIES ARE OWNED BY PLAYER " + plyr);
 				}
