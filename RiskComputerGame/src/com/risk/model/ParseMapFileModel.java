@@ -29,11 +29,8 @@ public class ParseMapFileModel {
 	public void getMapFile(int returnValue, JFileChooser fileChooser) {
 
 		boolean checkDuplicate;
-		// JFileChooser fileChooser = new JFileChooser();
-		// fileChooser.setBounds(10, 20, 30, 100);
-		// int returnValue = fileChooser.showOpenDialog(null);
+
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
-			// jframeUpload.setVisible(false);
 			File selectedFile = fileChooser.getSelectedFile();
 			String UploadFileName = selectedFile.getName();
 			String FileFormat = FilenameUtils.getExtension(UploadFileName);
@@ -53,7 +50,6 @@ public class ParseMapFileModel {
 					JOptionPane.showMessageDialog(null, "Invalid Map!File extension is wrong", "Upload Error",
 							JOptionPane.ERROR_MESSAGE);
 
-					// jframeUpload.setVisible(true);
 				}
 
 				else if (!((Maplist.contains("[Map]") && Maplist.contains("[Continents]")
@@ -62,7 +58,6 @@ public class ParseMapFileModel {
 					JOptionPane.showMessageDialog(null,
 							"Invalid Map! File is missing Map or Continent or Territory section", "Upload Error",
 							JOptionPane.ERROR_MESSAGE);
-					// jframeUpload.setVisible(true);
 
 				} else {
 					mainloop: for (int i = 0; i < Maplist.size(); i++) {

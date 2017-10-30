@@ -22,16 +22,17 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
+import com.risk.ui.SaveMapUponConfigUI;
+
 /**
  * <h1>Configure Map</h1>
  * <p>
- * <b>This class consists static method that operates to create Continents and
- * Countries.</b>
+ * <b>This class consists methods to create Continents and Countries.</b>
  * <p>
- * Calls save to file method in SaveMap Class
  * 
  * @author Khashyap
- * @version 1.0
+ * @author drvg5 - modified class to implement Modified MVC architecture
+ * 
  */
 
 public class ConfigureMapModel {
@@ -78,110 +79,13 @@ public class ConfigureMapModel {
 		JButton btnConfigureAdj = new JButton("Add Adjacency after Configuring");
 		btnConfigureAdj.setBounds(180, 450, 300, 25);
 		JButton btnEdit = new JButton("Update incorrect entry by selecting row");
-		//btnEdit.setVisible(false);
+		// btnEdit.setVisible(false);
 		btnEdit.setBounds(490, 450, 270, 25);
-		
+
 		tableContinent.setModel(modelContinent);
 
-		// Button to add Continent and Country. All Validations are handled
-
-		btnAddAll.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String strContinent = textContinent.getText().trim().toLowerCase();
-				String strCountry = textCountry.getText().trim().toLowerCase();
-				String strControlValue = textContinentControlValue.getText().trim();
-				boolean checkCountry = false;
-				boolean checkContinentWithCountry = false;
-				boolean checkCountryWithContinent = false;
-
-				if (!(listToCheckDuplicateCountry.isEmpty())) {
-					for (String str : listToCheckDuplicateCountry) {
-						if (str.equals(strCountry)) {
-							checkCountry = true;
-						}
-					}
-				}
-
-				if (!(listToCheckDuplicateContinent.isEmpty())) {
-					for (String temp : listToCheckDuplicateContinent) {
-						if (temp.equals(strCountry)) {
-							checkContinentWithCountry = true;
-						}
-					}
-				}
-
-				if (!(listToCheckDuplicateCountry.isEmpty())) {
-					for (String temp : listToCheckDuplicateCountry) {
-						if (temp.equals(strContinent)) {
-							checkCountryWithContinent = true;
-						}
-					}
-				}
-
-				if ((strContinent.isEmpty()) || (strCountry.isEmpty()) || (strControlValue.isEmpty())) {
-					JOptionPane.showMessageDialog(null, "Oops!Please enter values", "Error", JOptionPane.ERROR_MESSAGE);
-				}
-
-				else if (!(strContinent.matches("^[a-zA-Z]+$")) || !(strCountry.matches("^[a-zA-Z]+$"))) {
-					JOptionPane.showMessageDialog(null, "Only Alphabets are allowed", "Error in Continent and Country",
-							JOptionPane.ERROR_MESSAGE);
-				}
-
-				else if (checkCountry) {
-					JOptionPane.showMessageDialog(null, "Invalid Map!" + strCountry + " already exists in Country List",
-							"Error", JOptionPane.ERROR_MESSAGE);
-				}
-
-				else if (checkCountryWithContinent) {
-
-					JOptionPane.showMessageDialog(null,
-							"Invalid Map!" + strContinent + " already exists in Country List", "Error",
-							JOptionPane.ERROR_MESSAGE);
-
-				}
-
-				else if (checkContinentWithCountry) {
-					JOptionPane.showMessageDialog(null,
-							"Invalid Map!" + strCountry + " already exists in Continent List", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
-
-				else if (strContinent.equals(strCountry)) {
-					JOptionPane.showMessageDialog(null, "Invalid Map! Continent and Country name cant be same", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
-
-				else if (!(strControlValue.matches("^[0-9]+$"))) {
-					JOptionPane.showMessageDialog(null, "Only Numbers are  allowed", "Error in Control Value",
-							JOptionPane.ERROR_MESSAGE);
-				}
-
-				else {
-					String strContinentCapitalize = strContinent.substring(0, 1).toUpperCase()
-							+ strContinent.substring(1);
-					String strCountryCapitalize = strCountry.substring(0, 1).toUpperCase() + strCountry.substring(1);
-					int continetControlValue = Integer.parseInt(strControlValue);
-					StringJoiner joiner = new StringJoiner(",");
-					joiner.add(strContinentCapitalize).add(strCountryCapitalize);
-					String concatString = joiner.toString();
-					modelContinent
-							.addRow(new Object[] { strContinentCapitalize, strCountryCapitalize, strControlValue });
-					listKeyForHashMap.add(concatString);
-					continentControlValueHashMap.put(strContinentCapitalize, continetControlValue);
-					listToCheckDuplicateContinentCapitalize.add(strContinentCapitalize);
-					listToCheckDuplicateCountryCapitalize.add(strCountryCapitalize);
-					listToCheckDuplicateContinent.add(strContinent);
-					listToCheckDuplicateCountry.add(strCountry);
-					textCountry.setText(null);
-					textContinentControlValue.setEnabled(false);
-				}
-
-			}
-		});
-
-		// Listen for changes in the Continent value and enables ControlContinentValue
+		// Listen for changes in the Continent value and enables
+		// ControlContinentValue
 		// Text Box
 
 		textContinent.getDocument().addDocumentListener(new DocumentListener() {
@@ -253,34 +157,20 @@ public class ConfigureMapModel {
 					joinerToUpdateHashMap.add(strContinentToUpdateCapitalize).add(strCountryToUpdateCapitalize);
 					String concatString = joinerToUpdateHashMap.toString();
 					listKeyForHashMap.add(concatString);
+
+					// int continetControlValue =
+					// Integer.parseInt(strContinentControlValueToUpdate);
+
 					continentControlValueHashMap.put(strContinentToUpdateCapitalize, continetControlValue);
 					listToCheckDuplicateContinent.add(strContinentToUpdate);
 					listToCheckDuplicateCountry.add(strCountryToUpdate);
 					listToCheckDuplicateContinentCapitalize.add(strContinentToUpdateCapitalize);
 					listToCheckDuplicateCountryCapitalize.add(strCountryToUpdateCapitalize);
-					textCountry.setText(null);
-					textContinentControlValue.setEnabled(false);
 
 				} else {
 					JOptionPane.showMessageDialog(null, "Please select a row to Update", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
-			}
-		});
-
-		// Button to call save to file method in Save Map class
-
-		btnConfigureAdj.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					jframeContinent.setClosed(true);
-				} catch (PropertyVetoException e1) {
-					e1.printStackTrace();
-				}
-				SaveMapModel.saveToFile(listKeyForHashMap, continentControlValueHashMap,
-						listToCheckDuplicateContinentCapitalize, listToCheckDuplicateCountryCapitalize, desktop);
 			}
 		});
 
@@ -303,6 +193,125 @@ public class ConfigureMapModel {
 		jframeContinent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jframeContinent.setVisible(true);
 		desktop.add(jframeContinent);
+	}
+
+	public String[] addContinentsAndCountries(String[] data) {
+
+		String strContinent = data[0];
+		String strCountry = data[1];
+		String strControlValue = data[2];
+		String[] dataReturned = new String[3];
+		;
+		boolean checkCountry = false;
+		boolean checkContinentWithCountry = false;
+		boolean checkCountryWithContinent = false;
+
+		if (!(listToCheckDuplicateCountry.isEmpty())) {
+			for (String str : listToCheckDuplicateCountry) {
+				if (str.equals(strCountry)) {
+					checkCountry = true;
+				}
+			}
+		}
+
+		if (!(listToCheckDuplicateContinent.isEmpty())) {
+			for (String temp : listToCheckDuplicateContinent) {
+				if (temp.equals(strCountry)) {
+					checkContinentWithCountry = true;
+				}
+			}
+		}
+
+		if (!(listToCheckDuplicateCountry.isEmpty())) {
+			for (String temp : listToCheckDuplicateCountry) {
+				if (temp.equals(strContinent)) {
+					checkCountryWithContinent = true;
+				}
+			}
+		}
+
+		if ((strContinent.isEmpty()) || (strCountry.isEmpty()) || (strControlValue.isEmpty())) {
+			JOptionPane.showMessageDialog(null, "Oops!Please enter values", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+		else if (!(strContinent.matches("^[a-zA-Z]+$")) || !(strCountry.matches("^[a-zA-Z]+$"))) {
+			JOptionPane.showMessageDialog(null, "Only Alphabets are allowed", "Error in Continent and Country",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+		else if (checkCountry) {
+			JOptionPane.showMessageDialog(null, "Invalid Map!" + strCountry + " already exists in Country List",
+					"Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+		else if (checkCountryWithContinent) {
+
+			JOptionPane.showMessageDialog(null, "Invalid Map!" + strContinent + " already exists in Country List",
+					"Error", JOptionPane.ERROR_MESSAGE);
+
+		}
+
+		else if (checkContinentWithCountry) {
+			JOptionPane.showMessageDialog(null, "Invalid Map!" + strCountry + " already exists in Continent List",
+					"Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+		else if (strContinent.equals(strCountry)) {
+			JOptionPane.showMessageDialog(null, "Invalid Map! Continent and Country name cant be same", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+		else if (!(strControlValue.matches("^[0-9]+$"))) {
+			JOptionPane.showMessageDialog(null, "Only Numbers are  allowed", "Error in Control Value",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+		else {
+			String strContinentCapitalize = strContinent.substring(0, 1).toUpperCase() + strContinent.substring(1);
+			String strCountryCapitalize = strCountry.substring(0, 1).toUpperCase() + strCountry.substring(1);
+			int continetControlValue = Integer.parseInt(strControlValue);
+			StringJoiner joiner = new StringJoiner(",");
+			joiner.add(strContinentCapitalize).add(strCountryCapitalize);
+			String concatString = joiner.toString();
+			listKeyForHashMap.add(concatString);
+			continentControlValueHashMap.put(strContinentCapitalize, continetControlValue);
+			listToCheckDuplicateContinentCapitalize.add(strContinentCapitalize);
+			listToCheckDuplicateCountryCapitalize.add(strCountryCapitalize);
+			listToCheckDuplicateContinent.add(strContinent);
+			listToCheckDuplicateCountry.add(strCountry);
+
+			dataReturned[0] = strContinentCapitalize;
+			dataReturned[1] = strCountryCapitalize;
+			dataReturned[2] = strControlValue;
+
+		}
+		return dataReturned;
+
+	}
+
+	public void updateOnClick(String[] data) {
+		listKeyForHashMap.remove(data[0]);
+		listToCheckDuplicateContinent.add(data[1]);
+		listToCheckDuplicateCountry.remove(data[2]);
+		listToCheckDuplicateContinentCapitalize.add(data[3]);
+		listToCheckDuplicateCountryCapitalize.add(data[4]);
+		continentControlValueHashMap.remove(data[5]);
+	}
+
+	public void updateOnClickOfButton(String[] data) {
+
+		listKeyForHashMap.add(data[0]);
+		int continetControlValue = Integer.parseInt(data[2]);
+		continentControlValueHashMap.put(data[1], continetControlValue);
+		listToCheckDuplicateContinent.add(data[3]);
+		listToCheckDuplicateCountry.add(data[4]);
+		listToCheckDuplicateContinentCapitalize.add(data[5]);
+		listToCheckDuplicateCountryCapitalize.add(data[6]);
+	}
+
+	public void inputForAdjacency(JDesktopPane desktop) {
+		new SaveMapUponConfigUI().saveToFile(listKeyForHashMap, continentControlValueHashMap,
+				listToCheckDuplicateContinentCapitalize, listToCheckDuplicateCountryCapitalize, desktop);
 	}
 
 }

@@ -12,6 +12,12 @@ import javax.swing.JInternalFrame;
 import com.risk.model.ConfigureMapModel;
 import com.risk.model.EditMapModel;
 
+/**
+ * This class contains creates the menu for map editor
+ * 
+ * @author drvg5
+ *
+ */
 public class MapEditorMenuUI {
 
 	public static void mapEditorNavigation(JDesktopPane desktop) {
@@ -41,7 +47,7 @@ public class MapEditorMenuUI {
 					e1.printStackTrace();
 				}
 				// CreateMap.configureContinent(desktop);
-				ConfigureMapModel.createContinentandCountry(desktop);
+				new ConfigureMapUI().createContinentandCountry(desktop);
 			}
 		});
 
