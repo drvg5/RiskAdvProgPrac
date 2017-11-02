@@ -281,21 +281,7 @@ public class EditMap {
 
 		// Populates fetched value from file to model
 
-		for (Map.Entry<String, Integer> temp : continentControlValueHashMapToEdit.entrySet()) {
-			continentListToEdit.add(temp.getKey());
-		}
-
-		for (String obj : continentListToEdit) {
-			for (Map.Entry<String, List<String>> entry : continentHashMapToEdit.entrySet()) {
-				String strKey = entry.getKey();
-				String[] strKeyArrayToEdit = strKey.split(",");
-				if (obj.equals(strKeyArrayToEdit[0])) {
-					String printWithoutBraces = entry.getValue().toString().replaceAll("(^\\[|\\s|\\]$)", "");
-					modelToEdit.addRow(new Object[] { strKeyArrayToEdit[0], strKeyArrayToEdit[1], printWithoutBraces,
-							continentControlValueHashMapToEdit.get(strKeyArrayToEdit[0]) });
-				}
-			}
-		}
+		reloadModel();
 
 		for (Map.Entry<String, List<String>> hash : continentHashMapToEdit.entrySet()) {
 			String stringKeyToCheck = hash.getKey();
@@ -356,21 +342,44 @@ public class EditMap {
 					}
 
 					else {
+						List<String> listEmpty = new ArrayList<String>();
+						String getAllKeys;
+						String[] getIndividual;
 						StringJoiner joiner = new StringJoiner(",");
 						joiner.add(strContinentCapitalize).add(strCountryCapitalize);
 						String concatString = joiner.toString();
-						// modelToEdit.addRow(new Object[] { strContinentCapitalize,
-						// strCountryCapitalize,
-						// listAdjCountrytoAddCapitalize, continetControlValue });
 						continentHashMapToEdit.put(concatString, listAdjCountrytoAddCapitalize);
 						continentControlValueHashMapToEdit.put(strContinentCapitalize, continetControlValue);
-
+						listCountryToCheck.add(strCountryCapitalize);
+						
 						for (String str : listAdjCountrytoAddCapitalize) {
 							String conc = strContinentCapitalize + "," + str;
-							List<String> fetchLinks = new ArrayList<String>();
-							fetchLinks.add(strCountryCapitalize);
-							continentHashMapToEdit.put(conc, fetchLinks);
+							if (!(listCountryToCheck.contains(str))) {
+								if (!(continentHashMap.containsKey(conc))) {
+									continentHashMapToEdit.put(conc, listEmpty);
+									listCountryToCheck.add(str);
+								}
+							}
 						}
+						for (String tempAdj : listAdjCountrytoAddCapitalize) {
+
+							for (Map.Entry<String, List<String>> maplist : continentHashMapToEdit.entrySet()) {
+								List<String> fetchLinksFromHashMap = new ArrayList<String>();
+								List<String> fetchLinksToAddHashMap = new ArrayList<String>();
+								getAllKeys = maplist.getKey();
+								getIndividual = getAllKeys.split(",");
+								if (getIndividual[1].equals(tempAdj)) {
+									fetchLinksFromHashMap = continentHashMapToEdit.get(getAllKeys);
+									if (!fetchLinksFromHashMap.equals(listEmpty)) {
+										fetchLinksToAddHashMap.addAll(fetchLinksFromHashMap);
+									}
+									fetchLinksToAddHashMap.add(strCountryCapitalize);
+									continentHashMapToEdit.replace(getAllKeys, fetchLinksToAddHashMap);
+								}
+							}
+
+						}
+
 						reloadModel();
 
 						textCountryToEdit.setText(null);
@@ -407,6 +416,8 @@ public class EditMap {
 					for (String str : ToDelete) {
 						continentHashMap.remove(str);
 					}
+					
+					
 
 					Iterator<Map.Entry<String, List<String>>> iter = continentHashMap.entrySet().iterator();
 					while (iter.hasNext()) {
@@ -420,6 +431,9 @@ public class EditMap {
 							}
 						}
 					}
+					
+					
+					
 
 					continentControlValueHashMapToEdit.remove(strtextContinentToDelete);
 					textContinentToEdit.setText(null);

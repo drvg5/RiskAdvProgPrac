@@ -34,9 +34,15 @@ public class SaveMapAfterEdit {
 			new Object[] { "Continent List", "Country", "Adjacent List", "Control Value" }, 0);
 	static List<String> continentList = new ArrayList<String>();
 	static List<String> countryList = new ArrayList<String>();
+	static HashMap<String, List<String>> hashMapToUpdate = new HashMap<String, List<String>>();
+	static HashMap<String, Integer> hashMapControlToUpdate = new HashMap<String, Integer>();
+	static String strContinentSelectedInRow;
+	static String strCountrySelectedInRow;
 
-	public static void updateAndSave(HashMap<String, List<String>> hashMapToUpdate,
-			HashMap<String, Integer> hashMapControlToUpdate, JDesktopPane desktop, String File) {
+	public static void updateAndSave(HashMap<String, List<String>> mainhashMapToUpdate,
+			HashMap<String, Integer> hashMapContControlToUpdate, JDesktopPane desktop, String File) {
+		hashMapToUpdate = mainhashMapToUpdate;
+		hashMapControlToUpdate = hashMapContControlToUpdate;
 		JTable tableToUpdate = new JTable();
 		JLabel labelContinentToEdit = new JLabel("Continent");
 		labelContinentToEdit.setBounds(20, 260, 60, 25);
@@ -62,28 +68,14 @@ public class SaveMapAfterEdit {
 		JButton btnSave = new JButton("Save Map");
 		btnSave.setBounds(360, 400, 100, 25);
 
-		for (Map.Entry<String, Integer> temp : hashMapControlToUpdate.entrySet()) {
-			continentList.add(temp.getKey());
-		}
-
-		for (String obj : continentList) {
-			for (Map.Entry<String, List<String>> entry : hashMapToUpdate.entrySet()) {
-				String strKey = entry.getKey();
-				String[] strKeyArrayToEdit = strKey.split(",");
-				if (obj.equals(strKeyArrayToEdit[0])) {
-					String printWithoutBraces = entry.getValue().toString().replaceAll("(^\\[|\\s|\\]$)", "");
-					modelToUpdate.addRow(new Object[] { strKeyArrayToEdit[0], strKeyArrayToEdit[1], printWithoutBraces,
-							hashMapControlToUpdate.get(strKeyArrayToEdit[0]) });
-				}
-			}
-		}
-		
 		for (Map.Entry<String, List<String>> entry : hashMapToUpdate.entrySet()) {
 			String strKey = entry.getKey();
 			String[] strKeyArrayToEdit = strKey.split(",");
 			continentList.add(strKeyArrayToEdit[0]);
 			countryList.add(strKeyArrayToEdit[1]);
 		}
+
+		reloadModel();
 
 		tableToUpdate.addMouseListener(new MouseAdapter() {
 
@@ -94,46 +86,58 @@ public class SaveMapAfterEdit {
 				String strtextCountryToUpdate = modelToUpdate.getValueAt(i, 1).toString().toLowerCase();
 				String strtextAdjToUpdate = modelToUpdate.getValueAt(i, 2).toString().toLowerCase();
 				List<String> listAdjCountryToRemove = new ArrayList<String>();
+				List<String> listAdjCountryToRemoveCapitalize = new ArrayList<String>();
 				listAdjCountryToRemove = new ArrayList<String>(Arrays.asList(strtextAdjToUpdate.split(",")));
 				String strtextControlValueToUpdate = modelToUpdate.getValueAt(i, 3).toString().toLowerCase();
 				textContinentToEdit.setText(strtextContinentToUpdate);
 				textCountryToEdit.setText(strtextCountryToUpdate);
 				textAdjListToEdit.setText(strtextAdjToUpdate);
 				textContinentControlValueToEdit.setText(strtextControlValueToUpdate);
-				String strtextContinentToChangeCapitalize = strtextContinentToUpdate.substring(0, 1).toUpperCase()
-						+ strtextContinentToUpdate.substring(1);
-				String strtextCountryToChangeCapitalize = strtextCountryToUpdate.substring(0, 1).toUpperCase()
-						+ strtextCountryToUpdate.substring(1);
-				StringJoiner joinerToDelete = new StringJoiner(",");
-				joinerToDelete.add(strtextContinentToChangeCapitalize).add(strtextCountryToChangeCapitalize);
-				String concatStringToDelete = joinerToDelete.toString();
-				hashMapToUpdate.remove(concatStringToDelete);
-				
-				
-				
-				Iterator<Map.Entry<String, List<String>>> iter = hashMapToUpdate.entrySet().iterator();
-				while (iter.hasNext()) {
-					Map.Entry<String, List<String>> entry = iter.next();
-					List<String> list = entry.getValue();
-					for (int k = 0; k < list.size(); k++) {
-						if (list.get(k).equals(strtextCountryToChangeCapitalize)) {
-							list.remove(k);
+
+				if (!(strtextAdjToUpdate.isEmpty())) {
+
+					String strtextContinentToChangeCapitalize = strtextContinentToUpdate.substring(0, 1).toUpperCase()
+							+ strtextContinentToUpdate.substring(1);
+					String strtextCountryToChangeCapitalize = strtextCountryToUpdate.substring(0, 1).toUpperCase()
+							+ strtextCountryToUpdate.substring(1);
+					StringJoiner joinerToDelete = new StringJoiner(",");
+					for (String capital : listAdjCountryToRemove) {
+						capital = capital.substring(0, 1).toUpperCase() + capital.substring(1);
+						listAdjCountryToRemoveCapitalize.add(capital);
+					}
+
+					joinerToDelete.add(strtextContinentToChangeCapitalize).add(strtextCountryToChangeCapitalize);
+					String concatStringToDelete = joinerToDelete.toString();
+
+					for (String str : listAdjCountryToRemoveCapitalize) {
+
+						hashMapToUpdate.get(concatStringToDelete).remove(str);
+					}
+
+					for (String tempVar : listAdjCountryToRemoveCapitalize) {
+						Iterator<Map.Entry<String, List<String>>> iter = hashMapToUpdate.entrySet().iterator();
+						while (iter.hasNext()) {
+							Map.Entry<String, List<String>> entry = iter.next();
+							String strKey = entry.getKey();
+							String[] strKeyArrayToDelete = strKey.split(",");
+							if (strKeyArrayToDelete[1].equals(tempVar)) {
+								hashMapToUpdate.get(strKey).remove(strtextCountryToChangeCapitalize);
+							}
 						}
 					}
-					
-				}
-				
-				//continentList.remove(strtextContinentToChangeCapitalize);
-			//	countryList.remove(strtextCountryToChangeCapitalize);
-				for (int t = 0; t < modelToUpdate.getRowCount(); t++) {
-					if (modelToUpdate.getValueAt(t, 0).equals(strtextContinentToUpdate)) {
-						count++;
-					}
-				}
-				if (count < 2) {
-					hashMapControlToUpdate.remove(strtextContinentToChangeCapitalize);
-				}
 
+					strContinentSelectedInRow = strtextContinentToChangeCapitalize;
+					strCountrySelectedInRow = strtextCountryToChangeCapitalize;
+					for (int t = 0; t < modelToUpdate.getRowCount(); t++) {
+						if (modelToUpdate.getValueAt(t, 0).equals(strtextContinentToChangeCapitalize)) {
+							count++;
+						}
+					}
+					if (count < 2) {
+						hashMapControlToUpdate.remove(strtextContinentToChangeCapitalize);
+					}
+					hashMapToUpdate.remove(concatStringToDelete);
+				}
 			}
 		});
 
@@ -144,7 +148,7 @@ public class SaveMapAfterEdit {
 				// TODO Auto-generated method stub
 				// TODO Auto-generated method stub
 				boolean checkCountry = false;
-				boolean CheckEqual = false;
+				boolean checkEqual = false;
 				int row = tableToUpdate.getSelectedRow();
 				if (row > -1) {
 					String strContinentToUpdate = textContinentToEdit.getText().toString().toLowerCase();
@@ -178,7 +182,7 @@ public class SaveMapAfterEdit {
 
 						for (String st : listAdjCountryCapitalize) {
 							if (st.equals(strCountryToUpdateCapitalize)) {
-								CheckEqual = true;
+								checkEqual = true;
 							}
 						}
 
@@ -186,7 +190,7 @@ public class SaveMapAfterEdit {
 							checkCountry = true;
 						}
 
-						if (CheckEqual) {
+						if (checkEqual) {
 							JOptionPane.showMessageDialog(null, "You cannot enter same country", "Error",
 									JOptionPane.ERROR_MESSAGE);
 						}
@@ -197,6 +201,8 @@ public class SaveMapAfterEdit {
 						}
 
 						else {
+							continentList.remove(strContinentSelectedInRow);
+							countryList.remove(strContinentSelectedInRow);
 							StringJoiner joinerToUpdateHashMap = new StringJoiner(",");
 							joinerToUpdateHashMap.add(strContinentToUpdateCapitalize).add(strCountryToUpdateCapitalize);
 							String concatString = joinerToUpdateHashMap.toString();
@@ -206,45 +212,29 @@ public class SaveMapAfterEdit {
 							for (String tempAdj : listAdjCountryCapitalize) {
 
 								for (Map.Entry<String, List<String>> maplist : hashMapToUpdate.entrySet()) {
-									List<String> fetchLinks = new ArrayList<String>();
-									List<String> fetchLinks2 = new ArrayList<String>();
+									List<String> fetchLinksFromHashMap = new ArrayList<String>();
+									List<String> fetchLinksToAddHashMap = new ArrayList<String>();
 									String getAllKeys = maplist.getKey();
 									String[] getIndividual = getAllKeys.split(",");
 									if (getIndividual[1].equals(tempAdj)) {
-										fetchLinks = hashMapToUpdate.get(getAllKeys);
-										fetchLinks2.addAll(fetchLinks);
-										fetchLinks2.add(strCountryToUpdateCapitalize);
-										hashMapToUpdate.replace(getAllKeys, fetchLinks2);
+										fetchLinksFromHashMap = hashMapToUpdate.get(getAllKeys);
+										fetchLinksToAddHashMap.addAll(fetchLinksFromHashMap);
+										fetchLinksToAddHashMap.add(strCountryToUpdateCapitalize);
+										hashMapToUpdate.replace(getAllKeys, fetchLinksToAddHashMap);
 									}
 								}
 
 							}
-							
-							continentList.add(strContinentToUpdateCapitalize);
-							countryList.add(strCountryToUpdateCapitalize);
-							
-							modelToUpdate.setRowCount(0);
-							List<String> tempList = new ArrayList<String>();
-							for (Map.Entry<String, Integer> temp : hashMapControlToUpdate.entrySet()) {
 
-								tempList.add(temp.getKey());
-
+							if (!(continentList.contains(strContinentToUpdateCapitalize))) {
+								continentList.add(strContinentToUpdateCapitalize);
 							}
 
-							for (String obj : tempList) {
-
-								for (Map.Entry<String, List<String>> entry : hashMapToUpdate.entrySet()) {
-									String strKey = entry.getKey();
-									String[] strKeyArrayToEdit = strKey.split(",");
-									if (obj.equals(strKeyArrayToEdit[0])) {
-										String printWithoutBraces = entry.getValue().toString()
-												.replaceAll("(^\\[|\\s|\\]$)", "");
-										modelToUpdate.addRow(new Object[] { strKeyArrayToEdit[0], strKeyArrayToEdit[1],
-												printWithoutBraces, hashMapControlToUpdate.get(strKeyArrayToEdit[0]) });
-									}
-
-								}
+							if (!(countryList.contains(strCountryToUpdateCapitalize))) {
+								countryList.add(strCountryToUpdateCapitalize);
 							}
+
+							reloadModel();
 						}
 					}
 				}
@@ -266,8 +256,7 @@ public class SaveMapAfterEdit {
 				BufferedWriter out;
 				List<String> continentListToPrint = new ArrayList<String>();
 				String textFileName;
-				
-				
+
 				textFileName = File;
 				String textFileNameToShow = textFileName.split("\\.", 2)[0];
 				try {
@@ -335,5 +324,29 @@ public class SaveMapAfterEdit {
 		jframeToUpdate.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jframeToUpdate.setVisible(true);
 		desktop.add(jframeToUpdate);
+	}
+
+	public static void reloadModel() {
+		modelToUpdate.setRowCount(0);
+		List<String> tempList = new ArrayList<String>();
+		for (Map.Entry<String, Integer> temp : hashMapControlToUpdate.entrySet()) {
+
+			tempList.add(temp.getKey());
+
+		}
+
+		for (String obj : tempList) {
+
+			for (Map.Entry<String, List<String>> entry : hashMapToUpdate.entrySet()) {
+				String strKey = entry.getKey();
+				String[] strKeyArrayToUpdate = strKey.split(",");
+				if (obj.equals(strKeyArrayToUpdate[0])) {
+					String printWithoutBraces = entry.getValue().toString().replaceAll("(^\\[|\\s|\\]$)", "");
+					modelToUpdate.addRow(new Object[] { strKeyArrayToUpdate[0], strKeyArrayToUpdate[1],
+							printWithoutBraces, hashMapControlToUpdate.get(strKeyArrayToUpdate[0]) });
+				}
+
+			}
+		}
 	}
 }

@@ -91,9 +91,7 @@ public class SaveMap {
 
 		// Setting values to DataModel from HashMap
 
-		for (Map.Entry<String, List<String>> iterate : mainHashMap.entrySet()) {
-			modelAdjacenyList.addRow(new Object[] { iterate.getKey(), iterate.getValue() });
-		}
+		reloadModel();
 
 		tableAdjacencyList.setModel(modelAdjacenyList);
 
@@ -149,17 +147,17 @@ public class SaveMap {
 						for (String tempAdj : listAdjCountryCapitalize) {
 
 							for (Map.Entry<String, List<String>> maplist : mainHashMap.entrySet()) {
-								List<String> fetchLinks = new ArrayList<String>();
-								List<String> fetchLinks2 = new ArrayList<String>();
+								List<String> fetchLinksFromHashMap = new ArrayList<String>();
+								List<String> fetchLinksToAddHashMap = new ArrayList<String>();
 								getAllKeys = maplist.getKey();
 								getIndividual= getAllKeys.split(",");
 								if (getIndividual[1].equals(tempAdj)) {
-									fetchLinks = mainHashMap.get(getAllKeys);
-									if (!fetchLinks.equals(empty)) {
-										fetchLinks2.addAll(fetchLinks);
+									fetchLinksFromHashMap = mainHashMap.get(getAllKeys);
+									if (!fetchLinksFromHashMap.equals(empty)) {
+										fetchLinksToAddHashMap.addAll(fetchLinksFromHashMap);
 									}
-									fetchLinks2.add(strHashMapKeySplit[1]);
-									mainHashMap.replace(getAllKeys, fetchLinks2);
+									fetchLinksToAddHashMap.add(strHashMapKeySplit[1]);
+									mainHashMap.replace(getAllKeys, fetchLinksToAddHashMap);
 								}
 							}
 
