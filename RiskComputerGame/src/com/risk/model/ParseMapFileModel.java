@@ -108,6 +108,7 @@ public class ParseMapFileModel {
 						// jframeUpload.setVisible(true);
 					} else {
 						System.out.println(continentHashMap);
+						
 
 					}
 				}
