@@ -45,6 +45,38 @@ public class ReinforcementPhaseModel {
 	}
 	
 	
+	public static void calcReinforcementsByTerr(String player){
+		
+		
+		int reinforcementArmies = 0;
+		int playerTerr = 0;
+		
+		
+		//calculate reinforcement armies by number of countries owned
+		for(String plyrVal : StartUpPhaseModel.playerInfo.keySet()){
+			String plyrInfo [] = plyrVal.split("-");
+			if(plyrInfo[0].equals(player) || plyrInfo[0] == player){
+				playerTerr ++ ; 
+			}
+		}
+		
+		
+		if(playerTerr < 9 ){
+			reinforcementArmies = reinforcementArmies + 3;
+		}
+		if(playerTerr >= 9){
+			reinforcementArmies = reinforcementArmies + ((int) Math.floor((double)playerTerr/3));
+		}
+		
+		reinforcement.put(player,reinforcementArmies);
+	}
+	
+	
+	public static void calcReinforcementByCntrlVal(String player){
+		
+	}
+	
+	
 	public static void reinforceRandom(String player){
 		
 		
