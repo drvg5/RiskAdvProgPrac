@@ -9,21 +9,19 @@ import java.util.Map;
 import java.util.StringJoiner;
 
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import com.risk.ui.SaveMapUponEditUI;
 
 public class SaveMapUponEditModel {
-	
-	static List<String> continentList = new ArrayList<String>();
-	static List<String> countryList = new ArrayList<String>();
+
 	static String strContinentSelectedInRow;
 	static String strCountrySelectedInRow;
-	
-	public void removeRecord(String strtextContinentToUpdate,String strtextCountryToUpdate,String strtextAdjToUpdate)
-	{
-		int count = 0;
 
+	public void removeRecord(String strtextContinentToUpdate, String strtextCountryToUpdate,
+			String strtextAdjToUpdate) {
+		int count = 0;
 
 		String strtextContinentToChangeCapitalize = strtextContinentToUpdate.substring(0, 1).toUpperCase()
 				+ strtextContinentToUpdate.substring(1);
@@ -32,7 +30,7 @@ public class SaveMapUponEditModel {
 		List<String> listAdjCountryToRemove = new ArrayList<String>();
 		List<String> listAdjCountryToRemoveCapitalize = new ArrayList<String>();
 		listAdjCountryToRemove = new ArrayList<String>(Arrays.asList(strtextAdjToUpdate.split(",")));
- 		StringJoiner joinerToDelete = new StringJoiner(",");
+		StringJoiner joinerToDelete = new StringJoiner(",");
 		for (String capital : listAdjCountryToRemove) {
 			capital = capital.substring(0, 1).toUpperCase() + capital.substring(1);
 			listAdjCountryToRemoveCapitalize.add(capital);
@@ -69,8 +67,79 @@ public class SaveMapUponEditModel {
 			SaveMapUponEditUI.hashMapControlToUpdate.remove(strtextContinentToChangeCapitalize);
 		}
 		SaveMapUponEditUI.hashMapToUpdate.remove(concatStringToDelete);
-	
+
+	}
+
+	public void updateRecord(String strAdjToUpdate, String strContinentToUpdate, String strCountryToUpdate,
+			String strContinentControlValueToUpdate) {
+		boolean checkCountry = false;
+		boolean checkEqual = false;
+		List<String> listAdjCountry = new ArrayList<String>();
+		List<String> listAdjCountryCapitalize = new ArrayList<String>();
+		listAdjCountry = new ArrayList<String>(Arrays.asList(strAdjToUpdate.split(",")));
+		for (String capital : listAdjCountry) {
+			capital = capital.substring(0, 1).toUpperCase() + capital.substring(1);
+			listAdjCountryCapitalize.add(capital);
+		}
+		String strContinentToUpdateCapitalize = strContinentToUpdate.substring(0, 1).toUpperCase()
+				+ strContinentToUpdate.substring(1);
+		String strCountryToUpdateCapitalize = strCountryToUpdate.substring(0, 1).toUpperCase()
+				+ strCountryToUpdate.substring(1);
+
+		for (String st : listAdjCountryCapitalize) {
+			if (st.equals(strCountryToUpdateCapitalize)) {
+				checkEqual = true;
+			}
+		}
+
+		if (!(SaveMapUponEditUI.countryList.containsAll(listAdjCountryCapitalize))) {
+			checkCountry = true;
+		}
+
+		if (checkEqual) {
+			new SaveMapUponEditUI().errorMessageForUpdate(1);
+		}
+
+		else if (checkCountry) {
+			new SaveMapUponEditUI().errorMessageForUpdate(2);
+		}
+
+		else {
+			SaveMapUponEditUI.continentList.remove(strContinentSelectedInRow);
+			SaveMapUponEditUI.countryList.remove(strContinentSelectedInRow);
+			StringJoiner joinerToUpdateHashMap = new StringJoiner(",");
+			joinerToUpdateHashMap.add(strContinentToUpdateCapitalize).add(strCountryToUpdateCapitalize);
+			String concatString = joinerToUpdateHashMap.toString();
+			int continetControlValue = Integer.parseInt(strContinentControlValueToUpdate);
+			SaveMapUponEditUI.hashMapControlToUpdate.put(strContinentToUpdateCapitalize, continetControlValue);
+			SaveMapUponEditUI.hashMapToUpdate.put(concatString, listAdjCountryCapitalize);
+			for (String tempAdj : listAdjCountryCapitalize) {
+
+				for (Map.Entry<String, List<String>> maplist : SaveMapUponEditUI.hashMapToUpdate.entrySet()) {
+					List<String> fetchLinksFromHashMap = new ArrayList<String>();
+					List<String> fetchLinksToAddHashMap = new ArrayList<String>();
+					String getAllKeys = maplist.getKey();
+					String[] getIndividual = getAllKeys.split(",");
+					if (getIndividual[1].equals(tempAdj)) {
+						fetchLinksFromHashMap = SaveMapUponEditUI.hashMapToUpdate.get(getAllKeys);
+						fetchLinksToAddHashMap.addAll(fetchLinksFromHashMap);
+						fetchLinksToAddHashMap.add(strCountryToUpdateCapitalize);
+						SaveMapUponEditUI.hashMapToUpdate.replace(getAllKeys, fetchLinksToAddHashMap);
+					}
+				}
+
+			}
+
+			if (!(SaveMapUponEditUI.continentList.contains(strContinentToUpdateCapitalize))) {
+				SaveMapUponEditUI.continentList.add(strContinentToUpdateCapitalize);
+			}
+
+			if (!(SaveMapUponEditUI.countryList.contains(strCountryToUpdateCapitalize))) {
+				SaveMapUponEditUI.countryList.add(strCountryToUpdateCapitalize);
+			}
+
+			SaveMapUponEditUI.reloadModel();
+		}
+
 	}
 }
-	
-	

@@ -33,19 +33,20 @@ public class SaveMapUponEditUI {
 	static JInternalFrame jframeToUpdate = new JInternalFrame();
 	public static DefaultTableModel modelToUpdate = new DefaultTableModel(
 			new Object[] { "Continent List", "Country", "Adjacent List", "Control Value" }, 0);
-	static List<String> continentList = new ArrayList<String>();
-	static List<String> countryList = new ArrayList<String>();
+	public static List<String> continentList = new ArrayList<String>();
+	public static List<String> countryList = new ArrayList<String>();
 	public static HashMap<String, List<String>> hashMapToUpdate = new HashMap<String, List<String>>();
 	public static HashMap<String, Integer> hashMapControlToUpdate = new HashMap<String, Integer>();
 	static String strContinentSelectedInRow;
 	static String strCountrySelectedInRow;
 	String textFileName;
-	
+
 	// static JDesktopPane desktopUploadForUpdate;
 	SaveMapUponEditModel saveMapUponEditModel = new SaveMapUponEditModel();
 
 	public void updateAndSave(HashMap<String, List<String>> continentHashMapToEdit,
-			HashMap<String, Integer> continentControlValueHashMapToEdit, JDesktopPane desktop, final String UploadFileName) {
+			HashMap<String, Integer> continentControlValueHashMapToEdit, JDesktopPane desktop,
+			final String UploadFileName) {
 
 		hashMapToUpdate = continentHashMapToEdit;
 		hashMapControlToUpdate = continentControlValueHashMapToEdit;
@@ -116,96 +117,17 @@ public class SaveMapUponEditUI {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				// TODO Auto-generated method stub
-				boolean checkCountry = false;
-				boolean checkEqual = false;
+
 				int row = tableToUpdate.getSelectedRow();
 				if (row > -1) {
 					String strContinentToUpdate = textContinentToEdit.getText().toString().toLowerCase();
 					String strCountryToUpdate = textCountryToEdit.getText().toString().toLowerCase();
 					String strAdjToUpdate = textAdjListToEdit.getText().toString().toLowerCase();
 					String strContinentControlValueToUpdate = textContinentControlValueToEdit.getText();
+					// call to model
+					saveMapUponEditModel.updateRecord(strAdjToUpdate, strContinentToUpdate, strCountryToUpdate,
+							strContinentControlValueToUpdate);
 
-					if ((strContinentToUpdate.isEmpty()) || (strCountryToUpdate.isEmpty()) || (strAdjToUpdate.isEmpty())
-							|| (strContinentControlValueToUpdate.isEmpty())) {
-						JOptionPane.showMessageDialog(null, "Oops!Please enter values", "Error",
-								JOptionPane.ERROR_MESSAGE);
-					}
-
-					else if (!(strContinentControlValueToUpdate.matches("^[0-9]+$"))) {
-						JOptionPane.showMessageDialog(null, "Only Numbers are  allowed", "Error in Control Value",
-								JOptionPane.ERROR_MESSAGE);
-					}
-
-					else {
-						List<String> listAdjCountry = new ArrayList<String>();
-						List<String> listAdjCountryCapitalize = new ArrayList<String>();
-						listAdjCountry = new ArrayList<String>(Arrays.asList(strAdjToUpdate.split(",")));
-						for (String capital : listAdjCountry) {
-							capital = capital.substring(0, 1).toUpperCase() + capital.substring(1);
-							listAdjCountryCapitalize.add(capital);
-						}
-						String strContinentToUpdateCapitalize = strContinentToUpdate.substring(0, 1).toUpperCase()
-								+ strContinentToUpdate.substring(1);
-						String strCountryToUpdateCapitalize = strCountryToUpdate.substring(0, 1).toUpperCase()
-								+ strCountryToUpdate.substring(1);
-
-						for (String st : listAdjCountryCapitalize) {
-							if (st.equals(strCountryToUpdateCapitalize)) {
-								checkEqual = true;
-							}
-						}
-
-						if (!(countryList.containsAll(listAdjCountryCapitalize))) {
-							checkCountry = true;
-						}
-
-						if (checkEqual) {
-							JOptionPane.showMessageDialog(null, "You cannot enter same country", "Error",
-									JOptionPane.ERROR_MESSAGE);
-						}
-
-						else if (checkCountry) {
-							JOptionPane.showMessageDialog(null, "You can link only countries listed here", "Error",
-									JOptionPane.ERROR_MESSAGE);
-						}
-
-						else {
-							continentList.remove(strContinentSelectedInRow);
-							countryList.remove(strContinentSelectedInRow);
-							StringJoiner joinerToUpdateHashMap = new StringJoiner(",");
-							joinerToUpdateHashMap.add(strContinentToUpdateCapitalize).add(strCountryToUpdateCapitalize);
-							String concatString = joinerToUpdateHashMap.toString();
-							int continetControlValue = Integer.parseInt(strContinentControlValueToUpdate);
-							hashMapControlToUpdate.put(strContinentToUpdateCapitalize, continetControlValue);
-							hashMapToUpdate.put(concatString, listAdjCountryCapitalize);
-							for (String tempAdj : listAdjCountryCapitalize) {
-
-								for (Map.Entry<String, List<String>> maplist : hashMapToUpdate.entrySet()) {
-									List<String> fetchLinksFromHashMap = new ArrayList<String>();
-									List<String> fetchLinksToAddHashMap = new ArrayList<String>();
-									String getAllKeys = maplist.getKey();
-									String[] getIndividual = getAllKeys.split(",");
-									if (getIndividual[1].equals(tempAdj)) {
-										fetchLinksFromHashMap = hashMapToUpdate.get(getAllKeys);
-										fetchLinksToAddHashMap.addAll(fetchLinksFromHashMap);
-										fetchLinksToAddHashMap.add(strCountryToUpdateCapitalize);
-										hashMapToUpdate.replace(getAllKeys, fetchLinksToAddHashMap);
-									}
-								}
-
-							}
-
-							if (!(continentList.contains(strContinentToUpdateCapitalize))) {
-								continentList.add(strContinentToUpdateCapitalize);
-							}
-
-							if (!(countryList.contains(strCountryToUpdateCapitalize))) {
-								countryList.add(strCountryToUpdateCapitalize);
-							}
-
-							reloadModel();
-						}
-					}
 				}
 				textAdjListToEdit.setText(null);
 				textContinentControlValueToEdit.setText(null);
@@ -314,6 +236,16 @@ public class SaveMapUponEditUI {
 				}
 
 			}
+		}
+	}
+
+	public void errorMessageForUpdate(int i) {
+		if (i == 1) {
+			JOptionPane.showMessageDialog(null, "You cannot enter same country", "Error", JOptionPane.ERROR_MESSAGE);
+
+		} else if (i == 2) {
+			JOptionPane.showMessageDialog(null, "You can link only countries listed here", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
