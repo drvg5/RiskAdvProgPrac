@@ -354,7 +354,7 @@ public class StartUpPhaseModel {
 		
 			
 			int numberOfPlayers = 6;
-			startUpPhase(numberOfPlayers,territoryMap);
+			//startUpPhase(numberOfPlayers,territoryMap);
 	}
 	
 }

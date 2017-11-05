@@ -9,7 +9,7 @@ public class GameDriverNew extends Object{
 	
 	public static int playerGTTerr = 0;
 	
-	public static void gameStart(HashMap<String,List<String>> territoryMap){
+	public static void gameStart(HashMap<String,List<String>> territoryMap, HashMap<String, Integer> continentControlValueHashMap){
 		
 		int numberOfPlayers;
 		
