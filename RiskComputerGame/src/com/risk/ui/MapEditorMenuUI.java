@@ -20,8 +20,8 @@ import com.risk.model.EditMapModel;
  */
 public class MapEditorMenuUI {
 
-	public static void mapEditorNavigation(JDesktopPane desktop) {
-		JInternalFrame jframeMapEditor = new JInternalFrame("Map Editor");
+	public static void mapEditorNavigation(final JDesktopPane desktop) {
+		final JInternalFrame jframeMapEditor = new JInternalFrame("Map Editor");
 		JButton jbuttonCreateMap = new JButton("Create Map");
 		JButton jbuttonEditMap = new JButton("Edit Map");
 		JButton jbuttonMainMenu = new JButton("Close");

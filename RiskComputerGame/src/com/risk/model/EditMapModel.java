@@ -3,7 +3,6 @@ package com.risk.model;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.beans.PropertyVetoException;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -69,13 +68,13 @@ public class EditMapModel {
 	 * 
 	 */
 
-	public static void fetchMap(JDesktopPane desktop) {
-		HashMap<String, List<String>> continentHashMap = new HashMap<String, List<String>>();
-		HashMap<String, Integer> continentControlValueHashMap = new HashMap<String, Integer>();
+	public static void fetchMap(final JDesktopPane desktop) {
+		final HashMap<String, List<String>> continentHashMap = new HashMap<String, List<String>>();
+		final HashMap<String, Integer> continentControlValueHashMap = new HashMap<String, Integer>();
 		final String strTerritory = "[Territories]";
 		final String strMap = "[Map]";
 		final String strContinent = "[Continents]";
-		JInternalFrame jframeUpload = new JInternalFrame("Upload");
+		final JInternalFrame jframeUpload = new JInternalFrame("Upload");
 		jframeUpload.setLayout(null);
 		jframeUpload.setSize(300, 300);
 		jframeUpload.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -231,29 +230,29 @@ public class EditMapModel {
 	 * 
 	 */
 
-	public static void editMap(HashMap<String, List<String>> continentHashMap,
+	public static void editMap(final HashMap<String, List<String>> continentHashMap,
 			HashMap<String, Integer> continentControlValueHashMap, JDesktopPane desktop) {
 
 		continentHashMapToEdit = continentHashMap;
 		continentControlValueHashMapToEdit = continentControlValueHashMap;
 		List<String> listContinentToCheck = new ArrayList<String>();
-		List<String> listCountryToCheck = new ArrayList<String>();
-		JTable tableContinent = new JTable();
+		final List<String> listCountryToCheck = new ArrayList<String>();
+		final JTable tableContinent = new JTable();
 		JLabel labelContinentToEdit = new JLabel("Continent");
 		labelContinentToEdit.setBounds(20, 260, 60, 25);
-		JTextField textContinentToEdit = new JTextField();
+		final JTextField textContinentToEdit = new JTextField();
 		textContinentToEdit.setBounds(150, 260, 100, 25);
 		JLabel labelCountryToEdit = new JLabel("Country");
 		labelCountryToEdit.setBounds(20, 290, 60, 25);
-		JTextField textCountryToEdit = new JTextField();
+		final JTextField textCountryToEdit = new JTextField();
 		textCountryToEdit.setBounds(150, 290, 100, 25);
 		JLabel labelContinentControlValueToEdit = new JLabel("Control Value");
 		labelContinentControlValueToEdit.setBounds(20, 350, 130, 25);
-		JTextField textContinentControlValueToEdit = new JTextField();
+		final JTextField textContinentControlValueToEdit = new JTextField();
 		textContinentControlValueToEdit.setBounds(150, 350, 50, 25);
 		JLabel labelAdjListToEdit = new JLabel("Adjacent Countries");
 		labelAdjListToEdit.setBounds(20, 320, 130, 25);
-		JTextField textAdjListToEdit = new JTextField();
+		final JTextField textAdjListToEdit = new JTextField();
 		textAdjListToEdit.setBounds(150, 320, 200, 25);
 		JLabel labelAdjMessageToEdit = new JLabel("<-----Please Enter Comma seperated");
 		labelAdjMessageToEdit.setForeground(Color.RED);

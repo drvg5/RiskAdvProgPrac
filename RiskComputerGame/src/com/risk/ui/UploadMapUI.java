@@ -74,7 +74,7 @@ public class UploadMapUI {
 
 	}
 
-	public void showErrorMessage(int i) {
+	public void showErrorMessageForUpload(int i) {
 		if (i == 1) {
 			JOptionPane.showMessageDialog(null, "Invalid Map!File extension is wrong", "Upload Error",
 					JOptionPane.ERROR_MESSAGE);
@@ -84,11 +84,6 @@ public class UploadMapUI {
 		} else {
 			JOptionPane.showMessageDialog(null, "Invalid Map! File is missing Map or Continent or Territory section",
 					"Upload Error", JOptionPane.ERROR_MESSAGE);
-		}
-		try {
-			jframeUpload.setClosed(true);
-		} catch (PropertyVetoException e1) {
-			e1.printStackTrace();
 		}
 
 	}
