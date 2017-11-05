@@ -45,8 +45,9 @@ public class ReinforcementPhaseModel {
 	}
 	
 	
-	public static void calcReinforcementsByTerr(String player){
+	public static String calcReinforcementsByTerr(String player){
 		
+		String reinTerrMsg;
 		
 		int reinforcementArmies = 0;
 		int playerTerr = 0;
@@ -68,13 +69,83 @@ public class ReinforcementPhaseModel {
 			reinforcementArmies = reinforcementArmies + ((int) Math.floor((double)playerTerr/3));
 		}
 		
-		reinforcement.put(player,reinforcementArmies);
-	}
-	
-	
-	public static void calcReinforcementByCntrlVal(String player){
+		reinTerrMsg = playerTerr + "," + reinforcementArmies;
 		
+		reinforcement.put(player,reinforcementArmies);
+		
+		return reinTerrMsg;
 	}
+	
+	
+	public static ArrayList<String> calcReinforcementByCntrlVal(String player){
+		
+		ArrayList<String> cntrlValMsg = new ArrayList<String>();
+				
+		HashMap<String,Integer> playerContTerr = new HashMap<String,Integer>();
+		
+		for(String playerKey : StartUpPhaseModel.playerInfo.keySet()){
+			
+			String[] playerKeySplit = playerKey.split("-");
+			
+			if(playerKeySplit[0].equals(player) || playerKeySplit[0] == player){
+				
+				if(!playerContTerr.isEmpty()){
+					
+					if(playerContTerr.containsKey(playerKeySplit[2])){
+						
+						int numberOfTerr = 	playerContTerr.get(playerKeySplit[2]);
+						playerContTerr.put(playerKeySplit[2], numberOfTerr + 1);
+						
+					}
+					else{
+						playerContTerr.put(playerKeySplit[2],1);
+					}
+				}//end if(!playerContTerr.isEmpty())
+				
+				else{
+					playerContTerr.put(playerKeySplit[2],1);
+				}//end else for if(!playerContTerr.isEmpty())...
+				
+				
+			}//end if(playerKeySplit[0].equals(player)...
+			
+		}//end for(String playerKey : Sta...
+		
+		for(String continent : StartUpPhaseModel.terrPerCont.keySet()){
+			
+			int territories = StartUpPhaseModel.terrPerCont.get(continent);
+			
+			if(playerContTerr.containsKey(continent)){
+				
+				int playerTerr = playerContTerr.get(continent);
+				
+				//if player has all the territories of a continent
+				if(playerTerr == territories){
+				
+					
+					//get current reinforcements
+					int reinforcements = reinforcement.get(player);
+					
+					//get control value of the continent
+					
+					int cntrlVal  = ConfigureMapModel.continentControlValueHashMap.get(continent);
+					
+					cntrlValMsg.add(continent+","+reinforcements+","+cntrlVal);
+					
+					//add control Value of the continent owned to the reinforcment armies.
+					reinforcement.put(player,reinforcements + cntrlVal);
+					
+				}//end if(playerTerr == territories)...
+				
+			}
+			else
+				continue;
+			
+		}//end for(String continent : StartUpPhase...
+		
+		return cntrlValMsg;
+		
+	}//end method calcReinforcementByCntrlVal
 	
 	
 	public static void reinforceRandom(String player){
@@ -121,6 +192,7 @@ public class ReinforcementPhaseModel {
 		
 	}
 	
+	
 	public static void main(String[] args){
 		
 
@@ -162,7 +234,7 @@ public class ReinforcementPhaseModel {
 		
 			
 			int numberOfPlayers = 3;
-			StartUpPhaseModel.startUpPhase(numberOfPlayers,territoryMap);
+			StartUpPhaseModel.preStartUp(numberOfPlayers,territoryMap);
 			
 			calculateReinforcement("1");
 			calculateReinforcement("2");

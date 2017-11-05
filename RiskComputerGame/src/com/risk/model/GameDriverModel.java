@@ -121,7 +121,7 @@ public class GameDriverModel {
 				try{
 					numberOfPlayers = enterPlayersMenu();
 					
-					StartUpPhaseModel.startUpPhase(numberOfPlayers,territoryMap);
+				//	StartUpPhaseModel.startUpPhase(numberOfPlayers,territoryMap);
 					
 					if(playerGTTerr == 0){
 						continue;

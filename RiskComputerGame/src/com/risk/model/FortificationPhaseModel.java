@@ -24,7 +24,7 @@ public class FortificationPhaseModel {
 	public static int fortifySetEmpty = 0;
 
 	
-	public static void createFortifySet(String player, HashMap<String, List<String>> territoryMap){
+	public static void createFortifySet(String player,HashMap<String,List<String>> territoryMap){
 		
 	   fortifySet.clear();
 		
@@ -43,7 +43,7 @@ public class FortificationPhaseModel {
 	    		   String territory = keyArray[1];
 	    		   String mapKey = continent + "," + territory;
 	    		   
-	    		  
+	    		   //change to continentHashMap
 	    		   List<String> adjacencyList = territoryMap.get(mapKey);
 	    		   
 	    		   //check if player own any adjacent territory to one which already owns
@@ -247,7 +247,7 @@ public class FortificationPhaseModel {
 
 		int numberOfPlayers = 6;
 
-		StartUpPhaseModel.startUpPhase(numberOfPlayers,territoryMap);
+		StartUpPhaseModel.preStartUp(numberOfPlayers, territoryMap);
 		
 		ReinforcementPhaseModel.calculateReinforcement("1");
 		ReinforcementPhaseModel.calculateReinforcement("2");
