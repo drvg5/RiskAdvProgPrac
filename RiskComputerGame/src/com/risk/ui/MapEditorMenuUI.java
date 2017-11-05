@@ -60,7 +60,7 @@ public class MapEditorMenuUI {
 				} catch (PropertyVetoException e1) {
 					e1.printStackTrace();
 				}
-				EditMapModel.fetchMap(desktop);
+				EditMapUI.fetchMap(desktop);
 			}
 		});
 

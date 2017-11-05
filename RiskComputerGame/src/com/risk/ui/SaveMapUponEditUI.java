@@ -1,4 +1,4 @@
-package com.risk.model;
+package com.risk.ui;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -27,39 +26,46 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-public class SaveMapAfterEdit {
+import com.risk.model.SaveMapUponEditModel;
+
+public class SaveMapUponEditUI {
 
 	static JInternalFrame jframeToUpdate = new JInternalFrame();
-	static DefaultTableModel modelToUpdate = new DefaultTableModel(
+	public static DefaultTableModel modelToUpdate = new DefaultTableModel(
 			new Object[] { "Continent List", "Country", "Adjacent List", "Control Value" }, 0);
 	static List<String> continentList = new ArrayList<String>();
 	static List<String> countryList = new ArrayList<String>();
-	static HashMap<String, List<String>> hashMapToUpdate = new HashMap<String, List<String>>();
-	static HashMap<String, Integer> hashMapControlToUpdate = new HashMap<String, Integer>();
+	public static HashMap<String, List<String>> hashMapToUpdate = new HashMap<String, List<String>>();
+	public static HashMap<String, Integer> hashMapControlToUpdate = new HashMap<String, Integer>();
 	static String strContinentSelectedInRow;
 	static String strCountrySelectedInRow;
+	String textFileName;
+	
+	// static JDesktopPane desktopUploadForUpdate;
+	SaveMapUponEditModel saveMapUponEditModel = new SaveMapUponEditModel();
 
-	public static void updateAndSave(HashMap<String, List<String>> mainhashMapToUpdate,
-			HashMap<String, Integer> hashMapContControlToUpdate, JDesktopPane desktop, String File) {
-		hashMapToUpdate = mainhashMapToUpdate;
-		hashMapControlToUpdate = hashMapContControlToUpdate;
-		JTable tableToUpdate = new JTable();
+	public void updateAndSave(HashMap<String, List<String>> continentHashMapToEdit,
+			HashMap<String, Integer> continentControlValueHashMapToEdit, JDesktopPane desktop, final String UploadFileName) {
+
+		hashMapToUpdate = continentHashMapToEdit;
+		hashMapControlToUpdate = continentControlValueHashMapToEdit;
+		textFileName = UploadFileName;
+		final JTable tableToUpdate = new JTable();
 		JLabel labelContinentToEdit = new JLabel("Continent");
 		labelContinentToEdit.setBounds(20, 260, 60, 25);
-		JTextField textContinentToEdit = new JTextField();
+		final JTextField textContinentToEdit = new JTextField();
 		textContinentToEdit.setBounds(150, 260, 100, 25);
 		JLabel labelCountryToEdit = new JLabel("Country");
 		labelCountryToEdit.setBounds(20, 290, 60, 25);
-		JTextField textCountryToEdit = new JTextField();
+		final JTextField textCountryToEdit = new JTextField();
 		textCountryToEdit.setBounds(150, 290, 100, 25);
 		JLabel labelContinentControlValueToEdit = new JLabel("Control Value");
 		labelContinentControlValueToEdit.setBounds(20, 350, 130, 25);
-		JTextField textContinentControlValueToEdit = new JTextField();
+		final JTextField textContinentControlValueToEdit = new JTextField();
 		textContinentControlValueToEdit.setBounds(150, 350, 50, 25);
-		
 		JLabel labelAdjListToEdit = new JLabel("Adjacent Countries");
 		labelAdjListToEdit.setBounds(20, 320, 130, 25);
-		JTextField textAdjListToEdit = new JTextField();
+		final JTextField textAdjListToEdit = new JTextField();
 		textAdjListToEdit.setBounds(150, 320, 200, 25);
 		JLabel labelAdjMessageToEdit = new JLabel("<-----Please Enter Comma seperated");
 		labelAdjMessageToEdit.setForeground(Color.RED);
@@ -97,47 +103,9 @@ public class SaveMapAfterEdit {
 
 				if (!(strtextAdjToUpdate.isEmpty())) {
 
-					String strtextContinentToChangeCapitalize = strtextContinentToUpdate.substring(0, 1).toUpperCase()
-							+ strtextContinentToUpdate.substring(1);
-					String strtextCountryToChangeCapitalize = strtextCountryToUpdate.substring(0, 1).toUpperCase()
-							+ strtextCountryToUpdate.substring(1);
-					StringJoiner joinerToDelete = new StringJoiner(",");
-					for (String capital : listAdjCountryToRemove) {
-						capital = capital.substring(0, 1).toUpperCase() + capital.substring(1);
-						listAdjCountryToRemoveCapitalize.add(capital);
-					}
-
-					joinerToDelete.add(strtextContinentToChangeCapitalize).add(strtextCountryToChangeCapitalize);
-					String concatStringToDelete = joinerToDelete.toString();
-
-					for (String str : listAdjCountryToRemoveCapitalize) {
-
-						hashMapToUpdate.get(concatStringToDelete).remove(str);
-					}
-
-					for (String tempVar : listAdjCountryToRemoveCapitalize) {
-						Iterator<Map.Entry<String, List<String>>> iter = hashMapToUpdate.entrySet().iterator();
-						while (iter.hasNext()) {
-							Map.Entry<String, List<String>> entry = iter.next();
-							String strKey = entry.getKey();
-							String[] strKeyArrayToDelete = strKey.split(",");
-							if (strKeyArrayToDelete[1].equals(tempVar)) {
-								hashMapToUpdate.get(strKey).remove(strtextCountryToChangeCapitalize);
-							}
-						}
-					}
-
-					strContinentSelectedInRow = strtextContinentToChangeCapitalize;
-					strCountrySelectedInRow = strtextCountryToChangeCapitalize;
-					for (int t = 0; t < modelToUpdate.getRowCount(); t++) {
-						if (modelToUpdate.getValueAt(t, 0).equals(strtextContinentToChangeCapitalize)) {
-							count++;
-						}
-					}
-					if (count < 2) {
-						hashMapControlToUpdate.remove(strtextContinentToChangeCapitalize);
-					}
-					hashMapToUpdate.remove(concatStringToDelete);
+					// call to model
+					saveMapUponEditModel.removeRecord(strtextContinentToUpdate, strtextCountryToUpdate,
+							strtextAdjToUpdate);
 				}
 			}
 		});
@@ -256,9 +224,6 @@ public class SaveMapAfterEdit {
 				FileWriter fstream;
 				BufferedWriter out;
 				List<String> continentListToPrint = new ArrayList<String>();
-				String textFileName;
-
-				textFileName = File;
 				String textFileNameToShow = textFileName.split("\\.", 2)[0];
 				try {
 
@@ -325,6 +290,7 @@ public class SaveMapAfterEdit {
 		jframeToUpdate.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jframeToUpdate.setVisible(true);
 		desktop.add(jframeToUpdate);
+
 	}
 
 	public static void reloadModel() {
@@ -350,4 +316,5 @@ public class SaveMapAfterEdit {
 			}
 		}
 	}
+
 }
