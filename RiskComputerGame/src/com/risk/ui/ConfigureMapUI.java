@@ -37,28 +37,29 @@ public class ConfigureMapUI {
 	static JInternalFrame jframeContinent = new JInternalFrame();
 	ConfigureMapModel configureMapModel;
 
-	public void createContinentandCountry(JDesktopPane desktop) {
+	public void createContinentandCountry(final JDesktopPane desktop) {
 
-		JTable tableContinent = new JTable();
-		DefaultTableModel modelContinent = new DefaultTableModel(
+		final JTable tableContinent = new JTable();
+		final DefaultTableModel modelContinent = new DefaultTableModel(
 				new Object[] { "Continent List", "Country", "Continent Control Value" }, 0);
 		JLabel labelContinent = new JLabel("Continent");
 		labelContinent.setBounds(20, 390, 60, 25);
-		JTextField textContinent = new JTextField();
+		final JTextField textContinent = new JTextField();
 		textContinent.setBounds(150, 390, 100, 25);
 		JLabel labelCountry = new JLabel("Country");
 		labelCountry.setBounds(280, 390, 60, 25);
-		JTextField textCountry = new JTextField();
+		final JTextField textCountry = new JTextField();
 		textCountry.setBounds(350, 390, 100, 25);
 		JLabel labelContinentControlValue = new JLabel(
 				"<html>Control Value(<font color='blue'>Alter while changing Continent</font>)</html>");
 		labelContinentControlValue.setBounds(460, 390, 380, 25);
-		JTextField textContinentControlValue = new JTextField();
+		final JTextField textContinentControlValue = new JTextField();
 		textContinentControlValue.setBounds(730, 390, 50, 25);
 		JButton btnAddAll = new JButton("Add to Map");
 		btnAddAll.setBounds(20, 450, 150, 25);
-		JButton btnConfigureAdj = new JButton("Add Adjacency after Configuring");
+		final JButton btnConfigureAdj = new JButton("Add Adjacency after Configuring");
 		btnConfigureAdj.setBounds(180, 450, 300, 25);
+		btnConfigureAdj.setEnabled(false);;
 		JButton btnEdit = new JButton("Update incorrect entry by selecting row");
 		btnEdit.setBounds(490, 450, 270, 25);
 
@@ -75,9 +76,15 @@ public class ConfigureMapUI {
 						textContinentControlValue.getText().toLowerCase().trim() };
 
 				String[] dataReturned = configureMapModel.addContinentsAndCountries(data);
-				modelContinent.addRow(new Object[] { dataReturned[0], dataReturned[1], dataReturned[2] });
-				textCountry.setText(null);
-				textContinentControlValue.setEnabled(false);
+				if(!(dataReturned[1]==null))
+				{
+					modelContinent.addRow(new Object[] { dataReturned[0], dataReturned[1], dataReturned[2] });
+					textCountry.setText(null);
+					textContinentControlValue.setEnabled(false);	
+					btnConfigureAdj.setEnabled(true);;
+
+				}
+				
 
 			}
 		});
@@ -175,10 +182,12 @@ public class ConfigureMapUI {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					jframeContinent.setClosed(true);
+					configureMapModel.inputForAdjacency(desktop);
+
 				} catch (PropertyVetoException e1) {
 					e1.printStackTrace();
 				}
-				configureMapModel.inputForAdjacency(desktop);
+				
 			}
 		});
 
@@ -201,6 +210,45 @@ public class ConfigureMapUI {
 		jframeContinent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jframeContinent.setVisible(true);
 		desktop.add(jframeContinent);
+	}
+
+	public void showErrorMessageForSaving(int i) {
+		if (i==1) {
+			JOptionPane.showMessageDialog(null, "Oops!Please enter values", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+		else if (i==2) {
+			JOptionPane.showMessageDialog(null, "Only Alphabets are allowed", "Error in Continent and Country",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+		else if (i==3) {
+			JOptionPane.showMessageDialog(null, "Invalid Map! Country already exists in Country List",
+					"Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+		else if (i==4) {
+
+			JOptionPane.showMessageDialog(null, "Invalid Map! Continent already exists in Country List",
+					"Error", JOptionPane.ERROR_MESSAGE);
+
+		}
+
+		else if (i==5) {
+			JOptionPane.showMessageDialog(null, "Invalid Map! Country already exists in Continent List",
+					"Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+		else if (i==6) {
+			JOptionPane.showMessageDialog(null, "Invalid Map! Continent and Country name cant be same", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+		else if (i==7) {
+			JOptionPane.showMessageDialog(null, "Only Numbers are  allowed", "Error in Control Value",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
 	}
 
 }

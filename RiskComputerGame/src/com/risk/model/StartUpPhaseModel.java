@@ -50,6 +50,8 @@ public class StartUpPhaseModel {
 	 */
 	public static TreeSet<String> countryTaken = new TreeSet<String>();
 	
+	public static int totalTerr = 0;
+	
 	
 	/**
 	 * This method populates {@link StartUpPhaseModel#countryTaken} TreeSet and  {@link StartUpPhaseModel#terrCont}  HashMap and HashMap to Number of Territories per Continent
@@ -60,11 +62,8 @@ public class StartUpPhaseModel {
 	 * @param numberOfPlayers Total number of players in a game
 	 * @param territoryMap    HashMap which stores the Game Map values
 	 */
-	public static void startUpPhase(int numberOfPlayers,HashMap<String, List<String>> territoryMap ){
+	public static void preStartUp(int numberOfPlayers,HashMap<String, List<String>> territoryMap ){
 	
-		
-		//Total no. of territories
-		int totalTerr = 0;
 		
 		//populate countryTaken and terrCont
 		for(String terrMapKey : territoryMap.keySet()){
@@ -99,15 +98,16 @@ public class StartUpPhaseModel {
 		if(numberOfPlayers > totalTerr){
 			System.out.println("Players can not be greater than the number of territories");
 			
-			GameDriverModel.playerGTTerr = 0;
+			GameDriverNew.playerGTTerr = 0;
 			
 			return;
 		}
 		
 		
 		
-		GameDriverModel.playerGTTerr = 1;
+		GameDriverNew.playerGTTerr = 1;
 		
+		/*
 		terrPerPlayerPopulate(numberOfPlayers,totalTerr);
 		
 		
@@ -116,10 +116,13 @@ public class StartUpPhaseModel {
 		
 		deployArmiesRandomly(numberOfPlayers);
 		
-		
+		*/
 		
 		
 	}
+	
+	
+	
 	
 	
 	/**
@@ -295,6 +298,7 @@ public class StartUpPhaseModel {
 		
 		 for(int pl = 1;pl<=numberOfPlayers;pl++){
 			 
+			 int maxArmies = RiskConstants.MAX_ARMIES;
 			 List<String> playerCountryList = new ArrayList<String>();
 			 
  			 //populate playerCountryList
@@ -307,7 +311,7 @@ public class StartUpPhaseModel {
 			 }
 			 
 			 //assign armies to territories until armiesCount is 0 for a player
-			 while(RiskConstants.MAX_ARMIES != 0){
+			 while(maxArmies != 0){
 				 
 				//choose territory randomly to put armies into
 				String randomChosenCountry = playerCountryList.get(randomCountry.nextInt(playerCountryList.size()) );
@@ -317,7 +321,7 @@ public class StartUpPhaseModel {
 				
 				StartUpPhaseModel.playerInfo.put(randomChosenCountry, playerInfoValue);
 				
-				RiskConstants.MAX_ARMIES--;
+				maxArmies--;
 			 }//end while(armiesCount != 0)
 			 
 		 }//end for(int pl = 1;pl<=numberOfPlayers;pl++)
@@ -350,7 +354,7 @@ public class StartUpPhaseModel {
 		
 			
 			int numberOfPlayers = 6;
-			startUpPhase(numberOfPlayers,territoryMap);
+			//startUpPhase(numberOfPlayers,territoryMap);
 	}
 	
 }
