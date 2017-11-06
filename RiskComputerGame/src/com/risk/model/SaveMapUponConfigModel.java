@@ -17,6 +17,7 @@ public class SaveMapUponConfigModel {
 
 		boolean checkExist = false;
 		boolean CheckEqual = false;
+		boolean doNothing = false;
 		String[] strHashMapKeySplit = strHashMapKey.split(",");
 		List<String> listAdjCountry = new ArrayList<String>();
 		List<String> listAdjCountryCapitalize = new ArrayList<String>();
@@ -47,30 +48,53 @@ public class SaveMapUponConfigModel {
 		}
 
 		else {
-			mainHashMap.put(strHashMapKey, listAdjCountryCapitalize);
 
+			List<String> checkExistingAdj = new ArrayList<String>();
 			List<String> empty = new ArrayList<String>();
+			checkExistingAdj = mainHashMap.get(strHashMapKey);
+
+			for (String strOut : checkExistingAdj) {
+				for (String strIn : listAdjCountryCapitalize) {
+					if (strOut.equals(strIn)) {
+						doNothing = true;
+					}
+				}
+			}
+
+			if (checkExistingAdj.equals(empty)) {
+				mainHashMap.put(strHashMapKey, listAdjCountryCapitalize);
+			}
+
+			else if (doNothing) {
+			}
+
+			else {
+
+				checkExistingAdj.addAll(listAdjCountryCapitalize);
+				mainHashMap.replace(strHashMapKey, checkExistingAdj);
+			}
+
 			String getAllKeys;
 			String[] getIndividual;
 			for (String tempAdj : listAdjCountryCapitalize) {
-
-				for (Map.Entry<String, List<String>> maplist : mainHashMap.entrySet()) {
-					List<String> fetchLinksFromHashMap = new ArrayList<String>();
-					List<String> fetchLinksToAddHashMap = new ArrayList<String>();
-					getAllKeys = maplist.getKey();
-					getIndividual = getAllKeys.split(",");
-					if (getIndividual[1].equals(tempAdj)) {
-						fetchLinksFromHashMap = mainHashMap.get(getAllKeys);
-						if (!fetchLinksFromHashMap.equals(empty)) {
-							fetchLinksToAddHashMap.addAll(fetchLinksFromHashMap);
+				if (!(doNothing)) {
+					for (Map.Entry<String, List<String>> maplist : mainHashMap.entrySet()) {
+						List<String> fetchLinksFromHashMap = new ArrayList<String>();
+						List<String> fetchLinksToAddHashMap = new ArrayList<String>();
+						getAllKeys = maplist.getKey();
+						getIndividual = getAllKeys.split(",");
+						if (getIndividual[1].equals(tempAdj)) {
+							fetchLinksFromHashMap = mainHashMap.get(getAllKeys);
+							if (!fetchLinksFromHashMap.equals(empty)) {
+								fetchLinksToAddHashMap.addAll(fetchLinksFromHashMap);
+							}
+							fetchLinksToAddHashMap.add(strHashMapKeySplit[1]);
+							mainHashMap.replace(getAllKeys, fetchLinksToAddHashMap);
 						}
-						fetchLinksToAddHashMap.add(strHashMapKeySplit[1]);
-						mainHashMap.replace(getAllKeys, fetchLinksToAddHashMap);
 					}
+
 				}
-
 			}
-
 		}
 
 		return mainHashMap;
