@@ -24,6 +24,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import com.risk.model.SaveMapUponConfigModel;
+
 /**
  * <h1>Save Map</h1>
  * <p>
@@ -36,14 +38,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class SaveMapUponConfigUI {
 
-
-
 	static HashMap<String, List<String>> mainHashMap = new HashMap<String, List<String>>();
 	static HashMap<String, Integer> continentControlValueHashMap = new HashMap<String, Integer>();
 	static List<String> listContinentCountry = new ArrayList<String>();
+	static List<String> listFirstEntry = new ArrayList<String>();
 	static JInternalFrame jframeAdjCountryList = new JInternalFrame();
 	static JDesktopPane desktopSaveMap;
-	static List<String> listFirstEntry = new ArrayList<String>();
 	static DefaultTableModel modelAdjacenyList = new DefaultTableModel(
 			new Object[] { "Continent and Country", "Adjacency List" }, 0);
 
@@ -66,15 +66,14 @@ public class SaveMapUponConfigUI {
 	 */
 
 	public static void saveToFile(List<String> keyForHashMap, HashMap<String, Integer> controlValueHashmap,
-			List<String> listToCheckDuplicateContinent, List<String> listToCheckDuplicateCountry,
+			List<String> listToCheckDuplicateContinent, final List<String> listToCheckDuplicateCountry,
 			JDesktopPane desktop) {
 		continentControlValueHashMap = controlValueHashmap;
 		listContinentCountry = keyForHashMap;
-		JTable tableAdjacencyList = new JTable();
-
+		final JTable tableAdjacencyList = new JTable();
 		JLabel labelAdjList = new JLabel("Adjacent Countries");
 		labelAdjList.setBounds(20, 420, 130, 25);
-		JTextField textAdjList = new JTextField();
+		final JTextField textAdjList = new JTextField();
 		textAdjList.setBounds(150, 420, 300, 25);
 		JLabel labelAdjMessage = new JLabel("<-----Please Enter Comma seperated");
 		labelAdjMessage.setForeground(Color.RED);
@@ -106,66 +105,15 @@ public class SaveMapUponConfigUI {
 			public void actionPerformed(ActionEvent e) {
 
 				int row = tableAdjacencyList.getSelectedRow();
-				boolean checkExist = false;
-				boolean CheckEqual = false;
 				if (row > -1) {
 					String strHashMapKey = modelAdjacenyList.getValueAt(row, 0).toString();
-					String[] strHashMapKeySplit = strHashMapKey.split(",");
 					String strAdjListToUpdate = textAdjList.getText().toString().toLowerCase();
-					List<String> listAdjCountry = new ArrayList<String>();
-					List<String> listAdjCountryCapitalize = new ArrayList<String>();
-					listAdjCountry = new ArrayList<String>(Arrays.asList(strAdjListToUpdate.split(",")));
-					for (String capital : listAdjCountry) {
-						capital = capital.substring(0, 1).toUpperCase() + capital.substring(1);
-						listAdjCountryCapitalize.add(capital);
-					}
+					mainHashMap = new SaveMapUponConfigModel().addAdjacencyForCountries(strHashMapKey, strAdjListToUpdate,
+							listToCheckDuplicateCountry, mainHashMap);
 
-					for (String st : listAdjCountryCapitalize) {
-						if (st.equals(strHashMapKeySplit[1])) {
-							CheckEqual = true;
-						}
-					}
-					if (!(listToCheckDuplicateCountry.containsAll(listAdjCountryCapitalize))) {
-						checkExist = true;
-					}
+					reloadModel();
+					textAdjList.setText(null);
 
-					if (CheckEqual) {
-						JOptionPane.showMessageDialog(null, "You cannot enter same country", "Error",
-								JOptionPane.ERROR_MESSAGE);
-					}
-
-					else if (checkExist) {
-						JOptionPane.showMessageDialog(null, "You can link only countries listed here", "Error",
-								JOptionPane.ERROR_MESSAGE);
-					}
-
-					else {
-						mainHashMap.put(strHashMapKey, listAdjCountryCapitalize);
-						List<String> fetchLinks = new ArrayList<String>();
-						List<String> fetchLinks2 = new ArrayList<String>();
-
-						for (String tempAdj : listAdjCountryCapitalize) {
-
-							for (Map.Entry<String, List<String>> maplist : mainHashMap.entrySet()) {
-								String getAllKeys = maplist.getKey();
-								String[] getIndividual = getAllKeys.split(",");
-								if (getIndividual[1].equals(tempAdj)) {
-									String concatString = getIndividual[0] + "," + tempAdj;
-									fetchLinks.clear();
-									fetchLinks = mainHashMap.get(concatString);
-									fetchLinks2.clear();
-									fetchLinks2.addAll(fetchLinks);
-									fetchLinks2.add(strHashMapKeySplit[1]);
-									mainHashMap.put(concatString, fetchLinks2);
-								}
-							}
-
-						}
-
-						modelAdjacenyList.setValueAt(listAdjCountryCapitalize, row, 1);
-						reloadModel();
-						textAdjList.setText(null);
-					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Please select a row to Update", "Error",
 							JOptionPane.ERROR_MESSAGE);
@@ -269,6 +217,18 @@ public class SaveMapUponConfigUI {
 		modelAdjacenyList.setRowCount(0);
 		for (Map.Entry<String, List<String>> iterate : mainHashMap.entrySet()) {
 			modelAdjacenyList.addRow(new Object[] { iterate.getKey(), iterate.getValue() });
+		}
+
+	}
+
+	public void showErrorMessageAdjacency(String message) {
+		if (message.equals("checkEqual")) {
+			JOptionPane.showMessageDialog(null, "You cannot enter same country", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+		else if (message.equals("checkExist")) {
+			JOptionPane.showMessageDialog(null, "You can link only countries listed here", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 
 	}

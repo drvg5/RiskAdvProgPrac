@@ -1,6 +1,5 @@
 package com.risk.model;
 
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -11,9 +10,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.StringJoiner;
-
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -49,14 +45,14 @@ public class ParseMapFileModel {
 				scanner.close();
 
 				if (!((FileFormat.equals("map") || (FileFormat.equals("txt"))))) {
-					uploadMapUI.showErrorMessage(1);
+					uploadMapUI.showErrorMessageForUpload(1);
 
 				}
 
 				else if (!((Maplist.contains("[Map]") && Maplist.contains("[Continents]")
 						&& Maplist.contains("[Territories]")))) {
 
-					uploadMapUI.showErrorMessage(2);
+					uploadMapUI.showErrorMessageForUpload(2);
 
 				} else {
 					mainloop: for (int i = 0; i < Maplist.size(); i++) {
@@ -85,7 +81,7 @@ public class ParseMapFileModel {
 									checkDuplicates.add(arrayMapList[0]);
 									checkDuplicate = findDuplicates(checkDuplicates);
 									if (checkDuplicate) {
-										uploadMapUI.showErrorMessage(3);
+										uploadMapUI.showErrorMessageForUpload(3);
 										checkDuplicates.clear();
 										continentHashMap.clear();
 										break mainloop;
