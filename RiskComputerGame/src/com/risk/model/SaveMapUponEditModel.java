@@ -15,8 +15,8 @@ import com.risk.ui.SaveMapUponEditUI;
 
 public class SaveMapUponEditModel {
 	
-	static List<String> continentList = new ArrayList<String>();
-	static List<String> countryList = new ArrayList<String>();
+	//static List<String> continentList = new ArrayList<String>();
+	//static List<String> countryList = new ArrayList<String>();
 	static String strContinentSelectedInRow;
 	static String strCountrySelectedInRow;
 	

@@ -10,9 +10,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringJoiner;
 
 import javax.swing.JButton;
@@ -40,12 +44,13 @@ public class SaveMapUponEditUI {
 	static String strContinentSelectedInRow;
 	static String strCountrySelectedInRow;
 	String textFileName;
-	
+
 	// static JDesktopPane desktopUploadForUpdate;
 	SaveMapUponEditModel saveMapUponEditModel = new SaveMapUponEditModel();
 
 	public void updateAndSave(HashMap<String, List<String>> continentHashMapToEdit,
-			HashMap<String, Integer> continentControlValueHashMapToEdit, JDesktopPane desktop, final String UploadFileName) {
+			HashMap<String, Integer> continentControlValueHashMapToEdit, JDesktopPane desktop,
+			final String UploadFileName) {
 
 		hashMapToUpdate = continentHashMapToEdit;
 		hashMapControlToUpdate = continentControlValueHashMapToEdit;
@@ -78,7 +83,11 @@ public class SaveMapUponEditUI {
 		for (Map.Entry<String, List<String>> entry : hashMapToUpdate.entrySet()) {
 			String strKey = entry.getKey();
 			String[] strKeyArrayToEdit = strKey.split(",");
+			if(!(continentList.contains(strKeyArrayToEdit[0])))
+			{
 			continentList.add(strKeyArrayToEdit[0]);
+			}
+			if(!(countryList.contains(strKeyArrayToEdit[1])))
 			countryList.add(strKeyArrayToEdit[1]);
 		}
 
@@ -224,47 +233,92 @@ public class SaveMapUponEditUI {
 				FileWriter fstream;
 				BufferedWriter out;
 				List<String> continentListToPrint = new ArrayList<String>();
+				boolean checkConnected = false;
 				String textFileNameToShow = textFileName.split("\\.", 2)[0];
-				try {
-
-					fstream = new FileWriter("C:/Users/Khashyap/Documents/Maps/" + textFileName);
-					out = new BufferedWriter(fstream);
-					out.write("[Map]");
-					out.write(System.getProperty("line.separator"));
-					out.write(System.getProperty("line.separator"));
-					out.write("[Continents]");
-					out.write(System.getProperty("line.separator"));
-					for (Map.Entry<String, Integer> temp : hashMapControlToUpdate.entrySet()) {
-
-						continentListToPrint.add(temp.getKey());
-						out.write(temp.getKey() + "=" + temp.getValue());
-						out.write(System.getProperty("line.separator"));
-					}
-					out.write(System.getProperty("line.separator"));
-					out.write("[Territories]");
-					out.write(System.getProperty("line.separator"));
-					for (String obj : continentListToPrint) {
-						for (Map.Entry<String, List<String>> iterate : hashMapToUpdate.entrySet()) {
-							String strKey = iterate.getKey();
-							String[] strKeyArray = strKey.split(",");
-							if (obj.equals(strKeyArray[0])) {
-								String printWithoutBraces = iterate.getValue().toString().replaceAll("(^\\[|\\s|\\]$)",
-										"");
-								out.write(strKeyArray[1] + "," + "50" + "," + "50" + "," + strKeyArray[0] + ","
-										+ printWithoutBraces);
-								out.write(System.getProperty("line.separator"));
+				List<String> connectivityCheck = new ArrayList<String>();
+				Iterator<Map.Entry<String, List<String>>> iter = hashMapToUpdate.entrySet().iterator();
+				while (iter.hasNext()) {
+					Map.Entry<String, List<String>> entry = iter.next();
+					String strKey = entry.getKey();
+					String[] strKeyArrayToCheck = strKey.split(",");
+					Iterator<Map.Entry<String, List<String>>> innerIter = hashMapToUpdate.entrySet().iterator();
+					while (innerIter.hasNext()) {
+						Map.Entry<String, List<String>> innerEntry = innerIter.next();
+						String strinnerKey = innerEntry.getKey();
+						String[] strinnerKeyArrayToCheck = strinnerKey.split(",");
+						List<String> innerList = innerEntry.getValue();
+						if (!((strKeyArrayToCheck[0]).equals(strinnerKeyArrayToCheck[0]))) {
+							for (int inner = 0; inner < innerList.size(); inner++) {
+								if (strKeyArrayToCheck[1].equals(innerList.get(inner))) {
+									if (!(connectivityCheck.contains(strKeyArrayToCheck[1]))) {
+										connectivityCheck.add(strKeyArrayToCheck[0]);
+									}
+								}
 							}
+						}
+					}
 
+				}
+				int sizeOfCont = continentList.size();
+				Set<String> hs = new HashSet<>();
+				hs.addAll(connectivityCheck);
+				connectivityCheck.clear();
+				connectivityCheck.addAll(hs);
+				Collection<String> collectionAdjCont = connectivityCheck;
+				Collection<String> collectionTotalCont = continentList;
+				collectionTotalCont.removeAll(collectionAdjCont);
+				if (collectionTotalCont.isEmpty() || sizeOfCont == 1) {
+					checkConnected = true;
+				}
+
+				if (!(checkConnected)) {
+					JOptionPane.showMessageDialog(null,
+							"Invalid Map! Not a connected graph. Check adjacency for" + collectionTotalCont,
+							"Adjacency Error", JOptionPane.ERROR_MESSAGE);
+				}
+
+				else {
+
+					try {
+
+						fstream = new FileWriter("C:/Users/Khashyap/Documents/Maps/" + textFileName);
+						out = new BufferedWriter(fstream);
+						out.write("[Map]");
+						out.write(System.getProperty("line.separator"));
+						out.write(System.getProperty("line.separator"));
+						out.write("[Continents]");
+						out.write(System.getProperty("line.separator"));
+						for (Map.Entry<String, Integer> temp : hashMapControlToUpdate.entrySet()) {
+
+							continentListToPrint.add(temp.getKey());
+							out.write(temp.getKey() + "=" + temp.getValue());
+							out.write(System.getProperty("line.separator"));
 						}
 						out.write(System.getProperty("line.separator"));
-					}
-					out.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				JOptionPane.showMessageDialog(null, textFileNameToShow + " \t is saved");
-				jframeToUpdate.setVisible(false);
+						out.write("[Territories]");
+						out.write(System.getProperty("line.separator"));
+						for (String obj : continentListToPrint) {
+							for (Map.Entry<String, List<String>> iterate : hashMapToUpdate.entrySet()) {
+								String strKey = iterate.getKey();
+								String[] strKeyArray = strKey.split(",");
+								if (obj.equals(strKeyArray[0])) {
+									String printWithoutBraces = iterate.getValue().toString()
+											.replaceAll("(^\\[|\\s|\\]$)", "");
+									out.write(strKeyArray[1] + "," + "50" + "," + "50" + "," + strKeyArray[0] + ","
+											+ printWithoutBraces);
+									out.write(System.getProperty("line.separator"));
+								}
 
+							}
+							out.write(System.getProperty("line.separator"));
+						}
+						out.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					JOptionPane.showMessageDialog(null, textFileNameToShow + " \t is saved");
+					jframeToUpdate.setVisible(false);
+				}
 			}
 		});
 
