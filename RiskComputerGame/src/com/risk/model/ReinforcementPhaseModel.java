@@ -3,10 +3,11 @@ package com.risk.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Observable;
 import java.util.Random;
 import java.util.TreeSet;
 
-public class ReinforcementPhaseModel {
+public class ReinforcementPhaseModel extends Observable {
 
 	public static HashMap<String,Integer> reinforcement = new HashMap<String,Integer>();
 	public static HashMap<String,ArrayList<String>> playerCards = new HashMap<String,ArrayList<String>>();
@@ -18,7 +19,9 @@ public class ReinforcementPhaseModel {
 	public static final String CARD_3 = "Infantry";
 	public static final String[] CARD_TYPES = {CARD_1,CARD_2,CARD_3}; 
 	//public static int reinforcment;
-	
+	public static TreeSet<String> prevCards = new TreeSet<String>(); ;
+	public static TreeSet<String> chosenCards = new TreeSet<String>();
+	public static TreeSet<String> newCards = new TreeSet<String>();
 	
 	public static void calculateReinforcement(String player){
 		
