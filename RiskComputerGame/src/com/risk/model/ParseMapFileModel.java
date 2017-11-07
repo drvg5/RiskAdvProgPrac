@@ -32,8 +32,6 @@ public class ParseMapFileModel {
 		if (returnValue == 0) {
 			String UploadFileName = file.getName();
 			String FileFormat = FilenameUtils.getExtension(UploadFileName);
-			// System.out.println("\nUploadFileName:" + UploadFileName + FileFormat );
-
 			try {
 				Scanner scanner = new Scanner(file);
 				List<String> Maplist = new ArrayList<>();
@@ -103,6 +101,7 @@ public class ParseMapFileModel {
 					} else {
 
 						System.out.println(continentHashMap);
+						GameDriverNew.gameStart(continentHashMap, continentCount);
 
 					}
 				}

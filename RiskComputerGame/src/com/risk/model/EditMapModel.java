@@ -65,7 +65,7 @@ public class EditMapModel {
 			editMapUI.closeUploadForEdit();
 			UploadFileName = file.getName();
 			String FileFormat = FilenameUtils.getExtension(UploadFileName);
-
+			if(!(UploadFileName.isEmpty()))
 			try {
 				Scanner scanner = new Scanner(file);
 				List<String> Maplist = new ArrayList<>();
@@ -159,6 +159,7 @@ public class EditMapModel {
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
+			
 		}
 
 	}

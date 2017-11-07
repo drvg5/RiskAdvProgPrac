@@ -119,11 +119,20 @@ public class ConfigureMapModel {
 			String concatString = joiner.toString();
 			listKeyForHashMap.add(concatString);
 			continentControlValueHashMap.put(strContinentCapitalize, continetControlValue);
+			if(!(listToCheckDuplicateContinentCapitalize.contains(strContinentCapitalize))) {
 			listToCheckDuplicateContinentCapitalize.add(strContinentCapitalize);
+			}
+			if(!(listToCheckDuplicateCountryCapitalize.contains(strCountryCapitalize)))
+			{
 			listToCheckDuplicateCountryCapitalize.add(strCountryCapitalize);
+			}
+			if(!(listToCheckDuplicateContinent.contains(strContinent)))
+			{
 			listToCheckDuplicateContinent.add(strContinent);
+			}
+			if(!(listToCheckDuplicateCountry.contains(strCountry))) {
 			listToCheckDuplicateCountry.add(strCountry);
-
+			}
 			dataReturned[0] = strContinentCapitalize;
 			dataReturned[1] = strCountryCapitalize;
 			dataReturned[2] = strControlValue;

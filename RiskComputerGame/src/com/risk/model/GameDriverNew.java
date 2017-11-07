@@ -20,6 +20,13 @@ public class GameDriverNew extends Object{
 				
 				StartUpPhaseModel.preStartUp(numberOfPlayers, territoryMap);
 				
+				try {
+					new PlayerClass().gamePlay(numberOfPlayers, territoryMap, continentControlValueHashMap);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				if(playerGTTerr == 0){
 					continue;
 				}
