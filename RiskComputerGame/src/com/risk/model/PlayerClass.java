@@ -128,10 +128,15 @@ public class PlayerClass extends Observable {
 		boolean attackPossible = false;
 		while (choice) {
 			// Player chooses country to attack.
-			attackPossible = AttackPhaseModel.chooseCountryTobeAttacked(plyr, territoryMap);
+			AttackPhaseModel.chooseCountryToBeAttacked(plyr, territoryMap);
 			// country is attacked and armies are deducted
 			// based on the dice roll obtained
-			AttackPhaseModel.rollDice(attackPossible);
+			try {
+				AttackPhaseModel.rollDice();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			// decision of winner and players next move determined
 			choice = AttackPhaseModel.result();
 		}
