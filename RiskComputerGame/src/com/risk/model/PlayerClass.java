@@ -8,7 +8,17 @@ import java.util.List;
 import java.util.Observable;
 import java.util.TreeSet;
 
+/**
+ * This is an Observable Class which has implementations for state change in the game play 
+ * 
+ * 
+ * @author Navjot  
+ * @author Ashish
+ */
+
 public class PlayerClass extends Observable {
+	
+
 
 	public static String msg;
 
@@ -28,7 +38,9 @@ public class PlayerClass extends Observable {
 		int plyr = 1;
 
 		int currentNumberOfPlayers = numberOfPlayers;
-
+		
+		PlayerClass playerClassObj = new PlayerClass();
+		
 		// round robin for game starts
 		while (true) {
 
@@ -41,9 +53,12 @@ public class PlayerClass extends Observable {
 				plyr = 1;
 			}
 
+			
+			
+
 			// reinforcement phase method called
-			PlayerClass playerClassObj = new PlayerClass();
-			playerClassObj.reinforcementPhase(plyr);
+			playerClassObj.reinforcementPhase(plyr,continentControlValueHashMap);
+
 
 			msg = "reinforce done";
 			setChanged();
@@ -93,33 +108,45 @@ public class PlayerClass extends Observable {
 
 	}
 
-	public void reinforcementPhase(int plyr) {
 
-		// call method to calculate reinforcements by number of territories
+
+	public  void reinforcementPhase(int plyr, HashMap<String, Integer> continentControlValueHashMap){
+		
+		//call method to calculate reinforcements by number of territories
 		String reinTerrMsg = ReinforcementPhaseModel.calcReinforcementsByTerr(Integer.toString(plyr));
-
+		
 		PlayerClass.msg = "reinforcements by number of territories," + reinTerrMsg + ",";
 		setChanged();
 		notifyObservers(this);
-
-		// call method to calculate cards
-
-		// call method to calculate reinforcements if a player owns the whole continent
-		ArrayList<String> cntrlValMsg = ReinforcementPhaseModel.calcReinforcementByCntrlVal(Integer.toString(plyr));
+		
+		
+		//call method to calculate reinforcements by cards
+		String cardExgMsg = ReinforcementPhaseModel.calcReinforcementByCards(Integer.toString(plyr));
+		PlayerClass.msg = "reinforcements by exchanging cards|" + reinTerrMsg + "|";
+		setChanged();
+		notifyObservers(this);
+		
+		
+		//call method to calculate reinforcements if a player owns the whole continent
+		ArrayList<String> cntrlValMsg = ReinforcementPhaseModel.calcReinforcementByCntrlVal(Integer.toString(plyr), continentControlValueHashMap);
 		String[] cntrlVal = cntrlValMsg.toArray(new String[cntrlValMsg.size()]);
-
+		
 		PlayerClass.msg = "reinforcements by control value-";
-		for (String cntrValIndividual : cntrlVal) {
+		
+		for(String cntrValIndividual : cntrlVal){
 			PlayerClass.msg = PlayerClass.msg + cntrValIndividual + "-";
 		}
 		setChanged();
 		notifyObservers(this);
-
-		ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
-
+		
+		
+		
+		//ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
+		
 		ReinforcementPhaseModel.reinforceRandom(Integer.toString(plyr));
 	}
 
+	
 	/*
 	 * method for initiating the attack phase
 	 */
@@ -143,46 +170,59 @@ public class PlayerClass extends Observable {
 
 	}
 
-	public static void fortificationPhase(int plyr, HashMap<String, List<String>> territoryMap) {
-
+	
+	public static void fortificationPhase(int plyr,HashMap<String, List<String>> territoryMap){
+		
+		
 		FortificationPhaseModel.createFortifySet(Integer.toString(plyr), territoryMap);
-
+		
 		FortificationPhaseModel.randomFortification(Integer.toString(plyr));
+		
 	}
+	
 
-	public static boolean checkPlyrVictory(int plyr) {
-
+	
+	
+	
+	public static boolean checkPlyrVictory(int plyr){
+		
 		TreeSet<Integer> playerCheck = new TreeSet<Integer>();
-
-		for (String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()) {
+		
+		for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
 			String[] playerInfoArr = playerInfoKey.split("-");
-
+			
 			playerCheck.add(Integer.valueOf(playerInfoArr[0]));
-		}
-
-		if (playerCheck.size() == 1) {
+		}//end for
+		
+		if(playerCheck.size() == 1){
 			return true;
-		}
-
+		}//end if
+		
 		return false;
-	}
-
-	public static int plyrsRemaining() {
-
+	}//end method checkPlyrVictory
+	
+	
+	/**
+	 * This method counts the number of players present at any instant in the game
+	 * @return Current Number of Players
+	 */
+	public static int plyrsRemaining(){
+		
 		int currentNumberOfPlyrs = 0;
-
+		
 		TreeSet<Integer> playerCheck = new TreeSet<Integer>();
-
-		for (String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()) {
+		
+		for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
 			String[] playerInfoArr = playerInfoKey.split("-");
-
+			
 			playerCheck.add(Integer.valueOf(playerInfoArr[0]));
-		}
-
+		}//end for
+		
 		currentNumberOfPlyrs = playerCheck.size();
-
+		
 		return currentNumberOfPlyrs;
-
-	}
-
+		
+	}//end method plyrsRemaining()
+	
+	
 }

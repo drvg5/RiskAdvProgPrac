@@ -49,6 +49,8 @@ public class StartUpPhaseModel {
 	 * </p>
 	 */
 	public static TreeSet<String> countryTaken = new TreeSet<String>();
+	
+	public static int initialArmies = 0;
 
 	public static int totalTerr = 0;
 
@@ -128,37 +130,54 @@ public class StartUpPhaseModel {
 	 * @param numberOfTerr
 	 *            Number of territories in a whole map
 	 */
-	public static void terrPerPlayerPopulate(int numberOfPlayers, int numberOfTerr) {
 
-		int initialTerr = numberOfTerr / numberOfPlayers;
+	public static void terrPerPlayerPopulate(int numberOfPlayers, int numberOfTerr){
+		
+			int initialTerr = numberOfTerr/numberOfPlayers;
+		
+			int roundUpNumber= (int) Math.ceil((double)numberOfTerr/numberOfPlayers);
+			
+			
+		      for(int pl =1; pl<= numberOfPlayers;pl++)
+		      {
+		    	  terrPerPlayer.put(String.valueOf(pl), initialTerr);
+		      }
+		      
+		      int remainingTerr = numberOfTerr - (initialTerr * numberOfPlayers);
+		      
+		    
+		      Random randomPlayer = new Random();
+		      List<String> listOfPlayerKeys = new ArrayList<String>(terrPerPlayer.keySet());
+		      
+		      int remCount = remainingTerr;
+		      
+		      	      
+		      
+		     
+		    //get random Players and assign them remaining countries one by one
+		      while(remCount!=0)
+		      {
+		    	  	
+		    	  	//recheck
+		    	    String randomPlayerKey = listOfPlayerKeys.get(randomPlayer.nextInt(numberOfPlayers) );
+		    	    
+		    	    if(terrPerPlayer.get(randomPlayerKey) < roundUpNumber )
+		    	    {
+		    	    	int newPlayerArmies = terrPerPlayer.get(randomPlayerKey) + 1;
+			    	    terrPerPlayer.put(randomPlayerKey, newPlayerArmies);
+			    	    remCount--;
+		    	    }
+		    	  	  
+		    	    
+		    	  
+		      }
+		
+		
+	} //end terrPerPlayerPopulate
+	
+	
 
-		int roundUpNumber = (int) Math.ceil((double) numberOfTerr / numberOfPlayers);
 
-		for (int pl = 1; pl <= numberOfPlayers; pl++) {
-			terrPerPlayer.put(String.valueOf(pl), initialTerr);
-		}
-
-		int remainingTerr = numberOfTerr - (initialTerr * numberOfPlayers);
-
-		Random randomPlayer = new Random();
-		List<String> listOfPlayerKeys = new ArrayList<String>(terrPerPlayer.keySet());
-
-		int remCount = remainingTerr;
-
-		// get random Players and assign them remaining countries one by one
-		while (remCount != 0) {
-
-			String randomPlayerKey = listOfPlayerKeys.get(randomPlayer.nextInt(numberOfPlayers));
-
-			if (terrPerPlayer.get(randomPlayerKey) < roundUpNumber) {
-				int newPlayerArmies = terrPerPlayer.get(randomPlayerKey) + 1;
-				terrPerPlayer.put(randomPlayerKey, newPlayerArmies);
-				remCount--;
-			}
-
-		}
-
-	} // end terrPerPlayerPopulate
 
 	/**
 	 * This method assigns territories randomly to the players and populate the
@@ -271,26 +290,17 @@ public class StartUpPhaseModel {
 	public static void deployArmiesRandomly(int numberOfPlayers) {
 
 		Random randomCountry = new Random();
-
+		
+		StartUpPhaseModel.setInitialArmies(numberOfPlayers);
+		
+		
+		
+		int maxArmies;
+		maxArmies = StartUpPhaseModel.initialArmies;
+		
 		for (int pl = 1; pl <= numberOfPlayers; pl++) {
 
-			int maxArmies;
-			// for two players this is the optimum no of armies
-			if (numberOfPlayers == 2) {
-				maxArmies = 40;
-			} else if (numberOfPlayers <= 3 && numberOfPlayers > 2) {
-				maxArmies = 35;
-
-			} else if (numberOfPlayers <= 4 && numberOfPlayers > 3) {
-				maxArmies = 30;
-
-			} else if (numberOfPlayers <= 5 && numberOfPlayers > 4) {
-				maxArmies = 25;
-
-			} else {
-				maxArmies = 20;
-
-			}
+			
 
 			List<String> playerCountryList = new ArrayList<String>();
 
@@ -320,7 +330,31 @@ public class StartUpPhaseModel {
 		} // end for(int pl = 1;pl<=numberOfPlayers;pl++)
 
 	}// end deployArmiesRandoml(int numberOfPlayers)
+	
+	
+	public static void setInitialArmies(int numberOfPlayers){
+		
+		
+		if (numberOfPlayers == 2) {
+			StartUpPhaseModel.initialArmies = 40;
+		} else if (numberOfPlayers <= 3 && numberOfPlayers > 2) {
+			StartUpPhaseModel.initialArmies = 35;
 
+		} else if (numberOfPlayers <= 4 && numberOfPlayers > 3) {
+			StartUpPhaseModel.initialArmies = 30;
+
+		} else if (numberOfPlayers <= 5 && numberOfPlayers > 4) {
+			StartUpPhaseModel.initialArmies = 25;
+
+		} else {
+			StartUpPhaseModel.initialArmies = 20;
+
+		}
+		
+		
+	}
+	
+	
 	public static void main(String[] args) {
 
 		HashMap<String, List<String>> territoryMap = new HashMap<String, List<String>>();
