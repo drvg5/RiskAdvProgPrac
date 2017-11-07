@@ -156,7 +156,8 @@ public class StartUpPhaseModel {
 		    //get random Players and assign them remaining countries one by one
 		      while(remCount!=0)
 		      {
-		    
+		    	  	
+		    	  	//recheck
 		    	    String randomPlayerKey = listOfPlayerKeys.get(randomPlayer.nextInt(numberOfPlayers) );
 		    	    
 		    	    if(terrPerPlayer.get(randomPlayerKey) < roundUpNumber )

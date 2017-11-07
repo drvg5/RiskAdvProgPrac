@@ -9,8 +9,14 @@ import java.util.TreeSet;
 public class ReinforcementPhaseModel {
 
 	public static HashMap<String,Integer> reinforcement = new HashMap<String,Integer>();
-	public static HashMap<String,String> playerCards = new HashMap<String,String>();
-	
+	public static HashMap<String,ArrayList<String>> playerCards = new HashMap<String,ArrayList<String>>();
+	//key -> playernumber + "-" + number of times cards exchanged already
+	//value -> list of 5 cards
+	public static final int FIRST_EXG_ARMIES = 5;
+	public static final String CARD_1 = "Artillery";
+	public static final String CARD_2 = "Cavalry";
+	public static final String CARD_3 = "Infantry";
+	public static final String[] CARD_TYPES = {CARD_1,CARD_2,CARD_3}; 
 	//public static int reinforcment;
 	
 	
@@ -71,13 +77,19 @@ public class ReinforcementPhaseModel {
 		
 		reinTerrMsg = playerTerr + "," + reinforcementArmies;
 		
-		reinforcement.put(player,reinforcementArmies);
+		if(ReinforcementPhaseModel.reinforcement.containsKey(player)){
+			int existingReinforcements = ReinforcementPhaseModel.reinforcement.get(player);
+			reinforcementArmies = existingReinforcements + reinforcementArmies;
+			ReinforcementPhaseModel.reinforcement.put(player,reinforcementArmies);
+		}
+		else
+			ReinforcementPhaseModel.reinforcement.put(player,reinforcementArmies);
 		
 		return reinTerrMsg;
 	}
 	
 	
-	public static ArrayList<String> calcReinforcementByCntrlVal(String player){
+	public static ArrayList<String> calcReinforcementByCntrlVal(String player, HashMap<String, Integer> continentControlValueHashMap){
 		
 		ArrayList<String> cntrlValMsg = new ArrayList<String>();
 				
@@ -128,7 +140,7 @@ public class ReinforcementPhaseModel {
 					
 					//get control value of the continent
 					
-					int cntrlVal  = ConfigureMapModel.continentControlValueHashMap.get(continent);
+					int cntrlVal  = continentControlValueHashMap.get(continent);
 					
 					cntrlValMsg.add(continent+","+reinforcements+","+cntrlVal);
 					
@@ -146,6 +158,241 @@ public class ReinforcementPhaseModel {
 		return cntrlValMsg;
 		
 	}//end method calcReinforcementByCntrlVal
+	
+	
+	public static String calcReinforcementByCards(String player){
+		
+		String cardsMsg = null;
+		int reinforcementArmies = 0;
+		int prevExg = 0;
+		int foundHistoryFlag = 0;
+		int numberOfCards = 0;
+		
+		
+		ArrayList<String> cardsList = new ArrayList<String>();
+		
+		for(String plyrCardExgHistory : ReinforcementPhaseModel.playerCards.keySet()){
+			
+			String [] keySplit = plyrCardExgHistory.split("-");
+			
+			if(keySplit[0].equals(player) || keySplit[0] == player){
+				
+				foundHistoryFlag = 1;
+				
+				//check number of cards
+				cardsList = ReinforcementPhaseModel.playerCards.get(plyrCardExgHistory);
+				numberOfCards = cardsList.size();
+				prevExg = Integer.parseInt(keySplit[1]);
+				
+				break;
+				
+			}//end if(keySplit[0].equals(player) || keySplit[0] == player)
+
+		}//end for
+		
+		if(foundHistoryFlag == 0){
+			cardsMsg = "not enough cards";
+		}
+		else if(foundHistoryFlag == 1){
+			
+			if( numberOfCards < 3){
+				cardsMsg = "not enough cards";
+			}
+			else if( numberOfCards > 3 && numberOfCards < 5 ){
+				
+				//check card types
+				TreeSet<String> cardsSet= new TreeSet<String>(cardsList);
+				int cardTypes  = cardsSet.size();
+				
+				if(cardTypes == 1 || cardTypes == 3){
+					
+					boolean tradeDecision;
+					
+					//randomly choose to trade in cards or not
+					Random randomDecision = new Random();
+					tradeDecision = randomDecision.nextBoolean();
+		    	    
+					if(tradeDecision){
+						
+						//calculate reinforcement armies
+						int newExg = prevExg + 1;
+						reinforcementArmies = ReinforcementPhaseModel.FIRST_EXG_ARMIES * newExg;
+						
+						//edit the playerCards HashMap
+						ReinforcementPhaseModel.playerCards.remove(player + "-" + prevExg);
+						
+						ReinforcementPhaseModel.playerCards.put(player + "-" + newExg,null);
+						
+						//create Msg
+						cardsMsg = ">>>" + reinforcementArmies + ">>>";
+						
+						//edit reinforcement HashMap
+						if(ReinforcementPhaseModel.reinforcement.containsKey(player)){
+							int existingReinforcements = ReinforcementPhaseModel.reinforcement.get(player);
+							reinforcementArmies = existingReinforcements + reinforcementArmies;
+							ReinforcementPhaseModel.reinforcement.put(player,reinforcementArmies);
+						}
+						else{
+							
+							ReinforcementPhaseModel.reinforcement.put(player,reinforcementArmies);
+							
+						}
+						
+						
+					}//end if(tradeDecision)
+					
+					
+				}//end if(cardTypes == 1 || cardTypes == 3)
+				
+			}
+			else if( numberOfCards == 5){
+				foundHistoryFlag = 1;
+				boolean tradeDecision;
+				
+				//randomly choose whether to trade in 3 different cards or 3 similar cards
+				//if true then 3 different , if false then 3 similar cards should be exchanged
+				Random randomDecision = new Random();
+				tradeDecision = randomDecision.nextBoolean();
+				
+				
+				if(tradeDecision){
+					
+					//trade in the 3 different cards
+					
+					int card1 = 0;
+					int card2 = 0;
+					int card3 = 0;
+					TreeSet<String> cardsToBeExchanged = new TreeSet<String>();
+					
+					for(String cardKey : cardsList){
+						if(cardKey.equals(ReinforcementPhaseModel.CARD_1) || cardKey == ReinforcementPhaseModel.CARD_1)
+							card1++;
+						if(cardKey.equals(ReinforcementPhaseModel.CARD_2) || cardKey == ReinforcementPhaseModel.CARD_2)
+							card2++;
+						if(cardKey.equals(ReinforcementPhaseModel.CARD_3) || cardKey == ReinforcementPhaseModel.CARD_3)
+							card3++;
+					}//end for(String cardKey : cardsList)
+					
+					if(card1 == 1){
+						
+						cardsToBeExchanged.add(ReinforcementPhaseModel.CARD_1);
+					}
+					if(card2 == 1){
+						cardsToBeExchanged.add(ReinforcementPhaseModel.CARD_2);
+					}
+					if(card3 == 1){
+						cardsToBeExchanged.add(ReinforcementPhaseModel.CARD_3);
+					}
+					
+					TreeSet<String> newCardSet = new TreeSet<String>(cardsList);
+					
+					
+					for(String card : cardsToBeExchanged){
+						
+						newCardSet.remove(card);
+					}
+					
+					
+					int newExg = prevExg + 1;
+					
+					//calculate reinforcement armies
+					reinforcementArmies = ReinforcementPhaseModel.FIRST_EXG_ARMIES * newExg;
+					
+					//edit the playerCards HashMap
+					ArrayList<String> newCardsList = new ArrayList<String>(newCardSet);
+					ReinforcementPhaseModel.playerCards.remove(player + "-" + prevExg);
+					
+					ReinforcementPhaseModel.playerCards.put(player + "-" + newExg,newCardsList);
+					
+					//create Msg
+					cardsMsg = ">>>" + reinforcementArmies + ">>>";
+					
+					//edit reinforcement HashMap
+					if(ReinforcementPhaseModel.reinforcement.containsKey(player)){
+						int existingReinforcements = ReinforcementPhaseModel.reinforcement.get(player);
+						reinforcementArmies = existingReinforcements + reinforcementArmies;
+						ReinforcementPhaseModel.reinforcement.put(player,reinforcementArmies);
+					}
+					else{
+						
+						ReinforcementPhaseModel.reinforcement.put(player,reinforcementArmies);
+						
+					}
+					
+					
+					
+					
+				}//end if(tradeDecision)
+				
+				else{
+					
+					
+					//trade in the similar 3 cards
+					int card1 = 0;
+					int card2 = 0;
+					int card3 = 0;
+					String cardToBeExchanged = new String() ;
+					
+					for(String cardKey : cardsList){
+						if(cardKey.equals(ReinforcementPhaseModel.CARD_1) || cardKey == ReinforcementPhaseModel.CARD_1)
+							card1++;
+						if(cardKey.equals(ReinforcementPhaseModel.CARD_2) || cardKey == ReinforcementPhaseModel.CARD_2)
+							card2++;
+						if(cardKey.equals(ReinforcementPhaseModel.CARD_3) || cardKey == ReinforcementPhaseModel.CARD_3)
+							card3++;
+					}//end for(String cardKey : cardsList)
+					
+					if(card1 == 3){	
+						cardToBeExchanged = ReinforcementPhaseModel.CARD_1;
+					}
+					else if(card2 == 3){
+						cardToBeExchanged = ReinforcementPhaseModel.CARD_2;
+					}
+					else if(card3 == 3){
+						cardToBeExchanged = ReinforcementPhaseModel.CARD_3;
+					}
+					
+					
+					TreeSet<String> cardSet = new TreeSet<String>(cardsList);
+					cardSet.remove(cardToBeExchanged);
+					
+					int newExg = prevExg + 1;
+					
+					//calculate reinforcement armies
+					reinforcementArmies = ReinforcementPhaseModel.FIRST_EXG_ARMIES * newExg;
+					
+					//edit the playerCards HashMap
+					ArrayList<String> newCardsList = new ArrayList<String>(cardSet);
+					ReinforcementPhaseModel.playerCards.remove(player + "-" + prevExg);
+					
+					ReinforcementPhaseModel.playerCards.put(player + "-" + newExg,newCardsList);
+					
+					//create Msg
+					cardsMsg = ">>>" + reinforcementArmies + ">>>";
+					
+					//edit reinforcement HashMap
+					if(ReinforcementPhaseModel.reinforcement.containsKey(player)){
+						int existingReinforcements = ReinforcementPhaseModel.reinforcement.get(player);
+						reinforcementArmies = existingReinforcements + reinforcementArmies;
+						ReinforcementPhaseModel.reinforcement.put(player,reinforcementArmies);
+					}
+					else{
+						
+						ReinforcementPhaseModel.reinforcement.put(player,reinforcementArmies);
+						
+					}
+					
+					
+					
+				}//end else for if(tradeDecision)
+				
+			}//end else if(numberOfCards == 5)
+			
+		}
+		
+		
+		return cardsMsg;
+	}
 	
 	
 	public static void reinforceRandom(String player){
@@ -190,6 +437,15 @@ public class ReinforcementPhaseModel {
 			
 		}
 		
+	}
+	
+	
+	public static int calculateCardArmies(ArrayList<String> cardsList){
+		
+		int cardArmies = 0;
+
+		
+		return cardArmies;
 	}
 	
 	

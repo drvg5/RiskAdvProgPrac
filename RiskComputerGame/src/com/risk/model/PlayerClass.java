@@ -28,8 +28,6 @@ public class PlayerClass extends Observable {
 		Thread.sleep(5000);
 		
 		
-		
-		
 		int plyr = 1;
 		
 		int currentNumberOfPlayers = numberOfPlayers;
@@ -49,7 +47,7 @@ public class PlayerClass extends Observable {
 			
 			//reinforcement phase method called
 			PlayerClass playerClassObj = new PlayerClass();
-			playerClassObj.reinforcementPhase(plyr);
+			playerClassObj.reinforcementPhase(plyr,continentControlValueHashMap);
 			
 			msg = "reinforce done";
 			setChanged();
@@ -114,7 +112,7 @@ public class PlayerClass extends Observable {
 	
 	
 	
-	public  void reinforcementPhase(int plyr){
+	public  void reinforcementPhase(int plyr, HashMap<String, Integer> continentControlValueHashMap){
 		
 		//call method to calculate reinforcements by number of territories
 		String reinTerrMsg = ReinforcementPhaseModel.calcReinforcementsByTerr(Integer.toString(plyr));
@@ -123,16 +121,20 @@ public class PlayerClass extends Observable {
 		setChanged();
 		notifyObservers(this);
 		
-		//call method to calculate cards
 		
-		
+		//call method to calculate reinforcements by cards
+		String cardExgMsg = ReinforcementPhaseModel.calcReinforcementByCards(Integer.toString(plyr));
+		PlayerClass.msg = "reinforcements by exchanging cards|" + reinTerrMsg + "|";
+		setChanged();
+		notifyObservers(this);
 		
 		
 		//call method to calculate reinforcements if a player owns the whole continent
-		ArrayList<String> cntrlValMsg = ReinforcementPhaseModel.calcReinforcementByCntrlVal(Integer.toString(plyr));
+		ArrayList<String> cntrlValMsg = ReinforcementPhaseModel.calcReinforcementByCntrlVal(Integer.toString(plyr), continentControlValueHashMap);
 		String[] cntrlVal = cntrlValMsg.toArray(new String[cntrlValMsg.size()]);
 		
 		PlayerClass.msg = "reinforcements by control value-";
+		
 		for(String cntrValIndividual : cntrlVal){
 			PlayerClass.msg = PlayerClass.msg + cntrValIndividual + "-";
 		}
@@ -141,7 +143,7 @@ public class PlayerClass extends Observable {
 		
 		
 		
-		ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
+		//ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
 		
 		ReinforcementPhaseModel.reinforceRandom(Integer.toString(plyr));
 	}
@@ -161,11 +163,12 @@ public class PlayerClass extends Observable {
 		FortificationPhaseModel.createFortifySet(Integer.toString(plyr), territoryMap);
 		
 		FortificationPhaseModel.randomFortification(Integer.toString(plyr));
+		
 	}
 	
 	
 	
-	
+	//can be removed
 	public static boolean checkPlyrVictory(int plyr){
 		
 		TreeSet<Integer> playerCheck = new TreeSet<Integer>();
@@ -174,17 +177,20 @@ public class PlayerClass extends Observable {
 			String[] playerInfoArr = playerInfoKey.split("-");
 			
 			playerCheck.add(Integer.valueOf(playerInfoArr[0]));
-		}
+		}//end for
 		
 		if(playerCheck.size() == 1){
 			return true;
-		}
+		}//end if
 		
 		return false;
-	}
+	}//end method checkPlyrVictory
 	
 	
-	
+	/**
+	 * This method counts the number of players present at any instant in the game
+	 * @return Current Number of Players
+	 */
 	public static int plyrsRemaining(){
 		
 		int currentNumberOfPlyrs = 0;
@@ -195,13 +201,13 @@ public class PlayerClass extends Observable {
 			String[] playerInfoArr = playerInfoKey.split("-");
 			
 			playerCheck.add(Integer.valueOf(playerInfoArr[0]));
-		}
+		}//end for
 		
 		currentNumberOfPlyrs = playerCheck.size();
 		
 		return currentNumberOfPlyrs;
 		
-	}
+	}//end method plyrsRemaining()
 	
 	
 }
