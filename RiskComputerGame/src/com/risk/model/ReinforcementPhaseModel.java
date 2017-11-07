@@ -77,7 +77,7 @@ public class ReinforcementPhaseModel extends Observable {
 		if(playerTerr >= 9){
 			reinforcementArmies = reinforcementArmies + ((int) Math.floor((double)playerTerr/3));
 		}
-		
+		 
 		reinTerrMsg = playerTerr + "," + reinforcementArmies;
 		
 		if(ReinforcementPhaseModel.reinforcement.containsKey(player)){

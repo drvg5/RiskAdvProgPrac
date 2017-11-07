@@ -161,10 +161,9 @@ public class PlayerClass extends Observable {
 			try {
 				AttackPhaseModel.rollDice();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			// decision of winner and players next move determined
+			// choose to keep attacking or not
 			choice = AttackPhaseModel.result();
 		}
 
