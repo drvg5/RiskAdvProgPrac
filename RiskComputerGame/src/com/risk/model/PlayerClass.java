@@ -8,7 +8,17 @@ import java.util.List;
 import java.util.Observable;
 import java.util.TreeSet;
 
+/**
+ * This is an Observable Class which has implementations for state change in the game play 
+ * 
+ * 
+ * @author Navjot  
+ * @author Ashish
+ */
+
 public class PlayerClass extends Observable {
+	
+
 
 	public static String msg;
 
