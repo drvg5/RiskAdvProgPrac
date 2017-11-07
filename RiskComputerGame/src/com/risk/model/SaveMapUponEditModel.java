@@ -10,8 +10,11 @@ import java.util.StringJoiner;
 import com.risk.ui.SaveMapUponEditUI;
 
 public class SaveMapUponEditModel {
-
-	static String strContinentSelectedInRow;
+ 
+	
+	//static List<String> continentList = new ArrayList<String>();
+	//static List<String> countryList = new ArrayList<String>();
+ 	static String strContinentSelectedInRow;
 	static String strCountrySelectedInRow;
 
 	public void removeRecord(String strtextContinentToUpdate, String strtextCountryToUpdate,

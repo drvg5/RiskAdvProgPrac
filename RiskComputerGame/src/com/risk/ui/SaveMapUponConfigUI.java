@@ -9,9 +9,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -66,7 +70,7 @@ public class SaveMapUponConfigUI {
 	 */
 
 	public static void saveToFile(List<String> keyForHashMap, HashMap<String, Integer> controlValueHashmap,
-			List<String> listToCheckDuplicateContinent, final List<String> listToCheckDuplicateCountry,
+			final List<String> listToCheckDuplicateContinent, final List<String> listToCheckDuplicateCountry,
 			JDesktopPane desktop) {
 		continentControlValueHashMap = controlValueHashmap;
 		listContinentCountry = keyForHashMap;
@@ -108,8 +112,8 @@ public class SaveMapUponConfigUI {
 				if (row > -1) {
 					String strHashMapKey = modelAdjacenyList.getValueAt(row, 0).toString();
 					String strAdjListToUpdate = textAdjList.getText().toString().toLowerCase();
-					mainHashMap = new SaveMapUponConfigModel().addAdjacencyForCountries(strHashMapKey, strAdjListToUpdate,
-							listToCheckDuplicateCountry, mainHashMap);
+					mainHashMap = new SaveMapUponConfigModel().addAdjacencyForCountries(strHashMapKey,
+							strAdjListToUpdate, listToCheckDuplicateCountry, mainHashMap);
 
 					reloadModel();
 					textAdjList.setText(null);
@@ -134,58 +138,105 @@ public class SaveMapUponConfigUI {
 				List<String> continentListToPrint = new ArrayList<String>();
 				String textFileName;
 				boolean checkToSave = false;
+				boolean checkConnected = false;
 				List<String> toCheck = new ArrayList<String>();
+				List<String> connectivityCheck = new ArrayList<String>();
 				for (int t = 0; t < modelAdjacenyList.getRowCount(); t++) {
 					if (modelAdjacenyList.getValueAt(t, 1).equals(toCheck)) {
 						checkToSave = true;
 					}
 				}
+
+				Iterator<Map.Entry<String, List<String>>> iter = mainHashMap.entrySet().iterator();
+				while (iter.hasNext()) {
+					Map.Entry<String, List<String>> entry = iter.next();
+					String strKey = entry.getKey();
+					String[] strKeyArrayToCheck = strKey.split(",");
+					Iterator<Map.Entry<String, List<String>>> innerIter = mainHashMap.entrySet().iterator();
+					while (innerIter.hasNext()) {
+						Map.Entry<String, List<String>> innerEntry = innerIter.next();
+						String strinnerKey = innerEntry.getKey();
+						String[] strinnerKeyArrayToCheck = strinnerKey.split(",");
+						List<String> innerList = innerEntry.getValue();
+						if (!((strKeyArrayToCheck[0]).equals(strinnerKeyArrayToCheck[0]))) {
+							for (int inner = 0; inner < innerList.size(); inner++) {
+								if (strKeyArrayToCheck[1].equals(innerList.get(inner))) {
+									if (!(connectivityCheck.contains(strKeyArrayToCheck[1]))) {
+										connectivityCheck.add(strKeyArrayToCheck[0]);
+									}
+								}
+							}
+						}
+					}
+
+				}
+				int sizeOfCont = listToCheckDuplicateContinent.size();
+				Set<String> hs = new HashSet<>();
+				hs.addAll(connectivityCheck);
+				connectivityCheck.clear();
+				connectivityCheck.addAll(hs);
+				Collection<String> collectionAdjCont = connectivityCheck;
+				Collection<String> collectionTotalCont = listToCheckDuplicateContinent;
+				collectionTotalCont.removeAll(collectionAdjCont);
+				if (collectionTotalCont.isEmpty() || sizeOfCont == 1) {
+					checkConnected = true;
+				}
+
 				if (checkToSave) {
-					JOptionPane.showMessageDialog(null, "Invalid Map! All Countires need to have adjacent link",
+					JOptionPane.showMessageDialog(null, "Invalid Map! All Countries need to have adjacent link",
+							"Adjacency Error", JOptionPane.ERROR_MESSAGE);
+				}
+
+				else if (!(checkConnected)) {
+					JOptionPane.showMessageDialog(null,
+							"Invalid Map! Not a connected graph. Check adjacency for" + collectionTotalCont,
 							"Adjacency Error", JOptionPane.ERROR_MESSAGE);
 				}
 
 				else {
 					textFileName = JOptionPane.showInputDialog("Please Enter Map name");
-					try {
+					if (textFileName != null) {
+						try {
 
-						fstream = new FileWriter("C:/Users/Khashyap/Documents/Maps/" + textFileName + ".txt");
-						out = new BufferedWriter(fstream);
-						out.write("[Map]");
-						out.write(System.getProperty("line.separator"));
-						out.write(System.getProperty("line.separator"));
-						out.write("[Continents]");
-						out.write(System.getProperty("line.separator"));
-						for (Map.Entry<String, Integer> temp : continentControlValueHashMap.entrySet()) {
-
-							continentListToPrint.add(temp.getKey());
-							out.write(temp.getKey() + "=" + temp.getValue());
+							fstream = new FileWriter("C:/Users/Khashyap/Documents/Maps/" + textFileName + ".txt");
+							out = new BufferedWriter(fstream);
+							out.write("[Map]");
 							out.write(System.getProperty("line.separator"));
-						}
-						out.write(System.getProperty("line.separator"));
-						out.write("[Territories]");
-						out.write(System.getProperty("line.separator"));
-						for (String obj : continentListToPrint) {
-							for (Map.Entry<String, List<String>> iterate : mainHashMap.entrySet()) {
-								String strKey = iterate.getKey();
-								String[] strKeyArray = strKey.split(",");
-								if (obj.equals(strKeyArray[0])) {
-									String printWithoutBraces = iterate.getValue().toString()
-											.replaceAll("(^\\[|\\s|\\]$)", "");
-									out.write(strKeyArray[1] + "," + "50" + "," + "50" + "," + strKeyArray[0] + ","
-											+ printWithoutBraces);
-									out.write(System.getProperty("line.separator"));
-								}
+							out.write(System.getProperty("line.separator"));
+							out.write("[Continents]");
+							out.write(System.getProperty("line.separator"));
+							for (Map.Entry<String, Integer> temp : continentControlValueHashMap.entrySet()) {
 
+								continentListToPrint.add(temp.getKey());
+								out.write(temp.getKey() + "=" + temp.getValue());
+								out.write(System.getProperty("line.separator"));
 							}
 							out.write(System.getProperty("line.separator"));
+							out.write("[Territories]");
+							out.write(System.getProperty("line.separator"));
+							for (String obj : continentListToPrint) {
+								for (Map.Entry<String, List<String>> iterate : mainHashMap.entrySet()) {
+									String strKey = iterate.getKey();
+									String[] strKeyArray = strKey.split(",");
+									if (obj.equals(strKeyArray[0])) {
+										String printWithoutBraces = iterate.getValue().toString()
+												.replaceAll("(^\\[|\\s|\\]$)", "");
+										out.write(strKeyArray[1] + "," + "50" + "," + "50" + "," + strKeyArray[0] + ","
+												+ printWithoutBraces);
+										out.write(System.getProperty("line.separator"));
+									}
+
+								}
+								out.write(System.getProperty("line.separator"));
+							}
+							out.close();
+						} catch (IOException e1) {
+							e1.printStackTrace();
 						}
-						out.close();
-					} catch (IOException e1) {
-						e1.printStackTrace();
 					}
 					JOptionPane.showMessageDialog(null, textFileName + " \t is saved");
 					jframeAdjCountryList.setVisible(false);
+
 				}
 			}
 		});

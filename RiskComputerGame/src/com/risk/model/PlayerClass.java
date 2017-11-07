@@ -9,109 +9,97 @@ import java.util.Observable;
 import java.util.TreeSet;
 
 public class PlayerClass extends Observable {
-	
-	
-	
-	public static String msg ; 
-	
-	
-	public void gamePlay(int numberOfPlayers, HashMap<String,List<String>> territoryMap, HashMap<String, Integer> continentControlValueHashMap) throws InterruptedException{
-		
-		//startUpPhase method called
+
+	public static String msg;
+
+	public void gamePlay(int numberOfPlayers, HashMap<String, List<String>> territoryMap,
+			HashMap<String, Integer> continentControlValueHashMap) throws InterruptedException {
+
+		// startUpPhase method called
 		PlayerClass.startUpPhase(numberOfPlayers);
-		
+
 		msg = "startup completed";
 		setChanged();
-		
+
 		notifyObservers(msg);
-		
+
 		Thread.sleep(5000);
-		
-		
+
 		int plyr = 1;
-		
+
 		int currentNumberOfPlayers = numberOfPlayers;
 		
-		//round robin for game starts
-		while(true){
-			
-			//calculate number of players after each round robin to update in case a player is ousted
+		PlayerClass playerClassObj = new PlayerClass();
+		
+		// round robin for game starts
+		while (true) {
+
+			// calculate number of players after each round robin to update in case a player
+			// is ousted
 			currentNumberOfPlayers = PlayerClass.plyrsRemaining();
-			
-			
-			//reset plyr to player 1 once all players have got their turn to play
-			if(plyr > currentNumberOfPlayers ){
+
+			// reset plyr to player 1 once all players have got their turn to play
+			if (plyr > currentNumberOfPlayers) {
 				plyr = 1;
 			}
+
 			
 			
-			//reinforcement phase method called
-			PlayerClass playerClassObj = new PlayerClass();
+
+			// reinforcement phase method called
 			playerClassObj.reinforcementPhase(plyr,continentControlValueHashMap);
-			
+
+
 			msg = "reinforce done";
 			setChanged();
 			notifyObservers(msg);
-			
-			
+
 			Thread.sleep(5000);
-			
-			
-			
-			
-			//attack phase method called
-			PlayerClass.attackPhase(plyr);
+
+			// attack phase method called
+			PlayerClass.attackPhase(plyr, territoryMap);
 			msg = "attack done";
 			setChanged();
 			notifyObservers(msg);
-			
-			
+
 			Thread.sleep(5000);
-			
-			
-			//if one player has all the territories i.e if player has won the game then break out of loop
+
+			// if one player has all the territories i.e if player has won the game then
+			// break out of loop
 			boolean victory = PlayerClass.checkPlyrVictory(plyr);
-			if(victory){
+			if (victory) {
 				break;
 			}
-			
-			
+
 			Thread.sleep(5000);
-			
-			
-			
-			//fortification method called
+
+			// fortification method called
 			PlayerClass.fortificationPhase(plyr, territoryMap);
 			msg = "fortification done";
 			setChanged();
 			notifyObservers(msg);
-			
+
 			Thread.sleep(5000);
-			
-			
+
 			plyr++;
-			
-		}//end while(true)
-		
-		
+
+		} // end while(true)
+
 	}
-	
-	
-	
-	public static void startUpPhase(int numberOfPlayers){
-		
-		StartUpPhaseModel.terrPerPlayerPopulate(numberOfPlayers,StartUpPhaseModel.totalTerr);
-		
-		
-		StartUpPhaseModel.assignTerritories(numberOfPlayers, StartUpPhaseModel.countryTaken, StartUpPhaseModel.totalTerr);
-		
-		
+
+	public static void startUpPhase(int numberOfPlayers) {
+
+		StartUpPhaseModel.terrPerPlayerPopulate(numberOfPlayers, StartUpPhaseModel.totalTerr);
+
+		StartUpPhaseModel.assignTerritories(numberOfPlayers, StartUpPhaseModel.countryTaken,
+				StartUpPhaseModel.totalTerr);
+
 		StartUpPhaseModel.deployArmiesRandomly(numberOfPlayers);
-		
+
 	}
-	
-	
-	
+
+
+
 	public  void reinforcementPhase(int plyr, HashMap<String, Integer> continentControlValueHashMap){
 		
 		//call method to calculate reinforcements by number of territories
@@ -147,15 +135,26 @@ public class PlayerClass extends Observable {
 		
 		ReinforcementPhaseModel.reinforceRandom(Integer.toString(plyr));
 	}
+
 	
-	
-	
-	public static void attackPhase(int plyr){
-		
+	/*
+	 * method for initiating the attack phase
+	 */
+	public static void attackPhase(int plyr, HashMap<String, List<String>> territoryMap) {
+		boolean choice = true;
+		boolean attackPossible = false;
+		while (choice) {
+			// Player chooses country to attack.
+			attackPossible = AttackPhaseModel.chooseCountryTobeAttacked(plyr, territoryMap);
+			// country is attacked and armies are deducted
+			// based on the dice roll obtained
+			AttackPhaseModel.rollDice(attackPossible);
+			// decision of winner and players next move determined
+			choice = AttackPhaseModel.result();
+		}
+
 	}
-	
-	
-	
+
 	
 	public static void fortificationPhase(int plyr,HashMap<String, List<String>> territoryMap){
 		
@@ -166,9 +165,10 @@ public class PlayerClass extends Observable {
 		
 	}
 	
+
 	
 	
-	//can be removed
+	
 	public static boolean checkPlyrVictory(int plyr){
 		
 		TreeSet<Integer> playerCheck = new TreeSet<Integer>();
