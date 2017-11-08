@@ -8,9 +8,32 @@ import java.util.Map;
 
 import com.risk.ui.SaveMapUponConfigUI;
 
+// TODO: Auto-generated Javadoc
+/**
+ * <h1>Save Map Upon Config Model</h1>
+ * <p>
+ * <b>This class consists  methods to save map file after configuring Map attributes </b>
+ * <p>.
+ *
+ * @author Khashyap
+ * @version 1.0
+ */
+
 public class SaveMapUponConfigModel {
 
+	/** Object creation to class SaveMapUponConfigUI */
 	SaveMapUponConfigUI saveMapUponConfigUI = new SaveMapUponConfigUI();
+	
+	/**
+	 * <p>
+	 * This method is used to configure adjacency between countries.
+	 *
+	 * @param strHashMapKey Consists of Continent and Country value
+	 * @param strAdjListToUpdate Adjacent list need to added
+	 * @param listToCheckDuplicateCountry the list to check duplicate country
+	 * @param mainHashMap Hashmap to save for play
+	 * @return Hashmap after performing actions
+	 */
 
 	public HashMap<String, List<String>> addAdjacencyForCountries(String strHashMapKey, String strAdjListToUpdate,
 			List<String> listToCheckDuplicateCountry, HashMap<String, List<String>> mainHashMap) {

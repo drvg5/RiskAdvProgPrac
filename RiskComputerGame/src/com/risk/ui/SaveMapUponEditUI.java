@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
-
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -29,25 +28,65 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
 import com.risk.model.SaveMapUponEditModel;
+
+// TODO: Auto-generated Javadoc
+/**
+ * <h1>Save Map Upon EditUI</h1>
+ * <p>
+ * <b>This class consists of methods to save map file to local folder after user edits the map attributes </b>
+ * User would be able to configure Adjacency between Countries.
+ * <p>
+ * 
+ * @author Khashyap
+ * @version 1.0
+ */
 
 public class SaveMapUponEditUI {
 
+	/** Frame to display data */
 	static JInternalFrame jframeToUpdate = new JInternalFrame();
+	
+	/** Model to bind data to panel */
 	public static DefaultTableModel modelToUpdate = new DefaultTableModel(
 			new Object[] { "Continent List", "Country", "Adjacent List", "Control Value" }, 0);
+	
+	/** List consists of continents */
 	public static List<String> continentList = new ArrayList<String>();
+	
+	/** List consists of countries */
 	public static List<String> countryList = new ArrayList<String>();
+	
+	/**Hashmap to update the Map attributes. */
 	public static HashMap<String, List<String>> hashMapToUpdate = new HashMap<String, List<String>>();
+	
+	/** Hashmap to update control value of  Continents */
 	public static HashMap<String, Integer> hashMapControlToUpdate = new HashMap<String, Integer>();
+	
+	/** Consists of Continent selected by user to update adjacency. */
 	static String strContinentSelectedInRow;
+	
+	/** Consists of Country selected by user to update adjacency. */
 	static String strCountrySelectedInRow;
+	
+	/** File name selected by user */
 	String textFileName;
 
+	/** The save map upon edit model. */
 	// static JDesktopPane desktopUploadForUpdate;
 	SaveMapUponEditModel saveMapUponEditModel = new SaveMapUponEditModel();
 
+	/**
+	 * <p>
+	 * This method is used to update and save Map file after User completes the editing.
+	 *
+	 * @author Khashyap
+	 * @param continentHashMapToEdit Hashmap to edit the Map attributes
+	 * @param continentControlValueHashMapToEdit Hashmap to edit control value of  Continents
+	 * @param desktop To bind the InternalFrame with Main window frame
+	 * @param UploadFileName Filename selected by user
+	 */
+		
 	public void updateAndSave(HashMap<String, List<String>> continentHashMapToEdit,
 			HashMap<String, Integer> continentControlValueHashMapToEdit, JDesktopPane desktop,
 			final String UploadFileName) {
@@ -125,17 +164,96 @@ public class SaveMapUponEditUI {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				// TODO Auto-generated method stub
-
+				boolean checkCountry = false;
+				boolean checkEqual = false;
 				int row = tableToUpdate.getSelectedRow();
 				if (row > -1) {
 					String strContinentToUpdate = textContinentToEdit.getText().toString().toLowerCase();
 					String strCountryToUpdate = textCountryToEdit.getText().toString().toLowerCase();
 					String strAdjToUpdate = textAdjListToEdit.getText().toString().toLowerCase();
 					String strContinentControlValueToUpdate = textContinentControlValueToEdit.getText();
-					// call to model
-					saveMapUponEditModel.updateRecord(strAdjToUpdate, strContinentToUpdate, strCountryToUpdate,
-							strContinentControlValueToUpdate);
 
+					if ((strContinentToUpdate.isEmpty()) || (strCountryToUpdate.isEmpty()) || (strAdjToUpdate.isEmpty())
+							|| (strContinentControlValueToUpdate.isEmpty())) {
+						JOptionPane.showMessageDialog(null, "Oops!Please enter values", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+
+					else if (!(strContinentControlValueToUpdate.matches("^[0-9]+$"))) {
+						JOptionPane.showMessageDialog(null, "Only Numbers are  allowed", "Error in Control Value",
+								JOptionPane.ERROR_MESSAGE);
+					}
+
+					else {
+						List<String> listAdjCountry = new ArrayList<String>();
+						List<String> listAdjCountryCapitalize = new ArrayList<String>();
+						listAdjCountry = new ArrayList<String>(Arrays.asList(strAdjToUpdate.split(",")));
+						for (String capital : listAdjCountry) {
+							capital = capital.substring(0, 1).toUpperCase() + capital.substring(1);
+							listAdjCountryCapitalize.add(capital);
+						}
+						String strContinentToUpdateCapitalize = strContinentToUpdate.substring(0, 1).toUpperCase()
+								+ strContinentToUpdate.substring(1);
+						String strCountryToUpdateCapitalize = strCountryToUpdate.substring(0, 1).toUpperCase()
+								+ strCountryToUpdate.substring(1);
+
+						for (String st : listAdjCountryCapitalize) {
+							if (st.equals(strCountryToUpdateCapitalize)) {
+								checkEqual = true;
+							}
+						}
+
+						if (!(countryList.containsAll(listAdjCountryCapitalize))) {
+							checkCountry = true;
+						}
+
+						if (checkEqual) {
+							JOptionPane.showMessageDialog(null, "You cannot enter same country", "Error",
+									JOptionPane.ERROR_MESSAGE);
+						}
+
+						else if (checkCountry) {
+							JOptionPane.showMessageDialog(null, "You can link only countries listed here", "Error",
+									JOptionPane.ERROR_MESSAGE);
+						}
+
+						else {
+							continentList.remove(strContinentSelectedInRow);
+							countryList.remove(strContinentSelectedInRow);
+							StringJoiner joinerToUpdateHashMap = new StringJoiner(",");
+							joinerToUpdateHashMap.add(strContinentToUpdateCapitalize).add(strCountryToUpdateCapitalize);
+							String concatString = joinerToUpdateHashMap.toString();
+							int continetControlValue = Integer.parseInt(strContinentControlValueToUpdate);
+							hashMapControlToUpdate.put(strContinentToUpdateCapitalize, continetControlValue);
+							hashMapToUpdate.put(concatString, listAdjCountryCapitalize);
+							for (String tempAdj : listAdjCountryCapitalize) {
+
+								for (Map.Entry<String, List<String>> maplist : hashMapToUpdate.entrySet()) {
+									List<String> fetchLinksFromHashMap = new ArrayList<String>();
+									List<String> fetchLinksToAddHashMap = new ArrayList<String>();
+									String getAllKeys = maplist.getKey();
+									String[] getIndividual = getAllKeys.split(",");
+									if (getIndividual[1].equals(tempAdj)) {
+										fetchLinksFromHashMap = hashMapToUpdate.get(getAllKeys);
+										fetchLinksToAddHashMap.addAll(fetchLinksFromHashMap);
+										fetchLinksToAddHashMap.add(strCountryToUpdateCapitalize);
+										hashMapToUpdate.replace(getAllKeys, fetchLinksToAddHashMap);
+									}
+								}
+
+							}
+
+							if (!(continentList.contains(strContinentToUpdateCapitalize))) {
+								continentList.add(strContinentToUpdateCapitalize);
+							}
+
+							if (!(countryList.contains(strCountryToUpdateCapitalize))) {
+								countryList.add(strCountryToUpdateCapitalize);
+							}
+
+							reloadModel();
+						}
+					}
 				}
 				textAdjListToEdit.setText(null);
 				textContinentControlValueToEdit.setText(null);
@@ -146,7 +264,6 @@ public class SaveMapUponEditUI {
 
 		});
 
-		//writing the map file to a local path
 		btnSave.addActionListener(new ActionListener() {
 
 			@Override
@@ -181,13 +298,24 @@ public class SaveMapUponEditUI {
 					}
 
 				}
-				int sizeOfCont = continentList.size();
+				List<String> continentListCheckNow = new ArrayList<String>();
+				for (Map.Entry<String, List<String>> entry : hashMapToUpdate.entrySet()) {
+					String strKey = entry.getKey();
+					String[] strKeyArrayToEdit = strKey.split(",");
+					if(!(continentListCheckNow.contains(strKeyArrayToEdit[0])))
+					{
+					continentListCheckNow.add(strKeyArrayToEdit[0]);
+					}
+				}
+				
+				
+				int sizeOfCont = continentListCheckNow.size();
 				Set<String> hs = new HashSet<>();
 				hs.addAll(connectivityCheck);
 				connectivityCheck.clear();
 				connectivityCheck.addAll(hs);
 				Collection<String> collectionAdjCont = connectivityCheck;
-				Collection<String> collectionTotalCont = continentList;
+				Collection<String> collectionTotalCont = continentListCheckNow;
 				collectionTotalCont.removeAll(collectionAdjCont);
 				if (collectionTotalCont.isEmpty() || sizeOfCont == 1) {
 					checkConnected = true;
@@ -269,6 +397,15 @@ public class SaveMapUponEditUI {
 
 	}
 
+	
+	/**
+	 * <p>
+	 * This method is used to reload Data model after changes in HashMap value.
+	 *
+	 * @author Khashyap
+	 */
+
+	
 	public static void reloadModel() {
 		modelToUpdate.setRowCount(0);
 		List<String> tempList = new ArrayList<String>();
@@ -293,6 +430,14 @@ public class SaveMapUponEditUI {
 		}
 	}
 
+
+	/**
+	 * This methods displays all error messages to User.
+	 *
+	 * @author Dhruv
+	 * @param  number for particular error message
+	 */
+	
 	public void errorMessageForUpdate(int i) {
 		if (i == 1) {
 			JOptionPane.showMessageDialog(null, "You cannot enter same country", "Error", JOptionPane.ERROR_MESSAGE);

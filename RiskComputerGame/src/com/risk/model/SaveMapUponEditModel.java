@@ -9,14 +9,35 @@ import java.util.StringJoiner;
 
 import com.risk.ui.SaveMapUponEditUI;
 
+// TODO: Auto-generated Javadoc
+/**
+ * <h1>Save Map Upon Edit Model</h1>
+ * <p>
+ * <b>This class consists  methods to save map file after editing Map attributes </b>
+ * <p>.
+ *
+ * @author Khashyap
+ * @version 1.0
+ */
+
 public class SaveMapUponEditModel {
  
 	
-	//static List<String> continentList = new ArrayList<String>();
-	//static List<String> countryList = new ArrayList<String>();
- 	static String strContinentSelectedInRow;
+ 	/** Consists of Continent selected by user to update adjacency. */
+	 static String strContinentSelectedInRow;
+	
+	/**  Consists of Country selected by user to update adjacency.. */
 	static String strCountrySelectedInRow;
 
+	/**
+	 * <p>
+	 * This method is used to remove row selected by user to update adjacency.
+	 *
+	 * @param strtextContinentToUpdate Consists of Continent value selected by user
+	 * @param strtextCountryToUpdate Consists of Country value selected by user
+	 * @param strtextAdjToUpdate Consists of Adjacent value selected by user
+	 */
+	
 	public void removeRecord(String strtextContinentToUpdate, String strtextCountryToUpdate,
 			String strtextAdjToUpdate) {
 		int count = 0;
@@ -38,7 +59,6 @@ public class SaveMapUponEditModel {
 		String concatStringToDelete = joinerToDelete.toString();
 
 		for (String str : listAdjCountryToRemoveCapitalize) {
-
 			SaveMapUponEditUI.hashMapToUpdate.get(concatStringToDelete).remove(str);
 		}
 
@@ -68,6 +88,17 @@ public class SaveMapUponEditModel {
 
 	}
 
+	/**
+	 * <p>
+	 * This method is used to remove row selected by user to update adjacency.
+	 *
+	 * @param strAdjToUpdate Consists of Adjacent value selected by user
+	 * @param strContinentToUpdate Consists of Continent value selected by user
+	 * @param strCountryToUpdate Consists of Country value selected by user
+	 * @param strContinentControlValueToUpdate Consists of HashMap Control value particular continent value selected by user
+	 */
+	
+	
 	public void updateRecord(String strAdjToUpdate, String strContinentToUpdate, String strCountryToUpdate,
 			String strContinentControlValueToUpdate) {
 		boolean checkCountry = false;

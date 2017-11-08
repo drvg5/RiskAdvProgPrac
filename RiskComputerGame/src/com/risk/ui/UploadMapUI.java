@@ -24,8 +24,30 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.risk.model.ParseMapFileModel;
 
+/**
+ * <h1>Upload MapUI</h1>
+ * <p>
+ * <b>This class consists method to receive file input from user and send for parsing</b>
+ * <p>
+ * 
+ * @author Khashyap
+ * @version 1.0
+ */
+
+
 public class UploadMapUI {
 	static JInternalFrame jframeUpload;
+	
+	
+	/**
+	 * <p>
+	 * This method is used to load map file from local folder to play game
+	 * 
+	 * @author Khashyap 
+	 * @param desktop
+	 *            To bind the InternalFrame with Main window frame
+	 * 
+	 */
 
 	public static void LoadMap(JDesktopPane desktop) {
 
@@ -65,6 +87,13 @@ public class UploadMapUI {
 
 	}
 
+	
+	/**
+	 * <p>
+	 * This method is used to close upload button
+	 * 
+	 */
+	
 	public void closeUpload() {
 		try {
 			jframeUpload.setClosed(true);
@@ -73,6 +102,14 @@ public class UploadMapUI {
 		}
 
 	}
+	
+	/**
+	 
+	 * This methods displays all error messages to User
+	 * 
+	 * @author Dhruv
+	 * @param i number for particular error message 
+	 */
 
 	public void showErrorMessageForUpload(int i) {
 		if (i == 1) {
@@ -81,7 +118,16 @@ public class UploadMapUI {
 		} else if (i == 2) {
 			JOptionPane.showMessageDialog(null, "Invalid Map! File is missing Map or Continent or Territory section",
 					"Upload Error", JOptionPane.ERROR_MESSAGE);
-		} else {
+		} 
+		
+		else if (i == 3)
+		{
+			JOptionPane.showMessageDialog(null,
+					"Invalid Map! Not a connected graph",
+					"Adjacency Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		else {
 			JOptionPane.showMessageDialog(null, "Invalid Map! File is missing Map or Continent or Territory section",
 					"Upload Error", JOptionPane.ERROR_MESSAGE);
 		}
