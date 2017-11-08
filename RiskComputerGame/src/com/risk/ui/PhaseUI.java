@@ -10,6 +10,7 @@ import com.risk.model.StartUpPhaseModel;
 public class PhaseUI implements Observer {
 
 	
+	public static int attackCounter  = 0;
 	public void reinforcementView(String player, HashMap<String,List<String>> territoryMap, HashMap<String,Integer> playerInfoOld){
 		
 		System.out.println("------------------------------------------------");
@@ -48,7 +49,7 @@ public class PhaseUI implements Observer {
 				System.out.println("\t    " + "Armies in " + playerInfoVal[1] + " after reinforcement : " + playerInfoOld.get(playerInfoKey) + " + " + newArmies + " = " + StartUpPhaseModel.playerInfo.get(playerInfoKey));
 				System.out.println("\t    " + "Adjacent territories to " + playerInfoVal[1] + " are " );
 				
-				System.out.println("\n\t-----------------------------------------------------------------------");
+				
 				
 				
 				List<String> adjacentList = territoryMap.get(playerInfoVal[2] + "," + playerInfoVal[1]);
@@ -64,6 +65,8 @@ public class PhaseUI implements Observer {
 					index++;
 				}//for(String adjacent : adjacentList)
 				
+				System.out.println("\n\t-----------------------------------------------------------------------");
+				
 			}//end if(player.equals(playe...
 		
 		}//end for(String playerInfoKey...
@@ -73,6 +76,7 @@ public class PhaseUI implements Observer {
 		System.out.println("******* REINFORCEMENT FOR PLAYER " + player + " ENDS ********");
 		System.out.println("----------------------------------------------------");
 		
+		PhaseUI.attackCounter = 0;
 		
 	}
 	
@@ -120,6 +124,7 @@ public class PhaseUI implements Observer {
 					
 					System.out.println("\t    " + "Armies in " + playerInfoVal[1] + " : " + StartUpPhaseModel.playerInfo.get(playerInfoKey));
 					
+				System.out.println("\t    " + "Adjacent territories to " + playerInfoVal[1] + " are " );
 				
 				System.out.println("\n\t-----------------------------------------------------------------------");
 				
@@ -138,6 +143,8 @@ public class PhaseUI implements Observer {
 					
 				}//for(String adjacent : adjacentList)
 				
+				System.out.println("\n\t-----------------------------------------------------------------------");
+				
 			}//end if(player.equals(playe...
 		
 		}//end for(String playerInfoKey...
@@ -153,12 +160,33 @@ public class PhaseUI implements Observer {
 	
 	
 	
-	public void attackView(String player){
+	public void attackView(String player, String attacker, String attacked){
+		
+		System.out.printf("\n\t" + "Attacking Territory : " + attacker);
+		System.out.println("\t" + "Armies : ");
+		System.out.printf("\t" + "Defending Territory : " + attacked);
+		System.out.println("\t" + "Armies : ");
+		
+		
+		System.out.println();
+		
+		
+		
+	}//end method attack view
+	
+	public void attackViewHeader(String player){
 		
 		System.out.println("------------------------------------------------");
 		System.out.println("********* ATTACK PHASE OF PLAYER " + player + " **********");
 		System.out.println("------------------------------------------------");
 		
+	}
+	
+	public void attackViewFooter(String player){
+		
+		System.out.println("------------------------------------------------");
+		System.out.println("********** ATTACK OF PLAYER " + player + " ENDS***********");
+		System.out.println("------------------------------------------------");
 	}
 	
 	public void update(Observable obs, Object obj){
