@@ -101,7 +101,7 @@ public class ParseMapFileModel {
 					} else {
 
 						System.out.println(continentHashMap);
-						GameDriverNew.gameStart(continentHashMap, continentCount);
+				//		GameDriverNew.gameStart(continentHashMap, continentCount);
 
 					}
 				}

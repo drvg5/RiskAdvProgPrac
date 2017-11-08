@@ -1,7 +1,10 @@
 package com.risk.ui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
-
+import com.risk.model.*;
 
 
 
@@ -11,11 +14,118 @@ public class PhaseUI implements Observer {
 
 	
 	public static int attackCounter  = 0;
+	
+	public void postStartupDisplay(int numberOfPlayers, HashMap<String,List<String>> territoryMap){
+		
+		System.out.println("---------------------------------------------------------------------------");
+		System.out.println("***************************** START UP PHASE   ****************************");
+		System.out.println("---------------------------------------------------------------------------");
+		
+		System.out.println("\n\t" + "TOTAL NUMBER OF TERRITORIES ON THE MAP : " + StartUpPhaseModel.totalTerr);
+		System.out.println("\t" + "TOTAL NUMBER OF PLAYERS IN THE GAME : " + numberOfPlayers);
+		System.out.println("\n");
+		
+		for(int plyr = 1 ; plyr <= numberOfPlayers; plyr++){
+			
+			System.out.printf("\t" + "Number of Territories assigned to PLAYER " + plyr + " : ");
+			System.out.println(StartUpPhaseModel.terrPerPlayer.get(Integer.toString(plyr)));
+			
+			
+		}
+		
+		System.out.println("\n\t" + "NUMBER OF ARMY UNITS PROVIDED INITIALLY TO EACH PLAYER : " + StartUpPhaseModel.initialArmies);
+		
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		for(int plyr = 1 ; plyr <= numberOfPlayers; plyr++){
+		
+			System.out.println("\n\n\t" + "TERRITORIES ASSIGNED TO PLAYER " + plyr + " -> ");
+			
+			for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
+				
+				String[] playerInfoVal = playerInfoKey.split("-");
+				String player = Integer.toString(plyr);
+				
+				if(player.equals(playerInfoVal[0]) || player == playerInfoVal[0]){
+					
+					System.out.println("\n\t\t------------------------------------");
+					System.out.println("\t\t" + "Territory : " + playerInfoVal[1]);
+					
+					System.out.println("\t\t\t  " + "Continent : " + playerInfoVal[2]);
+					
+					System.out.println("\t\t\t  " + "Armies : " + StartUpPhaseModel.playerInfo.get(playerInfoKey));
+					
+					System.out.printf("\t\t\t  "+"Adjacent Countries : ");
+					
+					List<String> adjacentList = territoryMap.get(playerInfoVal[2] + "," + playerInfoVal[1]);
+					
+					int index = 0;
+					for(String adjacent : adjacentList){
+						
+						if(index == 0)
+							System.out.printf(adjacent);
+						else
+							System.out.printf("," + adjacent);
+						
+						index++;
+					}//for(String adjacent : adjacentList)
+					
+				}//end if(player.equals(playerInfoVal[0])...
+				
+			}//end for(String playerInfoKey : Star...
+		
+			
+			Scanner moveAhead = new Scanner(System.in);
+			try {
+				System.in.read();
+				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			
+				String s = br.readLine();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		}//end for(int plyr = 1 ; plyr...
+		
+		System.out.println("\n\n");
+		System.out.println("---------------------------------------------------------------------------");
+		System.out.println("************************ START UP PHASE COMPLETED *************************");
+		System.out.println("---------------------------------------------------------------------------");
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("---------------------------------------------------------------------------");
+		System.out.println("*************************** ROUND ROBIN STARTS ****************************");
+		System.out.println("---------------------------------------------------------------------------");
+		
+	}//end playerInfoDisplay
+	
+	
+	public void reinforcementViewHeader(String player){
+		
+		System.out.println("---------------------------------------------------------------------------");
+		System.out.println("********************* REINFORCEMENTS FOR PLAYER " + player + " *************************");
+		System.out.println("---------------------------------------------------------------------------");
+		
+	}
+	
 	public void reinforcementView(String player, HashMap<String,List<String>> territoryMap, HashMap<String,Integer> playerInfoOld){
 		
-		System.out.println("------------------------------------------------");
-		System.out.println("********* REINFORCEMENTS FOR PLAYER " + player + " **********");
-		System.out.println("------------------------------------------------");
+	
 		
 		
 		System.out.println("\n\t" + "As Per Territories Owned : " + "");
@@ -158,8 +268,6 @@ public class PhaseUI implements Observer {
 	}//end method fortificationView
 	
 	
-	
-	
 	public void attackView(String player, String attacker, String attacked){
 		
 		System.out.printf("\n\t" + "Attacking Territory : " + attacker);
@@ -179,6 +287,8 @@ public class PhaseUI implements Observer {
 		System.out.println("\tResult: ");
 		
 	}
+	
+
 	public void attackViewHeader(String player){
 		
 		System.out.println("------------------------------------------------");
@@ -194,7 +304,17 @@ public class PhaseUI implements Observer {
 		System.out.println("------------------------------------------------");
 	}
 	
-	public void update(Observable obs, Object obj){
+	public void update(Observable obs, Object msg){
+		
+		
+		String message = ((PlayerClass)obs).msg;
+		
+		
+		if(message.equals("startup") || message == "startup"){
+			
+			postStartupDisplay(((PlayerClass) obs).players,((PlayerClass) obs).currentMap);
+			
+		}
 		
 	}
 }
