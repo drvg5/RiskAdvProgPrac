@@ -21,8 +21,11 @@ public class GameDriverNew extends Object{
 				StartUpPhaseModel.preStartUp(numberOfPlayers, territoryMap);
 				
 				try {
+					
 					new PlayerClass().gamePlay(numberOfPlayers, territoryMap, continentControlValueHashMap);
+					
 				} catch (InterruptedException e) {
+					
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -37,7 +40,7 @@ public class GameDriverNew extends Object{
 			}
 			catch(InputMismatchException e){
 				System.out.println("----------------------------------------");
-				System.out.println("Please enter only numbers");
+				System.out.println("Please enter only numbers : ");
 				continue;
 				
 			}
