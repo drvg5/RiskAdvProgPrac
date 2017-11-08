@@ -285,7 +285,7 @@ public class AttackPhaseModel {
 			int noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(defenderKey);
 			noOfDefenderArmies = noOfDefenderArmies - armiesObtainedForDefender;
 			// Updating Defender Data
-			StartUpPhaseModel.playerInfo.replace(defenderKey, noOfAttackerArmies); 
+			StartUpPhaseModel.playerInfo.replace(defenderKey, noOfAttackerArmies);
 
 			if (noOfDefenderArmies == 0) {
 
