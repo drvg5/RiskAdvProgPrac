@@ -254,9 +254,9 @@ public class AttackPhaseModel {
 
 		// Case 1 : attacker and defender both are given more than 1 dice rolls
 		if (diceArrayForAttackersList.size() >= 2) {
-			maxAttacker = Collections.max(diceArrayForAttackersList);
+		//	maxAttacker = Collections.max(diceArrayForAttackersList);
 			attacker2ndBest = (int) diceArrayForAttackersList.get(diceArrayForAttackersList.size() - 2);
-			maxDefender = Collections.max(diceArrayForDefendersList);
+		//	maxDefender = Collections.max(diceArrayForDefendersList);
 			minDefender2ndRoll = (int) diceArrayForDefendersList.get(diceArrayForDefendersList.size() - 2);
 			if (maxAttacker > maxDefender) {
 				++armiesObtainedForAttacker;
