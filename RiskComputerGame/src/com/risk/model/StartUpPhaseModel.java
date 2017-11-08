@@ -103,6 +103,7 @@ public class StartUpPhaseModel {
 		}
 
 		if (numberOfPlayers > totalTerr) {
+			
 			System.out.println("Players can not be greater than the number of territories");
 
 			GameDriverNew.playerGTTerr = 0;
@@ -264,7 +265,7 @@ public class StartUpPhaseModel {
 						playerInfo.put(playerKey, 1);
 
 						// modify countryTaken to indicate that country has been assigned to a player
-						countryTaken.add(randomTerr[0] + "-1");
+						countryTaken.add(randomTerr[0] + "-0");
 
 						countryTaken.remove(randomVal);
 
@@ -296,17 +297,16 @@ public class StartUpPhaseModel {
 		Random randomCountry = new Random();
 		
 		StartUpPhaseModel.setInitialArmies(numberOfPlayers);
-		
-		
-		
+
 		int maxArmies;
-		
-		maxArmies = StartUpPhaseModel.initialArmies;
-		
+
 		for (int pl = 1; pl <= numberOfPlayers; pl++) {
 
 			List<String> playerCountryList = new ArrayList<String>();
-
+			
+			maxArmies = StartUpPhaseModel.initialArmies;
+			
+			
 			// populate playerCountryList
 			for (String playerInfo : StartUpPhaseModel.playerInfo.keySet()) {
 
@@ -316,9 +316,26 @@ public class StartUpPhaseModel {
 				}
 			}
 
-			// assign armies to territories until armiesCount is 0 for a player
+			
+			//assign 1 army to each country first
+			for(String playerKey : StartUpPhaseModel.playerInfo.keySet()){
+				
+				String[] playerKeySplit = playerKey.split("-");
+				
+				if(playerKeySplit[0].equals(Integer.toString(pl)) ||  playerKeySplit[0] == Integer.toString(pl)){
+					
+					StartUpPhaseModel.playerInfo.put(playerKey, 1);
+					
+					maxArmies--;
+				}
+				
+				
+			}
+			
+			
+			//distribute remaining armies to territories until remaining armies count is 0 for a player
 			while (maxArmies != 0) {
-
+				
 				// choose territory randomly to put armies into
 				String randomChosenCountry = playerCountryList.get(randomCountry.nextInt(playerCountryList.size()));
 
