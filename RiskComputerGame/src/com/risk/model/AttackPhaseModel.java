@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Scanner;
 
 public class AttackPhaseModel {
 
@@ -16,6 +17,18 @@ public class AttackPhaseModel {
 	static String defenderKey;
 	static String attackerPlayer;
 	static String defenderPlayer;
+	static boolean armiesDepleted = false;
+	static String attackAgain = "Yes";
+	static String attackSameCountryAgain = "Yes";
+	static Scanner input = new Scanner(System.in);
+
+	// for getting data from player info entries for the specific player
+	// list for attackers
+	static List<String> playerAccToPlayerNo = new ArrayList<String>();
+	// get countries of attacker
+	static List<String> countryAccToAttacker = new ArrayList<String>();
+	// list for attacked candidates
+	static List<String> playerNotAccToPlayerNo = new ArrayList<String>();
 
 	static Random random;
 
@@ -23,36 +36,25 @@ public class AttackPhaseModel {
 	 * method for checking adjacency of the attacker and defender
 	 */
 	public static void chooseCountryToBeAttacked(int plyr, HashMap<String, List<String>> territoryMap) {
-		boolean attackNotMade = true;
+		attackAgain = "Yes";
+		attackSameCountryAgain = "Yes";
 		noOfAttackerArmies = 0;
 		noOfDefenderArmies = 0;
-		// getting data from player info entries for the specific player
-		// list for attackers
-		List<String> playerAccToPlayerNo = new ArrayList<String>();
-		// list for attacked candidates
-		List<String> playerNotAccToPlayerNo = new ArrayList<String>();
 
-		// populating the lists declared above
-		for (String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()) {
-			String[] playerInfoArr = playerInfoKey.split("-");
-			if (playerInfoArr[0].equals(String.valueOf(plyr))) {
-				playerAccToPlayerNo.add(playerInfoKey);
-
-			} else {
-				playerNotAccToPlayerNo.add(playerInfoKey);
-
-			}
-		}
+		// populating the lists for attacker and defender
+		populateListsForAttackerAndDefender(plyr);
 
 		// randomly select attacker and defender
-		while (attackNotMade) {
-			// for generating a stream of pseudorandom numbers
-			random = new Random();
-			String attacker = playerAccToPlayerNo.get(random.nextInt(playerAccToPlayerNo.size()));
-			// global key initialized
-			attackerKey = attacker;
-			// getting number of attacker armies
-			noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attacker);
+		// for generating a stream of pseudo random numbers
+		random = new Random();
+		String attacker = playerAccToPlayerNo.get(random.nextInt(playerAccToPlayerNo.size()));
+		// global key initialized
+		attackerKey = attacker;
+		// getting number of attacker armies
+		noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attacker);
+		boolean foundAdjacency = false;
+		while (attackAgain.trim().equalsIgnoreCase("Yes")) {
+
 			String attacked = playerNotAccToPlayerNo.get(random.nextInt(playerNotAccToPlayerNo.size()));
 			// global key initialized
 			defenderKey = attacked;
@@ -71,24 +73,71 @@ public class AttackPhaseModel {
 				if (territoryAttacker.equals(territory)) {
 
 					for (String country : iterate.getValue()) {
-						if (territoryAttacked.equals(country)) {
 
-							System.out.println("Player" + keySplit1[0] + "(Attacker) armies :" + noOfAttackerArmies);
-							System.out.println("Player" + keySplit2[0] + "(Defender) armies :" + noOfDefenderArmies);
-							System.out.println();
-							System.out.println();
-							System.out.println();
-							System.out.println("Player" + keySplit1[0] + "in" + territoryAttacker + "attacks Player"
-									+ keySplit2[0] + "in" + territoryAttacked);
-							attackNotMade = false;
+						if (territoryAttacked.equals(country)) {
+							while (attackSameCountryAgain.trim().equalsIgnoreCase("Yes")
+									&& StartUpPhaseModel.playerInfo.get(attacked) != 0) {
+
+								// attackSameCountryAgain
+								System.out.println("Player" + keySplit1[0] + "(Attacker) --> number of armies : "
+										+ noOfAttackerArmies);
+								System.out.println("Player" + keySplit2[0] + "(Defender) --> number of armies : "
+										+ noOfDefenderArmies);
+								System.out.println();
+								System.out.println();
+								System.out.println("Player " + keySplit1[0] + " in " + territoryAttacker
+										+ " attacks Player " + keySplit2[0] + " in " + territoryAttacked);
+								System.out.println();
+								System.out.println();
+								// Dice Rolled
+								// country is attacked and armies are deducted
+								// based on the dice roll obtained
+								try {
+									rollDice();
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+
+								System.out.println("---------------------------------------------");
+								System.out.println("Do you want to attack the Same Country again? ");
+								System.out.println("Please enter  Yes or No : ");
+
+								attackSameCountryAgain = input.next();
+								foundAdjacency = true;
+							}
+
 						}
 
 					}
 				}
 
 			}
-		}
+			if (foundAdjacency) {
+				System.out.println("----------------------------------------");
+				System.out.println("Do you want to attack again? ");
+				System.out.println("Please enter Yes or No :");
+				attackAgain = input.next();
+			}
 
+		}
+		System.out.println();
+		System.out.println();
+		System.out.println("Attack Phase Ends");
+
+	}
+
+	private static void populateListsForAttackerAndDefender(int plyr) {
+		for (String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()) {
+			String[] playerInfoArr = playerInfoKey.split("-");
+			if (playerInfoArr[0].equals(String.valueOf(plyr))) {
+				playerAccToPlayerNo.add(playerInfoKey);
+				countryAccToAttacker.add(playerInfoArr[1]);
+
+			} else {
+				playerNotAccToPlayerNo.add(playerInfoKey);
+
+			}
+		}
 	}
 
 	/*
@@ -105,38 +154,64 @@ public class AttackPhaseModel {
 
 			diceRollsForAttacker = 3;
 			diceArrayForAttackers = AttackPhaseModel.getDiceNumbers(diceRollsForAttacker);
-			System.out.println("Player" + attackerPlayer + "Dice Roll : " + diceArrayForDefenders);
+			System.out.print("Player" + attackerPlayer + "Dice Roll : ");
+			for (int roll : diceArrayForAttackers) {
+				System.out.print(roll);
+				System.out.print("");
+			}
 			System.out.println();
 			System.out.println();
 
 			diceRollsForDefender = 2;
 			diceArrayForDefenders = AttackPhaseModel.getDiceNumbers(diceRollsForDefender);
-			System.out.println("Player" + defenderPlayer + "Dice Roll : " + diceArrayForDefenders);
+			System.out.print("Player" + defenderPlayer + "Dice Roll : ");
+			for (int roll : diceArrayForDefenders) {
+				System.out.print(roll);
+				System.out.print("");
+
+			}
 			System.out.println();
 			System.out.println();
 		} else if (noOfAttackerArmies == 2) {
 
 			diceRollsForAttacker = 2;
 			diceArrayForAttackers = AttackPhaseModel.getDiceNumbers(diceRollsForAttacker);
-			System.out.println("Player" + attackerPlayer + "Dice Roll : " + diceArrayForDefenders);
+			System.out.print("Player" + attackerPlayer + "Dice Roll : ");
+			for (int roll : diceArrayForAttackers) {
+				System.out.print(roll);
+				System.out.print("");
+
+			}
 			System.out.println();
 			System.out.println();
 			diceRollsForDefender = 2;
 			diceArrayForDefenders = AttackPhaseModel.getDiceNumbers(diceRollsForDefender);
-			System.out.println("Player" + defenderPlayer + "Dice Roll : " + diceArrayForDefenders);
+			System.out.print("Player" + defenderPlayer + "Dice Roll : ");
+			for (int roll : diceArrayForDefenders) {
+				System.out.print(roll);
+				System.out.print("");
+			}
 			System.out.println();
 			System.out.println();
 		} else if (noOfAttackerArmies == 1) {
 
 			diceRollsForAttacker = 1;
 			diceArrayForAttackers = AttackPhaseModel.getDiceNumbers(diceRollsForAttacker);
-			System.out.println("Player" + attackerPlayer + "Dice Roll : " + diceArrayForDefenders);
+			System.out.println("Player" + attackerPlayer + "Dice Roll : ");
+			for (int roll : diceArrayForAttackers) {
+				System.out.print(roll);
+				System.out.print("");
+			}
 			System.out.println();
 			System.out.println();
 
 			diceRollsForDefender = 1;
 			diceArrayForDefenders = AttackPhaseModel.getDiceNumbers(diceRollsForDefender);
-			System.out.println("Player" + defenderPlayer + "Dice Roll : " + diceArrayForDefenders);
+			System.out.println("Player" + defenderPlayer + "Dice Roll : ");
+			for (int roll : diceArrayForDefenders) {
+				System.out.print(roll);
+				System.out.print("");
+			}
 			System.out.println();
 			System.out.println();
 		}
@@ -145,8 +220,10 @@ public class AttackPhaseModel {
 
 	}
 
-	// analyzing the numbers obtained to compute the no of armies
-	// thus making changes in player data
+	/*
+	 * analyzing the numbers obtained to compute the no of armies thus making
+	 * changes in player data
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static void diceRollAnalysis(int[] diceArrayForAttackers, int[] diceArrayForDefenders)
 			throws InterruptedException {
@@ -196,8 +273,8 @@ public class AttackPhaseModel {
 
 			Thread.sleep(2000);
 			System.out.println("Attack Completed");
-			System.out.println("Player" + attackerPlayer + "(Attacker) armies :" + noOfAttackerArmies);
-			System.out.println("Player" + defenderPlayer + "(Defender) armies :" + noOfDefenderArmies);
+			System.out.println("Player" + attackerPlayer + "(Attacker) --> number of armies : " + noOfAttackerArmies);
+			System.out.println("Player" + defenderPlayer + "(Defender) --> number of armies : " + noOfDefenderArmies);
 
 			if (noOfDefenderArmies == 0) {
 
@@ -207,13 +284,20 @@ public class AttackPhaseModel {
 
 				System.out.println("Attacker emerges Victorious");
 
-				Integer val = StartUpPhaseModel.playerInfo.get(defenderKey);
 				// assigning defender territory to attacker
 				String[] defKeyString = defenderKey.split("-");
 				defKeyString[0] = attackerPlayer;
 				String modifiedKey = defKeyString[0] + defKeyString[1] + defKeyString[2];
-				StartUpPhaseModel.playerInfo.put(modifiedKey, val);
+				// attacking player must place a number of armies
+				// in the conquered country which is greater or equal than the number of dice
+				// that was used in the attack that
+				// resulted in conquering the country
+				StartUpPhaseModel.playerInfo.put(modifiedKey, diceArrayForAttackersList.size() - 1);
 				StartUpPhaseModel.playerInfo.remove(defenderKey);
+			}
+			if (noOfAttackerArmies == 0) {
+				StartUpPhaseModel.playerInfo.put(attackerKey, 1);
+
 			}
 
 		}
@@ -240,52 +324,59 @@ public class AttackPhaseModel {
 			noOfDefenderArmies = noOfDefenderArmies - armiesObtainedForDefender;
 			// Updating Defender Data
 			StartUpPhaseModel.playerInfo.replace(defenderKey, noOfAttackerArmies);
+			
+			Thread.sleep(2000);
+			System.out.println("Attack Completed");
+			System.out.println("Player" + attackerPlayer + "(Attacker) --> number of armies : " + noOfAttackerArmies);
+			System.out.println("Player" + defenderPlayer + "(Defender) --> number of armies : " + noOfDefenderArmies);
 
 			if (noOfDefenderArmies == 0) {
-				
+
 				Thread.sleep(1000);
 				System.out.println();
 				System.out.println("Attacker emerges Victorious");
-				Integer val = StartUpPhaseModel.playerInfo.get(defenderKey);
 				// assigning defender territory to attacker
 				String[] defKeyString = defenderKey.split("-");
 				defKeyString[0] = attackerPlayer;
 				String modifiedKey = defKeyString[0] + "-" + defKeyString[1] + "-" + defKeyString[2];
-				StartUpPhaseModel.playerInfo.put(modifiedKey, val);
+				StartUpPhaseModel.playerInfo.put(modifiedKey, diceArrayForAttackersList.size() - 1);
 				StartUpPhaseModel.playerInfo.remove(defenderKey);
+			}
+			if (noOfAttackerArmies == 0) {
+				StartUpPhaseModel.playerInfo.put(attackerKey, 1);
 			}
 
 		}
+		// calling function to decide whether the player should or shouldn't attack
+		// again
+
 	}
 
-	// this method returns the numbers obtained in the dice rolled
+	/*
+	 * this method generate and returns the numbers obtained in the dice rolled
+	 */
 	public static int[] getDiceNumbers(int diceRolls) {
 		random = new Random();
 		int[] diceArray = new int[3];
 
 		switch (diceRolls) {
 		case 1:
-			diceArray[0] = random.nextInt(6);
+			diceArray[0] = random.nextInt(6)+ 1;
 			break;
 		case 2:
-			diceArray[0] = random.nextInt(6);
-			diceArray[1] = random.nextInt(6);
+			diceArray[0] = random.nextInt(6)+ 1;
+			diceArray[1] = random.nextInt(7)+ 1;
 
 			break;
 		case 3:
-			diceArray[0] = random.nextInt(6);
-			diceArray[1] = random.nextInt(6);
-			diceArray[2] = random.nextInt(6);
+			diceArray[0] = random.nextInt(6)+ 1;
+			diceArray[1] = random.nextInt(6)+ 1;
+			diceArray[2] = random.nextInt(6)+ 1;
 			break;
 		default:
 			break;
 		}
 		return diceArray;
-	}
-
-	public static boolean result() {
-		boolean choice = false;
-		return choice;
 	}
 
 }
