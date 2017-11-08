@@ -297,11 +297,10 @@ public class StartUpPhaseModel {
 		
 		
 		int maxArmies;
+		
 		maxArmies = StartUpPhaseModel.initialArmies;
 		
 		for (int pl = 1; pl <= numberOfPlayers; pl++) {
-
-			
 
 			List<String> playerCountryList = new ArrayList<String>();
 
@@ -338,13 +337,13 @@ public class StartUpPhaseModel {
 		
 		if (numberOfPlayers == 2) {
 			StartUpPhaseModel.initialArmies = 40;
-		} else if (numberOfPlayers <= 3 && numberOfPlayers > 2) {
+		} else if (numberOfPlayers == 3) {
 			StartUpPhaseModel.initialArmies = 35;
 
-		} else if (numberOfPlayers <= 4 && numberOfPlayers > 3) {
+		} else if (numberOfPlayers == 4 ) {
 			StartUpPhaseModel.initialArmies = 30;
 
-		} else if (numberOfPlayers <= 5 && numberOfPlayers > 4) {
+		} else if (numberOfPlayers == 5) {
 			StartUpPhaseModel.initialArmies = 25;
 
 		} else {
