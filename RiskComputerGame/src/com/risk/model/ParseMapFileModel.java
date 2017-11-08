@@ -216,6 +216,7 @@ public class ParseMapFileModel {
 					else {
 						junitMapValidation = true;
 						System.out.println(continentHashMap);
+				//		GameDriverNew.gameStart(continentHashMap, continentCount);
 
 					}
 				}
