@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.TreeSet;
 
+import com.risk.ui.ReinforcementsUI;
+
 /**
  * This is an Observable Class which has implementations for state change in the
  * game play
@@ -22,6 +24,7 @@ public class PlayerClass extends Observable {
 
 	
 	public static int players = 0;
+	
 	public static HashMap<String, List<String>> currentMap;
 
 	public static String msg;
@@ -39,12 +42,6 @@ public class PlayerClass extends Observable {
 		msg = "startup";
 		
 		setChanged();
-
-
-		notifyObservers(msg);
-
-		Thread.sleep(5000);
-
 		notifyObservers(this);
 		
 		
@@ -61,7 +58,14 @@ public class PlayerClass extends Observable {
 		int currentNumberOfPlayers = numberOfPlayers;
 
 		PlayerClass playerClassObj = new PlayerClass();
+		
+		msg = "roundrobin";
+		
+		setChanged();
 
+		notifyObservers(this);
+		
+		
 		try {
 			System.in.read();
 		} catch (IOException e) {
@@ -71,6 +75,7 @@ public class PlayerClass extends Observable {
 		
 
 		// round robin for game starts
+		
 		while (true) {
 
 			// calculate number of players after each round robin to update in case a player
@@ -81,16 +86,27 @@ public class PlayerClass extends Observable {
 			if (plyr > currentNumberOfPlayers) {
 				plyr = 1;
 			}
-
+			
+			msg = "reinforceHead," + plyr;
+			setChanged();
+			notifyObservers(this);
+			
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 			// reinforcement phase method called
-			playerClassObj.reinforcementPhase(plyr, continentControlValueHashMap);
+			playerClassObj.reinforcementPhase(plyr, continentControlValueHashMap,currentMap);
 
 
 			msg = "reinforce done";
 			setChanged();
 			notifyObservers(msg);
 
-			Thread.sleep(5000);
 
 			// attack phase method called
 			PlayerClass.attackPhase(plyr, territoryMap);
@@ -134,11 +150,25 @@ public class PlayerClass extends Observable {
 
 	}
 
-	public void reinforcementPhase(int plyr, HashMap<String, Integer> continentControlValueHashMap) {
-
+	public void reinforcementPhase(int plyr, HashMap<String, Integer> continentControlValueHashMap, HashMap<String, List<String>> currentMap) {
+		
+		ReinforcementPhaseModel reinforcmentModelObj = new ReinforcementPhaseModel();
+		ReinforcementsUI uiObj = new ReinforcementsUI();
+		
+		reinforcmentModelObj.addObserver(uiObj);
+		
 		// call method to calculate reinforcements by number of territories
-		String reinTerrMsg = ReinforcementPhaseModel.calcReinforcementsByTerr(Integer.toString(plyr));
-
+		String reinTerrMsg = reinforcmentModelObj.calcReinforcementsByTerr(Integer.toString(plyr));
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 		PlayerClass.msg = "reinforcements by number of territories," + reinTerrMsg + ",";
 		setChanged();
 		notifyObservers(this);
@@ -152,8 +182,18 @@ public class PlayerClass extends Observable {
 		
 		
 		//call method to calculate reinforcements if a player owns the whole continent
-		ArrayList<String> cntrlValMsg = ReinforcementPhaseModel.calcReinforcementByCntrlVal(Integer.toString(plyr), continentControlValueHashMap);
+		ArrayList<String> cntrlValMsg = reinforcmentModelObj.calcReinforcementByCntrlVal(Integer.toString(plyr), continentControlValueHashMap);
 
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		String[] cntrlVal = cntrlValMsg.toArray(new String[cntrlValMsg.size()]);
 
 		PlayerClass.msg = "reinforcements by control value-";

@@ -164,7 +164,7 @@ public class GameDriverModel {
 				System.out.println("PLAYER " + plyr + " : REINFORCEMENT");
 				
 				
-				ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
+//				ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
 				ReinforcementPhaseModel.reinforceRandom(Integer.toString(plyr));
 				playerInfoDisplay(Integer.toString(plyr),territoryMap);
 				

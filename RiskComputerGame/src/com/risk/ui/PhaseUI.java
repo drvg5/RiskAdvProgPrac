@@ -108,12 +108,27 @@ public class PhaseUI implements Observer {
 			e.printStackTrace();
 		}
 		
-		System.out.println("---------------------------------------------------------------------------");
-		System.out.println("*************************** ROUND ROBIN STARTS ****************************");
-		System.out.println("---------------------------------------------------------------------------");
-		
+	
 	}//end playerInfoDisplay
 	
+	public void roundRobinHeader(){
+		
+//		System.out.println("---------------------------------------------------------------------------");
+		System.out.println("\n");
+		System.out.println("*************************** ROUND ROBIN STARTS ****************************");
+		System.out.println("\n");
+//		System.out.println("---------------------------------------------------------------------------");
+		
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
 	public void reinforcementViewHeader(String player){
 		
@@ -121,12 +136,17 @@ public class PhaseUI implements Observer {
 		System.out.println("********************* REINFORCEMENTS FOR PLAYER " + player + " *************************");
 		System.out.println("---------------------------------------------------------------------------");
 		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void reinforcementView(String player, HashMap<String,List<String>> territoryMap, HashMap<String,Integer> playerInfoOld){
-		
-	
-		
 		
 		System.out.println("\n\t" + "As Per Territories Owned : " + "");
 		System.out.println("\t" + "As Per Cards Exchanged : " + "");
@@ -314,6 +334,19 @@ public class PhaseUI implements Observer {
 			
 			postStartupDisplay(((PlayerClass) obs).players,((PlayerClass) obs).currentMap);
 			
+		}
+		
+		if(message.equals("roundrobin") || message == "roundrobin"){
+			
+			roundRobinHeader();
+			
+		}
+		
+		if(message.contains("reinforceHead")){
+			
+			String[] msgSplit = message.split(",");
+			
+			reinforcementViewHeader(msgSplit[1]);
 		}
 		
 	}

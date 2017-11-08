@@ -249,9 +249,9 @@ public class FortificationPhaseModel {
 
 		StartUpPhaseModel.preStartUp(numberOfPlayers, territoryMap);
 		
-		ReinforcementPhaseModel.calculateReinforcement("1");
-		ReinforcementPhaseModel.calculateReinforcement("2");
-		ReinforcementPhaseModel.calculateReinforcement("3");
+//		ReinforcementPhaseModel.calculateReinforcement("1");
+//		ReinforcementPhaseModel.calculateReinforcement("2");
+//		ReinforcementPhaseModel.calculateReinforcement("3");
 		
 		System.out.println("----------------------------------------");
 		ReinforcementPhaseModel.reinforceRandom("1");
