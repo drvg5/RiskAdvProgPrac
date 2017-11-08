@@ -4,21 +4,13 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
-import java.util.StringJoiner;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
@@ -31,23 +23,52 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.commons.io.FilenameUtils;
-
 import com.risk.model.EditMapModel;
-import com.risk.model.ParseMapFileModel;
+
+
+// TODO: Auto-generated Javadoc
+/**
+ * <h1>Controller Class for Editing Map</h1>
+ * 
+ * This class consists methods to Edit Map via  User Interaction and send data to
+ * the model.
+ * 
+ * @author Khashyap
+ * @author drvg5 - modified class to implement Modified MVC architecture
+ * 
+ */
 
 public class EditMapUI {
 
+	/** Frame to display data to user */
 	static JInternalFrame jframeContinent = new JInternalFrame();
+	
+	/** Frame prompts to upload file */
 	static JInternalFrame jframeUpload;
+	
+	/** Model to bind data to panel */
 	static DefaultTableModel modelToEdit = new DefaultTableModel(
 			new Object[] { "Continent List", "Country", "Adjacent List", "Control Value" }, 0);
+	
+	/** Hashmap to edit the Map attributes */
 	static HashMap<String, List<String>> continentHashMapToEdit = new HashMap<String, List<String>>();
+	
+	/** Hashmap to edit control value of particular Continent. */
 	static HashMap<String, Integer> continentControlValueHashMapToEdit = new HashMap<String, Integer>();
+	
+	/** List to edit Continents. */
 	static List<String> continentListToEdit = new ArrayList<String>();
+	
+	/** To store file uploaded by User */
 	static String UploadFileName;
+	
+	/** List to check for any duplicates */
 	static List<String> checkDuplicates = new ArrayList<String>();
+	
+	/** Desktop pane for user friendly view of application */
 	static JDesktopPane desktopUploadForEdit;
+	
+	/** Object creation for EditMapModel class */
 	static EditMapModel editMapModel = new EditMapModel();
 
 	/**
@@ -58,7 +79,7 @@ public class EditMapUI {
 	 * files
 	 * 
 	 * @param desktop
-	 *            This is to bind the InternalFrame with Main window frame
+	 *            To bind the InternalFrame with Main window frame
 	 * 
 	 */
 
@@ -107,17 +128,10 @@ public class EditMapUI {
 	 * <p>
 	 * This method is used to Edit Map attributes like Continents, Countries and
 	 * adjacency links After update, changes is saved to same text files which is
-	 * loaded initially
-	 * 
-	 * @param continentHashMap
-	 *            Contains all attribute values
-	 * 
-	 * @param continentControlValueHashMap
-	 *            Contains Continent and its control value.
-	 * 
-	 * @param desktop
-	 *            This is to bind the InternalFrame with Main window frame
-	 * 
+	 * loaded initially.
+	 *
+	 * @param continentHashMap            Contains all attribute values
+	 * @param continentControlValueHashMap        Contains Continent and its control value.
 	 */
 
 	public void editMap(final HashMap<String, List<String>> continentHashMap,
@@ -362,8 +376,9 @@ public class EditMapUI {
 
 	/**
 	 * <p>
-	 * This method is used to reload Data model after changes in HashMap value
-	 * 
+	 * This method is used to reload Data model after changes in HashMap value.
+	 *
+	 * @author Khashyap
 	 */
 
 	public static void reloadModel() {
@@ -390,6 +405,15 @@ public class EditMapUI {
 		}
 	}
 
+	/**
+	 * <p>
+	 * This method is used to find duplicated in Country values.
+	 *
+	 * @author Khashyap
+	 * @param listContainingDuplicates the list containing duplicates
+	 * @return true, if successful
+	 */
+	
 	public static boolean findDuplicates(List<String> listContainingDuplicates) {
 		final Set<String> set = new HashSet<String>();
 		boolean sendToValidate = false;
@@ -401,6 +425,12 @@ public class EditMapUI {
 		return sendToValidate;
 	}
 
+	/**
+	 * <p>
+	 * This method is used to close the pop up window for Edit Map.
+	 *
+	 * @author Khashyap
+	 */
 	public void closeUploadForEdit() {
 		try {
 			jframeUpload.setClosed(true);
@@ -410,6 +440,13 @@ public class EditMapUI {
 
 	}
 
+	/**
+	 * <p>
+	 * This method is used to show the pop up window for Edit Map.
+	 *
+	 * @author Khashyap
+	 */
+	
 	public void showUploadForEdit() {
 		jframeUpload.setVisible(true);
 

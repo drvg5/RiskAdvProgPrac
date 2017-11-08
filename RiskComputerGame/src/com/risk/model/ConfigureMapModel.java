@@ -10,8 +10,9 @@ import javax.swing.JDesktopPane;
 import com.risk.ui.ConfigureMapUI;
 import com.risk.ui.SaveMapUponConfigUI;
 
+// TODO: Auto-generated Javadoc
 /**
- * <h1>Configure Map</h1>
+ * <h1>Configure Map Model</h1>
  * <p>
  * <b>This class consists methods to create Continents and Countries.</b>
  * <p>
@@ -23,15 +24,34 @@ import com.risk.ui.SaveMapUponConfigUI;
 
 public class ConfigureMapModel {
 
+	/** Object created for ConfigureMapUI class */
 	ConfigureMapUI configureMapUI = new ConfigureMapUI();
+
+	/** HashMap to store Continent Control Value */
 	static HashMap<String, Integer> continentControlValueHashMap = new HashMap<String, Integer>();
+
+	/** List to check duplicate country. */
 	static List<String> listToCheckDuplicateCountry = new ArrayList<String>();
+
+	/** List consists of Continent and Country before assigning adjacency */
 	static List<String> listKeyForHashMap = new ArrayList<String>();
+
+	/** List to check duplicate continent. */
 	static List<String> listToCheckDuplicateContinent = new ArrayList<String>();
+
+	/** List to check duplicate Countries with first letter in Capital */
 	static List<String> listToCheckDuplicateCountryCapitalize = new ArrayList<String>();
+
+	/** List to check duplicate Continents with first letter in Capital */
 	static List<String> listToCheckDuplicateContinentCapitalize = new ArrayList<String>();
+
+	/** To store Continent */
 	String strContinent;
+
+	/** To store Country */
 	String strCountry;
+
+	/** To store Continent Control Value */
 	String strControlValue;
 
 	/**
@@ -39,10 +59,11 @@ public class ConfigureMapModel {
 	 * This method is used to add continents and countries to Map. User can key in
 	 * the list of Continents and Countries one by one Continent Control Value can
 	 * also be added
-	 * 
+	 *
 	 * @param data
-	 * 
-	 * 
+	 *            String array which consists of Continents,Countries and Control
+	 *            value
+	 * @return the string[] returns all data after storing in variables
 	 */
 
 	public String[] addContinentsAndCountries(String[] data) {
@@ -119,19 +140,17 @@ public class ConfigureMapModel {
 			String concatString = joiner.toString();
 			listKeyForHashMap.add(concatString);
 			continentControlValueHashMap.put(strContinentCapitalize, continetControlValue);
-			if(!(listToCheckDuplicateContinentCapitalize.contains(strContinentCapitalize))) {
-			listToCheckDuplicateContinentCapitalize.add(strContinentCapitalize);
+			if (!(listToCheckDuplicateContinentCapitalize.contains(strContinentCapitalize))) {
+				listToCheckDuplicateContinentCapitalize.add(strContinentCapitalize);
 			}
-			if(!(listToCheckDuplicateCountryCapitalize.contains(strCountryCapitalize)))
-			{
-			listToCheckDuplicateCountryCapitalize.add(strCountryCapitalize);
+			if (!(listToCheckDuplicateCountryCapitalize.contains(strCountryCapitalize))) {
+				listToCheckDuplicateCountryCapitalize.add(strCountryCapitalize);
 			}
-			if(!(listToCheckDuplicateContinent.contains(strContinent)))
-			{
-			listToCheckDuplicateContinent.add(strContinent);
+			if (!(listToCheckDuplicateContinent.contains(strContinent))) {
+				listToCheckDuplicateContinent.add(strContinent);
 			}
-			if(!(listToCheckDuplicateCountry.contains(strCountry))) {
-			listToCheckDuplicateCountry.add(strCountry);
+			if (!(listToCheckDuplicateCountry.contains(strCountry))) {
+				listToCheckDuplicateCountry.add(strCountry);
 			}
 			dataReturned[0] = strContinentCapitalize;
 			dataReturned[1] = strCountryCapitalize;
@@ -142,14 +161,36 @@ public class ConfigureMapModel {
 
 	}
 
+	/**
+	 * <p>
+	 * This method is used to remove any incorrect entry while configuring
+	 * continents and countries to Map.
+	 * 
+	 * @param data
+	 *            String array which consists of Continents,Countries and Control
+	 *            value
+	 * 
+	 */
+
 	public void updateOnClick(String[] data) {
 		listKeyForHashMap.remove(data[0]);
-		listToCheckDuplicateContinent.add(data[1]);
+		listToCheckDuplicateContinent.remove(data[1]);
 		listToCheckDuplicateCountry.remove(data[2]);
-		listToCheckDuplicateContinentCapitalize.add(data[3]);
-		listToCheckDuplicateCountryCapitalize.add(data[4]);
+		listToCheckDuplicateContinentCapitalize.remove(data[3]);
+		listToCheckDuplicateCountryCapitalize.remove(data[4]);
 		continentControlValueHashMap.remove(data[5]);
 	}
+
+	/**
+	 * <p>
+	 * This method is used to update incorrect entry while configuring continents
+	 * and countries to Map.
+	 * 
+	 * @param data
+	 *            String array which consists of Continents,Countries and Control
+	 *            value
+	 * 
+	 */
 
 	public void updateOnClickOfButton(String[] data) {
 
@@ -161,6 +202,15 @@ public class ConfigureMapModel {
 		listToCheckDuplicateContinentCapitalize.add(data[5]);
 		listToCheckDuplicateCountryCapitalize.add(data[6]);
 	}
+
+	/**
+	 * <p>
+	 * This method will pass input of configured continents and countries to
+	 * SaveMapConfigUI Class .
+	 *
+	 * @param desktop
+	 *            To bind the InternalFrame with Main window frame
+	 */
 
 	public void inputForAdjacency(JDesktopPane desktop) {
 		if ((strContinent.isEmpty()) || (strCountry.isEmpty()) || (strControlValue.isEmpty())) {
