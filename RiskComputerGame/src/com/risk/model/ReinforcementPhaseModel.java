@@ -29,6 +29,7 @@ public class ReinforcementPhaseModel extends Observable {
 	
 	private HashMap<String,Integer> playerContTerr = new HashMap<String,Integer>();
 	
+	//setters and getters
 	public HashMap<String, Integer> getPlayerContTerr() {
 		return playerContTerr;
 	}
@@ -45,18 +46,16 @@ public class ReinforcementPhaseModel extends Observable {
 		this.cntrlValReinforcements = cntrlValReinforcements;
 	}
 
-
-	
-	
 	public String getMsgUI(){
 		
 		return msgUI;
 	}
 	
-	public void setMsgUI(String msg){
+	public void setMsgUI(String msgUI){
 		
-		msgUI = msg;
+		this.msgUI = msgUI;
 	}
+	
 	
 	
 	
