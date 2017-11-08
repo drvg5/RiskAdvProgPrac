@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -15,15 +18,57 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.risk.ui.UploadMapUI;
 
+// TODO: Auto-generated Javadoc
+/**
+ * <h1>Parse MapFile Model</h1>
+ * <p>
+ * <b>This class consists methods to read map file and save to HashMap for game
+ * play </b>
+ * <p>
+ * .
+ *
+ * @author Khashyap
+ * @version 1.0
+ */
+
 public class ParseMapFileModel {
 
+	/** Hashmap to store Map attributes */
 	HashMap<String, List<String>> continentHashMap = new HashMap<String, List<String>>();
+
+	/** Hashmap to check control value of Continent */
 	HashMap<String, Integer> continentCount = new HashMap<String, Integer>();
+
+	/** List to check duplicates. */
 	List<String> checkDuplicates = new ArrayList<String>();
+
+	/** Object creation for UploadMapUI */
 	UploadMapUI uploadMapUI = new UploadMapUI();
+
+	/** To check Territory values in uploaded file */
 	final String strTerritory = "[Territories]";
+
+	/** To check Map values in uploaded file */
 	final String strMap = "[Map]";
+
+	/** To check Continent values in uploaded file */
 	final String strContinent = "[Continents]";
+
+	public static boolean junitMapValidation;
+
+	public static boolean checkForCallingUI=true;
+
+	/**
+	 * <p>
+	 * This method is used to fetch text or map file from local folder and store in
+	 * Hashmap to play.
+	 *
+	 * @param returnValue
+	 *            Checks for successful upload
+	 * @param file
+	 *            File selected by User
+	 * @return the map file
+	 */
 
 	public void getMapFile(int returnValue, File file) {
 
@@ -32,6 +77,9 @@ public class ParseMapFileModel {
 		if (returnValue == 0) {
 			String UploadFileName = file.getName();
 			String FileFormat = FilenameUtils.getExtension(UploadFileName);
+			List<String> connectivityCheck = new ArrayList<String>();
+			List<String> continentListCheckNow = new ArrayList<String>();
+			boolean checkConnected = false;
 			try {
 				Scanner scanner = new Scanner(file);
 				List<String> Maplist = new ArrayList<>();
@@ -43,14 +91,19 @@ public class ParseMapFileModel {
 				scanner.close();
 
 				if (!((FileFormat.equals("map") || (FileFormat.equals("txt"))))) {
-					uploadMapUI.showErrorMessageForUpload(1);
+					if (checkForCallingUI) {
+						uploadMapUI.showErrorMessageForUpload(1);
 
-				}
+					}
+				 				}
 
 				else if (!((Maplist.contains("[Map]") && Maplist.contains("[Continents]")
 						&& Maplist.contains("[Territories]")))) {
-
-					uploadMapUI.showErrorMessageForUpload(2);
+					if(checkForCallingUI)
+					{
+						uploadMapUI.showErrorMessageForUpload(2);
+					}
+					
 
 				} else {
 					mainloop: for (int i = 0; i < Maplist.size(); i++) {
@@ -79,12 +132,20 @@ public class ParseMapFileModel {
 									checkDuplicates.add(arrayMapList[0]);
 									checkDuplicate = findDuplicates(checkDuplicates);
 									if (checkDuplicate) {
-										uploadMapUI.showErrorMessageForUpload(3);
+										if(checkForCallingUI)
+										{
+											uploadMapUI.showErrorMessageForUpload(3);
+										}
+										
 										checkDuplicates.clear();
 										continentHashMap.clear();
 										break mainloop;
 									}
-									uploadMapUI.closeUpload();
+									if(checkForCallingUI)
+									{
+										uploadMapUI.closeUpload();
+
+									}
 									String[] adjListArray = Arrays.copyOfRange(arrayMapList, 4, arrayMapList.length);
 									List<String> adjCountries = new ArrayList<>();
 									adjCountries.addAll(Arrays.asList(adjListArray));
@@ -97,9 +158,63 @@ public class ParseMapFileModel {
 						}
 					}
 
-					if (continentHashMap.isEmpty()) {
-					} else {
+					Iterator<Map.Entry<String, List<String>>> iter = continentHashMap.entrySet().iterator();
+					while (iter.hasNext()) {
+						Map.Entry<String, List<String>> entry = iter.next();
+						String strKey = entry.getKey();
+						String[] strKeyArrayToCheck = strKey.split(",");
+						Iterator<Map.Entry<String, List<String>>> innerIter = continentHashMap.entrySet().iterator();
+						while (innerIter.hasNext()) {
+							Map.Entry<String, List<String>> innerEntry = innerIter.next();
+							String strinnerKey = innerEntry.getKey();
+							String[] strinnerKeyArrayToCheck = strinnerKey.split(",");
+							List<String> innerList = innerEntry.getValue();
+							if (!((strKeyArrayToCheck[0]).equals(strinnerKeyArrayToCheck[0]))) {
+								for (int inner = 0; inner < innerList.size(); inner++) {
+									if (strKeyArrayToCheck[1].equals(innerList.get(inner))) {
+										if (!(connectivityCheck.contains(strKeyArrayToCheck[1]))) {
+											connectivityCheck.add(strKeyArrayToCheck[0]);
+										}
+									}
+								}
+							}
+						}
 
+					}
+
+					for (Map.Entry<String, List<String>> entry : continentHashMap.entrySet()) {
+						String strKey = entry.getKey();
+						String[] strKeyArrayToEdit = strKey.split(",");
+						if (!(continentListCheckNow.contains(strKeyArrayToEdit[0]))) {
+							continentListCheckNow.add(strKeyArrayToEdit[0]);
+						}
+					}
+
+					int sizeOfCont = continentListCheckNow.size();
+					Set<String> hs = new HashSet<>();
+					hs.addAll(connectivityCheck);
+					connectivityCheck.clear();
+					connectivityCheck.addAll(hs);
+					Collection<String> collectionAdjCont = connectivityCheck;
+					Collection<String> collectionTotalCont = continentListCheckNow;
+					collectionTotalCont.removeAll(collectionAdjCont);
+					if (collectionTotalCont.isEmpty() || sizeOfCont == 1) {
+						checkConnected = true;
+					}
+
+					if (continentHashMap.isEmpty()) {
+					}
+
+					else if (!(checkConnected)) {
+						if(checkForCallingUI)
+						{
+							uploadMapUI.showErrorMessageForUpload(3);
+						}
+						
+					}
+
+					else {
+						junitMapValidation = true;
 						System.out.println(continentHashMap);
 				//		GameDriverNew.gameStart(continentHashMap, continentCount);
 
@@ -112,6 +227,15 @@ public class ParseMapFileModel {
 		}
 
 	}
+
+	/**
+	 * <p>
+	 * This method is used to check any duplicates.
+	 *
+	 * @param listContainingDuplicates
+	 *            List to check
+	 * @return sendToValidate boolean value after checking condition
+	 */
 
 	public static boolean findDuplicates(List<String> listContainingDuplicates) {
 		final Set<String> set = new HashSet<String>();

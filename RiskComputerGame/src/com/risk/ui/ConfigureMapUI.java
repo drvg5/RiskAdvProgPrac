@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.risk.model.ConfigureMapModel;
 
+// TODO: Auto-generated Javadoc
 /**
  * <h1>Controller Class for Creating Map</h1>
  * 
@@ -34,8 +35,20 @@ import com.risk.model.ConfigureMapModel;
  */
 public class ConfigureMapUI {
 
+	/** Frame to display data to user*/
 	static JInternalFrame jframeContinent = new JInternalFrame();
+	
+	/**Object creation for ConfigureMapModel class */
 	ConfigureMapModel configureMapModel;
+	
+	/**
+	 * This method consists fetching data from user input and send data to
+	 * the model.
+	 *
+	 * @author Khashyap
+	 * @author drvg5 - modified method to implement Modified MVC architecture
+	 * @param desktop To bind the InternalFrame with Main window frame
+	 */
 
 	public void createContinentandCountry(final JDesktopPane desktop) {
 
@@ -66,6 +79,7 @@ public class ConfigureMapUI {
 		tableContinent.setModel(modelContinent);
 
 		// Button to add Continent and Country. All Validations are handled
+		
 		btnAddAll.addActionListener(new ActionListener() {
 
 			@Override
@@ -91,6 +105,7 @@ public class ConfigureMapUI {
 
 		// Listen for changes in the Continent value and enables ControlContinentValue
 		// Text Box
+		
 		textContinent.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
@@ -110,6 +125,7 @@ public class ConfigureMapUI {
 		});
 
 		// Mouse Listener Event to handle Edit and Update Functionality
+		
 		tableContinent.addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent e) {
@@ -138,6 +154,7 @@ public class ConfigureMapUI {
 		});
 
 		// Button to Edit Continent and Country value
+		
 		btnEdit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -212,6 +229,14 @@ public class ConfigureMapUI {
 		desktop.add(jframeContinent);
 	}
 
+	
+	/**
+	 * This methods displays all error messages to User.
+	 *
+	 * @author Dhruv
+	 * @param  number for particular error message
+	 */
+	
 	public void showErrorMessageForSaving(int i) {
 		if (i==1) {
 			JOptionPane.showMessageDialog(null, "Oops!Please enter values", "Error", JOptionPane.ERROR_MESSAGE);
