@@ -1,5 +1,6 @@
 package com.risk.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,27 +20,55 @@ import java.util.TreeSet;
 
 public class PlayerClass extends Observable {
 
+	
+	public static int players = 0;
+	public static HashMap<String, List<String>> currentMap;
+
 	public static String msg;
 
+	
 	public void gamePlay(int numberOfPlayers, HashMap<String, List<String>> territoryMap,
 			HashMap<String, Integer> continentControlValueHashMap) throws InterruptedException {
 
+		currentMap = territoryMap;
+		
+		PlayerClass.players = numberOfPlayers;
 		// startUpPhase method called
 		PlayerClass.startUpPhase(numberOfPlayers);
 
-		msg = "startup completed";
+		msg = "startup";
 		
 		setChanged();
+
 
 		notifyObservers(msg);
 
 		Thread.sleep(5000);
+
+		notifyObservers(this);
+		
+		
+		
+		
+//		if(true)
+//		return;
+		
+		
+		
 
 		int plyr = 1;
 
 		int currentNumberOfPlayers = numberOfPlayers;
 
 		PlayerClass playerClassObj = new PlayerClass();
+
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 
 		// round robin for game starts
 		while (true) {
@@ -55,6 +84,7 @@ public class PlayerClass extends Observable {
 
 			// reinforcement phase method called
 			playerClassObj.reinforcementPhase(plyr, continentControlValueHashMap);
+
 
 			msg = "reinforce done";
 			setChanged();
@@ -113,15 +143,17 @@ public class PlayerClass extends Observable {
 		setChanged();
 		notifyObservers(this);
 
-		// call method to calculate reinforcements by cards
-		String cardExgMsg = ReinforcementPhaseModel.calcReinforcementByCards(Integer.toString(plyr));
-		PlayerClass.msg = "reinforcements by exchanging cards|" + reinTerrMsg + "|";
-		setChanged();
-		notifyObservers(this);
+		
+		//call method to calculate reinforcements by cards
+//		String cardExgMsg = ReinforcementPhaseModel.calcReinforcementByCards(Integer.toString(plyr));
+//		PlayerClass.msg = "reinforcements by exchanging cards|" + reinTerrMsg + "|";
+//		setChanged();
+//		notifyObservers(this);
+		
+		
+		//call method to calculate reinforcements if a player owns the whole continent
+		ArrayList<String> cntrlValMsg = ReinforcementPhaseModel.calcReinforcementByCntrlVal(Integer.toString(plyr), continentControlValueHashMap);
 
-		// call method to calculate reinforcements if a player owns the whole continent
-		ArrayList<String> cntrlValMsg = ReinforcementPhaseModel.calcReinforcementByCntrlVal(Integer.toString(plyr),
-				continentControlValueHashMap);
 		String[] cntrlVal = cntrlValMsg.toArray(new String[cntrlValMsg.size()]);
 
 		PlayerClass.msg = "reinforcements by control value-";
