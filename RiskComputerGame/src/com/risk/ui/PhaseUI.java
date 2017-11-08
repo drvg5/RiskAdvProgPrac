@@ -163,17 +163,22 @@ public class PhaseUI implements Observer {
 	public void attackView(String player, String attacker, String attacked){
 		
 		System.out.printf("\n\t" + "Attacking Territory : " + attacker);
-		System.out.println("\t" + "Armies : ");
+		System.out.printf("\t" + "Armies : ");
+		System.out.println("\t" + "Number of Dice chosen : ");
 		System.out.printf("\t" + "Defending Territory : " + attacked);
-		System.out.println("\t" + "Armies : ");
-		
-		
-		System.out.println();
-		
+		System.out.printf("\t" + "Armies : ");
+		System.out.println("\t" + "Number of Dice chosen : ");
 		
 		
 	}//end method attack view
 	
+	public void diceRollView(){
+	
+		System.out.printf("\n\t" + "Attacker Dice Rolls : ");
+		System.out.println("\t" + "Defender Dice Rolls : ");
+		System.out.println("\tResult: ");
+		
+	}
 	public void attackViewHeader(String player){
 		
 		System.out.println("------------------------------------------------");
