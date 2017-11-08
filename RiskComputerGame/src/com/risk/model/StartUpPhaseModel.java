@@ -158,7 +158,7 @@ public class StartUpPhaseModel {
 		      while(remCount!=0)
 		      {
 		    	  	
-		    	  	//recheck
+		    	  	
 		    	    String randomPlayerKey = listOfPlayerKeys.get(randomPlayer.nextInt(numberOfPlayers) );
 		    	    
 		    	    if(terrPerPlayer.get(randomPlayerKey) < roundUpNumber )
@@ -218,6 +218,7 @@ public class StartUpPhaseModel {
 			while (countPT != 0) {
 
 				List<String> list = new ArrayList<String>(countryTaken);
+				
 				// get territory randomly from list of country taken
 				String randomVal = list.get(random.nextInt(list.size()));
 
@@ -257,7 +258,7 @@ public class StartUpPhaseModel {
 						continentTerrPlayerCount = 0;
 
 						playerKey = String.valueOf(pl) + "-" + randomTerr[0] + "-" + randomTerrContinent;
-						playerInfo.put(playerKey, 0);
+						playerInfo.put(playerKey, 1);
 
 						// modify countryTaken to indicate that country has been assigned to a player
 						countryTaken.add(randomTerr[0] + "-1");

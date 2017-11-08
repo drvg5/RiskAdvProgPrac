@@ -29,6 +29,7 @@ public class PlayerClass extends Observable {
 		PlayerClass.startUpPhase(numberOfPlayers);
 
 		msg = "startup completed";
+		
 		setChanged();
 
 		notifyObservers(msg);
