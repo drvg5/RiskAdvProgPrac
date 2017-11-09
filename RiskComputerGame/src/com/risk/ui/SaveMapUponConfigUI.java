@@ -30,8 +30,9 @@ import javax.swing.table.DefaultTableModel;
 
 import com.risk.model.SaveMapUponConfigModel;
 
+// TODO: Auto-generated Javadoc
 /**
- * <h1>Save Map</h1>
+ * <h1>Save Map Upon ConfigUI</h1>
  * <p>
  * <b>This class consists static methods to save map file to local folder </b>
  * User would be able to configure Adjacency between Countries.
@@ -42,31 +43,38 @@ import com.risk.model.SaveMapUponConfigModel;
  */
 public class SaveMapUponConfigUI {
 
+	/** Hashmap to store the Map attributes */
 	static HashMap<String, List<String>> mainHashMap = new HashMap<String, List<String>>();
+	
+	/** Hashmap to store control value of  Continents */
 	static HashMap<String, Integer> continentControlValueHashMap = new HashMap<String, Integer>();
+	
+	/** List consists of both Continent and Country */
 	static List<String> listContinentCountry = new ArrayList<String>();
+	
+	/** Initital list before configuring adjacency */
 	static List<String> listFirstEntry = new ArrayList<String>();
+	
+	/** Frame to display data*/
 	static JInternalFrame jframeAdjCountryList = new JInternalFrame();
+	
+	/** Desktop pane for user friendly view of application */
 	static JDesktopPane desktopSaveMap;
+	
+	/** Model to bind data to panel */
 	static DefaultTableModel modelAdjacenyList = new DefaultTableModel(
 			new Object[] { "Continent and Country", "Adjacency List" }, 0);
 
 	/**
 	 * <p>
-	 * This method is used to save file to local folder
-	 * 
-	 * @param keyForHashMap
-	 *            This list holds the values of both Countries and Continents for
+	 * This method is used to save file to local folder.
+	 *
+	 * @param keyForHashMap            List holds the values of both Countries and Continents for
 	 *            which adjacency need to be configured
-	 * @param controlValueHashmap
-	 *            This HashMap stores the Continent and its control value
-	 * @param listToCheckDuplicateContinent
-	 *            List which consists of all Continents
-	 * @param listToCheckDuplicateCountry
-	 *            List which consists of all Countries
-	 * @param desktop
-	 *            This is to bind the InternalFrame with Main window frame
-	 * 
+	 * @param controlValueHashmap            This HashMap stores the Continent and its control value
+	 * @param listToCheckDuplicateContinent            List consists of all Continents
+	 * @param listToCheckDuplicateCountry            List consists of all Countries
+	 * @param desktop            This is to bind the InternalFrame with Main window frame
 	 */
 
 	public static void saveToFile(List<String> keyForHashMap, HashMap<String, Integer> controlValueHashmap,
@@ -195,7 +203,7 @@ public class SaveMapUponConfigUI {
 
 				else {
 					textFileName = JOptionPane.showInputDialog("Please Enter Map name");
-					if (textFileName != null) {
+					if (textFileName != null && !textFileName.isEmpty()) {
 						try {
 
 							fstream = new FileWriter("C:/Users/Khashyap/Documents/Maps/" + textFileName + ".txt");
@@ -233,9 +241,10 @@ public class SaveMapUponConfigUI {
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
+						JOptionPane.showMessageDialog(null, textFileName + " \t is saved");
+						jframeAdjCountryList.setVisible(false);
 					}
-					JOptionPane.showMessageDialog(null, textFileName + " \t is saved");
-					jframeAdjCountryList.setVisible(false);
+					
 
 				}
 			}
@@ -260,8 +269,9 @@ public class SaveMapUponConfigUI {
 
 	/**
 	 * <p>
-	 * This method is used to reload Data model after changes in HashMap value
-	 * 
+	 * This method is used to reload Data model after changes in HashMap value.
+	 *
+	 * @author Khashyap
 	 */
 
 	public static void reloadModel() {
@@ -272,6 +282,14 @@ public class SaveMapUponConfigUI {
 
 	}
 
+
+	/**
+	 * This methods displays all error messages to User.
+	 *
+	 * @author Dhruv
+	 * @param  captures the error message
+	 */
+	
 	public void showErrorMessageAdjacency(String message) {
 		if (message.equals("checkEqual")) {
 			JOptionPane.showMessageDialog(null, "You cannot enter same country", "Error", JOptionPane.ERROR_MESSAGE);

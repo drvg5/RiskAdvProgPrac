@@ -160,6 +160,8 @@ public class GameDriverNew extends Object{
 	
 	public void gameStart(HashMap<String,List<String>> territoryMap, HashMap<String, Integer> continentControlValueHashMap){
 		
+		
+		
 		int numberOfPlayers;
 		
 		while(playerGTTerr != 1)	{
