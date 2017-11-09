@@ -53,7 +53,7 @@ public class AttackPhaseModel {
 		// getting number of attacker armies
 		noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attacker);
 		boolean foundAdjacency = false;
-		while (attackAgain.trim().equalsIgnoreCase("Yes")) {
+		while (attackAgain.trim().equalsIgnoreCase("Yes") || attackSameCountryAgain.trim().equalsIgnoreCase("Y")) {
 			// attacker country changed if one army is remaining
 			if (StartUpPhaseModel.playerInfo.get(attackerKey) == 1) {
 				attacker = playerAccToPlayerNo.get(random.nextInt(playerAccToPlayerNo.size()));
@@ -83,9 +83,14 @@ public class AttackPhaseModel {
 					for (String country : iterate.getValue()) {
 
 						if (territoryAttacked.equals(country)) {
-							while (attackSameCountryAgain.trim().equalsIgnoreCase("Yes")) {
+							while (attackSameCountryAgain.trim().equalsIgnoreCase("Yes")
+									|| attackSameCountryAgain.trim().equalsIgnoreCase("Y")) {
 
 								// attackSameCountryAgain
+								noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attacker);
+
+								noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(attacked);
+
 								System.out.println("Player" + keySplit1[0] + "(Attacker) --> number of armies : "
 										+ noOfAttackerArmies);
 								System.out.println("Player" + keySplit2[0] + "(Defender) --> number of armies : "
@@ -254,14 +259,14 @@ public class AttackPhaseModel {
 
 		// Case 1 : attacker and defender both are given more than 1 dice rolls
 		if (diceArrayForAttackersList.size() >= 2) {
-		//	maxAttacker = Collections.max(diceArrayForAttackersList);
-			attacker2ndBest = (int) diceArrayForAttackersList.get(diceArrayForAttackersList.size() - 2);
-		//	maxDefender = Collections.max(diceArrayForDefendersList);
+			 maxAttacker = Collections.max(diceArrayForAttackersList);
+			 attacker2ndBest = (int) diceArrayForAttackersList.get(diceArrayForAttackersList.size() - 2);
+			 maxDefender = Collections.max(diceArrayForDefendersList);
 			minDefender2ndRoll = (int) diceArrayForDefendersList.get(diceArrayForDefendersList.size() - 2);
 			if (maxAttacker > maxDefender) {
 				++armiesObtainedForAttacker;
 				--armiesObtainedForDefender;
-
+ 
 			} else {
 				--armiesObtainedForAttacker;
 				++armiesObtainedForDefender;
@@ -278,14 +283,14 @@ public class AttackPhaseModel {
 			// Updating the Player Data
 
 			int noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attackerKey);
-			noOfAttackerArmies = noOfAttackerArmies - armiesObtainedForAttacker;
+			noOfAttackerArmies = noOfAttackerArmies + armiesObtainedForAttacker;
 			// Updating Attacker Data
 			StartUpPhaseModel.playerInfo.replace(attackerKey, noOfAttackerArmies);
 
 			int noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(defenderKey);
-			noOfDefenderArmies = noOfDefenderArmies - armiesObtainedForDefender;
+			noOfDefenderArmies = noOfDefenderArmies + armiesObtainedForDefender;
 			// Updating Defender Data
-			StartUpPhaseModel.playerInfo.replace(defenderKey, noOfAttackerArmies); 
+			StartUpPhaseModel.playerInfo.replace(defenderKey, noOfDefenderArmies);
 
 			if (noOfDefenderArmies == 0) {
 
@@ -331,14 +336,14 @@ public class AttackPhaseModel {
 
 			// Updating the Player Data
 			int noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attackerKey);
-			noOfAttackerArmies = noOfAttackerArmies - armiesObtainedForAttacker;
+			noOfAttackerArmies = noOfAttackerArmies + armiesObtainedForAttacker;
 			// Updating Attacker Data
 			StartUpPhaseModel.playerInfo.replace(attackerKey, noOfAttackerArmies);
 
 			int noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(defenderKey);
-			noOfDefenderArmies = noOfDefenderArmies - armiesObtainedForDefender;
+			noOfDefenderArmies = noOfDefenderArmies + armiesObtainedForDefender;
 			// Updating Defender Data
-			StartUpPhaseModel.playerInfo.replace(defenderKey, noOfAttackerArmies);
+			StartUpPhaseModel.playerInfo.replace(defenderKey, noOfDefenderArmies);
 
 			if (noOfDefenderArmies == 0) {
 
