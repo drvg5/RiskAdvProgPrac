@@ -349,5 +349,12 @@ public class PhaseUI implements Observer {
 			reinforcementViewHeader(msgSplit[1]);
 		}
 		
+		if(message.contains("reinforceHead")){
+			
+			String[] msgSplit = message.split(",");
+			
+			reinforcementViewHeader(msgSplit[1]);
+		}
+		
 	}
 }
