@@ -165,7 +165,7 @@ public class GameDriverModel {
 				
 				
 //				ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
-				ReinforcementPhaseModel.reinforceRandom(Integer.toString(plyr));
+				//ReinforcementPhaseModel.reinforceRandom(Integer.toString(plyr));
 				playerInfoDisplay(Integer.toString(plyr),territoryMap);
 				
 				Thread.sleep(5000);

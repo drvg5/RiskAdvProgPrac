@@ -40,6 +40,14 @@ public class ReinforcementsUI implements Observer {
 			
 		}
 		
+		if(msgUI.contains("total reinforcement print")){
+			
+			//"total reinforcement print," + player
+			String[] msgUISplit = msgUI.split(",");
+			
+			totalReinforcementsView(msgUISplit[1]);
+		}
+		
 	}//end update method
 	
 	public void calcByTerrView(String player, String terrOwned, String byTerrReinforcements){
@@ -194,4 +202,30 @@ public class ReinforcementsUI implements Observer {
 	
 	}
 	
+	public void totalReinforcementsView(String player){
+		
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		System.out.printf("\n\n\n\t" + " TOTAL REINFORCEMENTS RECIEVED BY PLAYER " + player + " : " );
+		
+		int total = ReinforcementPhaseModel.reinforcement.get(player);
+		
+		System.out.printf("" + total + "\n\n");
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
 }

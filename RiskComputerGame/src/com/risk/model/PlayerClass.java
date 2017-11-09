@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.TreeSet;
 
+import com.risk.ui.CardExchangeUI;
 import com.risk.ui.ReinforcementsUI;
 
 /**
@@ -154,9 +155,10 @@ public class PlayerClass extends Observable {
 		
 		ReinforcementPhaseModel reinforcmentModelObj = new ReinforcementPhaseModel();
 		ReinforcementsUI uiObj = new ReinforcementsUI();
+		CardExchangeUI uiCardObj = new CardExchangeUI();
 		
 		reinforcmentModelObj.addObserver(uiObj);
-		
+		reinforcmentModelObj.addObserver(uiCardObj);
 		// call method to calculate reinforcements by number of territories
 		String reinTerrMsg = reinforcmentModelObj.calcReinforcementsByTerr(Integer.toString(plyr));
 		
@@ -174,12 +176,32 @@ public class PlayerClass extends Observable {
 		notifyObservers(this);
 
 		
-		//call method to calculate reinforcements by cards
-//		String cardExgMsg = ReinforcementPhaseModel.calcReinforcementByCards(Integer.toString(plyr));
-//		PlayerClass.msg = "reinforcements by exchanging cards|" + reinTerrMsg + "|";
-//		setChanged();
-//		notifyObservers(this);
 		
+		
+		//call method to calculate reinforcements by cards
+		reinforcmentModelObj.calcReinforcementByCards(Integer.toString(plyr));
+//		PlayerClass.msg = "reinforcements by exchanging cards|" + reinTerrMsg + "|";
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		setChanged();
+		
+		notifyObservers(this);
+		
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//call method to calculate reinforcements if a player owns the whole continent
 		ArrayList<String> cntrlValMsg = reinforcmentModelObj.calcReinforcementByCntrlVal(Integer.toString(plyr), continentControlValueHashMap);
@@ -206,7 +228,7 @@ public class PlayerClass extends Observable {
 
 		// ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
 
-		ReinforcementPhaseModel.reinforceRandom(Integer.toString(plyr));
+		reinforcmentModelObj.reinforceRandom(Integer.toString(plyr));
 	}
 
 	/*

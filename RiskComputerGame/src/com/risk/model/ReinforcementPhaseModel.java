@@ -8,27 +8,23 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.TreeSet;
 
+import com.risk.utility.RiskConstants;
+
 public class ReinforcementPhaseModel extends Observable {
 
 	public static HashMap<String,Integer> reinforcement = new HashMap<String,Integer>();
 	public static HashMap<String,ArrayList<String>> playerCards = new HashMap<String,ArrayList<String>>();
-	public static HashMap<String,ArrayList<String>> prevPlayerCards = new HashMap<String,ArrayList<String>>();
 	//key -> playernumber + "-" + number of times cards exchanged already
-	//value -> list of 5 cards
+	//value -> list of 5 current cards
 	
-	public static final int FIRST_EXG_ARMIES = 5;
-	public static final String CARD_1 = "Artillery";
-	public static final String CARD_2 = "Cavalry";
-	public static final String CARD_3 = "Infantry";
-	public static final String[] CARD_TYPES = {CARD_1,CARD_2,CARD_3}; 
-	
-	
+	public static HashMap<String,ArrayList<String>> prevPlayerCards = new HashMap<String,ArrayList<String>>();
+		
 	//public static int reinforcment;
 	public static ArrayList<String> prevCards = new ArrayList<String>(); ;
 	public static ArrayList<String> chosenCards = new ArrayList<String>();
 	public static ArrayList<String> newCards = new ArrayList<String>();
 	
-	private int cardArmies ;
+	private static int cardArmies ;
 	
 	private String cardsMsg ;
 	
@@ -41,12 +37,12 @@ public class ReinforcementPhaseModel extends Observable {
 	
 	//setters and getters
 	
-	public int getCardArmies() {
+	public static int getCardArmies() {
 		return cardArmies;
 	}
 
-	public void setCardArmies(int cardArmies) {
-		this.cardArmies = cardArmies;
+	public static void setCardArmies(int armies) {
+		cardArmies = armies;
 	}
 	
 	public String getCardsMsg() {
@@ -211,6 +207,7 @@ public class ReinforcementPhaseModel extends Observable {
 	
 	public void calcReinforcementByCards(String player){
 		
+		setMsgUI("byCards," + player);
 		
 		int reinforcementArmies = 0;
 		int prevExg = 0;
@@ -223,6 +220,10 @@ public class ReinforcementPhaseModel extends Observable {
 		prevPlayerCards = new HashMap<String,ArrayList<String>>();
 		
 		chosenCards = new ArrayList<String>();
+		
+		prevCards = new ArrayList<String>();
+		
+		setCardArmies(0);
 				
 		if(!playerCards.isEmpty()){
 			
@@ -239,7 +240,10 @@ public class ReinforcementPhaseModel extends Observable {
 					//check number of cards
 					cardsList = ReinforcementPhaseModel.playerCards.get(plyrCardExgHistory);
 					
+					if(!cardsList.isEmpty()){
+					prevCards = cardsList;
 					numberOfCards = cardsList.size();
+					}
 					
 					prevExg = Integer.parseInt(keySplit[1]);
 					
@@ -299,7 +303,7 @@ public class ReinforcementPhaseModel extends Observable {
 						
 						//calculate reinforcement armies
 						int newExg = prevExg + 1;
-						reinforcementArmies = ReinforcementPhaseModel.FIRST_EXG_ARMIES * newExg;
+						reinforcementArmies = RiskConstants.FIRST_EXG_ARMIES * newExg;
 
 						setCardArmies(reinforcementArmies);
 						
@@ -367,11 +371,11 @@ public class ReinforcementPhaseModel extends Observable {
 				TreeSet<String> cardsToBeExchanged = new TreeSet<String>();
 				
 				for(String cardKey : cardsList){
-					if(cardKey.equals(ReinforcementPhaseModel.CARD_1) || cardKey == ReinforcementPhaseModel.CARD_1)
+					if(cardKey.equals(RiskConstants.CARD_1) || cardKey == RiskConstants.CARD_1)
 						card1++;
-					if(cardKey.equals(ReinforcementPhaseModel.CARD_2) || cardKey == ReinforcementPhaseModel.CARD_2)
+					if(cardKey.equals(RiskConstants.CARD_2) || cardKey == RiskConstants.CARD_2)
 						card2++;
-					if(cardKey.equals(ReinforcementPhaseModel.CARD_3) || cardKey == ReinforcementPhaseModel.CARD_3)
+					if(cardKey.equals(RiskConstants.CARD_3) || cardKey == RiskConstants.CARD_3)
 						card3++;
 				}//end for(String cardKey : cardsList)
 				
@@ -426,30 +430,30 @@ public class ReinforcementPhaseModel extends Observable {
 							
 							if(card1 > card2 && card1 > card3){
 								
-								similarCard = ReinforcementPhaseModel.CARD_1;
+								similarCard = RiskConstants.CARD_1;
 								newCountCard1 = card1 - 3 ;
-								chosenCards.add(ReinforcementPhaseModel.CARD_1);
-								chosenCards.add(ReinforcementPhaseModel.CARD_1);
-								chosenCards.add(ReinforcementPhaseModel.CARD_1);
+								chosenCards.add(RiskConstants.CARD_1);
+								chosenCards.add(RiskConstants.CARD_1);
+								chosenCards.add(RiskConstants.CARD_1);
 							}
 							
 							else if(card2 > card1 && card2 > card3){
 								
-								similarCard = ReinforcementPhaseModel.CARD_2;
+								similarCard = RiskConstants.CARD_2;
 								newCountCard2 = card2 - 3 ;
-								chosenCards.add(ReinforcementPhaseModel.CARD_2);
-								chosenCards.add(ReinforcementPhaseModel.CARD_2);
-								chosenCards.add(ReinforcementPhaseModel.CARD_2);
+								chosenCards.add(RiskConstants.CARD_2);
+								chosenCards.add(RiskConstants.CARD_2);
+								chosenCards.add(RiskConstants.CARD_2);
 							}
 							
 							else if(card3 > card1 && card3 > card2){
 								
-								similarCard = ReinforcementPhaseModel.CARD_3;
+								similarCard = RiskConstants.CARD_3;
 								newCountCard3 = card3 - 3 ;
 								
-								chosenCards.add(ReinforcementPhaseModel.CARD_3);
-								chosenCards.add(ReinforcementPhaseModel.CARD_3);
-								chosenCards.add(ReinforcementPhaseModel.CARD_3);
+								chosenCards.add(RiskConstants.CARD_3);
+								chosenCards.add(RiskConstants.CARD_3);
+								chosenCards.add(RiskConstants.CARD_3);
 							}
 							
 							
@@ -460,7 +464,7 @@ public class ReinforcementPhaseModel extends Observable {
 								
 								for(int i = 0; i < newCountCard1; i++ ){
 									
-									updatedCardsList.add(ReinforcementPhaseModel.CARD_1);
+									updatedCardsList.add(RiskConstants.CARD_1);
 								}
 							}
 							
@@ -468,7 +472,7 @@ public class ReinforcementPhaseModel extends Observable {
 								
 								for(int i = 0; i < newCountCard1; i++ ){
 									
-									updatedCardsList.add(ReinforcementPhaseModel.CARD_2);
+									updatedCardsList.add(RiskConstants.CARD_2);
 								}
 							}
 							
@@ -476,14 +480,14 @@ public class ReinforcementPhaseModel extends Observable {
 								
 								for(int i = 0; i < newCountCard1; i++ ){
 									
-									updatedCardsList.add(ReinforcementPhaseModel.CARD_3);
+									updatedCardsList.add(RiskConstants.CARD_3);
 								}
 							}
 							
 							
 							//calculate reinforcement armies
 							int newExg = prevExg + 1;
-							reinforcementArmies = ReinforcementPhaseModel.FIRST_EXG_ARMIES * newExg;
+							reinforcementArmies = RiskConstants.FIRST_EXG_ARMIES * newExg;
 
 							setCardArmies(reinforcementArmies);
 							
@@ -514,9 +518,9 @@ public class ReinforcementPhaseModel extends Observable {
 						if(different == 1){
 							
 							chosenCards = new ArrayList<String>();
-							chosenCards.add(ReinforcementPhaseModel.CARD_1);
-							chosenCards.add(ReinforcementPhaseModel.CARD_2);
-							chosenCards.add(ReinforcementPhaseModel.CARD_3);
+							chosenCards.add(RiskConstants.CARD_1);
+							chosenCards.add(RiskConstants.CARD_2);
+							chosenCards.add(RiskConstants.CARD_3);
 							
 							int newCountCard1 = card1 - 1;
 							
@@ -532,7 +536,7 @@ public class ReinforcementPhaseModel extends Observable {
 								
 								for(int i = 0; i < newCountCard1; i++ ){
 									
-									updatedCardsList.add(ReinforcementPhaseModel.CARD_1);
+									updatedCardsList.add(RiskConstants.CARD_1);
 								}
 							}
 							
@@ -540,7 +544,7 @@ public class ReinforcementPhaseModel extends Observable {
 								
 								for(int i = 0; i < newCountCard1; i++ ){
 									
-									updatedCardsList.add(ReinforcementPhaseModel.CARD_2);
+									updatedCardsList.add(RiskConstants.CARD_2);
 								}
 							}
 							
@@ -548,14 +552,14 @@ public class ReinforcementPhaseModel extends Observable {
 								
 								for(int i = 0; i < newCountCard1; i++ ){
 									
-									updatedCardsList.add(ReinforcementPhaseModel.CARD_3);
+									updatedCardsList.add(RiskConstants.CARD_3);
 								}
 							}
 							
 							
 							//calculate reinforcement armies
 							int newExg = prevExg + 1;
-							reinforcementArmies = ReinforcementPhaseModel.FIRST_EXG_ARMIES * newExg;
+							reinforcementArmies = RiskConstants.FIRST_EXG_ARMIES * newExg;
 							setCardArmies(reinforcementArmies);
 							
 							//edit the playerCards HashMap
@@ -615,11 +619,11 @@ public class ReinforcementPhaseModel extends Observable {
 				TreeSet<String> cardsToBeExchanged = new TreeSet<String>();
 				
 				for(String cardKey : cardsList){
-					if(cardKey.equals(ReinforcementPhaseModel.CARD_1) || cardKey == ReinforcementPhaseModel.CARD_1)
+					if(cardKey.equals(RiskConstants.CARD_1) || cardKey == RiskConstants.CARD_1)
 						card1++;
-					if(cardKey.equals(ReinforcementPhaseModel.CARD_2) || cardKey == ReinforcementPhaseModel.CARD_2)
+					if(cardKey.equals(RiskConstants.CARD_2) || cardKey == RiskConstants.CARD_2)
 						card2++;
-					if(cardKey.equals(ReinforcementPhaseModel.CARD_3) || cardKey == ReinforcementPhaseModel.CARD_3)
+					if(cardKey.equals(RiskConstants.CARD_3) || cardKey == RiskConstants.CARD_3)
 						card3++;
 				}//end for(String cardKey : cardsList)
 				
@@ -679,30 +683,30 @@ public class ReinforcementPhaseModel extends Observable {
 					//find which card has highest frequency
 					if(card1 > card2 && card1 > card3){
 						
-						similarCard = ReinforcementPhaseModel.CARD_1;
+						similarCard = RiskConstants.CARD_1;
 						newCountCard1 = card1 - 3 ;
-						chosenCards.add(ReinforcementPhaseModel.CARD_1);
-						chosenCards.add(ReinforcementPhaseModel.CARD_1);
-						chosenCards.add(ReinforcementPhaseModel.CARD_1);
+						chosenCards.add(RiskConstants.CARD_1);
+						chosenCards.add(RiskConstants.CARD_1);
+						chosenCards.add(RiskConstants.CARD_1);
 					}
 					
 					else if(card2 > card1 && card2 > card3){
 						
-						similarCard = ReinforcementPhaseModel.CARD_2;
+						similarCard = RiskConstants.CARD_2;
 						newCountCard2 = card2 - 3 ;
-						chosenCards.add(ReinforcementPhaseModel.CARD_2);
-						chosenCards.add(ReinforcementPhaseModel.CARD_2);
-						chosenCards.add(ReinforcementPhaseModel.CARD_2);
+						chosenCards.add(RiskConstants.CARD_2);
+						chosenCards.add(RiskConstants.CARD_2);
+						chosenCards.add(RiskConstants.CARD_2);
 					}
 					
 					else if(card3 > card1 && card3 > card2){
 						
-						similarCard = ReinforcementPhaseModel.CARD_3;
+						similarCard = RiskConstants.CARD_3;
 						newCountCard3 = card3 - 3 ;
 						
-						chosenCards.add(ReinforcementPhaseModel.CARD_3);
-						chosenCards.add(ReinforcementPhaseModel.CARD_3);
-						chosenCards.add(ReinforcementPhaseModel.CARD_3);
+						chosenCards.add(RiskConstants.CARD_3);
+						chosenCards.add(RiskConstants.CARD_3);
+						chosenCards.add(RiskConstants.CARD_3);
 					}
 					
 					
@@ -713,7 +717,7 @@ public class ReinforcementPhaseModel extends Observable {
 						
 						for(int i = 0; i < newCountCard1; i++ ){
 							
-							updatedCardsList.add(ReinforcementPhaseModel.CARD_1);
+							updatedCardsList.add(RiskConstants.CARD_1);
 						}
 					}
 					
@@ -721,7 +725,7 @@ public class ReinforcementPhaseModel extends Observable {
 						
 						for(int i = 0; i < newCountCard1; i++ ){
 							
-							updatedCardsList.add(ReinforcementPhaseModel.CARD_2);
+							updatedCardsList.add(RiskConstants.CARD_2);
 						}
 					}
 					
@@ -729,14 +733,14 @@ public class ReinforcementPhaseModel extends Observable {
 						
 						for(int i = 0; i < newCountCard1; i++ ){
 							
-							updatedCardsList.add(ReinforcementPhaseModel.CARD_3);
+							updatedCardsList.add(RiskConstants.CARD_3);
 						}
 					}
 					
 					
 					//calculate reinforcement armies
 					int newExg = prevExg + 1;
-					reinforcementArmies = ReinforcementPhaseModel.FIRST_EXG_ARMIES * newExg;
+					reinforcementArmies = RiskConstants.FIRST_EXG_ARMIES * newExg;
 
 					setCardArmies(reinforcementArmies);
 					
@@ -766,9 +770,9 @@ public class ReinforcementPhaseModel extends Observable {
 					
 					chosenCards = new ArrayList<String>();
 					
-					chosenCards.add(ReinforcementPhaseModel.CARD_1);
-					chosenCards.add(ReinforcementPhaseModel.CARD_2);
-					chosenCards.add(ReinforcementPhaseModel.CARD_3);
+					chosenCards.add(RiskConstants.CARD_1);
+					chosenCards.add(RiskConstants.CARD_2);
+					chosenCards.add(RiskConstants.CARD_3);
 					
 					int newCountCard1 = card1 - 1;
 					
@@ -782,7 +786,7 @@ public class ReinforcementPhaseModel extends Observable {
 						
 						for(int i = 0; i < newCountCard1; i++ ){
 							
-							updatedCardsList.add(ReinforcementPhaseModel.CARD_1);
+							updatedCardsList.add(RiskConstants.CARD_1);
 						}
 					}
 					
@@ -790,7 +794,7 @@ public class ReinforcementPhaseModel extends Observable {
 						
 						for(int i = 0; i < newCountCard1; i++ ){
 							
-							updatedCardsList.add(ReinforcementPhaseModel.CARD_2);
+							updatedCardsList.add(RiskConstants.CARD_2);
 						}
 					}
 					
@@ -798,14 +802,14 @@ public class ReinforcementPhaseModel extends Observable {
 						
 						for(int i = 0; i < newCountCard1; i++ ){
 							
-							updatedCardsList.add(ReinforcementPhaseModel.CARD_3);
+							updatedCardsList.add(RiskConstants.CARD_3);
 						}
 					}
 					
 					
 					//calculate reinforcement armies
 					int newExg = prevExg + 1;
-					reinforcementArmies = ReinforcementPhaseModel.FIRST_EXG_ARMIES * newExg;
+					reinforcementArmies = RiskConstants.FIRST_EXG_ARMIES * newExg;
 					setCardArmies(reinforcementArmies);
 					
 					//edit the playerCards HashMap
@@ -829,7 +833,7 @@ public class ReinforcementPhaseModel extends Observable {
 				}//end if (different == 1)
 				
 				
-				setCardsMsg("enough cards,yes");
+				setCardsMsg("enough cards,must");
 				
 				setChanged();
 				
@@ -844,7 +848,13 @@ public class ReinforcementPhaseModel extends Observable {
 	}//end calculateReinforcementByCards
 	
 	
-	public static void reinforceRandom(String player){
+	public void reinforceRandom(String player){
+		
+		setMsgUI("total reinforcement print," + player);
+		
+		setChanged();
+		notifyObservers(this);
+		
 		
 		
 		int reinforcementArmies = reinforcement.get(player);
@@ -889,13 +899,7 @@ public class ReinforcementPhaseModel extends Observable {
 	}
 	
 	
-	public static int calculateCardArmies(ArrayList<String> cardsList){
-		
-		int cardArmies = 0;
-
-		
-		return cardArmies;
-	}
+	
 	
 	
 }

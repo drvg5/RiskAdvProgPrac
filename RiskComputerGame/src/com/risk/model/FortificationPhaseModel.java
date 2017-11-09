@@ -254,9 +254,9 @@ public class FortificationPhaseModel {
 //		ReinforcementPhaseModel.calculateReinforcement("3");
 		
 		System.out.println("----------------------------------------");
-		ReinforcementPhaseModel.reinforceRandom("1");
-		ReinforcementPhaseModel.reinforceRandom("2");
-		ReinforcementPhaseModel.reinforceRandom("3");
+//		ReinforcementPhaseModel.reinforceRandom("1");
+//		ReinforcementPhaseModel.reinforceRandom("2");
+//		ReinforcementPhaseModel.reinforceRandom("3");
 		
 		
 		System.out.println(StartUpPhaseModel.playerInfo);
