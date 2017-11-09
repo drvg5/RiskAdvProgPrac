@@ -53,7 +53,11 @@ public class ConfigureMapModel {
 
 	/** To store Continent Control Value */
 	String strControlValue;
-
+	
+	/** Unit Testing */
+	public static boolean junitUpdateOnClick = false;
+	
+	 
 	/**
 	 * <p>
 	 * This method is used to add continents and countries to Map. User can key in
@@ -179,6 +183,7 @@ public class ConfigureMapModel {
 		listToCheckDuplicateContinentCapitalize.remove(data[3]);
 		listToCheckDuplicateCountryCapitalize.remove(data[4]);
 		continentControlValueHashMap.remove(data[5]);
+		junitUpdateOnClick=true;
 	}
 
 	/**
@@ -200,7 +205,6 @@ public class ConfigureMapModel {
 		listToCheckDuplicateContinent.add(data[3]);
 		listToCheckDuplicateCountry.add(data[4]);
 		listToCheckDuplicateContinentCapitalize.add(data[5]);
-		listToCheckDuplicateCountryCapitalize.add(data[6]);
 	}
 
 	/**

@@ -56,6 +56,8 @@ public class StartUpPhaseModel {
 	public static int initialArmies = 0;
 
 	public static int totalTerr = 0;
+	
+	public static boolean junitCheckCount = true;
 
 	/**
 	 * This method populates {@link StartUpPhaseModel#countryTaken} TreeSet and
@@ -136,6 +138,11 @@ public class StartUpPhaseModel {
 	 */
 
 	public static void terrPerPlayerPopulate(int numberOfPlayers, int numberOfTerr){
+			
+			if(numberOfPlayers>numberOfTerr)
+			{
+				junitCheckCount = false;
+			}
 		
 			int initialTerr = numberOfTerr/numberOfPlayers;
 		

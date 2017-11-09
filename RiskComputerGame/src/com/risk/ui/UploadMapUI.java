@@ -128,8 +128,8 @@ public class UploadMapUI {
 		}
 		
 		else {
-			JOptionPane.showMessageDialog(null, "Invalid Map! File is missing Map or Continent or Territory section",
-					"Upload Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Invalid Map! Duplicate Countries",
+					"Load Error", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}

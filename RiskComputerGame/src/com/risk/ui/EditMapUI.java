@@ -452,4 +452,29 @@ public class EditMapUI {
 
 	}
 
+	
+	public void showErrorMessageForEditMap(int i) {
+		if (i == 1) {
+			JOptionPane.showMessageDialog(null, "Invalid Map!File extension is wrong", "Upload Error",
+					JOptionPane.ERROR_MESSAGE);
+		} else if (i == 2) {
+			JOptionPane.showMessageDialog(null, "Invalid Map! File is missing Map or Continent or Territory section",
+					"Upload Error", JOptionPane.ERROR_MESSAGE);
+		} 
+		
+		else if (i == 3)
+		{
+			JOptionPane.showMessageDialog(null,
+					"Invalid Map! Not a connected graph",
+					"Adjacency Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		else {
+			JOptionPane.showMessageDialog(null, "Invalid Map! Duplicate Countries",
+					"Load Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+	}
 }
+
+

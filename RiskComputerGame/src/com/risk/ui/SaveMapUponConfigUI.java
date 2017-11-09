@@ -43,16 +43,16 @@ import com.risk.model.SaveMapUponConfigModel;
  */
 public class SaveMapUponConfigUI {
 
-	/** Hashmap to store the Map attributes */
+	/** Hash map to store the Map attributes */
 	static HashMap<String, List<String>> mainHashMap = new HashMap<String, List<String>>();
 	
-	/** Hashmap to store control value of  Continents */
+	/** Hash map to store control value of  Continents */
 	static HashMap<String, Integer> continentControlValueHashMap = new HashMap<String, Integer>();
 	
 	/** List consists of both Continent and Country */
 	static List<String> listContinentCountry = new ArrayList<String>();
 	
-	/** Initital list before configuring adjacency */
+	/** Initial list before configuring adjacency */
 	static List<String> listFirstEntry = new ArrayList<String>();
 	
 	/** Frame to display data*/

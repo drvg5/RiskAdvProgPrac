@@ -33,10 +33,10 @@ import com.risk.ui.UploadMapUI;
 
 public class ParseMapFileModel {
 
-	/** Hashmap to store Map attributes */
+	/** Hash map to store Map attributes */
 	HashMap<String, List<String>> continentHashMap = new HashMap<String, List<String>>();
 
-	/** Hashmap to check control value of Continent */
+	/** Hash map to check control value of Continent */
 	HashMap<String, Integer> continentCount = new HashMap<String, Integer>();
 
 	/** List to check duplicates. */
@@ -56,7 +56,7 @@ public class ParseMapFileModel {
 
 	public static boolean junitMapValidation;
 
-	public static boolean checkForCallingUI=true;
+	public static boolean checkForCallingUI = true;
 
 	/**
 	 * <p>
@@ -95,15 +95,13 @@ public class ParseMapFileModel {
 						uploadMapUI.showErrorMessageForUpload(1);
 
 					}
-				 				}
+				}
 
 				else if (!((Maplist.contains("[Map]") && Maplist.contains("[Continents]")
 						&& Maplist.contains("[Territories]")))) {
-					if(checkForCallingUI)
-					{
+					if (checkForCallingUI) {
 						uploadMapUI.showErrorMessageForUpload(2);
 					}
-					
 
 				} else {
 					mainloop: for (int i = 0; i < Maplist.size(); i++) {
@@ -132,17 +130,15 @@ public class ParseMapFileModel {
 									checkDuplicates.add(arrayMapList[0]);
 									checkDuplicate = findDuplicates(checkDuplicates);
 									if (checkDuplicate) {
-										if(checkForCallingUI)
-										{
-											uploadMapUI.showErrorMessageForUpload(3);
+										if (checkForCallingUI) {
+											uploadMapUI.showErrorMessageForUpload(4);
 										}
-										
+
 										checkDuplicates.clear();
 										continentHashMap.clear();
 										break mainloop;
 									}
-									if(checkForCallingUI)
-									{
+									if (checkForCallingUI) {
 										uploadMapUI.closeUpload();
 
 									}
@@ -206,17 +202,25 @@ public class ParseMapFileModel {
 					}
 
 					else if (!(checkConnected)) {
-						if(checkForCallingUI)
-						{
+						if (checkForCallingUI) {
 							uploadMapUI.showErrorMessageForUpload(3);
 						}
-						
+
 					}
 
 					else {
 						junitMapValidation = true;
-						System.out.println(continentHashMap);
-				//		GameDriverNew.gameStart(continentHashMap, continentCount);
+						System.out
+								.println("---------------------------------------------------------------------------");
+						System.out
+								.println("***************************** MAP ATTRIBUTES   ****************************");
+						System.out.println("CONTINENT & COUNTRY*********************ADJACENCY LIST**********");
+						System.out
+								.println("---------------------------------------------------------------------------");
+						for (Map.Entry<String, List<String>> toPrint : continentHashMap.entrySet()) {
+							System.out.println(toPrint.getKey() + "\t" + "\t" + toPrint.getValue());
+						}
+						new GameDriverNew().gameStart(continentHashMap, continentCount);
 
 					}
 				}

@@ -18,19 +18,48 @@ public class TestConfigureMapModel {
 	@Test
 	public void validInput() {
 		ConfigureMapModel objConfigureMapModel = new ConfigureMapModel();
-		boolean check =false;
-		String[] data = { "America", "Canada" ,"2"};
+		boolean checkValidInput = false;
+		String[] data = { "America", "Canada", "2" };
 		String[] dataReceived = {};
 		dataReceived = objConfigureMapModel.addContinentsAndCountries(data);
-		if(Arrays.equals(data, dataReceived))
-		{
-			check = true;
+		if (Arrays.equals(data, dataReceived)) {
+			checkValidInput = true;
 		}
-		
+
 		// assert statements
-		assertEquals(true, check);
+		assertEquals(true, checkValidInput);
 	}
 
+	@Test
+	public void invalidInput() {
+		ConfigureMapModel objConfigureMapModel = new ConfigureMapModel();
+		boolean checkInvalidInput = false;
+		String[] data = { "America", "Canada" };
+		String[] dataReceived = {};
+		try {
+			dataReceived = objConfigureMapModel.addContinentsAndCountries(data);
+		} catch (Exception ex) {
+		}
+		if (Arrays.equals(data, dataReceived)) {
+			checkInvalidInput = true;
+		}
+
+		// assert statements
+		assertEquals(false, checkInvalidInput);
+	}
+	
+	
+	@Test
+	public void checkUpdateOnClick() {
+		ConfigureMapModel objConfigureMapModel = new ConfigureMapModel();
+		String[] dataClick = { "America,Canada", "america","canada","America", "Canada", "America" };
+		objConfigureMapModel.updateOnClick(dataClick);
+		// assert statements
+		assertEquals(true, ConfigureMapModel.junitUpdateOnClick);
+	}
+	
+	
+	
 	@After
 	public void AfterMethod() {
 

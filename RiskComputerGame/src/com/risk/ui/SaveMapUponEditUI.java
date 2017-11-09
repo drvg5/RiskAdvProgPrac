@@ -57,10 +57,10 @@ public class SaveMapUponEditUI {
 	/** List consists of countries */
 	public static List<String> countryList = new ArrayList<String>();
 	
-	/**Hashmap to update the Map attributes. */
+	/**Hash map to update the Map attributes. */
 	public static HashMap<String, List<String>> hashMapToUpdate = new HashMap<String, List<String>>();
 	
-	/** Hashmap to update control value of  Continents */
+	/** Hash map to update control value of  Continents */
 	public static HashMap<String, Integer> hashMapControlToUpdate = new HashMap<String, Integer>();
 	
 	/** Consists of Continent selected by user to update adjacency. */
@@ -81,8 +81,8 @@ public class SaveMapUponEditUI {
 	 * This method is used to update and save Map file after User completes the editing.
 	 *
 	 * @author Khashyap
-	 * @param continentHashMapToEdit Hashmap to edit the Map attributes
-	 * @param continentControlValueHashMapToEdit Hashmap to edit control value of  Continents
+	 * @param continentHashMapToEdit Hash map to edit the Map attributes
+	 * @param continentControlValueHashMapToEdit Hash map to edit control value of  Continents
 	 * @param desktop To bind the InternalFrame with Main window frame
 	 * @param UploadFileName Filename selected by user
 	 */

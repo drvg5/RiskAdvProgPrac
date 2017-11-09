@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -36,10 +37,10 @@ public class EditMapModel {
 	/** object created to class EditMapUI */
 	EditMapUI editMapUI = new EditMapUI();
 
-	/** Hashmap to edit the Map attributes */
+	/** Hash map to edit the Map attributes */
 	static HashMap<String, List<String>> continentHashMapToEdit = new HashMap<String, List<String>>();
 
-	/** Hashmap to edit control value of particular Continent. */
+	/** Hash map to edit control value of particular Continent. */
 	static HashMap<String, Integer> continentControlValueHashMapToEdit = new HashMap<String, Integer>();
 
 	/** List to edit Continents. */
@@ -48,9 +49,13 @@ public class EditMapModel {
 	/** To store file uploaded by User */
 	static String UploadFileName;
 
-	/** List to check for any duplicates*/
-	
+	/** List to check for any duplicates */
+
 	static List<String> checkDuplicates = new ArrayList<String>();
+
+	public static boolean checkForCallingEditUI = true;
+	
+	public static boolean junitMapEditValidation;
 
 	/**
 	 * <p>
@@ -76,7 +81,9 @@ public class EditMapModel {
 		boolean checkDuplicate;
 
 		if (returnValue == 0) {
+			if (checkForCallingEditUI) {
 			editMapUI.closeUploadForEdit();
+			}
 			UploadFileName = file.getName();
 			String FileFormat = FilenameUtils.getExtension(UploadFileName);
 			if (!(UploadFileName.isEmpty()))
@@ -84,6 +91,9 @@ public class EditMapModel {
 					Scanner scanner = new Scanner(file);
 					List<String> Maplist = new ArrayList<>();
 					String line = "";
+					List<String> connectivityCheckEdit = new ArrayList<String>();
+					List<String> continentListCheckEdit = new ArrayList<String>();
+					boolean checkConnectedEdit = false;
 					while (scanner.hasNext()) {
 						line = scanner.nextLine();
 						Maplist.add(line);
@@ -91,18 +101,18 @@ public class EditMapModel {
 					scanner.close();
 
 					if (!((FileFormat.equals("map") || (FileFormat.equals("txt"))))) {
-						JOptionPane.showMessageDialog(null, "Invalid Map!File extension is wrong", "Upload Error",
-								JOptionPane.ERROR_MESSAGE);
-						editMapUI.showUploadForEdit();
+						if (checkForCallingEditUI) {
+							editMapUI.showErrorMessageForEditMap(1);
+							editMapUI.showUploadForEdit();
+						}
 					}
 
 					else if (!((Maplist.contains("[Map]") && Maplist.contains("[Continents]")
 							&& Maplist.contains("[Territories]")))) {
-
-						JOptionPane.showMessageDialog(null,
-								"Invalid Map! File is missing Map or Continent or Territory section", "Upload Error",
-								JOptionPane.ERROR_MESSAGE);
-						editMapUI.showUploadForEdit();
+						if (checkForCallingEditUI) {
+							editMapUI.showErrorMessageForEditMap(2);
+							editMapUI.showUploadForEdit();
+						}
 
 					} else {
 						mainloop: for (int i = 0; i < Maplist.size(); i++) {
@@ -134,8 +144,9 @@ public class EditMapModel {
 										checkDuplicates.add(arrayMapList[0]);
 										checkDuplicate = findDuplicates(checkDuplicates);
 										if (checkDuplicate) {
-											JOptionPane.showMessageDialog(null, "Invalid Map! Duplicate Countries",
-													"Load Error", JOptionPane.ERROR_MESSAGE);
+											if (checkForCallingEditUI) {
+												editMapUI.showErrorMessageForEditMap(4);
+											}
 											checkDuplicates.clear();
 											continentHashMap.clear();
 											break mainloop;
@@ -164,10 +175,66 @@ public class EditMapModel {
 							}
 						}
 
+						Iterator<Map.Entry<String, List<String>>> iter = continentHashMap.entrySet().iterator();
+						while (iter.hasNext()) {
+							Map.Entry<String, List<String>> entry = iter.next();
+							String strKey = entry.getKey();
+							String[] strKeyArrayToCheck = strKey.split(",");
+							Iterator<Map.Entry<String, List<String>>> innerIter = continentHashMap.entrySet()
+									.iterator();
+							while (innerIter.hasNext()) {
+								Map.Entry<String, List<String>> innerEntry = innerIter.next();
+								String strinnerKey = innerEntry.getKey();
+								String[] strinnerKeyArrayToCheck = strinnerKey.split(",");
+								List<String> innerList = innerEntry.getValue();
+								if (!((strKeyArrayToCheck[0]).equals(strinnerKeyArrayToCheck[0]))) {
+									for (int inner = 0; inner < innerList.size(); inner++) {
+										if (strKeyArrayToCheck[1].equals(innerList.get(inner))) {
+											if (!(connectivityCheckEdit.contains(strKeyArrayToCheck[1]))) {
+												connectivityCheckEdit.add(strKeyArrayToCheck[0]);
+											}
+										}
+									}
+								}
+							}
+
+						}
+
+						for (Map.Entry<String, List<String>> entry : continentHashMap.entrySet()) {
+							String strKey = entry.getKey();
+							String[] strKeyArrayToEdit = strKey.split(",");
+							if (!(continentListCheckEdit.contains(strKeyArrayToEdit[0]))) {
+								continentListCheckEdit.add(strKeyArrayToEdit[0]);
+							}
+						}
+
+						int sizeOfCont = continentListCheckEdit.size();
+						Set<String> hs = new HashSet<>();
+						hs.addAll(connectivityCheckEdit);
+						connectivityCheckEdit.clear();
+						connectivityCheckEdit.addAll(hs);
+						Collection<String> collectionAdjCont = connectivityCheckEdit;
+						Collection<String> collectionTotalCont = continentListCheckEdit;
+						collectionTotalCont.removeAll(collectionAdjCont);
+						if (collectionTotalCont.isEmpty() || sizeOfCont == 1) {
+							checkConnectedEdit = true;
+						}
+
 						if (continentHashMap.isEmpty()) {
-							editMapUI.showUploadForEdit();
+							if (checkForCallingEditUI) {
+								editMapUI.showUploadForEdit();
+							}
+
+						} else if (!(checkConnectedEdit)) {
+							if (checkForCallingEditUI) {
+								editMapUI.showErrorMessageForEditMap(3);
+							}
+
 						} else {
-							editMapUI.editMap(continentHashMap, continentControlValueHashMap);
+							junitMapEditValidation = true;
+							if (checkForCallingEditUI) {
+								editMapUI.editMap(continentHashMap, continentControlValueHashMap);
+							}
 						}
 					}
 
@@ -333,7 +400,7 @@ public class EditMapModel {
 	 *            List of adjacent countries to be deleted
 	 * @param continentHashMapToEdit
 	 *            the continent hash map to edit
-	 * @return continentHashMapToEdit Hashmap value after deletion of Adjacency
+	 * @return continentHashMapToEdit Hash map value after deletion of Adjacency
 	 */
 
 	public HashMap<String, List<String>> deleteAdjacency(String conti, String countr,
