@@ -45,7 +45,3 @@ public class TestParseMapFile {
 	
 	}
 	
-	 
-	
-
-}
