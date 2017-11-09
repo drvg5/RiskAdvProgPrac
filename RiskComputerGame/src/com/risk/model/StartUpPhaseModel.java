@@ -138,11 +138,12 @@ public class StartUpPhaseModel {
 	 */
 
 	public static void terrPerPlayerPopulate(int numberOfPlayers, int numberOfTerr){
+		
 			
-			if(numberOfPlayers>numberOfTerr)
-			{
-				junitCheckCount = false;
-			}
+		if(numberOfPlayers>numberOfTerr)
+		{
+			junitCheckCount = false;
+		}
 		
 			int initialTerr = numberOfTerr/numberOfPlayers;
 		

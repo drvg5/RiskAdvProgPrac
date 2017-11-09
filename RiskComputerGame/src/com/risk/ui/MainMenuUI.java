@@ -19,7 +19,7 @@ import javax.swing.KeyStroke;
  * <ul>
  * <li>Initializing a virtual desktop
  * <li>Populate a menu drop-down
- * <li>Implement action listeners for dropdown options
+ * <li>Implement action listeners for drop down options
  * </ul>
  * 
  * 

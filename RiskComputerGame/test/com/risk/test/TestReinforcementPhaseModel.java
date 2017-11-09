@@ -2,13 +2,9 @@ package com.risk.test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.TreeMap;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.risk.model.ReinforcementPhaseModel;
@@ -19,10 +15,9 @@ public class TestReinforcementPhaseModel {
 	@Test
 	public void ReinforcementarmiesCountByTerritory() {
 
-		// ReinforcementPhaseModel objReinforcementPhaseModel = new
-		// ReinforcementPhaseModel();
+		ReinforcementPhaseModel objReinforcementPhaseModel = new ReinforcementPhaseModel();
 		String returnvalue = null;
-		String ToCheck = "10,3";
+		String ToCheck = "2,10,3";
 		boolean validate = false;
 		HashMap<String, Integer> hashMapToCheck = new HashMap<String, Integer>();
 		hashMapToCheck.put("2-A-Europe", 1);
@@ -37,7 +32,7 @@ public class TestReinforcementPhaseModel {
 		hashMapToCheck.put("2-J-Europe", 1);
 
 		StartUpPhaseModel.playerInfo = hashMapToCheck;
-		returnvalue = ReinforcementPhaseModel.calcReinforcementsByTerr("2");
+		returnvalue = objReinforcementPhaseModel.calcReinforcementsByTerr("2");
 		if (returnvalue.equals(ToCheck)) {
 			validate = true;
 		}
@@ -49,6 +44,7 @@ public class TestReinforcementPhaseModel {
 
 	@Test
 	public void ReinforcementarmiesCountByControlValue() {
+		ReinforcementPhaseModel objReinforcementPhaseModel = new ReinforcementPhaseModel();
 		HashMap<String, Integer> continentControlValueHashMap = new HashMap<String, Integer>();
 		boolean checkReinforcement = false;
 		TreeMap<String, Integer> terrPerCont = new TreeMap<String, Integer>();
@@ -62,7 +58,7 @@ public class TestReinforcementPhaseModel {
 		StartUpPhaseModel.playerInfo = hashMapToCheck;
 		StartUpPhaseModel.terrPerCont = terrPerCont;
 		ReinforcementPhaseModel.reinforcement = reinforcement;
-		ReinforcementPhaseModel.calcReinforcementByCntrlVal("2", continentControlValueHashMap);
+		objReinforcementPhaseModel.calcReinforcementByCntrlVal("2", continentControlValueHashMap);
 		if (ReinforcementPhaseModel.reinforcement.get("2") == 8) {
 			checkReinforcement = true;
 		}

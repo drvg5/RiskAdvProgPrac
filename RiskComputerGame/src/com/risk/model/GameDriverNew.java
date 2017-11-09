@@ -2,6 +2,7 @@ package com.risk.model;
 
 import java.util.*;
 import com.risk.ui.*;
+import com.risk.utility.RiskConstants;
 
 public class GameDriverNew extends Object{
 	
@@ -131,6 +132,27 @@ public class GameDriverNew extends Object{
 		continentControlValueHashMap.put("Europe",4);
 		continentControlValueHashMap.put("Asia",7);
 		
+		ArrayList<String> cardsList = new ArrayList<String>();
+		
+		cardsList.add(RiskConstants.CARD_1);
+		cardsList.add(RiskConstants.CARD_2);
+		cardsList.add(RiskConstants.CARD_3);
+		
+		
+		
+		ReinforcementPhaseModel.playerCards.put("1-2", cardsList);
+		
+		cardsList = new ArrayList<String>();
+		cardsList.add(RiskConstants.CARD_1);
+		cardsList.add(RiskConstants.CARD_1);
+		cardsList.add(RiskConstants.CARD_3);
+		cardsList.add(RiskConstants.CARD_2);
+		cardsList.add(RiskConstants.CARD_1);
+		
+		
+		
+		
+		
 		
 		
 		gameDriver.gameStart(territoryMap, continentControlValueHashMap);
@@ -138,6 +160,8 @@ public class GameDriverNew extends Object{
 	}
 	
 	public void gameStart(HashMap<String,List<String>> territoryMap, HashMap<String, Integer> continentControlValueHashMap){
+		
+		
 		
 		int numberOfPlayers;
 		

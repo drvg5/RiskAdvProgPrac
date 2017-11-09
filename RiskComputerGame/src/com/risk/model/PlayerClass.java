@@ -1,6 +1,8 @@
 package com.risk.model;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +10,11 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Observable;
 import java.util.TreeSet;
+
+import com.risk.ui.CardExchangeUI;
+import com.risk.ui.FortificationUI;
+import com.risk.ui.PlayerDominationView;
+import com.risk.ui.ReinforcementsUI;
 
 /**
  * This is an Observable Class which has implementations for state change in the
@@ -22,6 +29,7 @@ public class PlayerClass extends Observable {
 
 	
 	public static int players = 0;
+	
 	public static HashMap<String, List<String>> currentMap;
 
 	public static String msg;
@@ -39,29 +47,28 @@ public class PlayerClass extends Observable {
 		msg = "startup";
 		
 		setChanged();
-
-
-		notifyObservers(msg);
-
-		Thread.sleep(5000);
-
 		notifyObservers(this);
-		
-		
-		
-		
-//		if(true)
-//		return;
-		
-		
 		
 
 		int plyr = 1;
 
 		int currentNumberOfPlayers = numberOfPlayers;
-
+		
+		PlayerDominationModel playerDominationObj = new PlayerDominationModel();
+		
+		PlayerDominationView playerDominationView = new PlayerDominationView();
+		
+		playerDominationObj.addObserver(playerDominationView);
+		
 		PlayerClass playerClassObj = new PlayerClass();
+		
+		msg = "roundrobin";
+		
+		setChanged();
 
+		notifyObservers(this);
+		
+		
 		try {
 			System.in.read();
 		} catch (IOException e) {
@@ -69,8 +76,25 @@ public class PlayerClass extends Observable {
 			e.printStackTrace();
 		}
 		
-
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		playerDominationObj.calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers, StartUpPhaseModel.totalTerr);
+		
 		// round robin for game starts
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		while (true) {
 
 			// calculate number of players after each round robin to update in case a player
@@ -81,16 +105,45 @@ public class PlayerClass extends Observable {
 			if (plyr > currentNumberOfPlayers) {
 				plyr = 1;
 			}
-
+			
+			msg = "reinforceHead," + plyr;
+			
+			setChanged();
+			notifyObservers(this);
+			
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 			// reinforcement phase method called
-			playerClassObj.reinforcementPhase(plyr, continentControlValueHashMap);
+			playerClassObj.reinforcementPhase(plyr, continentControlValueHashMap,currentMap);
+			
+			
 
-
-			msg = "reinforce done";
+			msg = "reinforce done," + plyr;
 			setChanged();
 			notifyObservers(msg);
-
-			Thread.sleep(5000);
+			
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 
 			// attack phase method called
 			PlayerClass.attackPhase(plyr, territoryMap);
@@ -98,24 +151,64 @@ public class PlayerClass extends Observable {
 			setChanged();
 			notifyObservers(msg);
 
-			Thread.sleep(5000);
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
+			playerDominationObj.calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers, StartUpPhaseModel.totalTerr);
+			
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			// if one player has all the territories i.e if player has won the game then
 			// break out of loop
 			boolean victory = PlayerClass.checkPlyrVictory(plyr);
 			if (victory) {
+				
+				msg = plyr + " wins";
+				setChanged();
+				notifyObservers(this);
+				try {
+					System.in.read();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 			}
 
-			Thread.sleep(5000);
+			
+			msg = "pre fortification," + plyr;
+			setChanged();
+			notifyObservers(this);
+			
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			// fortification method called
-			PlayerClass.fortificationPhase(plyr, territoryMap);
-			msg = "fortification done";
+			playerClassObj.fortificationPhase(plyr, territoryMap);
+			
+			msg = "fortification done," + plyr;
 			setChanged();
-			notifyObservers(msg);
+			notifyObservers(this);
 
-			Thread.sleep(5000);
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			plyr++;
 
@@ -134,26 +227,64 @@ public class PlayerClass extends Observable {
 
 	}
 
-	public void reinforcementPhase(int plyr, HashMap<String, Integer> continentControlValueHashMap) {
-
+	public void reinforcementPhase(int plyr, HashMap<String, Integer> continentControlValueHashMap, HashMap<String, List<String>> currentMap) {
+		
+		ReinforcementPhaseModel reinforcmentModelObj = new ReinforcementPhaseModel();
+		ReinforcementsUI uiObj = new ReinforcementsUI();
+		CardExchangeUI uiCardObj = new CardExchangeUI();
+		
+		reinforcmentModelObj.addObserver(uiObj);
+		reinforcmentModelObj.addObserver(uiCardObj);
 		// call method to calculate reinforcements by number of territories
-		String reinTerrMsg = ReinforcementPhaseModel.calcReinforcementsByTerr(Integer.toString(plyr));
-
+		String reinTerrMsg = reinforcmentModelObj.calcReinforcementsByTerr(Integer.toString(plyr));
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 		PlayerClass.msg = "reinforcements by number of territories," + reinTerrMsg + ",";
 		setChanged();
 		notifyObservers(this);
 
 		
-		//call method to calculate reinforcements by cards
-//		String cardExgMsg = ReinforcementPhaseModel.calcReinforcementByCards(Integer.toString(plyr));
-//		PlayerClass.msg = "reinforcements by exchanging cards|" + reinTerrMsg + "|";
-//		setChanged();
-//		notifyObservers(this);
 		
+		
+		//call method to calculate reinforcements by cards
+		reinforcmentModelObj.calcReinforcementByCards(Integer.toString(plyr));
+//		PlayerClass.msg = "reinforcements by exchanging cards|" + reinTerrMsg + "|";
+		
+		
+		setChanged();
+		
+		notifyObservers(this);
+		
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//call method to calculate reinforcements if a player owns the whole continent
-		ArrayList<String> cntrlValMsg = ReinforcementPhaseModel.calcReinforcementByCntrlVal(Integer.toString(plyr), continentControlValueHashMap);
+		ArrayList<String> cntrlValMsg = reinforcmentModelObj.calcReinforcementByCntrlVal(Integer.toString(plyr), continentControlValueHashMap);
 
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		String[] cntrlVal = cntrlValMsg.toArray(new String[cntrlValMsg.size()]);
 
 		PlayerClass.msg = "reinforcements by control value-";
@@ -161,12 +292,21 @@ public class PlayerClass extends Observable {
 		for (String cntrValIndividual : cntrlVal) {
 			PlayerClass.msg = PlayerClass.msg + cntrValIndividual + "-";
 		}
+		
 		setChanged();
 		notifyObservers(this);
 
 		// ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
 
-		ReinforcementPhaseModel.reinforceRandom(Integer.toString(plyr));
+		reinforcmentModelObj.reinforceRandom(Integer.toString(plyr));
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -180,11 +320,28 @@ public class PlayerClass extends Observable {
 
 	}
 
-	public static void fortificationPhase(int plyr, HashMap<String, List<String>> territoryMap) {
-
+	public void fortificationPhase(int plyr, HashMap<String, List<String>> territoryMap) {
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		FortificationPhaseModel fortificationObj = new FortificationPhaseModel();
+		
+		FortificationUI uiObj = new FortificationUI();
+		
+		fortificationObj.addObserver(uiObj);
+		
+		
 		FortificationPhaseModel.createFortifySet(Integer.toString(plyr), territoryMap);
 
-		FortificationPhaseModel.randomFortification(Integer.toString(plyr));
+		fortificationObj.randomFortification(Integer.toString(plyr));
+		
+	
 
 	}
 

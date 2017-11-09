@@ -164,8 +164,8 @@ public class GameDriverModel {
 				System.out.println("PLAYER " + plyr + " : REINFORCEMENT");
 				
 				
-				ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
-				ReinforcementPhaseModel.reinforceRandom(Integer.toString(plyr));
+//				ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
+				//ReinforcementPhaseModel.reinforceRandom(Integer.toString(plyr));
 				playerInfoDisplay(Integer.toString(plyr),territoryMap);
 				
 				Thread.sleep(5000);
@@ -175,7 +175,7 @@ public class GameDriverModel {
 				System.out.println("PLAYER " + plyr + " : FORTIFICATION");
 				
 				FortificationPhaseModel.createFortifySet(Integer.toString(plyr), territoryMap);
-				FortificationPhaseModel.randomFortification(Integer.toString(plyr));
+//				FortificationPhaseModel.randomFortification(Integer.toString(plyr));
 				
 				if(FortificationPhaseModel.fortifySetEmpty == 1){
 					System.out.printf("--------------------------------------------------------\n");

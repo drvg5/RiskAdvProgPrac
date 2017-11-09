@@ -1,12 +1,13 @@
 package com.risk.model;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.TreeSet;
 
-public class FortificationPhaseModel {
+public class FortificationPhaseModel extends Observable {
 
 	
 	public static TreeSet<String> fortifySet = new TreeSet<String>();
@@ -23,6 +24,77 @@ public class FortificationPhaseModel {
 
 	public static int fortifySetEmpty = 0;
 
+	private int randomUnits ;
+	
+	private int updatedSource;
+	
+	private int updatedDest;
+	
+	private String sourceTerr; 
+	
+	private String destTerr;
+	
+	private String player;
+	
+	public synchronized String getPlayer() {
+		return player;
+	}
+
+
+	public synchronized void setPlayer(String player) {
+		this.player = player;
+	}
+
+
+	public String getDestTerr() {
+		return destTerr;
+	}
+
+
+	public void setDestTerr(String destTerr) {
+		this.destTerr = destTerr;
+	}
+
+
+	public String getSourceTerr() {
+		return sourceTerr;
+	}
+
+
+	public void setSourceTerr(String sourceTerr) {
+		this.sourceTerr = sourceTerr;
+	}
+
+
+	public int getRandomUnits() {
+		return randomUnits;
+	}
+
+
+	public void setRandomUnits(int randomUnits) {
+		this.randomUnits = randomUnits;
+	}
+
+	public int getUpdatedSource() {
+		return updatedSource;
+	}
+
+
+	public void setUpdatedSource(int updatedSource) {
+		this.updatedSource = updatedSource;
+	}
+
+	
+	public int getUpdatedDest() {
+		return updatedDest;
+	}
+
+
+	public void setUpdatedDest(int updatedDest) {
+		this.updatedDest = updatedDest;
+	}
+
+	
 	
 	public static void createFortifySet(String player,HashMap<String,List<String>> territoryMap){
 		
@@ -67,7 +139,7 @@ public class FortificationPhaseModel {
 	}//end method createFortifySet
 	
 	
-	public static void randomFortification(String player){
+	public void randomFortification(String player){
 		
 		Random random = new Random();
 		
@@ -76,18 +148,32 @@ public class FortificationPhaseModel {
 
 		fortifySetEmpty = 0;
 		
+		setPlayer(player);
+		
 		if(fortifyList.isEmpty()){
 			
 			fortifySetEmpty = 1;
+			
+			
+			setChanged();
+			
+			notifyObservers(this);
+			
+			try {
+				System.in.read();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			return;
 			
 		}
 		
 
 		String randomPath = fortifyList.get(random.nextInt(fortifyList.size()));
-		
-		System.out.println("Path chosen:"+randomPath);
-		
+				
 		String[] randomTerr = randomPath.split("-");
 		
 		String fromTerr = randomTerr[0];
@@ -121,6 +207,30 @@ public class FortificationPhaseModel {
 		StartUpPhaseModel.playerInfo.put(from, fromArmies);
 		
 		StartUpPhaseModel.playerInfo.put(to, toArmies);
+		
+		setPlayer(player);
+		
+		setRandomUnits(value);
+		
+		setUpdatedSource(fromArmies);
+		
+		setUpdatedDest(toArmies);
+	
+		setSourceTerr(fromTerr);
+		
+		setDestTerr(toTerr);
+		
+		setChanged();
+		
+		notifyObservers(this);
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -249,14 +359,14 @@ public class FortificationPhaseModel {
 
 		StartUpPhaseModel.preStartUp(numberOfPlayers, territoryMap);
 		
-		ReinforcementPhaseModel.calculateReinforcement("1");
-		ReinforcementPhaseModel.calculateReinforcement("2");
-		ReinforcementPhaseModel.calculateReinforcement("3");
+//		ReinforcementPhaseModel.calculateReinforcement("1");
+//		ReinforcementPhaseModel.calculateReinforcement("2");
+//		ReinforcementPhaseModel.calculateReinforcement("3");
 		
 		System.out.println("----------------------------------------");
-		ReinforcementPhaseModel.reinforceRandom("1");
-		ReinforcementPhaseModel.reinforceRandom("2");
-		ReinforcementPhaseModel.reinforceRandom("3");
+//		ReinforcementPhaseModel.reinforceRandom("1");
+//		ReinforcementPhaseModel.reinforceRandom("2");
+//		ReinforcementPhaseModel.reinforceRandom("3");
 		
 		
 		System.out.println(StartUpPhaseModel.playerInfo);
@@ -265,23 +375,23 @@ public class FortificationPhaseModel {
 		System.out.println("--------\nPlayer1 ::"+fortifySet);
 		System.out.println("--------\n"+StartUpPhaseModel.playerInfo);
 		
-		randomFortification("1");
-		System.out.println("--------\nAfter::"+StartUpPhaseModel.playerInfo);
-		
-		createFortifySet("2",territoryMap);
-		System.out.println("--------\nPlayer2 ::"+fortifySet);
-		System.out.println("--------\n"+StartUpPhaseModel.playerInfo);
-		
-		randomFortification("2");
-		System.out.println("--------\nAfter::"+StartUpPhaseModel.playerInfo);
-		
-		createFortifySet("3",territoryMap);
-		System.out.println("--------\nPlayer3 ::"+fortifySet);
-		System.out.println("--------\n"+StartUpPhaseModel.playerInfo);
-		
-
-		randomFortification("3");
-		System.out.println("--------\nAfter::"+StartUpPhaseModel.playerInfo);
+//		randomFortification("1");
+//		System.out.println("--------\nAfter::"+StartUpPhaseModel.playerInfo);
+//		
+//		createFortifySet("2",territoryMap);
+//		System.out.println("--------\nPlayer2 ::"+fortifySet);
+//		System.out.println("--------\n"+StartUpPhaseModel.playerInfo);
+//		
+//		randomFortification("2");
+//		System.out.println("--------\nAfter::"+StartUpPhaseModel.playerInfo);
+//		
+//		createFortifySet("3",territoryMap);
+//		System.out.println("--------\nPlayer3 ::"+fortifySet);
+//		System.out.println("--------\n"+StartUpPhaseModel.playerInfo);
+//		
+//
+//		randomFortification("3");
+//		System.out.println("--------\nAfter::"+StartUpPhaseModel.playerInfo);
 	}
 	
 	

@@ -213,8 +213,10 @@ public class ParseMapFileModel {
 						System.out
 								.println("---------------------------------------------------------------------------");
 						System.out
-								.println("***************************** MAP ATTRIBUTES   ****************************");
-						System.out.println("CONTINENT & COUNTRY*********************ADJACENCY LIST**********");
+								.println("*******************MAP ATTRIBUTES****************************");
+						System.out
+						.println("---------------------------------------------------------------------------");
+						System.out.println("*CONTINENT & COUNTRY*      *ADJACENCY LIST*");
 						System.out
 								.println("---------------------------------------------------------------------------");
 						for (Map.Entry<String, List<String>> toPrint : continentHashMap.entrySet()) {
