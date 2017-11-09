@@ -7,11 +7,18 @@ public class CardExchangeUI implements Observer {
 	public static void main(String[] args) {
 		
 		CardExchangeUI obj = new CardExchangeUI();
-		obj.cardExchangeView("1");
+		
 	}
 	
 	
-	public void cardExchangeView(String player){
+	public void cardExchangeView(String player, String msg){
+		
+		
+		
+		System.out.println("\n\n\t******CALCULATION OF REINFORCEMENTS BY EXCHANGE OF CARDS******");
+		System.out.println("Cards");
+		
+		
 		
 		System.out.println("------------------------------------------------");
 		System.out.println("******** CARDS EXCHANGING FOR PLAYER " + player + " *********");
