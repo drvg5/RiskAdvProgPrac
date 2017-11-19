@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -43,6 +44,7 @@ public class AttackPhaseModel {
 		noOfAttackerArmies = 0;
 		noOfDefenderArmies = 0;
 		boolean adjacencyCheck = false;
+		boolean noOfArmiesCheck = false;
 
 		// populating the lists for attacker and defender
 		populateListsForAttackerAndDefender(plyr);
@@ -105,11 +107,20 @@ public class AttackPhaseModel {
 			// attack initiated
 			attackProcess(plyr, territoryMap);
 
-			// asking user permission to attack
-			System.out.println("\n\t--------------------------------------------------------------");
-			System.out.println("\t\tDo you want to attack again? ");
-			System.out.println("\t\tPlease enter Yes or No :");
-			attackAgain = input.next();
+			// checking if the attacker is in a position to attack or not
+			noOfArmiesCheck = checkForAtttackerArmies();
+
+			if (noOfArmiesCheck) {
+				// asking user permission to attack
+				System.out.println("\n\t--------------------------------------------------------------");
+				System.out.println("\t\tDo you want to attack again? ");
+				System.out.println("\t\tPlease enter Yes or No :");
+				attackAgain = input.next();
+			} else {
+				System.out.println("\n\t--------------------------------------------------------------");
+				System.out.println("\t\tATTACK NOT POSSIBLE AS ANY OF THE ATTACKER ARMIES ARE NOT MORE THAN 1  ");
+			}
+
 			adjacencyCheck = false;
 
 		}
@@ -121,6 +132,17 @@ public class AttackPhaseModel {
 		System.out.println("****************** ATTACK PHASE FOR PLAYER " + plyr + " ENDS *************************");
 		System.out.println("---------------------------------------------------------------------------");
 
+	}
+
+	private static boolean checkForAtttackerArmies() {
+		boolean attackPossible = false;
+		for (String attacker : playerAccToPlayerNo) {
+			if (StartUpPhaseModel.playerInfo.get(attacker) > 1) {
+				attackPossible = true;
+				break;
+			}
+		}
+		return attackPossible;
 	}
 
 	private static boolean checkDefenderAdjacency(int plyr, HashMap<String, List<String>> territoryMap) {
