@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -13,7 +14,6 @@ import com.risk.utility.RiskConstants;
 
 public class AttackPhaseModel {
 
-	private static final String outerloop = null;
 	static int noOfAttackerArmies;
 	static int noOfDefenderArmies;
 	static String attackerKey;
@@ -24,14 +24,12 @@ public class AttackPhaseModel {
 	static String attackAgain = "Yes";
 	static String attackSameCountryAgain = "Yes";
 	static Scanner input = new Scanner(System.in);
-	
+
 	static boolean cardGet = false;
 
 	// for getting data from player info entries for the specific player
 	// list for attackers
 	static List<String> playerAccToPlayerNo = new ArrayList<String>();
-	// get countries of attacker
-	static List<String> countryAccToAttacker = new ArrayList<String>();
 	// list for attacked candidates
 	static List<String> playerNotAccToPlayerNo = new ArrayList<String>();
 
@@ -45,149 +43,222 @@ public class AttackPhaseModel {
 		attackSameCountryAgain = "Yes";
 		noOfAttackerArmies = 0;
 		noOfDefenderArmies = 0;
+		boolean adjacencyCheck = false;
+		boolean noOfArmiesCheck = false;
 
 		// populating the lists for attacker and defender
 		populateListsForAttackerAndDefender(plyr);
 
-		
-		
-		
-		// randomly select attacker and defender
-		// for generating a stream of pseudo random numbers
+		// randomly select attacker
 		random = new Random();
-		String attacked = "";
-		String attacker = playerAccToPlayerNo.get(random.nextInt(playerAccToPlayerNo.size()));
+
 		// global key initialized
-		attackerKey = attacker;
+		int randomNoGenerated = random.nextInt(playerAccToPlayerNo.size());
+		if (randomNoGenerated == 0) {
+			// randomly select attacker
+			attackerKey = playerAccToPlayerNo.get(randomNoGenerated + 1);
+		} else {
+			// randomly select attacker
+			attackerKey = playerAccToPlayerNo.get(randomNoGenerated);
+
+		}
+
 		// getting number of attacker armies
-		noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attacker);
-		boolean foundAdjacency = false;
-		
+		noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attackerKey);
+
 		System.out.println("---------------------------------------------------------------------------");
 		System.out.println("****************** ATTACK PHASE FOR PLAYER " + plyr + " BEGINS ***********************");
 		System.out.println("---------------------------------------------------------------------------");
-		
-		
+
 		while (attackAgain.trim().equalsIgnoreCase("Yes") || attackAgain.trim().equalsIgnoreCase("Y")) {
-			// label for break
-			// resetting as new attack is initiated
-			foundAdjacency = false;
+
 			// attacker country changed if one army is remaining
 			if (StartUpPhaseModel.playerInfo.get(attackerKey) == 1) {
-				attacker = playerAccToPlayerNo.get(random.nextInt(playerAccToPlayerNo.size()));
-				//
-				// global key initialized
-				attackerKey = attacker;
+				randomNoGenerated = random.nextInt(playerAccToPlayerNo.size());
+				if (randomNoGenerated == 0) {
+					// randomly select attacker
+					attackerKey = playerAccToPlayerNo.get(randomNoGenerated + 1);
+
+				} else {
+					// randomly select attacker
+					attackerKey = playerAccToPlayerNo.get(randomNoGenerated);
+
+				}
 				// getting number of attacker armies
-				noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attacker);
+				noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attackerKey);
 			}
 
-			attacked = playerNotAccToPlayerNo.get(random.nextInt(playerNotAccToPlayerNo.size()));
-			// global key initialized
-			defenderKey = attacked;
-			// getting number of attacker armies
-			noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(attacked);
-			String[] keySplit1 = attacker.split("-");
-			attackerPlayer = keySplit1[0];
-			String territoryAttacker = keySplit1[1];
-			String[] keySplit2 = attacked.split("-");
-			defenderPlayer = keySplit2[0];
-			String territoryAttacked = keySplit2[1];
-			for (Map.Entry<String, List<String>> iterate : territoryMap.entrySet()) {
-				//
-				String[] keyArray = iterate.getKey().split(",");
-				String territory = keyArray[1];
-				if (territoryAttacker.equals(territory)) {
+			// checking if defender selected is adjacent or not
+			while (adjacencyCheck == false) {
+				randomNoGenerated = random.nextInt(playerNotAccToPlayerNo.size());
+				if (randomNoGenerated == 0) {
+					// randomly select defender
+					defenderKey = playerNotAccToPlayerNo.get(randomNoGenerated + 1);
+				} else {
+					// randomly select defender
+					defenderKey = playerNotAccToPlayerNo.get(randomNoGenerated);
+				}
+				// getting number of defender armies
+				noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(defenderKey);
+				// checking if defender selected is eligible or not
+				adjacencyCheck = checkDefenderAdjacency(plyr, territoryMap);
+			}
 
-					for (String country : iterate.getValue()) {
+			// attack initiated
+			attackProcess(plyr, territoryMap);
 
-						if (territoryAttacked.equals(country)) {
-							while (attackSameCountryAgain.trim().equalsIgnoreCase("Yes")
-									|| attackSameCountryAgain.trim().equalsIgnoreCase("Y")) {
+			// checking if the attacker is in a position to attack or not
+			noOfArmiesCheck = checkForAtttackerArmies();
 
-								
-								
-								// attackSameCountryAgain
-								noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attacker);
+			if (noOfArmiesCheck) {
+				// asking user permission to attack
+				System.out.println("\n\t--------------------------------------------------------------");
+				System.out.println("\t\tDo you want to attack again? ");
+				System.out.println("\t\tPlease enter Yes or No :");
+				attackAgain = input.next();
+			} else {
+				System.out.println("\n\t--------------------------------------------------------------");
+				System.out.println("\t\tATTACK NOT POSSIBLE AS ANY OF THE ATTACKER ARMIES ARE NOT MORE THAN 1  ");
+			}
 
-								noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(attacked);
-								
-								System.out.println("\n\n\t\t" + "PLAYER " + keySplit1[0] + " : Attacking Territory - " + territoryAttacker +  " --> number of armies : "
-										+ noOfAttackerArmies);
-								System.out.println("\t\tPLAYER " + keySplit2[0] + ": Defending Territory - " + territoryAttacked +" --> number of armies : "
-										+ noOfDefenderArmies);
-								System.out.println();
-								System.out.println();
-								System.out.println("\t\tPLAYER " + keySplit1[0] + " from " + territoryAttacker
-										+ " attacks on " + territoryAttacked + " owned by PLAYER " + keySplit2[0] );
-								System.out.println();
-								System.out.println();
-								// Dice Rolled
-								// country is attacked and armies are deducted
-								// based on the dice roll obtained
-								try {
-									rollDice();
-									populateListsForAttackerAndDefender(plyr);
+			adjacencyCheck = false;
 
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
-								if (StartUpPhaseModel.playerInfo.get(attacked) != null
-										&& StartUpPhaseModel.playerInfo.get(attacked) > 0) {
-									if (StartUpPhaseModel.playerInfo.get(attacker) > 1) {
-										System.out.println("\t--------------------------------------------------------------");
-										System.out.println("\t\tDo you want to attack the Same Country again? ");
-										System.out.println("\t\tPlease enter  Yes or No : ");
-										attackSameCountryAgain = input.next();
-									} else {
-										attackSameCountryAgain = "No";
-										break;
-									}
+		}
 
-								} else {
-									attackSameCountryAgain = "No";
-									break;
-								}
+		// // adding cards after attack is completed
+		// addCards(attackerPlayer);
 
-								foundAdjacency = true;
+		System.out.println("---------------------------------------------------------------------------");
+		System.out.println("****************** ATTACK PHASE FOR PLAYER " + plyr + " ENDS *************************");
+		System.out.println("---------------------------------------------------------------------------");
+
+	}
+
+	private static boolean checkForAtttackerArmies() {
+		boolean attackPossible = false;
+		for (String attacker : playerAccToPlayerNo) {
+			if (StartUpPhaseModel.playerInfo.get(attacker) > 1) {
+				attackPossible = true;
+				break;
+			}
+		}
+		return attackPossible;
+	}
+
+	private static boolean checkDefenderAdjacency(int plyr, HashMap<String, List<String>> territoryMap) {
+
+		boolean check = false;
+		String[] keySplit1 = attackerKey.split("-");
+		attackerPlayer = keySplit1[0];
+		String territoryAttacker = keySplit1[1];
+		String[] keySplit2 = defenderKey.split("-");
+		defenderPlayer = keySplit2[0];
+		String territoryAttacked = keySplit2[1];
+		for (Map.Entry<String, List<String>> iterate : territoryMap.entrySet()) {
+			//
+			String[] keyArray = iterate.getKey().split(",");
+			String territory = keyArray[1];
+			if (territoryAttacker.equals(territory)) {
+
+				for (String country : iterate.getValue()) {
+
+					if (territoryAttacked.equals(country)) {
+						check = true;
+
+					}
+				}
+			}
+
+		}
+		return check;
+
+	}
+
+	static void attackProcess(int plyr, HashMap<String, List<String>> territoryMap) {
+		String[] keySplit1 = attackerKey.split("-");
+		attackerPlayer = keySplit1[0];
+		String territoryAttacker = keySplit1[1];
+		String[] keySplit2 = defenderKey.split("-");
+		defenderPlayer = keySplit2[0];
+		String territoryAttacked = keySplit2[1];
+		for (Map.Entry<String, List<String>> iterate : territoryMap.entrySet()) {
+			//
+			String[] keyArray = iterate.getKey().split(",");
+			String territory = keyArray[1];
+			if (territoryAttacker.equals(territory)) {
+
+				for (String country : iterate.getValue()) {
+
+					if (territoryAttacked.equals(country)) {
+						while (attackSameCountryAgain.trim().equalsIgnoreCase("Yes")
+								|| attackSameCountryAgain.trim().equalsIgnoreCase("Y")) {
+
+							// attackSameCountryAgain
+							noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attackerKey);
+
+							noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(defenderKey);
+
+							System.out.println("\n\n\t\t" + "PLAYER " + keySplit1[0] + " : Attacking Territory - "
+									+ territoryAttacker + " --> number of armies : " + noOfAttackerArmies);
+							System.out.println("\t\tPLAYER " + keySplit2[0] + ": Defending Territory - "
+									+ territoryAttacked + " --> number of armies : " + noOfDefenderArmies);
+							System.out.println();
+							System.out.println();
+							System.out.println("\t\tPLAYER " + keySplit1[0] + " from " + territoryAttacker
+									+ " attacks on " + territoryAttacked + " owned by PLAYER " + keySplit2[0]);
+							System.out.println();
+							System.out.println();
+							// Dice Rolled
+							// country is attacked and armies are deducted
+							// based on the dice roll obtained
+							try {
+								rollDice();
+								populateListsForAttackerAndDefender(plyr);
+
+							} catch (InterruptedException e) {
+								e.printStackTrace();
 							}
-							if (foundAdjacency) {
-								break;
+							if (StartUpPhaseModel.playerInfo.get(defenderKey) != null
+									&& StartUpPhaseModel.playerInfo.get(defenderKey) > 0) {
+								if (StartUpPhaseModel.playerInfo.get(attackerKey) > 1) {
+									System.out.println(
+											"\t--------------------------------------------------------------");
+									System.out.println("\t\tDo you want to attack the Same Country again? ");
+									System.out.println("\t\tPlease enter  Yes or No : ");
+									attackSameCountryAgain = input.next();
+									if (!attackSameCountryAgain.trim().equalsIgnoreCase("Yes")
+											&& !attackSameCountryAgain.trim().equalsIgnoreCase("Y")) {
+										return;
+									}
+								} else {
+									return;
+								}
+
+							} else {
+								return;
 							}
 
 						}
 
 					}
 				}
-				if (foundAdjacency) {
-					break;
-				}
-
-			}
-			if (foundAdjacency) {
-				System.out.println("\n\t--------------------------------------------------------------");
-				System.out.println("\t\tDo you want to attack again? ");
-				System.out.println("\t\tPlease enter Yes or No :");
-				attackAgain = input.next();
 			}
 
 		}
-		
-		addCards(attackerPlayer);
-		
-		System.out.println("---------------------------------------------------------------------------");
-		System.out.println("****************** ATTACK PHASE FOR PLAYER " + plyr + " ENDS *************************");
-		System.out.println("---------------------------------------------------------------------------");
-		
 
 	}
 
 	private static void populateListsForAttackerAndDefender(int plyr) {
+
+		// removing elements of the list as data has changed
+		playerAccToPlayerNo.clear();
+
+		playerNotAccToPlayerNo.clear();
+
 		for (String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()) {
 			String[] playerInfoArr = playerInfoKey.split("-");
 			if (playerInfoArr[0].equals(String.valueOf(plyr))) {
 				playerAccToPlayerNo.add(playerInfoKey);
-				countryAccToAttacker.add(playerInfoArr[1]);
 
 			} else {
 				playerNotAccToPlayerNo.add(playerInfoKey);
@@ -244,7 +315,6 @@ public class AttackPhaseModel {
 			diceRollsForDefender = 2;
 			diceArrayForDefenders = AttackPhaseModel.getDiceNumbers(diceRollsForDefender);
 			System.out.print("\t\tPLAYER " + defenderPlayer + " Dice Roll : ");
-			System.out.print("\t\tPLAYER " + defenderPlayer + " Dice Roll : ");
 			for (Integer integer : diceArrayForDefenders) {
 				System.out.print(integer + " ");
 
@@ -266,7 +336,6 @@ public class AttackPhaseModel {
 			diceRollsForDefender = 1;
 			diceArrayForDefenders = AttackPhaseModel.getDiceNumbers(diceRollsForDefender);
 			System.out.print("\t\tPLAYER " + defenderPlayer + " Dice Roll : ");
-			System.out.print("\t\tPLAYER " + defenderPlayer + " Dice Roll : ");
 
 			for (Integer integer : diceArrayForDefenders) {
 				System.out.print(integer + " ");
@@ -276,6 +345,7 @@ public class AttackPhaseModel {
 			System.out.println();
 			System.out.println();
 		}
+
 		// analyzing the numbers obtained to compute the no of armies
 		diceRollAnalysis(diceArrayForAttackers, diceArrayForDefenders);
 
@@ -325,23 +395,28 @@ public class AttackPhaseModel {
 			noOfDefenderArmies = noOfDefenderArmies + armiesObtainedForDefender;
 			// Updating Defender Data
 			StartUpPhaseModel.playerInfo.replace(defenderKey, noOfDefenderArmies);
-			
-			String [] attackerKeySplit = attackerKey.split("-");
-			String [] defenderKeySplit = defenderKey.split("-");
+
+			String[] attackerKeySplit = attackerKey.split("-");
+			String[] defenderKeySplit = defenderKey.split("-");
 			if (noOfDefenderArmies <= 0) {
 
 				Thread.sleep(1000);
 				System.out.println();
 				System.out.println();
-				
+				System.out.println("\t\tDEFENDER ARMIES DEPLETED");
+
+				System.out.println();
+				System.out.println();
+
 				System.out.println("\t\tATTACKER CONQUERS THE TERRITORY");
-			
-				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - " + attackerKeySplit[1] +  " --> number of armies : "
-						+ noOfAttackerArmies);
-				System.out.println("\t\t" + "PLAYER " + defenderPlayer + " : Defending Territory - " + defenderKeySplit[1] +  " --> number of armies : 0");
-						
+
+				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - "
+						+ attackerKeySplit[1] + " --> number of armies : " + noOfAttackerArmies);
+				System.out.println("\t\t" + "PLAYER " + defenderPlayer + " : Defending Territory - "
+						+ defenderKeySplit[1] + " --> number of armies : 0");
+
 				cardGet = true;
-				
+
 				// assigning defender territory to attacker
 				String[] defKeyString = defenderKey.split("-");
 				defKeyString[0] = attackerPlayer;
@@ -353,29 +428,37 @@ public class AttackPhaseModel {
 				StartUpPhaseModel.playerInfo.put(modifiedKey, diceArrayForAttackersList.size() - 1);
 				noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(modifiedKey);
 				StartUpPhaseModel.playerInfo.remove(defenderKey);
+
+				// adding cards after a COUNTRY is conquered is completed
+				addCards(attackerPlayer);
 				Thread.sleep(2000);
 
 			} else if (noOfAttackerArmies <= 0) {
+				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - "
+						+ attackerKeySplit[1] + " --> number of armies : " + "1");
+				System.out.println("\t\t" + "PLAYER " + defenderPlayer + " : Defending Territory - "
+						+ defenderKeySplit[1] + " --> number of armies : " + noOfDefenderArmies);
+
+				System.out.println();
+				System.out.println("\t\tATTACKER ARMIES DEPLETED");
 				StartUpPhaseModel.playerInfo.replace(attackerKey, 1);
 				noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attackerKey);
-				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - " + attackerKeySplit[1] +  " --> number of armies : "
-						+ "1");
-				System.out.println("\t\t" + "PLAYER " + defenderPlayer + " : Defending Territory - " + defenderKeySplit[1] +  " --> number of armies : "
-						+ noOfDefenderArmies);
-					
-//				System.out.println("Player" + attackerPlayer + "(Attacker) --> number of armies : " + "0");
-//				System.out
-//						.println("Player" + defenderPlayer + "(Defender) --> number of armies : " + noOfDefenderArmies);
+
+				System.out.println();
+				System.out.println("\t\tATTACKER ARMIES REPLENISHED");
+				System.out.println();
+				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - "
+						+ attackerKeySplit[1] + " --> number of armies : " + "1");
 
 				Thread.sleep(2000);
 
 			} else {
 				Thread.sleep(2000);
 				System.out.println("\t\tATTACK COMPLETED");
-				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - " + attackerKeySplit[1] +  " --> number of armies : "
-						+ noOfAttackerArmies);
-				System.out.println("\t\t" + "PLAYER " + defenderPlayer + " : Defending Territory - " + defenderKeySplit[1] +  " --> number of armies : "
-						+ noOfDefenderArmies);
+				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - "
+						+ attackerKeySplit[1] + " --> number of armies : " + noOfAttackerArmies);
+				System.out.println("\t\t" + "PLAYER " + defenderPlayer + " : Defending Territory - "
+						+ defenderKeySplit[1] + " --> number of armies : " + noOfDefenderArmies);
 
 			}
 
@@ -383,7 +466,7 @@ public class AttackPhaseModel {
 		// Case 2 : attacker and defender both are given 1 dice roll
 		else if (diceArrayForAttackersList.size() == 1) {
 			maxAttacker = diceArrayForAttackersList.get(0);
-			maxDefender = diceArrayForAttackersList.get(0);
+			maxDefender = diceArrayForDefendersList.get(0);
 			if (maxAttacker > maxDefender) {
 				--armiesObtainedForDefender;
 
@@ -401,22 +484,28 @@ public class AttackPhaseModel {
 			noOfDefenderArmies = noOfDefenderArmies + armiesObtainedForDefender;
 			// Updating Defender Data
 			StartUpPhaseModel.playerInfo.replace(defenderKey, noOfDefenderArmies);
-			
-			String [] attackerKeySplit = attackerKey.split("-");
-			String [] defenderKeySplit = defenderKey.split("-");
+
+			String[] attackerKeySplit = attackerKey.split("-");
+			String[] defenderKeySplit = defenderKey.split("-");
 
 			if (noOfDefenderArmies <= 0) {
 
 				Thread.sleep(1000);
+
+				System.out.println();
+				System.out.println();
+				System.out.println("\t\tDEFENDER ARMIES DEPLETED");
+
 				System.out.println();
 				System.out.println("\t\tATTACKER CONQUERS THE TERRITORY");
-				
-				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - " + attackerKeySplit[1] +  " --> number of armies : "
-						+ noOfAttackerArmies);
-				System.out.println("\t\t" + "PLAYER " + defenderPlayer + " : Defending Territory - " + defenderKeySplit[1] +  " --> number of armies : 0");
-				
+
+				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - "
+						+ attackerKeySplit[1] + " --> number of armies : " + noOfAttackerArmies);
+				System.out.println("\t\t" + "PLAYER " + defenderPlayer + " : Defending Territory - "
+						+ defenderKeySplit[1] + " --> number of armies : 0");
+
 				cardGet = true;
-				
+
 				// assigning defender territory to attacker
 				String[] defKeyString = defenderKey.split("-");
 				defKeyString[0] = attackerPlayer;
@@ -424,27 +513,42 @@ public class AttackPhaseModel {
 				StartUpPhaseModel.playerInfo.put(modifiedKey, diceArrayForAttackersList.size() - 1);
 				noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(modifiedKey);
 				StartUpPhaseModel.playerInfo.remove(defenderKey);
-			}
-			if (noOfAttackerArmies <= 0) {
-				StartUpPhaseModel.playerInfo.put(attackerKey, 1);
-				noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attackerKey);
-				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - " + attackerKeySplit[1] +  " --> number of armies : "
-						+ "1");
-				System.out.println("\t\t" + "PLAYER " + defenderPlayer + " : Defending Territory - " + defenderKeySplit[1] +  " --> number of armies : "
-						+ noOfDefenderArmies);
+				// adding cards after a COUNTRY is conquered is completed
+				addCards(attackerPlayer);
 				Thread.sleep(2000);
 
+			} else if (noOfAttackerArmies <= 0) {
+
+				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - "
+						+ attackerKeySplit[1] + " --> number of armies : " + "1");
+				System.out.println("\t\t" + "PLAYER " + defenderPlayer + " : Defending Territory - "
+						+ defenderKeySplit[1] + " --> number of armies : " + noOfDefenderArmies);
+
+				System.out.println();
+				System.out.println("\t\tATACKER ARMIES DEPLETED");
+
+				StartUpPhaseModel.playerInfo.put(attackerKey, 1);
+				noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attackerKey);
+
+				System.out.println();
+				System.out.println("\t\tATTACKER ARMIES REPLENISHED");
+				System.out.println();
+				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - "
+						+ attackerKeySplit[1] + " --> number of armies : " + "1");
+
+				Thread.sleep(2000);
+
+			} else {
+				Thread.sleep(2000);
+				System.out.println("\t\tATTACK COMPLETED");
+				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - "
+						+ attackerKeySplit[1] + " --> number of armies : " + noOfAttackerArmies);
+				System.out.println("\t\t" + "PLAYER " + defenderPlayer + " : Defending Territory - "
+						+ defenderKeySplit[1] + " --> number of armies : " + noOfDefenderArmies);
+
 			}
-			Thread.sleep(2000);
-			System.out.println("\t\tATTACK COMPLETED");
-			System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - " + attackerKeySplit[1] +  " --> number of armies : "
-					+ noOfAttackerArmies);
-			System.out.println("\t\t" + "PLAYER " + defenderPlayer + " : Defending Territory - " + defenderKeySplit[1] +  " --> number of armies : "
-					+ noOfDefenderArmies);
 
 		}
-		// calling function to decide whether the player should or shouldn't attack
-		// again
 
 	}
 
@@ -474,31 +578,30 @@ public class AttackPhaseModel {
 		}
 		return diceArrayList;
 	}
-	
-	public static void addCards(String player){
-		
-		if(cardGet){
+
+	public static void addCards(String player) {
+
+		if (cardGet) {
 			Random random = new Random();
-			
+
 			int index = random.nextInt(2);
-			
+
 			String card;
-			
+
 			card = RiskConstants.CARD_TYPES[index];
-			
-			System.out.println("\t\t" + "PLAYER " +player + " gets card : " + card);
+
+			System.out.println("\t\t" + "PLAYER " + player + " gets card : " + card);
 			ArrayList<String> list = new ArrayList<String>();
-			for(String cardKey : ReinforcementPhaseModel.playerCards.keySet()){
-				
-				String [] keySplit = cardKey.split("-");
-				if(keySplit[0].equals(player) || keySplit[0] == player){
+			for (String cardKey : ReinforcementPhaseModel.playerCards.keySet()) {
+
+				String[] keySplit = cardKey.split("-");
+				if (keySplit[0].equals(player) || keySplit[0] == player) {
 					list = ReinforcementPhaseModel.playerCards.get(cardKey);
 					list.add(card);
-					ReinforcementPhaseModel.playerCards.put(cardKey,list);
+					ReinforcementPhaseModel.playerCards.put(cardKey, list);
 					break;
 				}
-			
-				
+
 			}
 		}
 		cardGet = false;
