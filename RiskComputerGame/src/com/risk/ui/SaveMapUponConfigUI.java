@@ -205,7 +205,7 @@ public class SaveMapUponConfigUI {
 					if (textFileName != null && !textFileName.isEmpty()) {
 						try {
 
-							fstream = new FileWriter("C:/Users/Khashyap/Documents/Maps/" + textFileName + ".txt");
+							fstream = new FileWriter("C:/Users/ashis/Documents/Maps/" + textFileName + ".txt");
 							out = new BufferedWriter(fstream);
 							out.write("[Map]");
 							out.write(System.getProperty("line.separator"));

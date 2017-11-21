@@ -15,7 +15,7 @@ public class PhaseUI implements Observer {
 	
 	public static int attackCounter  = 0;
 	
-	public void postStartupDisplay(int numberOfPlayers, HashMap<String,List<String>> territoryMap){
+	public void preDeployingStartupDisplay(int numberOfPlayers, HashMap<String,List<String>> territoryMap){
 		
 		System.out.println("---------------------------------------------------------------------------");
 		System.out.println("***************************** START UP PHASE   ****************************");
@@ -96,6 +96,95 @@ public class PhaseUI implements Observer {
 		}//end for(int plyr = 1 ; plyr...
 		
 		System.out.println("\n\n");
+		System.out.println("\n\n\t******DEPLOYING ARMIES RANDOMLY IN ROUND ROBIN FASHION******");
+//		System.out.println("---------------------------------------------------------------------------");
+//		System.out.println("************************ START UP PHASE COMPLETED *************************");
+//		System.out.println("---------------------------------------------------------------------------");
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	
+	}//end preDeployingStartupDisplay
+	
+	public void postDeployingStartupDisplay(int numberOfPlayers, HashMap<String,List<String>> territoryMap){
+		
+		
+	
+		System.out.println("\n\n\t**************DEPLOYMENT OF ARMIES COMPLETED****************");
+
+		
+		
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		System.out.println("\n\n\t************** TERRITORIES AFTER DEPLOYMENT ****************");
+		
+		for(int plyr = 1 ; plyr <= numberOfPlayers; plyr++){
+		
+			System.out.println("\n\n\t" + "TERRITORIES ASSIGNED TO PLAYER " + plyr + " -> ");
+			
+			for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
+				
+				String[] playerInfoVal = playerInfoKey.split("-");
+				String player = Integer.toString(plyr);
+				
+				if(player.equals(playerInfoVal[0]) || player == playerInfoVal[0]){
+					
+					System.out.println("\n\t\t------------------------------------");
+					System.out.println("\t\t" + "Territory : " + playerInfoVal[1]);
+					
+					System.out.println("\t\t\t  " + "Continent : " + playerInfoVal[2]);
+					
+					System.out.println("\t\t\t  " + "Armies : " + StartUpPhaseModel.playerInfo.get(playerInfoKey));
+					
+					System.out.printf("\t\t\t  "+"Adjacent Countries : ");
+					
+					List<String> adjacentList = territoryMap.get(playerInfoVal[2] + "," + playerInfoVal[1]);
+					
+					int index = 0;
+					for(String adjacent : adjacentList){
+						
+						if(index == 0)
+							System.out.printf(adjacent);
+						else
+							System.out.printf("," + adjacent);
+						
+						index++;
+					}//for(String adjacent : adjacentList)
+					
+				}//end if(player.equals(playerInfoVal[0])...
+				
+			}//end for(String playerInfoKey : Star...
+		
+			
+			
+			try {
+				System.in.read();
+				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			
+				String s = br.readLine();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		}//end for(int plyr = 1 ; plyr...
+		
+		System.out.println("\n\n");
+		
 		System.out.println("---------------------------------------------------------------------------");
 		System.out.println("************************ START UP PHASE COMPLETED *************************");
 		System.out.println("---------------------------------------------------------------------------");
@@ -109,7 +198,9 @@ public class PhaseUI implements Observer {
 		}
 		
 	
-	}//end playerInfoDisplay
+		
+		
+	}//end postDeployingStartupDisplay
 	
 	public void roundRobinHeader(){
 		
@@ -388,9 +479,21 @@ public class PhaseUI implements Observer {
 		String message = ((PlayerClass)obs).msg;
 		
 		
-		if(message.equals("startup") || message == "startup"){
+		
+		
+		if(message.equals("preDeployStartUp") || message == "preDeployStartUp"){
 			
-			postStartupDisplay(((PlayerClass) obs).players,((PlayerClass) obs).currentMap);
+			
+			
+			preDeployingStartupDisplay(((PlayerClass) obs).players,((PlayerClass) obs).currentMap);
+			
+		}
+		
+		if(message.equals("postDeployStartUp") || message == "postDeployStartUp"){
+			
+			
+			
+			postDeployingStartupDisplay(((PlayerClass) obs).players,((PlayerClass) obs).currentMap);
 			
 		}
 		

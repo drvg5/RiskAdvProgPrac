@@ -10,12 +10,15 @@ public class GameDriverNew extends Object{
 	
 	PlayerClass playerModel;
 	PhaseUI phaseView;
+	PlayerDominationView dominationView;
 	
 	GameDriverNew(){
 		
 		playerModel = new PlayerClass();
 		phaseView = new PhaseUI();
+		dominationView = new PlayerDominationView();
 		
+		playerModel.addObserver(dominationView);
 		playerModel.addObserver(phaseView);
 	}
 	

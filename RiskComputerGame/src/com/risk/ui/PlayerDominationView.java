@@ -9,7 +9,10 @@ public class PlayerDominationView implements Observer {
 	@Override
 	public void update(Observable obs, Object arg) {
 		
-		displayPercentage(((PlayerDominationModel)obs).getDomination());
+		String message = ((PlayerClass)obs).msg;
+		
+		if(message.equals("domination") || message == "domination")
+			displayPercentage(((PlayerClass)obs).getDominationNew());
 		
 	}
 

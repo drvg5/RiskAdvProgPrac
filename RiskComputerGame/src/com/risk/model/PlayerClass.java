@@ -12,6 +12,7 @@ import java.util.Observable;
 import java.util.TreeSet;
 
 import com.risk.ui.CardExchangeUI;
+import com.risk.ui.DeployArmiesUI;
 import com.risk.ui.FortificationUI;
 import com.risk.ui.PlayerDominationView;
 import com.risk.ui.ReinforcementsUI;
@@ -27,7 +28,26 @@ import com.risk.ui.ReinforcementsUI;
 
 public class PlayerClass extends Observable {
 
+	private HashMap<String,String> dominationOld = new  HashMap<String,String>();
 	
+	private HashMap<String,String> dominationNew = new  HashMap<String,String>();
+	
+	public HashMap<String, String> getDominationOld() {
+		return dominationOld;
+	}
+
+	public void setDominationOld(HashMap<String, String> dominationOld) {
+		this.dominationOld = dominationOld;
+	}
+
+	public HashMap<String, String> getDominationNew() {
+		return dominationNew;
+	}
+
+	public void setDominationNew(HashMap<String, String> dominationNew) {
+		this.dominationNew = dominationNew;
+	}
+
 	public static int players = 0;
 	
 	public static HashMap<String, List<String>> currentMap;
@@ -35,39 +55,82 @@ public class PlayerClass extends Observable {
 	public static String msg;
 
 	
+	
 	public void gamePlay(int numberOfPlayers, HashMap<String, List<String>> territoryMap,
 			HashMap<String, Integer> continentControlValueHashMap) throws InterruptedException {
 
 		currentMap = territoryMap;
 		
 		PlayerClass.players = numberOfPlayers;
+		
+		
+		PlayerClass playerClassObj = new PlayerClass();
+		
+		
 		// startUpPhase method called
-		PlayerClass.startUpPhase(numberOfPlayers);
+		playerClassObj.startUpPhase(numberOfPlayers);
 
-		msg = "startup";
+		
+		PlayerClass.msg = "preDeployStartUp";
 		
 		setChanged();
+		
 		notifyObservers(this);
 		
-
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		StartUpPhaseModel startUpObj = new StartUpPhaseModel();
+		DeployArmiesUI deployViewObj = new DeployArmiesUI();
+		startUpObj.addObserver(deployViewObj);
+		
+		startUpObj.deployArmiesRandomly(numberOfPlayers);
+		
+		PlayerClass.msg = "postDeployStartUp";
+		
+		setChanged();
+		
+		notifyObservers(this);
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers, StartUpPhaseModel.totalTerr);
+		
+		
 		int plyr = 1;
 
 		int currentNumberOfPlayers = numberOfPlayers;
 		
-		PlayerDominationModel playerDominationObj = new PlayerDominationModel();
+		//PlayerDominationModel playerDominationObj = new PlayerDominationModel();
 		
-		PlayerDominationView playerDominationView = new PlayerDominationView();
+		//PlayerDominationView playerDominationView = new PlayerDominationView();
 		
-		playerDominationObj.addObserver(playerDominationView);
+		//playerDominationObj.addObserver(playerDominationView);
 		
-		PlayerClass playerClassObj = new PlayerClass();
-		
+				
 		msg = "roundrobin";
 		
 		setChanged();
 
 		notifyObservers(this);
 		
+
+
+		
+		//playerDominationObj.calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers, StartUpPhaseModel.totalTerr);
+		
+		
+		//round robin for game starts
 		
 		try {
 			System.in.read();
@@ -76,24 +139,6 @@ public class PlayerClass extends Observable {
 			e.printStackTrace();
 		}
 		
-		try {
-			System.in.read();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		playerDominationObj.calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers, StartUpPhaseModel.totalTerr);
-		
-		// round robin for game starts
-		
-		try {
-			System.in.read();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		while (true) {
 
@@ -158,21 +203,40 @@ public class PlayerClass extends Observable {
 				e.printStackTrace();
 			}
 
-			playerDominationObj.calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers, StartUpPhaseModel.totalTerr);
 			
-			try {
-				System.in.read();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			//playerDominationObj.calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers, StartUpPhaseModel.totalTerr);
+			
+			//check for domination change
+			boolean checkDomination = calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers, StartUpPhaseModel.totalTerr);
+			
+			
+			if(checkDomination){
+				
+				System.out.println("check domination is " + checkDomination);
+				
+				PlayerClass.msg = "domination";
+				
+				setChanged();
+				
+				notifyObservers(msg);
+				
+				try {
+					System.in.read();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			
+		
+			
 			
 			// if one player has all the territories i.e if player has won the game then
 			// break out of loop
 			boolean victory = PlayerClass.checkPlyrVictory(plyr);
 			if (victory) {
 				
-				msg = plyr + " wins";
+				msg = "PLAYER " + plyr + " WINS";
 				setChanged();
 				notifyObservers(this);
 				try {
@@ -216,14 +280,12 @@ public class PlayerClass extends Observable {
 
 	}
 
-	public static void startUpPhase(int numberOfPlayers) {
+	public void startUpPhase(int numberOfPlayers) {
 
 		StartUpPhaseModel.terrPerPlayerPopulate(numberOfPlayers, StartUpPhaseModel.totalTerr);
 
 		StartUpPhaseModel.assignTerritories(numberOfPlayers, StartUpPhaseModel.countryTaken,
 				StartUpPhaseModel.totalTerr);
-
-		StartUpPhaseModel.deployArmiesRandomly(numberOfPlayers);
 
 	}
 
@@ -345,6 +407,98 @@ public class PlayerClass extends Observable {
 
 	}
 
+	
+	public boolean calcDominationValues(HashMap<String,Integer> playerInfo, int numberOfPlayers, int totalTerr){
+		
+		
+		HashMap<String,String> dominationMap = new HashMap<String,String>();
+		
+		
+		if(getDominationOld().isEmpty()){
+			
+			for(int i = 1; i <= numberOfPlayers; i++){
+				
+				int terr = 0;
+				int percentage  = 0;
+				for(String playerInfoKey : playerInfo.keySet()){
+					
+					String[] keySplit = playerInfoKey.split("-");
+					
+					
+					if(keySplit[0].equals(Integer.toString(i)) || keySplit[0] ==  Integer.toString(i)){
+						
+						
+						terr++;
+						
+					}
+					
+				}
+				
+				percentage = (terr * 100 )/totalTerr ;
+				
+				dominationMap.put(Integer.toString(i), percentage + "%");
+				
+				setDominationOld(dominationMap);
+				setDominationNew(dominationMap);
+				
+				//PlayerClass.msg = "nochange";
+			
+				
+			}//end for(int i = 1; i <= numberOfPlayers; i++)
+			
+			return false;
+			
+		}//end if(getDominationOld().isEmpty())
+		
+		
+		
+		
+		for(int i = 1; i <= numberOfPlayers; i++){
+			
+			int terr = 0;
+			int percentage  = 0;
+			for(String playerInfoKey : playerInfo.keySet()){
+				
+				String[] keySplit = playerInfoKey.split("-");
+				
+				
+				if(keySplit[0].equals(Integer.toString(i)) || keySplit[0] ==  Integer.toString(i)){
+					
+					
+					terr++;
+					
+				}
+				
+			}
+			
+			percentage = (terr * 100 )/totalTerr ;
+			
+			dominationMap.put(Integer.toString(i), percentage + "%");
+
+		}
+		
+		setDominationNew(dominationMap);
+		
+		if(dominationNew.equals(dominationOld)){
+			
+			//PlayerClass.msg = "domination";
+			System.out.println("Domination Old -> " + getDominationOld());
+			System.out.println("Domination New -> " + getDominationNew());
+			
+			return false;
+			
+		}
+		
+		
+
+		
+		return true;
+			
+		
+	}
+	
+	
+	
 	public static boolean checkPlyrVictory(int plyr) {
 
 		TreeSet<Integer> playerCheck = new TreeSet<Integer>();

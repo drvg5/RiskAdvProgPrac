@@ -1,13 +1,15 @@
 package com.risk.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.Observable;
 
-public class StartUpPhaseModel {
+public class StartUpPhaseModel extends Observable{
 
 	/**
 	 * playerInfo HashMap stores the values corresponding to a particular player
@@ -58,7 +60,55 @@ public class StartUpPhaseModel {
 	public static int totalTerr = 0;
 	
 	public static boolean junitCheckCount = true;
+	
+	//variables for DeployArmiesUI
+	private String chosenRandomTerritory;
+	private String currentPlayer;
+	private int beforeDeployUnits;
+	private int afterDeployUnits;
+	private int remainingUnits;
 
+	public String getChosenRandomTerritory() {
+		return chosenRandomTerritory;
+	}
+
+	public void setChosenRandomTerritory(String chosenRandomTerritory) {
+		this.chosenRandomTerritory = chosenRandomTerritory;
+	}
+
+	public String getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(String currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+	public int getBeforeDeployUnits() {
+		return beforeDeployUnits;
+	}
+
+	public void setBeforeDeployUnits(int beforeDeployUnits) {
+		this.beforeDeployUnits = beforeDeployUnits;
+	}
+
+	public int getAfterDeployUnits() {
+		return afterDeployUnits;
+	}
+
+	public void setAfterDeployUnits(int afterDeployUnits) {
+		this.afterDeployUnits = afterDeployUnits;
+	}
+
+	public int getRemainingUnits() {
+		return remainingUnits;
+	}
+
+	public void setRemainingUnits(int remainingUnits) {
+		this.remainingUnits = remainingUnits;
+	}
+
+	
 	/**
 	 * This method populates {@link StartUpPhaseModel#countryTaken} TreeSet and
 	 * {@link StartUpPhaseModel#terrCont} HashMap and HashMap to Number of
@@ -205,7 +255,10 @@ public class StartUpPhaseModel {
 	 * @param numberOfTerr
 	 */
 	public static void assignTerritories(int numberOfPlayers, TreeSet<String> countryTaken, int numberOfTerr) {
-
+		
+		StartUpPhaseModel.setInitialArmies(numberOfPlayers);
+		
+		
 		// Creating a List of TreeSet countryTaken elements
 
 		Random random = new Random();
@@ -270,7 +323,7 @@ public class StartUpPhaseModel {
 						continentTerrPlayerCount = 0;
 
 						playerKey = String.valueOf(pl) + "-" + randomTerr[0] + "-" + randomTerrContinent;
-						playerInfo.put(playerKey, 1);
+						playerInfo.put(playerKey, 0);
 
 						// modify countryTaken to indicate that country has been assigned to a player
 						countryTaken.add(randomTerr[0] + "-0");
@@ -300,62 +353,220 @@ public class StartUpPhaseModel {
 	 * @param numberOfPlayers
 	 * @param numberOfTerr
 	 */
-	public static void deployArmiesRandomly(int numberOfPlayers) {
+	public void deployArmiesRandomly(int numberOfPlayers) {
 
 		Random randomCountry = new Random();
 		
-		StartUpPhaseModel.setInitialArmies(numberOfPlayers);
+		
 
 		int maxArmies;
-
-		for (int pl = 1; pl <= numberOfPlayers; pl++) {
-
-			List<String> playerCountryList = new ArrayList<String>();
+		
+		TreeMap<String,Integer> armiesRemainingPerPlyr = new TreeMap<String,Integer>();
+		
+		//initialize armiesRemainingPerPlyr
+		for (int pl = 1; pl <= numberOfPlayers; pl++){
 			
-			maxArmies = StartUpPhaseModel.initialArmies;
+			armiesRemainingPerPlyr.put(String.valueOf(pl), StartUpPhaseModel.initialArmies);
 			
-			
-			// populate playerCountryList
-			for (String playerInfo : StartUpPhaseModel.playerInfo.keySet()) {
+		}
 
-				String[] playerInfoArr = playerInfo.split("-");
-				if (playerInfoArr[0].equals(Integer.toString(pl)) || playerInfoArr[0] == Integer.toString(pl)) {
-					playerCountryList.add(playerInfo);
-				}
-			}
-
+		
+		
+		//round robin for putting armies one by one in territories
+		
+		while(!armiesRemainingPerPlyr.isEmpty()){
 			
-			//assign 1 army to each country first
-			for(String playerKey : StartUpPhaseModel.playerInfo.keySet()){
+			
+			for (int pl = 1; pl <= numberOfPlayers; pl++){
 				
-				String[] playerKeySplit = playerKey.split("-");
 				
-				if(playerKeySplit[0].equals(Integer.toString(pl)) ||  playerKeySplit[0] == Integer.toString(pl)){
+				if(!armiesRemainingPerPlyr.containsKey(String.valueOf(pl))){
 					
-					StartUpPhaseModel.playerInfo.put(playerKey, 1);
+					continue;
 					
-					maxArmies--;
 				}
 				
 				
-			}
-			
-			
-			//distribute remaining armies to territories until remaining armies count is 0 for a player
-			while (maxArmies != 0) {
 				
-				// choose territory randomly to put armies into
-				String randomChosenCountry = playerCountryList.get(randomCountry.nextInt(playerCountryList.size()));
+				int remArmies = armiesRemainingPerPlyr.get(String.valueOf(pl));
+				
+				
+				//list for keeping the all territories of a particular player
+				List<String> playerAllTerritoriesList = new ArrayList<String>();
+				
+				// populate playerAllTerritoriesList
+				for (String playerInfo : StartUpPhaseModel.playerInfo.keySet()) {
+	
+					String[] playerInfoArr = playerInfo.split("-");
+					if (playerInfoArr[0].equals(Integer.toString(pl)) || playerInfoArr[0] == Integer.toString(pl)) {
+						
+						playerAllTerritoriesList.add(playerInfo);
+						
+					}//end if (playerInfoArr[0].equals(Integer.toString(pl)) ...
+					
+				}//end for (String playerInfo : StartUpPhase...
+				
+				
+				//list for keeping the territories of a particular player with zero armies
+				List<String> playerZeroUnitTerritoryList = new ArrayList<String>();
+				
+				//populate playerZeroUnitTerritoryList
+				for (String playerInfo : StartUpPhaseModel.playerInfo.keySet()) {
+	
+					String[] playerInfoArr = playerInfo.split("-");
+					if (playerInfoArr[0].equals(Integer.toString(pl)) || playerInfoArr[0] == Integer.toString(pl)) {
+						
+						if(StartUpPhaseModel.playerInfo.get(playerInfo) == 0){
+							
+							playerZeroUnitTerritoryList.add(playerInfo);
+							
+						}
+						
+						
+					}//end if (playerInfoArr[0].equals(Integer.toString(pl)) ...
+					
+				}//end for (String playerInfo : StartUpPhase...
+				
+				
+				if(!playerZeroUnitTerritoryList.isEmpty()){
+					
+					//if there are any territories which has 0 units then prefer picking up randomly these over others with one or more units
+					
+					
+					//choose territory randomly to put armies into
+					String randomChosenCountry = playerZeroUnitTerritoryList.get(randomCountry.nextInt(playerZeroUnitTerritoryList.size()));
+	
+					int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomChosenCountry);
+					
+			
+					playerInfoValue = playerInfoValue + 1;
+	
+					StartUpPhaseModel.playerInfo.put(randomChosenCountry, playerInfoValue);
+					
+					
+					
+					armiesRemainingPerPlyr.put(String.valueOf(pl),remArmies-1);
+					
+					if(remArmies == 1){
+						armiesRemainingPerPlyr.remove(String.valueOf(pl));
+					}
+					
+					
+					setCurrentPlayer(String.valueOf(pl));
+					setBeforeDeployUnits((playerInfoValue - 1));
+					setAfterDeployUnits(playerInfoValue);
+					setChosenRandomTerritory(randomChosenCountry.split("-")[1].toUpperCase());
+					setRemainingUnits((remArmies - 1));
+					
+					setChanged();
+					notifyObservers(this);
+					
+					try {
+						System.in.read();
+						
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					
+				}
+				else {
+					
+					//if no territories with 0 units remain then pick from playerAllTerritoriesList
+					
+					//choose territory randomly to put armies into
+					String randomChosenCountry = playerAllTerritoriesList.get(randomCountry.nextInt(playerAllTerritoriesList.size()));
+	
+					int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomChosenCountry);
+					
+					playerInfoValue = playerInfoValue + 1;
+	
+					StartUpPhaseModel.playerInfo.put(randomChosenCountry, playerInfoValue);
+					
+					
+					
+					armiesRemainingPerPlyr.put(String.valueOf(pl),remArmies-1);
 
-				int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomChosenCountry);
-				playerInfoValue = playerInfoValue + 1;
-
-				StartUpPhaseModel.playerInfo.put(randomChosenCountry, playerInfoValue);
-
-				maxArmies--;
-			} // end while(armiesCount != 0)
-
-		} // end for(int pl = 1;pl<=numberOfPlayers;pl++)
+					if(remArmies == 1){
+						armiesRemainingPerPlyr.remove(String.valueOf(pl));
+					}
+					
+					setCurrentPlayer(String.valueOf(pl));
+					setBeforeDeployUnits((playerInfoValue - 1));
+					setAfterDeployUnits(playerInfoValue);
+					setChosenRandomTerritory(randomChosenCountry.split("-")[1].toUpperCase());
+					setRemainingUnits((remArmies - 1));
+					
+					setChanged();
+					notifyObservers(this);
+					
+			
+					try {
+						System.in.read();
+						
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			
+				
+			}//end for (int pl = 1; pl <= numberOf...
+	
+		}//end while(!armiesRemainingPerPlyr.isEmpty())
+		
+		//loop for round robin for placing armies end
+		
+		
+//		for (int pl = 1; pl <= numberOfPlayers; pl++) {
+//
+//			List<String> playerCountryList = new ArrayList<String>();
+//			
+//			maxArmies = StartUpPhaseModel.initialArmies;
+//			
+//			
+//			// populate playerCountryList
+//			for (String playerInfo : StartUpPhaseModel.playerInfo.keySet()) {
+//
+//				String[] playerInfoArr = playerInfo.split("-");
+//				if (playerInfoArr[0].equals(Integer.toString(pl)) || playerInfoArr[0] == Integer.toString(pl)) {
+//					playerCountryList.add(playerInfo);
+//				}
+//			}
+//
+//			
+//			//assign 1 army to each country first
+//			for(String playerKey : StartUpPhaseModel.playerInfo.keySet()){
+//				
+//				String[] playerKeySplit = playerKey.split("-");
+//				
+//				if(playerKeySplit[0].equals(Integer.toString(pl)) ||  playerKeySplit[0] == Integer.toString(pl)){
+//					
+//					StartUpPhaseModel.playerInfo.put(playerKey, 1);
+//					
+//					maxArmies--;
+//				}
+//				
+//				
+//			}
+//			
+//			
+//			//distribute remaining armies to territories until remaining armies count is 0 for a player
+//			while (maxArmies != 0) {
+//				
+//				// choose territory randomly to put armies into
+//				String randomChosenCountry = playerCountryList.get(randomCountry.nextInt(playerCountryList.size()));
+//
+//				int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomChosenCountry);
+//				playerInfoValue = playerInfoValue + 1;
+//
+//				StartUpPhaseModel.playerInfo.put(randomChosenCountry, playerInfoValue);
+//
+//				maxArmies--;
+//			} // end while(armiesCount != 0)
+//
+//		} // end for(int pl = 1;pl<=numberOfPlayers;pl++)
 
 	}// end deployArmiesRandoml(int numberOfPlayers)
 	
