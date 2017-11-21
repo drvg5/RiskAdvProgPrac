@@ -212,7 +212,7 @@ public class PlayerClass extends Observable {
 			
 			if(checkDomination){
 				
-				System.out.println("check domination is " + checkDomination);
+				
 				
 				PlayerClass.msg = "domination";
 				
