@@ -12,29 +12,76 @@ import java.util.Scanner;
 
 import com.risk.utility.RiskConstants;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AttackPhaseModel.
+ * 
+ * The tasks performed by this class are:
+ * <ul>
+ * <li>Initiating the attack phase
+ * <li>Rolling the dice and performing an analysis of the dice rolled
+ * <li>Checking if an attack is possible or not
+ * <li>Deciding the Winner or Loser
+ * </ul>
+ * 
+ * @author drvg5
+ * 
+ */
 public class AttackPhaseModel {
 
+	/** The no of attacker armies. */
 	static int noOfAttackerArmies;
+
+	/** The no of defender armies. */
 	static int noOfDefenderArmies;
+
+	/** The attacker key. */
 	static String attackerKey;
+
+	/** The defender key. */
 	static String defenderKey;
+
+	/** The attacker player. */
 	static String attackerPlayer;
+
+	/** The defender player. */
 	static String defenderPlayer;
+
+	/** The armies depleted. */
 	static boolean armiesDepleted = false;
+
+	/** The attack again. */
 	static String attackAgain = "Yes";
+
+	/** The attack same country again. */
 	static String attackSameCountryAgain = "Yes";
+
+	/** The input. */
 	static Scanner input = new Scanner(System.in);
 
+	/** The card get. */
 	static boolean cardGet = false;
 
 	// for getting data from player info entries for the specific player
+	/** The player acc to player no. */
 	// list for attackers
 	static List<String> playerAccToPlayerNo = new ArrayList<String>();
+
+	/** The player not acc to player no. */
 	// list for attacked candidates
 	static List<String> playerNotAccToPlayerNo = new ArrayList<String>();
 
+	/** The random. */
 	static Random random;
 
+	/**
+	 * Choose country to be attacked.
+	 *
+	 * @param plyr
+	 *            the plyr
+	 * @param territoryMap
+	 *            the territory map
+	 */
 	/*
 	 * method for checking adjacency of the attacker and defender
 	 */
@@ -134,6 +181,11 @@ public class AttackPhaseModel {
 
 	}
 
+	/**
+	 * Check for atttacker armies.
+	 *
+	 * @return true, if successful
+	 */
 	private static boolean checkForAtttackerArmies() {
 		boolean attackPossible = false;
 		for (String attacker : playerAccToPlayerNo) {
@@ -145,6 +197,15 @@ public class AttackPhaseModel {
 		return attackPossible;
 	}
 
+	/**
+	 * Check defender adjacency.
+	 *
+	 * @param plyr
+	 *            the plyr
+	 * @param territoryMap
+	 *            the territory map
+	 * @return true, if successful
+	 */
 	private static boolean checkDefenderAdjacency(int plyr, HashMap<String, List<String>> territoryMap) {
 
 		boolean check = false;
@@ -174,6 +235,14 @@ public class AttackPhaseModel {
 
 	}
 
+	/**
+	 * Attack process.
+	 *
+	 * @param plyr
+	 *            the plyr
+	 * @param territoryMap
+	 *            the territory map
+	 */
 	static void attackProcess(int plyr, HashMap<String, List<String>> territoryMap) {
 		String[] keySplit1 = attackerKey.split("-");
 		attackerPlayer = keySplit1[0];
@@ -248,6 +317,12 @@ public class AttackPhaseModel {
 
 	}
 
+	/**
+	 * Populate lists for attacker and defender.
+	 *
+	 * @param plyr
+	 *            the plyr
+	 */
 	private static void populateListsForAttackerAndDefender(int plyr) {
 
 		// removing elements of the list as data has changed
@@ -267,6 +342,12 @@ public class AttackPhaseModel {
 		}
 	}
 
+	/**
+	 * Roll dice.
+	 *
+	 * @throws InterruptedException
+	 *             the interrupted exception
+	 */
 	/*
 	 * dice is rolled and numbers obtained are used to compute the result
 	 */
@@ -351,6 +432,16 @@ public class AttackPhaseModel {
 
 	}
 
+	/**
+	 * Dice roll analysis.
+	 *
+	 * @param diceArrayForAttackersList
+	 *            the dice array for attackers list
+	 * @param diceArrayForDefendersList
+	 *            the dice array for defenders list
+	 * @throws InterruptedException
+	 *             the interrupted exception
+	 */
 	/*
 	 * analyzing the numbers obtained to compute the no of armies thus making
 	 * changes in player data
@@ -552,6 +643,13 @@ public class AttackPhaseModel {
 
 	}
 
+	/**
+	 * Gets the dice numbers.
+	 *
+	 * @param dicerolls
+	 *            the dicerolls
+	 * @return the dice numbers
+	 */
 	/*
 	 * this method generate and returns the numbers obtained in the dice rolled
 	 */
@@ -579,6 +677,12 @@ public class AttackPhaseModel {
 		return diceArrayList;
 	}
 
+	/**
+	 * Adds the cards.
+	 *
+	 * @param player
+	 *            the player
+	 */
 	public static void addCards(String player) {
 
 		if (cardGet) {
