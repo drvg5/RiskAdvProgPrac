@@ -34,7 +34,7 @@ public class ReinforcementPhaseModel extends Observable {
 	
 	private String cardsMsg ;
 	
-	private String msgUI ; 
+	private static String msgUI ; 
 	
 	private ArrayList<String> cntrlValReinforcements = new ArrayList<>();
 	
@@ -85,14 +85,14 @@ public class ReinforcementPhaseModel extends Observable {
 		this.cntrlValReinforcements = cntrlValReinforcements;
 	}
 
-	public String getMsgUI(){
+	public static String getMsgUI(){
 		
 		return msgUI;
 	}
 	
-	public void setMsgUI(String msgUI){
+	public static void setMsgUI(String msgUI){
 		
-		this.msgUI = msgUI;
+		ReinforcementPhaseModel.msgUI = msgUI;
 	}
 	
 	public int getTotalReinforcementArmies() {

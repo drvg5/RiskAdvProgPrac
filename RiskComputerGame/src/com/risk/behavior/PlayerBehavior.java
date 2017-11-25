@@ -1,7 +1,8 @@
 package com.risk.behavior;
 
 public interface PlayerBehavior {
-	public void reinforce(int player);
+	
+	public void reinforce(String player);
 
 	public void attack(int player);
 

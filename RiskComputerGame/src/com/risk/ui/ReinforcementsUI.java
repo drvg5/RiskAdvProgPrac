@@ -15,8 +15,9 @@ public class ReinforcementsUI implements Observer {
 	public void update(Observable obs, Object arg) {
 		// TODO Auto-generated method stub
 		
-		String msgUI = ((ReinforcementPhaseModel)obs).getMsgUI();
+		//String msgUI = ((ReinforcementPhaseModel)obs).getMsgUI();
 		
+		String msgUI = ReinforcementPhaseModel.getMsgUI();
 		
 		if(msgUI.contains("byTerr")){
 			
@@ -53,7 +54,7 @@ public class ReinforcementsUI implements Observer {
 			//"placementView," + player + "," + territory
 			String[] msgUISplit = msgUI.split(",");
 			
-			placementView(msgUISplit[1], msgUISplit[2], ((ReinforcementPhaseModel)obs));
+			placementView(msgUISplit[1], msgUISplit[2], ((ReinforcementPhaseModel)arg));
 			
 		}
 		

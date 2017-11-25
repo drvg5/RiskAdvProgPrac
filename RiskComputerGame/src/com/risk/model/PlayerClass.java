@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.TreeSet;
 
+import com.risk.behavior.*;
 import com.risk.ui.CardExchangeUI;
 import com.risk.ui.DeployArmiesUI;
 import com.risk.ui.FortificationUI;
@@ -54,7 +55,7 @@ public class PlayerClass extends Observable {
 
 	public static String msg;
 
-	
+	public StrategyContext contextObj = new StrategyContext();
 	
 	public void gamePlay(int numberOfPlayers, HashMap<String, List<String>> territoryMap,
 			HashMap<String, Integer> continentControlValueHashMap) throws InterruptedException {
@@ -360,7 +361,36 @@ public class PlayerClass extends Observable {
 
 		// ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
 
-		reinforcmentModelObj.reinforceRandom(Integer.toString(plyr));
+	    //  reinforcmentModelObj.reinforceRandom(Integer.toString(plyr));
+		
+		ReinforcementsUI uiObj2 = new ReinforcementsUI();
+		
+		switch(plyr){
+		
+			case 1 : {AggressiveBehaviorImpl agressiveObj = new AggressiveBehaviorImpl();
+						contextObj.setStrategy(agressiveObj);
+						agressiveObj.addObserver(uiObj2);
+						break;
+			}
+			case 2 : {RandomBehaviorImpl randomObj = new RandomBehaviorImpl();
+						contextObj.setStrategy(randomObj);
+						randomObj.addObserver(uiObj2);
+						break;
+			}
+			case 3 : {BenevolantBehaviorImpl benevolentObj = new BenevolantBehaviorImpl();
+						contextObj.setStrategy(benevolentObj);
+						benevolentObj.addObserver(uiObj2);
+						break;
+			}
+			case 4 : {CheaterBehaviorImpl cheaterObj = new CheaterBehaviorImpl();
+						contextObj.setStrategy(cheaterObj);
+						cheaterObj.addObserver(uiObj2);
+						break;
+			}
+		}
+		
+		contextObj.executeReinforce(Integer.toString(plyr));
+		
 		
 		try {
 			System.in.read();
