@@ -83,7 +83,11 @@ public class AttackPhaseModel {
 	 *            the territory map
 	 */
 	/*
-	 * method for checking adjacency of the attacker and defender
+	 * This method is called when the Random Player Behavior is chosen
+	 * 
+	 * method for checking adjacency of the attacker and defender and then attacking
+	 * the defender country
+	 * 
 	 */
 	public static void chooseCountryToBeAttacked(int plyr, HashMap<String, List<String>> territoryMap) {
 		attackAgain = "Yes";
@@ -148,11 +152,11 @@ public class AttackPhaseModel {
 				// getting number of defender armies
 				noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(defenderKey);
 				// checking if defender selected is eligible or not
-				adjacencyCheck = checkDefenderAdjacency(plyr, territoryMap);
+				adjacencyCheck = checkDefenderAdjacency(territoryMap);
 			}
 
 			// attack initiated
-			attackProcess(plyr, territoryMap);
+			attackProcessRandom(plyr, territoryMap);
 
 			// checking if the attacker is in a position to attack or not
 			noOfArmiesCheck = checkForAtttackerArmies();
@@ -177,6 +181,66 @@ public class AttackPhaseModel {
 
 		System.out.println("---------------------------------------------------------------------------");
 		System.out.println("****************** ATTACK PHASE FOR PLAYER " + plyr + " ENDS *************************");
+		System.out.println("---------------------------------------------------------------------------");
+
+	}
+
+	/*
+	 * This method is called when the Aggressive Player Behavior is chosen
+	 * 
+	 * method for checking adjacency of the attacker and defender and then attacking
+	 * the defender country
+	 */
+	public static void attackAggressively(String playerInfoKey, HashMap<String, List<String>> territoryMap) {
+		attackAgain = "Yes";
+		attackSameCountryAgain = "Yes";
+		noOfAttackerArmies = 0;
+		noOfDefenderArmies = 0;
+		boolean adjacencyCheck = false;
+		boolean attackPossible = true;
+
+		// randomly select defender
+		random = new Random();
+
+		attackerKey = playerInfoKey;
+
+		// getting number of attacker armies
+		noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(playerInfoKey);
+
+		System.out.println("---------------------------------------------------------------------------");
+		System.out.println("****************** ATTACK PHASE FOR PLAYER " + playerInfoKey.charAt(0)
+				+ " BEGINS ***********************");
+		System.out.println("---------------------------------------------------------------------------");
+
+		// checking if defender selected is adjacent or not
+
+		while (attackPossible) {
+			while (adjacencyCheck == false) {
+				int randomNoGenerated = random.nextInt(playerNotAccToPlayerNo.size());
+				if (randomNoGenerated == 0) {
+					// randomly select defender
+					defenderKey = playerNotAccToPlayerNo.get(randomNoGenerated + 1);
+				} else {
+					// randomly select defender
+					defenderKey = playerNotAccToPlayerNo.get(randomNoGenerated);
+				}
+				// getting number of defender armies
+				noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(defenderKey);
+				// checking if defender selected is eligible or not
+				adjacencyCheck = checkDefenderAdjacency(territoryMap);
+			}
+			// attack initiated
+			attackPossible = attackProcessAggressive((int) playerInfoKey.charAt(0), territoryMap);
+			adjacencyCheck = false;
+
+		}
+
+		// adding cards after attack is completed
+		// addCards(attackerPlayer);
+
+		System.out.println("---------------------------------------------------------------------------");
+		System.out.println("****************** ATTACK PHASE FOR PLAYER " + playerInfoKey.charAt(0)
+				+ " ENDS *************************");
 		System.out.println("---------------------------------------------------------------------------");
 
 	}
@@ -206,7 +270,7 @@ public class AttackPhaseModel {
 	 *            the territory map
 	 * @return true, if successful
 	 */
-	private static boolean checkDefenderAdjacency(int plyr, HashMap<String, List<String>> territoryMap) {
+	private static boolean checkDefenderAdjacency(HashMap<String, List<String>> territoryMap) {
 
 		boolean check = false;
 		String[] keySplit1 = attackerKey.split("-");
@@ -243,7 +307,93 @@ public class AttackPhaseModel {
 	 * @param territoryMap
 	 *            the territory map
 	 */
-	static void attackProcess(int plyr, HashMap<String, List<String>> territoryMap) {
+	static boolean attackProcessAggressive(int plyr, HashMap<String, List<String>> territoryMap) {
+		boolean attackPossible = true;
+		String[] keySplit1 = attackerKey.split("-");
+		attackerPlayer = keySplit1[0];
+		String territoryAttacker = keySplit1[1];
+		String[] keySplit2 = defenderKey.split("-");
+		defenderPlayer = keySplit2[0];
+		String territoryAttacked = keySplit2[1];
+		boolean checkAttackerCountries = true;
+		for (Map.Entry<String, List<String>> iterate : territoryMap.entrySet()) {
+			//
+			String[] keyArray = iterate.getKey().split(",");
+			String territory = keyArray[1];
+			if (territoryAttacker.equals(territory)) {
+
+				for (String country : iterate.getValue()) {
+
+					if (territoryAttacked.equals(country)) {
+						while (checkAttackerCountries) {
+
+							// attackSameCountryAgain
+							noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attackerKey);
+
+							noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(defenderKey);
+
+							System.out.println("\n\n\t\t" + "PLAYER " + keySplit1[0] + " : Attacking Territory - "
+									+ territoryAttacker + " --> number of armies : " + noOfAttackerArmies);
+							System.out.println("\t\tPLAYER " + keySplit2[0] + ": Defending Territory - "
+									+ territoryAttacked + " --> number of armies : " + noOfDefenderArmies);
+							System.out.println();
+							System.out.println();
+							System.out.println("\t\tPLAYER " + keySplit1[0] + " from " + territoryAttacker
+									+ " attacks on " + territoryAttacked + " owned by PLAYER " + keySplit2[0]);
+							System.out.println();
+							System.out.println();
+							// Dice Rolled
+							// country is attacked and armies are deducted
+							// based on the dice roll obtained
+							try {
+								rollDice();
+								populateListsForAttackerAndDefender(plyr);
+
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							if (StartUpPhaseModel.playerInfo.get(defenderKey) != null
+									&& StartUpPhaseModel.playerInfo.get(defenderKey) > 0) {
+								if (StartUpPhaseModel.playerInfo.get(attackerKey) > 1) {
+									checkAttackerCountries = true;
+
+								} else {
+									System.out.println(
+											"\n\t--------------------------------------------------------------");
+									System.out.println(
+											"\t\tATTACK NOT POSSIBLE AS ATTACKER ARMIES ARE NOT MORE THAN 1  ");
+									attackPossible = false;
+									return attackPossible;
+								}
+
+							} else {
+								System.out
+										.println("\n\t--------------------------------------------------------------");
+								System.out.println("\t\tATTACK NOT POSSIBLE AS DEFENDER ARMIES ARE DEPLETED ");
+								attackPossible = true;
+								return attackPossible;
+							}
+
+						}
+
+					}
+				}
+			}
+
+		}
+		return attackPossible;
+
+	}
+
+	/**
+	 * Attack process.
+	 *
+	 * @param plyr
+	 *            the plyr
+	 * @param territoryMap
+	 *            the territory map
+	 */
+	static void attackProcessRandom(int plyr, HashMap<String, List<String>> territoryMap) {
 		String[] keySplit1 = attackerKey.split("-");
 		attackerPlayer = keySplit1[0];
 		String territoryAttacker = keySplit1[1];
@@ -340,6 +490,23 @@ public class AttackPhaseModel {
 
 			}
 		}
+	}
+
+	public static String findCountryWithMaxArmies(String player) {
+
+		// populating the lists for attacker and defender
+		populateListsForAttackerAndDefender(Integer.valueOf(player));
+		//
+		Integer highestNoOfArmies = StartUpPhaseModel.playerInfo.get(playerAccToPlayerNo.get(0));
+		String countryHigh = "";
+		for (String playerInfoKey : playerAccToPlayerNo) {
+			if (StartUpPhaseModel.playerInfo.get(playerInfoKey) > highestNoOfArmies) {
+				countryHigh = playerInfoKey;
+			}
+		}
+
+		return countryHigh;
+
 	}
 
 	/**

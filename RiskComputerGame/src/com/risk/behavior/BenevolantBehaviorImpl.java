@@ -1,6 +1,7 @@
 package com.risk.behavior;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 import java.util.Random;
@@ -105,14 +106,18 @@ public class BenevolantBehaviorImpl extends Observable implements PlayerBehavior
 		
 	}
 	
+	
+
 	@Override
-	public void attack(int player) {
+	public void fortify(int player) {
 		// TODO Auto-generated method stub
 		
 	}
 
+
+
 	@Override
-	public void fortify(int player) {
+	public void attack(String player, HashMap<String, List<String>> territoryMap) {
 		// TODO Auto-generated method stub
 		
 	}

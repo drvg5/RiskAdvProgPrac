@@ -222,7 +222,8 @@ public class ParseMapFileModel {
 						for (Map.Entry<String, List<String>> toPrint : continentHashMap.entrySet()) {
 							System.out.println(toPrint.getKey() + "\t" + "\t" + toPrint.getValue());
 						}
-						new GameDriverNew().gameStart(continentHashMap, continentCount);
+						//new GameDriverNew().gameStart(continentHashMap, continentCount);
+						new GameDriverNew().gameModeSingle(continentHashMap, continentCount);
 
 					}
 				}

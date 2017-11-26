@@ -147,7 +147,7 @@ public class GameDriverNew extends Object {
 		cardsList.add(RiskConstants.CARD_2);
 		cardsList.add(RiskConstants.CARD_1);
 
-		gameDriver.gameStart(territoryMap, continentControlValueHashMap);
+		// gameDriver.gameStart(territoryMap, continentControlValueHashMap);
 
 	}
 
@@ -161,8 +161,8 @@ public class GameDriverNew extends Object {
 		// input the strategies for the player
 		HashMap<Integer, String> strategies = new HashMap<Integer, String>();
 		strategies = enterStrategiesMenu(numberOfPlayers);
-		
-		
+		gameStart(territoryMap, continentControlValueHashMap, strategies);
+
 	}
 
 	public void gameModeTournament(HashMap<String, List<String>> territoryMap,
@@ -171,14 +171,14 @@ public class GameDriverNew extends Object {
 	}
 
 	public void gameStart(HashMap<String, List<String>> territoryMap,
-			HashMap<String, Integer> continentControlValueHashMap) {
+			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies) {
 
-		int numberOfPlayers;
+		int numberOfPlayers = strategies.size() ;
 
 		while (playerGTTerr != 1) {
 
 			try {
-				numberOfPlayers = enterPlayersMenu();
+				// numberOfPlayers = enterPlayersMenu();
 
 				StartUpPhaseModel.preStartUp(numberOfPlayers, territoryMap);
 
@@ -186,7 +186,7 @@ public class GameDriverNew extends Object {
 
 					// new PlayerClass().gamePlay(numberOfPlayers, territoryMap,
 					// continentControlValueHashMap);
-					playerModel.gamePlay(numberOfPlayers, territoryMap, continentControlValueHashMap);
+					playerModel.gamePlay(numberOfPlayers, territoryMap, continentControlValueHashMap, strategies);
 
 				} catch (InterruptedException e) {
 
@@ -230,15 +230,20 @@ public class GameDriverNew extends Object {
 
 		System.out.println("---------------------------------------------");
 		System.out.println("Choose player Strategies : ");
+		System.out.println("AGGRESSIVE : a ");
+		System.out.println("BENEVOLENT : b");
+		System.out.println("CHEATER : c");
+		System.out.println("RANDOM : r");
+		System.out.println("HUMAN : h");
 
 		HashMap<Integer, String> strategies = new HashMap<Integer, String>();
 
 		int count = numberOfPlayers;
-		int plyrNo = 0;
+		int plyrNo = 1;
 		String strategySelected = "";
 		while (count != 0) {
 			System.out.println("---------------------------------------------");
-			System.out.println("Please choose the strategy for player" + plyrNo + " : ");
+			System.out.println("Please choose the strategy for player " + plyrNo + " : ");
 			Scanner input = new Scanner(System.in);
 			strategySelected = input.next();
 			strategies.put(plyrNo, strategySelected);

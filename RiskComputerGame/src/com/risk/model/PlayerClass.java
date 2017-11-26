@@ -29,10 +29,10 @@ import com.risk.ui.ReinforcementsUI;
 
 public class PlayerClass extends Observable {
 
-	private HashMap<String,String> dominationOld = new  HashMap<String,String>();
-	
-	private HashMap<String,String> dominationNew = new  HashMap<String,String>();
-	
+	private HashMap<String, String> dominationOld = new HashMap<String, String>();
+
+	private HashMap<String, String> dominationNew = new HashMap<String, String>();
+
 	public HashMap<String, String> getDominationOld() {
 		return dominationOld;
 	}
@@ -50,97 +50,88 @@ public class PlayerClass extends Observable {
 	}
 
 	public static int players = 0;
-	
+
 	public static HashMap<String, List<String>> currentMap;
 
 	public static String msg;
 
-	public StrategyContext contextObj = new StrategyContext();
-	
+	public static StrategyContext contextObj = new StrategyContext();
+
 	public void gamePlay(int numberOfPlayers, HashMap<String, List<String>> territoryMap,
-			HashMap<String, Integer> continentControlValueHashMap) throws InterruptedException {
+			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies)
+			throws InterruptedException {
 
 		currentMap = territoryMap;
-		
+
 		PlayerClass.players = numberOfPlayers;
-		
-		
+
 		PlayerClass playerClassObj = new PlayerClass();
-		
-		
+
 		// startUpPhase method called
 		playerClassObj.startUpPhase(numberOfPlayers);
 
-		
 		PlayerClass.msg = "preDeployStartUp";
-		
+
 		setChanged();
-		
+
 		notifyObservers(this);
-		
+
 		try {
 			System.in.read();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		StartUpPhaseModel startUpObj = new StartUpPhaseModel();
 		DeployArmiesUI deployViewObj = new DeployArmiesUI();
 		startUpObj.addObserver(deployViewObj);
-		
+
 		startUpObj.deployArmiesRandomly(numberOfPlayers);
-		
+
 		PlayerClass.msg = "postDeployStartUp";
-		
+
 		setChanged();
-		
+
 		notifyObservers(this);
-		
+
 		try {
 			System.in.read();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers, StartUpPhaseModel.totalTerr);
-		
-		
+
+		calcDominationValues(StartUpPhaseModel.playerInfo, numberOfPlayers, StartUpPhaseModel.totalTerr);
+
 		int plyr = 1;
 
 		int currentNumberOfPlayers = numberOfPlayers;
-		
-		//PlayerDominationModel playerDominationObj = new PlayerDominationModel();
-		
-		//PlayerDominationView playerDominationView = new PlayerDominationView();
-		
-		//playerDominationObj.addObserver(playerDominationView);
-		
-				
+
+		// PlayerDominationModel playerDominationObj = new PlayerDominationModel();
+
+		// PlayerDominationView playerDominationView = new PlayerDominationView();
+
+		// playerDominationObj.addObserver(playerDominationView);
+
 		msg = "roundrobin";
-		
+
 		setChanged();
 
 		notifyObservers(this);
-		
 
+		// playerDominationObj.calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers,
+		// StartUpPhaseModel.totalTerr);
 
-		
-		//playerDominationObj.calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers, StartUpPhaseModel.totalTerr);
-		
-		
-		//round robin for game starts
-		
+		// round robin for game starts
+
 		try {
 			System.in.read();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
 		while (true) {
 
 			// calculate number of players after each round robin to update in case a player
@@ -150,49 +141,46 @@ public class PlayerClass extends Observable {
 			// reset plyr to player 1 once all players have got their turn to play
 			if (plyr > currentNumberOfPlayers) {
 				plyr = 1;
+
 			}
-			
+			// set player strategy
+			String currentPlyrStrategy = strategies.get(plyr);
+
 			msg = "reinforceHead," + plyr;
-			
+
 			setChanged();
 			notifyObservers(this);
-			
+
 			try {
 				System.in.read();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
+
 			// reinforcement phase method called
-			playerClassObj.reinforcementPhase(plyr, continentControlValueHashMap,currentMap);
-			
-			
+			playerClassObj.reinforcementPhase(plyr,currentPlyrStrategy, continentControlValueHashMap, currentMap);
 
 			msg = "reinforce done," + plyr;
 			setChanged();
 			notifyObservers(msg);
-			
+
 			try {
 				System.in.read();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
-			
+
 			try {
 				System.in.read();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 
 			// attack phase method called
-			PlayerClass.attackPhase(plyr, territoryMap);
+			PlayerClass.attackPhase(plyr,currentPlyrStrategy, territoryMap);
 			msg = "attack done";
 			setChanged();
 			notifyObservers(msg);
@@ -204,23 +192,21 @@ public class PlayerClass extends Observable {
 				e.printStackTrace();
 			}
 
-			
-			//playerDominationObj.calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers, StartUpPhaseModel.totalTerr);
-			
-			//check for domination change
-			boolean checkDomination = calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers, StartUpPhaseModel.totalTerr);
-			
-			
-			if(checkDomination){
-				
-				
-				
+			// playerDominationObj.calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers,
+			// StartUpPhaseModel.totalTerr);
+
+			// check for domination change
+			boolean checkDomination = calcDominationValues(StartUpPhaseModel.playerInfo, numberOfPlayers,
+					StartUpPhaseModel.totalTerr);
+
+			if (checkDomination) {
+
 				PlayerClass.msg = "domination";
-				
+
 				setChanged();
-				
+
 				notifyObservers(msg);
-				
+
 				try {
 					System.in.read();
 				} catch (IOException e) {
@@ -228,15 +214,12 @@ public class PlayerClass extends Observable {
 					e.printStackTrace();
 				}
 			}
-			
-		
-			
-			
+
 			// if one player has all the territories i.e if player has won the game then
 			// break out of loop
 			boolean victory = PlayerClass.checkPlyrVictory(plyr);
 			if (victory) {
-				
+
 				msg = "PLAYER " + plyr + " WINS";
 				setChanged();
 				notifyObservers(this);
@@ -249,11 +232,10 @@ public class PlayerClass extends Observable {
 				break;
 			}
 
-			
 			msg = "pre fortification," + plyr;
 			setChanged();
 			notifyObservers(this);
-			
+
 			try {
 				System.in.read();
 			} catch (IOException e) {
@@ -263,7 +245,7 @@ public class PlayerClass extends Observable {
 
 			// fortification method called
 			playerClassObj.fortificationPhase(plyr, territoryMap);
-			
+
 			msg = "fortification done," + plyr;
 			setChanged();
 			notifyObservers(this);
@@ -290,64 +272,57 @@ public class PlayerClass extends Observable {
 
 	}
 
-	public void reinforcementPhase(int plyr, HashMap<String, Integer> continentControlValueHashMap, HashMap<String, List<String>> currentMap) {
-		
+	public void reinforcementPhase(int plyr, String currentPlyrStrategy, HashMap<String, Integer> continentControlValueHashMap,
+			HashMap<String, List<String>> currentMap) {
+
 		ReinforcementPhaseModel reinforcmentModelObj = new ReinforcementPhaseModel();
 		ReinforcementsUI uiObj = new ReinforcementsUI();
 		CardExchangeUI uiCardObj = new CardExchangeUI();
-		
+
 		reinforcmentModelObj.addObserver(uiObj);
 		reinforcmentModelObj.addObserver(uiCardObj);
 		// call method to calculate reinforcements by number of territories
 		String reinTerrMsg = reinforcmentModelObj.calcReinforcementsByTerr(Integer.toString(plyr));
-		
+
 		try {
 			System.in.read();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
+
 		PlayerClass.msg = "reinforcements by number of territories," + reinTerrMsg + ",";
 		setChanged();
 		notifyObservers(this);
 
-		
-		
-		
-		//call method to calculate reinforcements by cards
+		// call method to calculate reinforcements by cards
 		reinforcmentModelObj.calcReinforcementByCards(Integer.toString(plyr));
-//		PlayerClass.msg = "reinforcements by exchanging cards|" + reinTerrMsg + "|";
-		
-		
-		setChanged();
-		
-		notifyObservers(this);
-		
-		
-		try {
-			System.in.read();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		//call method to calculate reinforcements if a player owns the whole continent
-		ArrayList<String> cntrlValMsg = reinforcmentModelObj.calcReinforcementByCntrlVal(Integer.toString(plyr), continentControlValueHashMap);
+		// PlayerClass.msg = "reinforcements by exchanging cards|" + reinTerrMsg + "|";
 
-		
+		setChanged();
+
+		notifyObservers(this);
+
 		try {
 			System.in.read();
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
+		// call method to calculate reinforcements if a player owns the whole continent
+		ArrayList<String> cntrlValMsg = reinforcmentModelObj.calcReinforcementByCntrlVal(Integer.toString(plyr),
+				continentControlValueHashMap);
+
+		try {
+			System.in.read();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		String[] cntrlVal = cntrlValMsg.toArray(new String[cntrlValMsg.size()]);
 
 		PlayerClass.msg = "reinforcements by control value-";
@@ -355,46 +330,51 @@ public class PlayerClass extends Observable {
 		for (String cntrValIndividual : cntrlVal) {
 			PlayerClass.msg = PlayerClass.msg + cntrValIndividual + "-";
 		}
-		
+
 		setChanged();
 		notifyObservers(this);
 
 		// ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
 
-	    //  reinforcmentModelObj.reinforceRandom(Integer.toString(plyr));
-		
+		// reinforcmentModelObj.reinforceRandom(Integer.toString(plyr));
+
 		ReinforcementsUI uiObj2 = new ReinforcementsUI();
-		
-		switch(plyr){
-		
-			case 1 : {AggressiveBehaviorImpl agressiveObj = new AggressiveBehaviorImpl();
-						contextObj.setStrategy(agressiveObj);
-						agressiveObj.addObserver(uiObj2);
-						break;
-			}
-			case 2 : {RandomBehaviorImpl randomObj = new RandomBehaviorImpl();
-						contextObj.setStrategy(randomObj);
-						randomObj.addObserver(uiObj2);
-						break;
-			}
-			case 3 : {BenevolantBehaviorImpl benevolentObj = new BenevolantBehaviorImpl();
-						contextObj.setStrategy(benevolentObj);
-						benevolentObj.addObserver(uiObj2);
-						break;
-			}
-			case 4 : {CheaterBehaviorImpl cheaterObj = new CheaterBehaviorImpl();
-						contextObj.setStrategy(cheaterObj);
-						cheaterObj.addObserver(uiObj2);
-						break;
-			}
+
+		switch (currentPlyrStrategy.charAt(0)) {
+
+		case 'a': {
+			AggressiveBehaviorImpl agressiveObj = new AggressiveBehaviorImpl();
+			contextObj.setStrategy(agressiveObj);
+			agressiveObj.addObserver(uiObj2);
+			break;
 		}
-		
+		case 'r': {
+			RandomBehaviorImpl randomObj = new RandomBehaviorImpl();
+			contextObj.setStrategy(randomObj);
+			randomObj.addObserver(uiObj2);
+			break;
+		}
+		case 'b': {
+			BenevolantBehaviorImpl benevolentObj = new BenevolantBehaviorImpl();
+			contextObj.setStrategy(benevolentObj);
+			benevolentObj.addObserver(uiObj2);
+			break;
+		}
+		case 'c': {
+			CheaterBehaviorImpl cheaterObj = new CheaterBehaviorImpl();
+			contextObj.setStrategy(cheaterObj);
+			cheaterObj.addObserver(uiObj2);
+			break;
+		}
+		default :
+			break;
+		}
+
 		contextObj.executeReinforce(Integer.toString(plyr));
-		
-		
+
 		try {
 			System.in.read();
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -404,131 +384,145 @@ public class PlayerClass extends Observable {
 	/*
 	 * method for initiating the attack phase
 	 */
-	public static void attackPhase(int plyr, HashMap<String, List<String>> territoryMap) {
-//		boolean choice = true;
-//		boolean attackPossible = false;
-		// Player chooses country to attack.
-		AttackPhaseModel.chooseCountryToBeAttacked(plyr, territoryMap);
+	public static void attackPhase(int plyr, String currentPlyrStrategy, HashMap<String, List<String>> territoryMap) {
+		 
+		
+		switch (currentPlyrStrategy.charAt(0)) {
+
+		case 'a': {
+			AggressiveBehaviorImpl agressiveObj = new AggressiveBehaviorImpl();
+			contextObj.setStrategy(agressiveObj);
+ 			break;
+		}
+		case 'r': {
+			RandomBehaviorImpl randomObj = new RandomBehaviorImpl();
+			contextObj.setStrategy(randomObj);
+ 			break;
+		}
+		case 'b': {
+			BenevolantBehaviorImpl benevolentObj = new BenevolantBehaviorImpl();
+			contextObj.setStrategy(benevolentObj);
+ 			break;
+		}
+		case 'c': {
+			CheaterBehaviorImpl cheaterObj = new CheaterBehaviorImpl();
+			contextObj.setStrategy(cheaterObj);
+ 			break;
+		}
+		case 'h': {
+			CheaterBehaviorImpl cheaterObj = new CheaterBehaviorImpl();
+			contextObj.setStrategy(cheaterObj);
+ 			break;
+		}
+		default :
+			break;
+		}
+		
+		//executing the chosen strategy 
+		contextObj.executeAttack(Integer.toString(plyr),territoryMap);
+
+		
+		//AttackPhaseModel.chooseCountryToBeAttacked(plyr, territoryMap);
 
 	}
 
 	public void fortificationPhase(int plyr, HashMap<String, List<String>> territoryMap) {
-		
+
 		try {
 			System.in.read();
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		FortificationPhaseModel fortificationObj = new FortificationPhaseModel();
-		
+
 		FortificationUI uiObj = new FortificationUI();
-		
+
 		fortificationObj.addObserver(uiObj);
-		
-		
+
 		FortificationPhaseModel.createFortifySet(Integer.toString(plyr), territoryMap);
 
 		fortificationObj.randomFortification(Integer.toString(plyr));
-		
-	
 
 	}
 
-	
-	public boolean calcDominationValues(HashMap<String,Integer> playerInfo, int numberOfPlayers, int totalTerr){
-		
-		
-		HashMap<String,String> dominationMap = new HashMap<String,String>();
-		
-		
-		if(getDominationOld().isEmpty()){
-			
-			for(int i = 1; i <= numberOfPlayers; i++){
-				
+	public boolean calcDominationValues(HashMap<String, Integer> playerInfo, int numberOfPlayers, int totalTerr) {
+
+		HashMap<String, String> dominationMap = new HashMap<String, String>();
+
+		if (getDominationOld().isEmpty()) {
+
+			for (int i = 1; i <= numberOfPlayers; i++) {
+
 				int terr = 0;
-				int percentage  = 0;
-				for(String playerInfoKey : playerInfo.keySet()){
-					
+				int percentage = 0;
+				for (String playerInfoKey : playerInfo.keySet()) {
+
 					String[] keySplit = playerInfoKey.split("-");
-					
-					
-					if(keySplit[0].equals(Integer.toString(i)) || keySplit[0] ==  Integer.toString(i)){
-						
-						
+
+					if (keySplit[0].equals(Integer.toString(i)) || keySplit[0] == Integer.toString(i)) {
+
 						terr++;
-						
+
 					}
-					
+
 				}
-				
-				percentage = (terr * 100 )/totalTerr ;
-				
+
+				percentage = (terr * 100) / totalTerr;
+
 				dominationMap.put(Integer.toString(i), percentage + "%");
-				
+
 				setDominationOld(dominationMap);
 				setDominationNew(dominationMap);
-				
-				//PlayerClass.msg = "nochange";
-			
-				
-			}//end for(int i = 1; i <= numberOfPlayers; i++)
-			
+
+				// PlayerClass.msg = "nochange";
+
+			} // end for(int i = 1; i <= numberOfPlayers; i++)
+
 			return false;
-			
-		}//end if(getDominationOld().isEmpty())
-		
-		
-		
-		
-		for(int i = 1; i <= numberOfPlayers; i++){
-			
+
+		} // end if(getDominationOld().isEmpty())
+
+		for (int i = 1; i <= numberOfPlayers; i++) {
+
 			int terr = 0;
-			int percentage  = 0;
-			for(String playerInfoKey : playerInfo.keySet()){
-				
+			int percentage = 0;
+			for (String playerInfoKey : playerInfo.keySet()) {
+
 				String[] keySplit = playerInfoKey.split("-");
-				
-				
-				if(keySplit[0].equals(Integer.toString(i)) || keySplit[0] ==  Integer.toString(i)){
-					
-					
+
+				if (keySplit[0].equals(Integer.toString(i)) || keySplit[0] == Integer.toString(i)) {
+
 					terr++;
-					
+
 				}
-				
+
 			}
-			
-			percentage = (terr * 100 )/totalTerr ;
-			
+
+			percentage = (terr * 100) / totalTerr;
+
 			dominationMap.put(Integer.toString(i), percentage + "%");
 
 		}
-		
+
 		setDominationNew(dominationMap);
-		
-		if(dominationNew.equals(dominationOld)){
-			
-			//PlayerClass.msg = "domination";
+
+		if (dominationNew.equals(dominationOld)) {
+
+			// PlayerClass.msg = "domination";
 			System.out.println("Domination Old -> " + getDominationOld());
 			System.out.println("Domination New -> " + getDominationNew());
-			
-			return false;
-			
-		}
-		
-		
 
-		
+			return false;
+
+		}
+
 		return true;
-			
-		
+
 	}
-	
-	
-	
+
 	public static boolean checkPlyrVictory(int plyr) {
 
 		TreeSet<Integer> playerCheck = new TreeSet<Integer>();

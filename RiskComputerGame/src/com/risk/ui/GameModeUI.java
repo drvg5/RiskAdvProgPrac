@@ -17,7 +17,7 @@ public class GameModeUI {
 	 * <p>
 	 * This method is used to load map file from local folder to play game
 	 * 
-	 * @author Khashyap
+	 * @author Dhruv
 	 * @param desktop
 	 *            To bind the InternalFrame with Main window frame
 	 * 
