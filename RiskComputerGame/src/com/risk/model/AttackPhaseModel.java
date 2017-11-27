@@ -498,11 +498,9 @@ public class AttackPhaseModel {
 		populateListsForAttackerAndDefender(Integer.valueOf(player));
 		//
 		Integer highestNoOfArmies = StartUpPhaseModel.playerInfo.get(playerAccToPlayerNo.get(0));
-		String countryHigh = "";
+		String countryHigh = playerAccToPlayerNo.get(0);
 		for (String playerInfoKey : playerAccToPlayerNo) {
-			if (StartUpPhaseModel.playerInfo.get(playerInfoKey) > highestNoOfArmies) {
-				countryHigh = playerInfoKey;
-			}
+			if (StartUpPhaseModel.playerInfo.get(playerInfoKey) > highestNoOfArmies) { }
 		}
 
 		return countryHigh;

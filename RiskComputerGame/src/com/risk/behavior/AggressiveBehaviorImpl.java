@@ -102,6 +102,7 @@ public class AggressiveBehaviorImpl extends Observable implements PlayerBehavior
 
 		// find the strongest country of the chosen player
 		String playerInfoKey = AttackPhaseModel.findCountryWithMaxArmies(player);
+		// attack with strongest country
  		AttackPhaseModel.attackAggressively(playerInfoKey, territoryMap);
 
 	}
