@@ -24,7 +24,7 @@ public class ReinforcementPhaseModel extends Observable {
 	public static ArrayList<String> chosenCards = new ArrayList<String>();
 	public static ArrayList<String> newCards = new ArrayList<String>();
 	
-
+	public static HashMap<String, Integer> prevPlayerInfo = new HashMap<String, Integer>();
 	
 	private int totalReinforcementArmies ;
 	
@@ -951,7 +951,216 @@ public class ReinforcementPhaseModel extends Observable {
 	}
 	
 	
-	
-	
-	
+	public void reinforceAgressive(String player){
+		
+		ReinforcementPhaseModel obj = new ReinforcementPhaseModel();
+		obj.setMsgUI("total reinforcement print," + player);
+
+		setChanged();
+		notifyObservers(this);
+		
+		ReinforcementPhaseModel.setMsgUI("reinforceBenevolent," + player);
+		
+		int reinforcementArmies = ReinforcementPhaseModel.reinforcement.get(player);
+
+		int highestArmies = 0;
+
+		// create a list of keys from playerInfo HashMap
+		// for only the player concerned with the most armies
+		List<String> strongestTerritoryList = new ArrayList<String>();
+
+		TreeSet<Integer> unitsSet = new TreeSet<Integer>();
+
+		// populate unitsSet
+		for (String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()) {
+
+			String[] playerVals = playerInfoKey.split("-");
+
+			if (playerVals[0].equals(player) || playerVals[0] == player) {
+
+				unitsSet.add(StartUpPhaseModel.playerInfo.get(playerInfoKey));
+
+			} // end if(playerVals[0].equals(player) || playerVals[0] == player)
+
+		} // end for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet())
+
+		highestArmies = unitsSet.last();
+
+		// populate strongestTerritoryList
+		for (String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()) {
+
+			String[] playerVals = playerInfoKey.split("-");
+
+			if (playerVals[0].equals(player) || playerVals[0] == player) {
+
+				if (StartUpPhaseModel.playerInfo.get(playerInfoKey) == highestArmies) {
+
+					strongestTerritoryList.add(playerInfoKey);
+
+				} // end if(StartUpPhaseModel.playerInfo.get(playerInfoKey) > highestArmies)
+
+			} // end if(playerVals[0].equals(player) || playerVals[0] == player)
+
+		} // end for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()
+
+		Random randomKey = new Random();
+
+		// loop until all reinforcement armies have been assigned
+		while (reinforcementArmies != 0) {
+
+			// choose strongest territory to put armies into
+			String randomStrongestKey = strongestTerritoryList.get(randomKey.nextInt(strongestTerritoryList.size()));
+
+			int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomStrongestKey);
+
+			// playerInfoValue = playerInfoValue + 1;
+
+			playerInfoValue = playerInfoValue + reinforcementArmies;
+
+			StartUpPhaseModel.playerInfo.put(randomStrongestKey, playerInfoValue);
+
+			String[] playerKeySplit = randomStrongestKey.split("-");
+			// reinforcementArmies--;
+
+			reinforcementArmies = 0;
+
+			obj.setTotalReinforcementArmies(reinforcementArmies);
+			obj.setLatestArmies(playerInfoValue);
+
+			setChanged();
+			obj.setMsgUI("placementView," + playerKeySplit[0] + "," + playerKeySplit[1]);
+			notifyObservers(obj);
+
+		}
+		
+	}
+
+	public void reinforceBenevolent(String player){
+		
+		
+		ReinforcementPhaseModel obj = new ReinforcementPhaseModel();
+		obj.setMsgUI("total reinforcement print," + player);
+
+		setChanged();
+		
+		notifyObservers(this);
+		
+		ReinforcementPhaseModel.setMsgUI("reinforceBenevolent," + player);
+		
+		int reinforcementArmies = ReinforcementPhaseModel.reinforcement.get(player);
+		
+		
+		int leastArmies = 0;
+		
+		//create a list of keys from playerInfo HashMap 
+		//for only the player concerned with the least armies
+		List<String> weakestTerritoryList = new ArrayList<String>();
+		
+		TreeSet<Integer> unitsSet = new TreeSet<Integer>();
+		
+		
+		//populate unitsSet
+		for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
+			
+			String [] playerVals = playerInfoKey.split("-");
+			
+			if(playerVals[0].equals(player) || playerVals[0] == player){
+				
+					
+					unitsSet.add(StartUpPhaseModel.playerInfo.get(playerInfoKey));
+					
+				
+			}//end if(playerVals[0].equals(player) || playerVals[0] == player)
+			
+		}//end for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet())
+		
+		leastArmies = unitsSet.first();
+		
+		
+		
+		//populate weakestTerritoryList
+		for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
+			
+			String [] playerVals = playerInfoKey.split("-");
+			
+			if(playerVals[0].equals(player) || playerVals[0] == player){
+				
+				if(StartUpPhaseModel.playerInfo.get(playerInfoKey) == leastArmies){
+					
+					weakestTerritoryList.add(playerInfoKey);
+					
+				}//end if(StartUpPhaseModel.playerInfo.get(playerInfoKey) > highestArmies)
+				
+			}//end if(playerVals[0].equals(player) || playerVals[0] == player)
+			
+		}//end for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()
+		
+		
+		Random randomKey = new Random();
+	    
+		//loop until all reinforcement armies have been assigned
+		while(reinforcementArmies != 0){
+			
+			
+			//choose weakest territory to put armies into
+			String randomWeakestKey = weakestTerritoryList.get(randomKey.nextInt(weakestTerritoryList.size()) );
+			
+			int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomWeakestKey);
+			
+			//playerInfoValue = playerInfoValue + 1;
+			
+			playerInfoValue = playerInfoValue + reinforcementArmies;
+			
+			StartUpPhaseModel.playerInfo.put(randomWeakestKey, playerInfoValue);
+			
+			String[] playerKeySplit = randomWeakestKey.split("-");
+			//reinforcementArmies--;
+			
+			reinforcementArmies = 0;
+			
+			obj.setTotalReinforcementArmies(reinforcementArmies);
+			obj.setLatestArmies(playerInfoValue);
+			
+			setChanged();
+			obj.setMsgUI("placementView," + playerKeySplit[0] + "," + playerKeySplit[1]);
+			notifyObservers(this);
+			
+		}
+		
+	}
+
+	public void reinforceCheater(String player){
+		
+		ReinforcementPhaseModel.setMsgUI("reinforceCheater," + player);
+
+		//print territory status before reinforcement using StartUpPhaseModel.playerInfo
+		
+		setChanged();
+		notifyObservers(this);
+		
+		//update armies in each territory for cheater player
+		for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
+			
+			
+			String [] playerVals = playerInfoKey.split("-");
+			
+			if(playerVals[0].equals(player) || playerVals[0] == player){
+				
+				int playerInfoValue = StartUpPhaseModel.playerInfo.get(playerInfoKey);
+				
+				playerInfoValue = 2 * playerInfoValue;
+				
+				StartUpPhaseModel.playerInfo.put(playerInfoKey, playerInfoValue);
+				
+			}
+			
+			
+		}//end for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet())
+		
+		//territory status after reinforcement using StartUpPhaseModel.playerInfo
+		
+		setChanged();
+		notifyObservers(this);
+		
+	}//end reinforceCheater
 }
