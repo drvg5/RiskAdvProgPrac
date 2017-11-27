@@ -19,9 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.risk.model.ParseMapFileModel;
 import com.risk.model.TournamentModeModel;
-
+ 
 public class TournamentModeUI {
 
 	static JInternalFrame jframeTournament = new JInternalFrame();
