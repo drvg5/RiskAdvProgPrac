@@ -148,6 +148,8 @@ public class GameDriverNew extends Object {
 		cardsList.add(RiskConstants.CARD_1);
 
 		// gameDriver.gameStart(territoryMap, continentControlValueHashMap);
+		
+		gameDriver.gameModeSingle(territoryMap,continentControlValueHashMap);
 
 	}
 
