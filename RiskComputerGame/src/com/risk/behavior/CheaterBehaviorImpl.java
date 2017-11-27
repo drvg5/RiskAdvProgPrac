@@ -7,6 +7,7 @@ import java.util.Observable;
 import java.util.Random;
 import java.util.TreeSet;
 
+import com.risk.model.AttackPhaseModel;
 import com.risk.model.ReinforcementPhaseModel;
 import com.risk.model.StartUpPhaseModel;
 
@@ -69,8 +70,8 @@ public class CheaterBehaviorImpl extends Observable implements PlayerBehavior {
 
 	@Override
 	public void attack(String player, HashMap<String, List<String>> territoryMap) {
-		// TODO Auto-generated method stub
 		
+		AttackPhaseModel.conquerAllAdjacentCountries(player,territoryMap);
 	}
 
 }
