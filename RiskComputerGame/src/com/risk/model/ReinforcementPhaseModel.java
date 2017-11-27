@@ -889,67 +889,7 @@ public class ReinforcementPhaseModel extends Observable {
 		}//end else if(historyFoundflag == 1)
 		
 	}//end calculateReinforcementByCards
-	
-	
-	public void reinforceRandom(String player){
 		
-		setMsgUI("total reinforcement print," + player);
-		
-		
-		
-		setChanged();
-		notifyObservers(this);
-		
-		
-		
-		int reinforcementArmies = reinforcement.get(player);
-		
-		
-		//create a list of keys from playerInfo HashMap 
-		//for only the player concerned
-		List<String> playerInfoKeyList = new ArrayList<String>();
-		
-		for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
-			
-			String [] playerVals = playerInfoKey.split("-");
-			if(playerVals[0].equals(player) || playerVals[0] == player){
-				
-				playerInfoKeyList.add(playerInfoKey);
-			}
-			
-		}
-		
-		
-		Random randomKey = new Random();
-	      
-		
-		//loop until all reinforcement armies have been assigned
-		while(reinforcementArmies != 0){
-			
-			
-			//choose territory randomly to put armies into
-			String randomPlayerKey = playerInfoKeyList.get(randomKey.nextInt(playerInfoKeyList.size()) );
-			
-			int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomPlayerKey);
-			playerInfoValue = playerInfoValue + 1;
-			
-			
-			StartUpPhaseModel.playerInfo.put(randomPlayerKey, playerInfoValue);
-			
-			String[] playerKeySplit = randomPlayerKey.split("-");
-			reinforcementArmies--;
-			
-			setTotalReinforcementArmies(reinforcementArmies);
-			setLatestArmies(playerInfoValue);
-			
-			setChanged();
-			setMsgUI("placementView," + playerKeySplit[0] + "," + playerKeySplit[1]);
-			notifyObservers(this);
-			
-		}
-		
-	}
-	
 	
 	public void reinforceAgressive(String player){
 		
@@ -959,7 +899,7 @@ public class ReinforcementPhaseModel extends Observable {
 		setChanged();
 		notifyObservers(this);
 		
-		ReinforcementPhaseModel.setMsgUI("reinforceBenevolent," + player);
+		ReinforcementPhaseModel.setMsgUI("reinforceAgressive," + player);
 		
 		int reinforcementArmies = ReinforcementPhaseModel.reinforcement.get(player);
 
@@ -1163,4 +1103,194 @@ public class ReinforcementPhaseModel extends Observable {
 		notifyObservers(this);
 		
 	}//end reinforceCheater
+
+	public void reinforceRandom(String player){
+		
+		setMsgUI("total reinforcement print," + player);
+		
+		
+		
+		setChanged();
+		notifyObservers(this);
+		
+		
+		ReinforcementPhaseModel.setMsgUI("reinforceRandom," + player);
+		
+		int reinforcementArmies = reinforcement.get(player);
+		
+		
+		//create a list of keys from playerInfo HashMap 
+		//for only the player concerned
+		List<String> playerInfoKeyList = new ArrayList<String>();
+		
+		for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
+			
+			String [] playerVals = playerInfoKey.split("-");
+			if(playerVals[0].equals(player) || playerVals[0] == player){
+				
+				playerInfoKeyList.add(playerInfoKey);
+			}
+			
+		}
+		
+		
+		Random randomKey = new Random();
+	      
+		
+		//loop until all reinforcement armies have been assigned
+		while(reinforcementArmies != 0){
+			
+			
+			//choose territory randomly to put armies into
+			String randomPlayerKey = playerInfoKeyList.get(randomKey.nextInt(playerInfoKeyList.size()) );
+			
+			int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomPlayerKey);
+			playerInfoValue = playerInfoValue + 1;
+			
+			
+			StartUpPhaseModel.playerInfo.put(randomPlayerKey, playerInfoValue);
+			
+			String[] playerKeySplit = randomPlayerKey.split("-");
+			reinforcementArmies--;
+			
+			setTotalReinforcementArmies(reinforcementArmies);
+			setLatestArmies(playerInfoValue);
+			
+			setMsgUI("placementView," + playerKeySplit[0] + "," + playerKeySplit[1]);
+			setChanged();
+			
+			notifyObservers(this);
+			
+		}//end while(reinforcementArmies != 0)
+		
+	}//end reinforceRandom
+
+	public void reinforceHuman(String player){
+		
+		ReinforcementPhaseModel.setMsgUI("total reinforcement print," + player);
+		setChanged();
+		notifyObservers();
+		
+		ReinforcementPhaseModel.setMsgUI("reinforceHuman," + player);
+		
+		// create a list of player territories HashMap
+		// for only the player concerned
+		List<String> playerTerritoryList = new ArrayList<String>();
+		
+		// populate playerTerritoryList
+		for (String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()) {
+
+			String[] playerVals = playerInfoKey.split("-");
+
+			if (playerVals[0].equals(player) || playerVals[0] == player) {
+
+					playerTerritoryList.add(playerVals[1].toUpperCase());
+
+			} // end if(playerVals[0].equals(player) || playerVals[0] == player)
+
+		} // end for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()
+		
+		
+		int reinforcementArmies = reinforcement.get(player);
+		
+		String territory;
+		
+		int moveReinforcements;
+		
+		// loop until all reinforcement armies have been assigned
+		while (reinforcementArmies != 0){
+			
+			System.out.println("\n\t" + "Please choose a territory to reinforce : ");
+			
+			
+			while(true){
+				
+				int msg = 0;
+				
+				
+				if(msg == 1){
+					System.out.println("\n-------------------------------------------------------");
+					System.out.println("Please enter only a territory you own : ");
+				}
+				
+				//Take territory input
+				Scanner territoryInput = new Scanner(System.in);
+				territory = territoryInput.nextLine().trim().toUpperCase();
+				
+				if(playerTerritoryList.contains(territory))
+					break;
+				else{
+					msg = 1;
+					continue;
+				}
+				
+			}//end while
+			
+			System.out.println("\n\t" + "Choose from the total reinforcements armies to move to " + territory + " : ");
+			
+			while(true){
+				
+				int msg = 0;
+				
+				
+				if(msg == 1){
+					System.out.println("\n------------------------------------------------------------------");
+					System.out.println("Please enter some or all of the " + ReinforcementPhaseModel.reinforcement.get(player) + " reinforcement armies you have : ");
+				}
+				
+				//Take reinforcement armies input
+				Scanner reinforcementInput = new Scanner(System.in);
+				
+				if (!reinforcementInput.hasNextInt()) {
+					msg = 1;
+					continue;
+				}
+				
+				moveReinforcements = reinforcementInput.nextInt();
+				
+				if(ReinforcementPhaseModel.reinforcement.get(player) > moveReinforcements)
+					
+					break;
+				
+				else{
+					msg = 1;
+					continue;
+				}
+			}//end while(true)	
+				
+			for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
+				
+				String [] playerKeySplit = playerInfoKey.split("-");
+				
+				if (playerKeySplit[0].equals(player) || playerKeySplit[0] == player){
+
+					if (playerKeySplit[1].equals(territory) || playerKeySplit[1] == territory){
+						
+						int playerInfoValue = StartUpPhaseModel.playerInfo.get(playerInfoKey);
+						
+						playerInfoValue = playerInfoValue + moveReinforcements;
+						
+						StartUpPhaseModel.playerInfo.put(playerInfoKey, playerInfoValue);
+						
+						reinforcementArmies = reinforcementArmies - moveReinforcements;
+						
+						setTotalReinforcementArmies(reinforcementArmies);
+						setLatestArmies(playerInfoValue);
+						
+						setMsgUI("placementView," + playerKeySplit[0] + "," + playerKeySplit[1]);
+						setChanged();
+						
+						notifyObservers(this);
+						
+					}//end if (playerKeySplit[1].equals(territory) || playerKeySplit[1] == territory)
+
+				} // end if(playerVals[0].equals(player) || playerVals[0] == player)
+				
+			}//end for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet())
+
+		}//end while (reinforcementArmies != 0)
+		
+	}//end reinforce Human
+		
+	
 }
