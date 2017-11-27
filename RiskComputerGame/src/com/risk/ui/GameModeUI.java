@@ -54,7 +54,7 @@ public class GameModeUI {
 
 		multiPlayerBbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				//TournamentModeUI.getTournamentInput(desktop);
+				TournamentModeUI.getTournamentInput(desktop);
 				try {
 					jframeGameMode.setClosed(true);
 				} catch (PropertyVetoException e1) {
