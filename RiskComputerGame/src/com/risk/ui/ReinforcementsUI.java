@@ -15,9 +15,10 @@ public class ReinforcementsUI implements Observer {
 	public void update(Observable obs, Object arg) {
 		// TODO Auto-generated method stub
 		
-		//String msgUI = ((ReinforcementPhaseModel)obs).getMsgUI();
 		
-		String msgUI = ReinforcementPhaseModel.getMsgUI();
+		
+		//String msgUI = ReinforcementPhaseModel.getMsgUI();
+		String msgUI = ((ReinforcementPhaseModel)obs).getMsgUI();
 		
 		if(msgUI.contains("byTerr")){
 			
@@ -49,13 +50,41 @@ public class ReinforcementsUI implements Observer {
 			totalReinforcementsView(msgUISplit[1]);
 		}
 		
-		if(msgUI.contains("placementView")){
+		if(msgUI.contains("reinforceRandom")){
 			
-			//"placementView," + player + "," + territory
+			//"reinforceRandom," + player + "," + territory
 			String[] msgUISplit = msgUI.split(",");
 			
-			placementView(msgUISplit[1], msgUISplit[2], ((ReinforcementPhaseModel)arg));
+			placementRandomView(msgUISplit[1], msgUISplit[2], ((ReinforcementPhaseModel)arg));
 			
+		}
+		
+		if(msgUI.contains("reinforceAgressive")){
+			
+			//"reinforceAgressive," + player + "," + territory
+			String[] msgUISplit = msgUI.split(",");
+			placementAggressiveView(msgUISplit[1], msgUISplit[2], ((ReinforcementPhaseModel)arg));
+		}
+		
+		if(msgUI.contains("reinforceBenevolent")){
+			
+			//"reinforceBenevolent," + player + "," + territory
+			String[] msgUISplit = msgUI.split(",");
+			placementBenevolentView(msgUISplit[1], msgUISplit[2], ((ReinforcementPhaseModel)arg));
+		}
+		
+		if(msgUI.contains("reinforceCheater")){
+			
+			//"reinforceCheater," + player + "," + territory
+			String[] msgUISplit = msgUI.split(",");
+			placementBenevolentView(msgUISplit[1], msgUISplit[2], ((ReinforcementPhaseModel)arg));
+		}
+		
+		if(msgUI.contains("reinforceHuman")){
+			
+			//"reinforceHuman," + player + "," + territory
+			String[] msgUISplit = msgUI.split(",");
+			placementHumanView(msgUISplit[1], msgUISplit[2], ((ReinforcementPhaseModel)arg));
 		}
 		
 	}//end update method
@@ -275,7 +304,7 @@ public class ReinforcementsUI implements Observer {
 		
 	}
 	
-	public void placementView(String player, String territory, ReinforcementPhaseModel obj){
+	public void placementRandomView(String player, String territory, ReinforcementPhaseModel obj){
 		
 		try {
 			System.in.read();
@@ -285,10 +314,70 @@ public class ReinforcementsUI implements Observer {
 		}
 		
 		System.out.println("\n\t" + "Random Territory Chosen : " + territory);
-		System.out.println("\t\t" + "Army units in territory updated from " + (obj.getLatestArmies() - 1) + " to " + obj.getLatestArmies() );
+		System.out.println("\t\t" + "Army units in territory updated from " + obj.getPrevArmies() + " to " + obj.getLatestArmies() );
 		System.out.println("\t\t" + "Reinforcements Remaining : " + obj.getTotalReinforcementArmies());
 		
 		
 		
 	}
+	
+	public void placementAggressiveView(String player, String territory, ReinforcementPhaseModel obj){
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("\n\t" + "A territory with MOST army units chosen : " + territory);
+		System.out.println("\t\t" + "Army units in territory updated from " + obj.getPrevArmies() + " to " + obj.getLatestArmies() );
+		System.out.println("\t\t" + "Reinforcements Remaining : " + obj.getTotalReinforcementArmies());
+
+	}
+	
+	public void placementBenevolentView(String player, String territory, ReinforcementPhaseModel obj){
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("\n\t" + "A territory with LEAST army units chosen : " + territory);
+		System.out.println("\t\t" + "Army units in territory updated from " + obj.getPrevArmies() + " to " + obj.getLatestArmies() );
+		System.out.println("\t\t" + "Reinforcements Remaining : " + obj.getTotalReinforcementArmies());
+
+	}
+	
+	public void placementCheaterView(String player, String territory, ReinforcementPhaseModel obj){
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("\n\t" + "Territory chosen : " + territory);
+		System.out.println("\t\t" + "Army units in territory doubled. Updated from " + obj.getPrevArmies() + " to " + obj.getLatestArmies() );
+
+	}
+
+	public void placementHumanView(String player, String territory, ReinforcementPhaseModel obj){
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("\n\t" + "Territory chosen : " + territory);
+		System.out.println("\t\t" + "Army units in territory updated from " + obj.getPrevArmies() + " to " + obj.getLatestArmies() );
+		System.out.println("\t\t" + "Reinforcements Remaining : " + obj.getTotalReinforcementArmies());
+
+	}
+	
 }

@@ -29,12 +29,14 @@ public class ReinforcementPhaseModel extends Observable {
 	private int totalReinforcementArmies ;
 	
 	private int latestArmies;
+	
+	private int prevArmies;
 
 	private static int cardArmies ;
 	
 	private String cardsMsg ;
 	
-	private static String msgUI ; 
+	private String msgUI ; 
 	
 	private ArrayList<String> cntrlValReinforcements = new ArrayList<>();
 	
@@ -52,6 +54,13 @@ public class ReinforcementPhaseModel extends Observable {
 		this.latestArmies = latestArmies;
 	}
 
+	public int getPrevArmies() {
+		return prevArmies;
+	}
+
+	public void setPrevArmies(int prevArmies) {
+		this.prevArmies = prevArmies;
+	}
 	
 	public static int getCardArmies() {
 		return cardArmies;
@@ -85,14 +94,14 @@ public class ReinforcementPhaseModel extends Observable {
 		this.cntrlValReinforcements = cntrlValReinforcements;
 	}
 
-	public static String getMsgUI(){
+	public String getMsgUI(){
 		
 		return msgUI;
 	}
 	
-	public static void setMsgUI(String msgUI){
+	public void setMsgUI(String msgUI){
 		
-		ReinforcementPhaseModel.msgUI = msgUI;
+		this.msgUI = msgUI;
 	}
 	
 	public int getTotalReinforcementArmies() {
@@ -893,13 +902,11 @@ public class ReinforcementPhaseModel extends Observable {
 	
 	public void reinforceAgressive(String player){
 		
-		ReinforcementPhaseModel obj = new ReinforcementPhaseModel();
-		obj.setMsgUI("total reinforcement print," + player);
+		setMsgUI("total reinforcement print," + player);
 
 		setChanged();
 		notifyObservers(this);
 		
-		ReinforcementPhaseModel.setMsgUI("reinforceAgressive," + player);
 		
 		int reinforcementArmies = ReinforcementPhaseModel.reinforcement.get(player);
 
@@ -953,6 +960,7 @@ public class ReinforcementPhaseModel extends Observable {
 
 			int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomStrongestKey);
 
+			setPrevArmies(playerInfoValue);
 			// playerInfoValue = playerInfoValue + 1;
 
 			playerInfoValue = playerInfoValue + reinforcementArmies;
@@ -964,12 +972,12 @@ public class ReinforcementPhaseModel extends Observable {
 
 			reinforcementArmies = 0;
 
-			obj.setTotalReinforcementArmies(reinforcementArmies);
-			obj.setLatestArmies(playerInfoValue);
+			setTotalReinforcementArmies(reinforcementArmies);
+			setLatestArmies(playerInfoValue);
 
 			setChanged();
-			obj.setMsgUI("placementView," + playerKeySplit[0] + "," + playerKeySplit[1]);
-			notifyObservers(obj);
+			setMsgUI("reinforceAgressive," + playerKeySplit[0] + "," + playerKeySplit[1]);
+			notifyObservers(this);
 
 		}
 		
@@ -978,14 +986,13 @@ public class ReinforcementPhaseModel extends Observable {
 	public void reinforceBenevolent(String player){
 		
 		
-		ReinforcementPhaseModel obj = new ReinforcementPhaseModel();
-		obj.setMsgUI("total reinforcement print," + player);
+		setMsgUI("total reinforcement print," + player);
 
 		setChanged();
 		
 		notifyObservers(this);
 		
-		ReinforcementPhaseModel.setMsgUI("reinforceBenevolent," + player);
+		
 		
 		int reinforcementArmies = ReinforcementPhaseModel.reinforcement.get(player);
 		
@@ -1047,6 +1054,8 @@ public class ReinforcementPhaseModel extends Observable {
 			
 			int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomWeakestKey);
 			
+			setPrevArmies(playerInfoValue);
+			
 			//playerInfoValue = playerInfoValue + 1;
 			
 			playerInfoValue = playerInfoValue + reinforcementArmies;
@@ -1058,11 +1067,11 @@ public class ReinforcementPhaseModel extends Observable {
 			
 			reinforcementArmies = 0;
 			
-			obj.setTotalReinforcementArmies(reinforcementArmies);
-			obj.setLatestArmies(playerInfoValue);
+			setTotalReinforcementArmies(reinforcementArmies);
+			setLatestArmies(playerInfoValue);
 			
 			setChanged();
-			obj.setMsgUI("placementView," + playerKeySplit[0] + "," + playerKeySplit[1]);
+			setMsgUI("reinforceBenevolent," + playerKeySplit[0] + "," + playerKeySplit[1]);
 			notifyObservers(this);
 			
 		}
@@ -1071,7 +1080,8 @@ public class ReinforcementPhaseModel extends Observable {
 
 	public void reinforceCheater(String player){
 		
-		ReinforcementPhaseModel.setMsgUI("reinforceCheater," + player);
+		
+		setMsgUI("reinforceCheater," + player);
 
 		//print territory status before reinforcement using StartUpPhaseModel.playerInfo
 		
@@ -1088,7 +1098,11 @@ public class ReinforcementPhaseModel extends Observable {
 				
 				int playerInfoValue = StartUpPhaseModel.playerInfo.get(playerInfoKey);
 				
+				setPrevArmies(playerInfoValue);
+				
 				playerInfoValue = 2 * playerInfoValue;
+				
+				setLatestArmies(playerInfoValue);
 				
 				StartUpPhaseModel.playerInfo.put(playerInfoKey, playerInfoValue);
 				
@@ -1098,6 +1112,7 @@ public class ReinforcementPhaseModel extends Observable {
 		}//end for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet())
 		
 		//territory status after reinforcement using StartUpPhaseModel.playerInfo
+		
 		
 		setChanged();
 		notifyObservers(this);
@@ -1114,7 +1129,7 @@ public class ReinforcementPhaseModel extends Observable {
 		notifyObservers(this);
 		
 		
-		ReinforcementPhaseModel.setMsgUI("reinforceRandom," + player);
+		setMsgUI("reinforceRandom," + player);
 		
 		int reinforcementArmies = reinforcement.get(player);
 		
@@ -1145,6 +1160,8 @@ public class ReinforcementPhaseModel extends Observable {
 			String randomPlayerKey = playerInfoKeyList.get(randomKey.nextInt(playerInfoKeyList.size()) );
 			
 			int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomPlayerKey);
+			
+			setLatestArmies(playerInfoValue);
 			playerInfoValue = playerInfoValue + 1;
 			
 			
@@ -1156,7 +1173,7 @@ public class ReinforcementPhaseModel extends Observable {
 			setTotalReinforcementArmies(reinforcementArmies);
 			setLatestArmies(playerInfoValue);
 			
-			setMsgUI("placementView," + playerKeySplit[0] + "," + playerKeySplit[1]);
+			setMsgUI("reinforceRandom," + playerKeySplit[0] + "," + playerKeySplit[1]);
 			setChanged();
 			
 			notifyObservers(this);
@@ -1167,11 +1184,11 @@ public class ReinforcementPhaseModel extends Observable {
 
 	public void reinforceHuman(String player){
 		
-		ReinforcementPhaseModel.setMsgUI("total reinforcement print," + player);
+		setMsgUI("total reinforcement print," + player);
 		setChanged();
 		notifyObservers();
 		
-		ReinforcementPhaseModel.setMsgUI("reinforceHuman," + player);
+	
 		
 		// create a list of player territories HashMap
 		// for only the player concerned
@@ -1268,6 +1285,8 @@ public class ReinforcementPhaseModel extends Observable {
 						
 						int playerInfoValue = StartUpPhaseModel.playerInfo.get(playerInfoKey);
 						
+						setPrevArmies(playerInfoValue);
+						
 						playerInfoValue = playerInfoValue + moveReinforcements;
 						
 						StartUpPhaseModel.playerInfo.put(playerInfoKey, playerInfoValue);
@@ -1277,7 +1296,7 @@ public class ReinforcementPhaseModel extends Observable {
 						setTotalReinforcementArmies(reinforcementArmies);
 						setLatestArmies(playerInfoValue);
 						
-						setMsgUI("placementView," + playerKeySplit[0] + "," + playerKeySplit[1]);
+						setMsgUI("reinforceHuman," + playerKeySplit[0] + "," + playerKeySplit[1]);
 						setChanged();
 						
 						notifyObservers(this);
