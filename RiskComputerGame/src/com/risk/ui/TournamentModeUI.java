@@ -37,10 +37,10 @@ public class TournamentModeUI {
 		String[] countOfGame = new String[] { "1", "2", "3", "4", "5" };
 		DefaultListModel<String> modelPlayerMode = new DefaultListModel<>();
 
-		JList<String> jlistPlayerMode;
+		final JList<String> jlistPlayerMode;
 		JLabel labelGameCount = new JLabel("No.Of Games");
 		labelGameCount.setBounds(20, 60, 100, 25);
-		JComboBox<String> jomboCountOfGame = new JComboBox<String>(countOfGame);
+		final JComboBox<String> jomboCountOfGame = new JComboBox<String>(countOfGame);
 		jomboCountOfGame.setBounds(160, 60, 60, 25);
 		modelPlayerMode.addElement("Aggressive");
 		modelPlayerMode.addElement("Benevolent");
@@ -54,24 +54,24 @@ public class TournamentModeUI {
 		labelCountOfTurns.setBounds(20, 100, 140, 25);
 		JTextField textCountOfTurns = new JTextField();
 		textCountOfTurns.setBounds(160, 100, 80, 25);
-		JFileChooser fileChooser = new JFileChooser();
+		final JFileChooser fileChooser = new JFileChooser();
 		JLabel labelMapCount = new JLabel("No.Of Maps");
 		labelMapCount.setBounds(20, 250, 100, 25);
-		JComboBox<String> jomboCountOfMap = new JComboBox<String>(countOfMap);
+		final JComboBox<String> jomboCountOfMap = new JComboBox<String>(countOfMap);
 		jomboCountOfMap.setBounds(160, 250, 60, 25);
-		JButton buttonMap1 = new JButton("Upload Map1");
+		final JButton buttonMap1 = new JButton("Upload Map1");
 		buttonMap1.setBounds(20, 280, 140, 30);
 		buttonMap1.setVisible(false);
-		JButton buttonMap2 = new JButton("Upload Map2");
+		final JButton buttonMap2 = new JButton("Upload Map2");
 		buttonMap2.setBounds(180, 280, 140, 30);
 		buttonMap2.setVisible(false);
-		JButton buttonMap3 = new JButton("Upload Map3");
+		final JButton buttonMap3 = new JButton("Upload Map3");
 		buttonMap3.setBounds(340, 280, 140, 30);
 		buttonMap3.setVisible(false);
-		JButton buttonMap4 = new JButton("Upload Map4");
+		final JButton buttonMap4 = new JButton("Upload Map4");
 		buttonMap4.setBounds(500, 280, 140, 30);
 		buttonMap4.setVisible(false);
-		JButton buttonMap5 = new JButton("Upload Map5");
+		final JButton buttonMap5 = new JButton("Upload Map5");
 		buttonMap5.setBounds(660, 280, 140, 30);
 		buttonMap5.setVisible(false);
 
