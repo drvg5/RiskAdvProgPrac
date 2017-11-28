@@ -111,7 +111,14 @@ public class UploadMapUI {
 		else if (i == 3)
 		{
 			JOptionPane.showMessageDialog(null,
-					"Invalid Map! Not a connected graph",
+					"Invalid Map! Not a connected graph between Continents",
+					"Adjacency Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		else if (i == 4)
+		{
+			JOptionPane.showMessageDialog(null,
+					"Invalid Map! Not a connected graph between Territories in Continent",
 					"Adjacency Error", JOptionPane.ERROR_MESSAGE);
 		}
 		

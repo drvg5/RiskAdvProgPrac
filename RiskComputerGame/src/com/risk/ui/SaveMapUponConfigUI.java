@@ -44,22 +44,22 @@ public class SaveMapUponConfigUI {
 
 	/** Hash map to store the Map attributes */
 	static HashMap<String, List<String>> mainHashMap = new HashMap<String, List<String>>();
-	
-	/** Hash map to store control value of  Continents */
+
+	/** Hash map to store control value of Continents */
 	static HashMap<String, Integer> continentControlValueHashMap = new HashMap<String, Integer>();
-	
+
 	/** List consists of both Continent and Country */
 	static List<String> listContinentCountry = new ArrayList<String>();
-	
+
 	/** Initial list before configuring adjacency */
 	static List<String> listFirstEntry = new ArrayList<String>();
-	
-	/** Frame to display data*/
+
+	/** Frame to display data */
 	static JInternalFrame jframeAdjCountryList = new JInternalFrame();
-	
+
 	/** Desktop pane for user friendly view of application */
 	static JDesktopPane desktopSaveMap;
-	
+
 	/** Model to bind data to panel */
 	static DefaultTableModel modelAdjacenyList = new DefaultTableModel(
 			new Object[] { "Continent and Country", "Adjacency List" }, 0);
@@ -68,12 +68,17 @@ public class SaveMapUponConfigUI {
 	 * <p>
 	 * This method is used to save file to local folder.
 	 *
-	 * @param keyForHashMap            List holds the values of both Countries and Continents for
-	 *            which adjacency need to be configured
-	 * @param controlValueHashmap            This HashMap stores the Continent and its control value
-	 * @param listToCheckDuplicateContinent            List consists of all Continents
-	 * @param listToCheckDuplicateCountry            List consists of all Countries
-	 * @param desktop            This is to bind the InternalFrame with Main window frame
+	 * @param keyForHashMap
+	 *            List holds the values of both Countries and Continents for which
+	 *            adjacency need to be configured
+	 * @param controlValueHashmap
+	 *            This HashMap stores the Continent and its control value
+	 * @param listToCheckDuplicateContinent
+	 *            List consists of all Continents
+	 * @param listToCheckDuplicateCountry
+	 *            List consists of all Countries
+	 * @param desktop
+	 *            This is to bind the InternalFrame with Main window frame
 	 */
 
 	public static void saveToFile(List<String> keyForHashMap, HashMap<String, Integer> controlValueHashmap,
@@ -146,6 +151,9 @@ public class SaveMapUponConfigUI {
 				String textFileName;
 				boolean checkToSave = false;
 				boolean checkConnected = false;
+				boolean checkConnectedCountry = false;
+				List<String> connectivityCheckCountry = new ArrayList<String>();
+				List<String> countryListCheckNow = new ArrayList<String>();
 				List<String> toCheck = new ArrayList<String>();
 				List<String> connectivityCheck = new ArrayList<String>();
 				for (int t = 0; t < modelAdjacenyList.getRowCount(); t++) {
@@ -177,6 +185,35 @@ public class SaveMapUponConfigUI {
 					}
 
 				}
+
+				// Check for connectivity between Countries in Continents
+				Iterator<Map.Entry<String, List<String>>> iterCountry = mainHashMap.entrySet().iterator();
+				while (iterCountry.hasNext()) {
+					Map.Entry<String, List<String>> entryCountry = iterCountry.next();
+					String strKeyCountry = entryCountry.getKey();
+					String[] strKeyArrayToCheckCountry = strKeyCountry.split(",");
+					List<String> selectedCountryList = fetchCountries(strKeyArrayToCheckCountry[0]);
+					List<String> listToCheckCountry = entryCountry.getValue();
+					// Iterator<Map.Entry<String, List<String>>> innerIterCountry =
+					// continentHashMap.entrySet().iterator();
+					for (String eachCountry : listToCheckCountry) {
+						if (selectedCountryList.contains(eachCountry)) {
+							if (!(connectivityCheckCountry.contains(eachCountry))) {
+								connectivityCheckCountry.add(eachCountry);
+							}
+						}
+					}
+				}
+
+				// Current Country list
+				for (Map.Entry<String, List<String>> entry : mainHashMap.entrySet()) {
+					String strKeyForCountry = entry.getKey();
+					String[] strCountry = strKeyForCountry.split(",");
+					if (!(countryListCheckNow.contains(strCountry[1]))) {
+						countryListCheckNow.add(strCountry[1]);
+					}
+				}
+
 				int sizeOfCont = listToCheckDuplicateContinent.size();
 				Set<String> hs = new HashSet<>();
 				hs.addAll(connectivityCheck);
@@ -185,8 +222,21 @@ public class SaveMapUponConfigUI {
 				Collection<String> collectionAdjCont = connectivityCheck;
 				Collection<String> collectionTotalCont = listToCheckDuplicateContinent;
 				collectionTotalCont.removeAll(collectionAdjCont);
+
+				Set<String> setCountry = new HashSet<>();
+				setCountry.addAll(connectivityCheckCountry);
+				connectivityCheckCountry.clear();
+				connectivityCheckCountry.addAll(setCountry);
+				Collection<String> collectionAdjCountry = connectivityCheckCountry;
+				Collection<String> collectionTotalCountry = countryListCheckNow;
+				collectionTotalCountry.removeAll(collectionAdjCountry);
+
 				if (collectionTotalCont.isEmpty() || sizeOfCont == 1) {
 					checkConnected = true;
+				}
+
+				if (collectionTotalCountry.isEmpty()) {
+					checkConnectedCountry = true;
 				}
 
 				if (checkToSave) {
@@ -197,6 +247,13 @@ public class SaveMapUponConfigUI {
 				else if (!(checkConnected)) {
 					JOptionPane.showMessageDialog(null,
 							"Invalid Map! Not a connected graph. Check adjacency for" + collectionTotalCont,
+							"Adjacency Error", JOptionPane.ERROR_MESSAGE);
+				}
+
+				else if (!(checkConnectedCountry)) {
+					JOptionPane.showMessageDialog(null,
+							"Invalid Map! Not a connected graph. Check adjacency for Territories"
+									+ collectionTotalCountry,
 							"Adjacency Error", JOptionPane.ERROR_MESSAGE);
 				}
 
@@ -243,7 +300,6 @@ public class SaveMapUponConfigUI {
 						JOptionPane.showMessageDialog(null, textFileName + " \t is saved");
 						jframeAdjCountryList.setVisible(false);
 					}
-					
 
 				}
 			}
@@ -281,14 +337,14 @@ public class SaveMapUponConfigUI {
 
 	}
 
-
 	/**
 	 * This methods displays all error messages to User.
 	 *
 	 * @author Dhruv
-	 * @param  captures the error message
+	 * @param message
+	 *            the error message
 	 */
-	
+
 	public void showErrorMessageAdjacency(String message) {
 		if (message.equals("checkEqual")) {
 			JOptionPane.showMessageDialog(null, "You cannot enter same country", "Error", JOptionPane.ERROR_MESSAGE);
@@ -299,5 +355,31 @@ public class SaveMapUponConfigUI {
 					JOptionPane.ERROR_MESSAGE);
 		}
 
+	}
+
+	/**
+	 * <p>
+	 * This method is used to return Countries from particular Continent.
+	 *
+	 * @param toCheck Continent value
+	 *          
+	 * @return toSend list value with countries
+	 */
+	
+	
+	private static List<String> fetchCountries(String toCheck) {
+		// TODO Auto-generated method stub
+		List<String> toSend = new ArrayList<String>();
+		for (Map.Entry<String, List<String>> entryPopulate : mainHashMap.entrySet()) {
+
+			String strKeyForCountryPopulate = entryPopulate.getKey();
+			String[] strCountryPopulate = strKeyForCountryPopulate.split(",");
+			if (strCountryPopulate[0].equals(toCheck)) {
+				if (!(toSend.contains(strCountryPopulate[1]))) {
+					toSend.add(strCountryPopulate[1]);
+				}
+			}
+		}
+		return toSend;
 	}
 }

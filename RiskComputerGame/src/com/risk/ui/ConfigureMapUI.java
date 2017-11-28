@@ -234,7 +234,7 @@ public class ConfigureMapUI {
 	 * This methods displays all error messages to User.
 	 *
 	 * @author Dhruv
-	 * @param  number for particular error message
+	 * @param i  number for particular error message
 	 */
 	
 	public void showErrorMessageForSaving(int i) {

@@ -52,7 +52,6 @@ public class TournamentModeModel {
 			List<String> connectivityCheck = new ArrayList<String>();
 			List<String> continentListCheckNow = new ArrayList<String>();
 			List<String> seperator = new ArrayList<String>();
-			int zerovalue = 1;
 			seperator.add(fileNameWithoutExtension);
 			boolean checkConnected = false;
 			List<String> checkDuplicates = new ArrayList<String>();
