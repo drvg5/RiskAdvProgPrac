@@ -68,7 +68,7 @@ public class EditMapModel {
 	 *            Checks for successful upload
 	 * @param file
 	 *            File uploaded by User
-	 * @return the map file
+	 * 
 	 */
 
 	public void getMapFile(int returnValue, File file) {

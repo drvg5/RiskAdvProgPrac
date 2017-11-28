@@ -24,7 +24,7 @@ import javax.swing.KeyStroke;
  * 
  * 
  * @author drvg5
- * @see JFrame, ActionListener
+ * 
  *
  */
 public class MainMenuUI extends JFrame implements ActionListener {
@@ -117,7 +117,7 @@ public class MainMenuUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if ("New Game".equals(e.getActionCommand())) { // new
 			GameModeUI.GameModeWindow(desktop);
- 		} else if ("Map Editor".equals(e.getActionCommand())) {
+		} else if ("Map Editor".equals(e.getActionCommand())) {
 			MapEditorMenuUI.mapEditorNavigation(desktop);
 
 		} else {

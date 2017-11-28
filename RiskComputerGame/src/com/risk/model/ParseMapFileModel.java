@@ -61,13 +61,10 @@ public class ParseMapFileModel {
 	/**
 	 * <p>
 	 * This method is used to fetch text or map file from local folder and store in
-	 * Hashmap to play.
+	 * Hash map to play.
 	 *
-	 * @param returnValue
-	 *            Checks for successful upload
-	 * @param file
-	 *            File selected by User
-	 * @return the map file
+	 * @param returnValue            Checks for successful upload
+	 * @param file            File selected by User
 	 */
 
 	public void getMapFile(int returnValue, File file) {
@@ -78,8 +75,11 @@ public class ParseMapFileModel {
 			String UploadFileName = file.getName();
 			String FileFormat = FilenameUtils.getExtension(UploadFileName);
 			List<String> connectivityCheck = new ArrayList<String>();
+			List<String> connectivityCheckCountry = new ArrayList<String>();
 			List<String> continentListCheckNow = new ArrayList<String>();
+			List<String> countryListCheckNow = new ArrayList<String>();
 			boolean checkConnected = false;
+			boolean checkConnectedCountry = false;
 			try {
 				Scanner scanner = new Scanner(file);
 				List<String> Maplist = new ArrayList<>();
@@ -154,6 +154,7 @@ public class ParseMapFileModel {
 						}
 					}
 
+					// Check for connectivity between Continents
 					Iterator<Map.Entry<String, List<String>>> iter = continentHashMap.entrySet().iterator();
 					while (iter.hasNext()) {
 						Map.Entry<String, List<String>> entry = iter.next();
@@ -175,9 +176,28 @@ public class ParseMapFileModel {
 								}
 							}
 						}
-
 					}
 
+					// Check for connectivity between Countries in Continents
+					Iterator<Map.Entry<String, List<String>>> iterCountry = continentHashMap.entrySet().iterator();
+					while (iterCountry.hasNext()) {
+						Map.Entry<String, List<String>> entryCountry = iterCountry.next();
+						String strKeyCountry = entryCountry.getKey();
+						String[] strKeyArrayToCheckCountry = strKeyCountry.split(",");
+						List<String> selectedCountryList = fetchCountries(strKeyArrayToCheckCountry[0]);
+						List<String> listToCheckCountry = entryCountry.getValue();
+						// Iterator<Map.Entry<String, List<String>>> innerIterCountry =
+						// continentHashMap.entrySet().iterator();
+						for (String eachCountry : listToCheckCountry) {
+							if (selectedCountryList.contains(eachCountry)) {
+								if (!(connectivityCheckCountry.contains(eachCountry))) {
+									connectivityCheckCountry.add(eachCountry);
+								}
+							}
+						}
+					}
+
+					// Current Continent List
 					for (Map.Entry<String, List<String>> entry : continentHashMap.entrySet()) {
 						String strKey = entry.getKey();
 						String[] strKeyArrayToEdit = strKey.split(",");
@@ -186,6 +206,16 @@ public class ParseMapFileModel {
 						}
 					}
 
+					// Current Country list
+					for (Map.Entry<String, List<String>> entry : continentHashMap.entrySet()) {
+						String strKeyForCountry = entry.getKey();
+						String[] strCountry = strKeyForCountry.split(",");
+						if (!(countryListCheckNow.contains(strCountry[1]))) {
+							countryListCheckNow.add(strCountry[1]);
+						}
+					}
+
+					// Logic to build Collection to check connectivity between Continents
 					int sizeOfCont = continentListCheckNow.size();
 					Set<String> hs = new HashSet<>();
 					hs.addAll(connectivityCheck);
@@ -194,8 +224,21 @@ public class ParseMapFileModel {
 					Collection<String> collectionAdjCont = connectivityCheck;
 					Collection<String> collectionTotalCont = continentListCheckNow;
 					collectionTotalCont.removeAll(collectionAdjCont);
+
+					Set<String> setCountry = new HashSet<>();
+					setCountry.addAll(connectivityCheckCountry);
+					connectivityCheckCountry.clear();
+					connectivityCheckCountry.addAll(setCountry);
+					Collection<String> collectionAdjCountry = connectivityCheckCountry;
+					Collection<String> collectionTotalCountry = countryListCheckNow;
+					collectionTotalCountry.removeAll(collectionAdjCountry);
+
 					if (collectionTotalCont.isEmpty() || sizeOfCont == 1) {
 						checkConnected = true;
+					}
+
+					if (collectionTotalCountry.isEmpty()) {
+						checkConnectedCountry = true;
 					}
 
 					if (continentHashMap.isEmpty()) {
@@ -208,21 +251,26 @@ public class ParseMapFileModel {
 
 					}
 
+					else if (!(checkConnectedCountry)) {
+						if (checkForCallingUI) {
+							uploadMapUI.showErrorMessageForUpload(4);
+						}
+					}
+
 					else {
 						junitMapValidation = true;
 						System.out
 								.println("---------------------------------------------------------------------------");
+						System.out.println("*******************MAP ATTRIBUTES****************************");
 						System.out
-								.println("*******************MAP ATTRIBUTES****************************");
-						System.out
-						.println("---------------------------------------------------------------------------");
+								.println("---------------------------------------------------------------------------");
 						System.out.println("*CONTINENT & COUNTRY*      *ADJACENCY LIST*");
 						System.out
 								.println("---------------------------------------------------------------------------");
 						for (Map.Entry<String, List<String>> toPrint : continentHashMap.entrySet()) {
 							System.out.println(toPrint.getKey() + "\t" + "\t" + toPrint.getValue());
 						}
-						//new GameDriverNew().gameStart(continentHashMap, continentCount);
+						// new GameDriverNew().gameStart(continentHashMap, continentCount);
 						new GameDriverNew().gameModeSingle(continentHashMap, continentCount);
 
 					}
@@ -233,6 +281,31 @@ public class ParseMapFileModel {
 			}
 		}
 
+	}
+	
+	/**
+	 * <p>
+	 * This method is used to return Countries from particular Continent.
+	 *
+	 * @param toCheck Continent value
+	 *          
+	 * @return toSend list value with countries
+	 */
+
+	private List<String> fetchCountries(String toCheck) {
+		// TODO Auto-generated method stub
+		List<String> toSend = new ArrayList<String>();
+		for (Map.Entry<String, List<String>> entryPopulate : continentHashMap.entrySet()) {
+
+			String strKeyForCountryPopulate = entryPopulate.getKey();
+			String[] strCountryPopulate = strKeyForCountryPopulate.split(",");
+			if (strCountryPopulate[0].equals(toCheck)) {
+				if (!(toSend.contains(strCountryPopulate[1]))) {
+					toSend.add(strCountryPopulate[1]);
+				}
+			}
+		}
+		return toSend;
 	}
 
 	/**

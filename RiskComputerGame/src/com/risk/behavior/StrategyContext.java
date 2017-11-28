@@ -9,6 +9,7 @@ public class StrategyContext {
 
 	/**
 	 * Plugs in a specific strategy to be used
+	 * @param strategy Strategy selected by User
 	 */
 	public void setStrategy(PlayerBehavior strategy) {
 
@@ -18,6 +19,7 @@ public class StrategyContext {
 	/**
 	 * Method that executes a different strategy depending on what strategy was
 	 * plugged in upon instantiation.
+	 * @param player Player number
 	 */
 	public void executeReinforce(String player) {
 
