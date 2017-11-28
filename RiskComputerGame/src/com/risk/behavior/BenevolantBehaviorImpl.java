@@ -25,7 +25,7 @@ public class BenevolantBehaviorImpl implements PlayerBehavior {
 	}
 
 	@Override
-	public void fortify(int player) {
+	public void fortify(String player) {
 		// TODO Auto-generated method stub
 
 	}

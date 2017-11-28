@@ -35,7 +35,7 @@ public class AggressiveBehaviorImpl implements PlayerBehavior {
 	}
 
 	@Override
-	public void fortify(int player) {
+	public void fortify(String player) {
 
 	}
 

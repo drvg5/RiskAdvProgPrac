@@ -9,6 +9,6 @@ public interface PlayerBehavior {
 
 	public void attack(String player, HashMap<String, List<String>> territoryMap);
 
-	public void fortify(int player);
+	public void fortify(String player);
 
 }
