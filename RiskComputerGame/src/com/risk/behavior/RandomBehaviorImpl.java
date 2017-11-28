@@ -24,7 +24,8 @@ public class RandomBehaviorImpl implements PlayerBehavior {
 
 	@Override
 	public void fortify(String player) {
-		// TODO Auto-generated method stub
+
+		
 
 	}
 

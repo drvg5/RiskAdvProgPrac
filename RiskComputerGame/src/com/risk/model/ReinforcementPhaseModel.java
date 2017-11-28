@@ -1118,10 +1118,7 @@ public class ReinforcementPhaseModel extends Observable {
 			
 		}//end for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet())
 		
-		//territory status after reinforcement using StartUpPhaseModel.playerInfo
-		
-		
-		
+				
 		
 	}//end reinforceCheater
 

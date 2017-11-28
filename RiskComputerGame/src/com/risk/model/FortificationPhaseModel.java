@@ -2,10 +2,6 @@ package com.risk.model;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-import java.util.TreeSet;
 
 public class FortificationPhaseModel extends Observable {
 
@@ -24,7 +20,7 @@ public class FortificationPhaseModel extends Observable {
 
 	public static int fortifySetEmpty = 0;
 
-	private int randomUnits ;
+	private int fortifyUnits ;
 	
 	private int updatedSource;
 	
@@ -36,12 +32,24 @@ public class FortificationPhaseModel extends Observable {
 	
 	private String player;
 	
-	public synchronized String getPlayer() {
+	private String msgUI;
+	
+	public String getMsgUI() {
+		return msgUI;
+	}
+
+
+	public void setMsgUI(String msgUI) {
+		this.msgUI = msgUI;
+	}
+
+
+	public String getPlayer() {
 		return player;
 	}
 
 
-	public synchronized void setPlayer(String player) {
+	public void setPlayer(String player) {
 		this.player = player;
 	}
 
@@ -66,13 +74,13 @@ public class FortificationPhaseModel extends Observable {
 	}
 
 
-	public int getRandomUnits() {
-		return randomUnits;
+	public int getFortifyUnits() {
+		return fortifyUnits;
 	}
 
 
-	public void setRandomUnits(int randomUnits) {
-		this.randomUnits = randomUnits;
+	public void setFortifyUnits(int randomUnits) {
+		this.fortifyUnits = randomUnits;
 	}
 
 	public int getUpdatedSource() {
@@ -94,7 +102,7 @@ public class FortificationPhaseModel extends Observable {
 		this.updatedDest = updatedDest;
 	}
 
-	
+	public static HashMap<String,List<String>> territoryMap = new HashMap<String,List<String>>();
 	
 	public static void createFortifySet(String player,HashMap<String,List<String>> territoryMap){
 		
@@ -126,6 +134,7 @@ public class FortificationPhaseModel extends Observable {
 	    			   if(StartUpPhaseModel.playerInfo.containsKey(key)){
 	    				   
 	    				   fortifySet.add(territory + "-" +adjacentTerr);
+	    				   
 	    			   }
 	    			   
 	    		   }//end for(String adjacentTerr : adjacencyList)
@@ -145,7 +154,6 @@ public class FortificationPhaseModel extends Observable {
 		
 		List<String> fortifyList = new ArrayList<String>(fortifySet);
 		
-
 		fortifySetEmpty = 0;
 		
 		setPlayer(player);
@@ -153,7 +161,6 @@ public class FortificationPhaseModel extends Observable {
 		if(fortifyList.isEmpty()){
 			
 			fortifySetEmpty = 1;
-			
 			
 			setChanged();
 			
@@ -210,7 +217,7 @@ public class FortificationPhaseModel extends Observable {
 		
 		setPlayer(player);
 		
-		setRandomUnits(value);
+		setFortifyUnits(value);
 		
 		setUpdatedSource(fromArmies);
 		

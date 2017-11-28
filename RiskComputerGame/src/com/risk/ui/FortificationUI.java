@@ -20,7 +20,7 @@ public class FortificationUI implements Observer {
 			displayFortificationNotPossible(obj.getPlayer());
 		}
 		else
-			displayFortification(obj.getPlayer(),obj.getSourceTerr(),obj.getDestTerr(),obj.getRandomUnits(), obj.getUpdatedSource(), obj.getUpdatedDest());
+			displayFortification(obj.getPlayer(),obj.getSourceTerr(),obj.getDestTerr(),obj.getFortifyUnits(), obj.getUpdatedSource(), obj.getUpdatedDest());
 		
 	}
 	
