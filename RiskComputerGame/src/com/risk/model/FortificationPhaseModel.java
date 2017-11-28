@@ -571,6 +571,88 @@ public class FortificationPhaseModel extends Observable {
 		
 	}//end benevolentFortification
 	
+	public void cheaterFortification(String player){
+		
+		 fortifySet.clear();
+			
+	       for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
+	    	   
+	    	   String[] keyArray = playerInfoKey.split("-");
+
+	    	   if(keyArray[0].equals(player) || keyArray[0] == player){
+	    		   
+	    		   
+		    	   if(StartUpPhaseModel.playerInfo.get(playerInfoKey) >= 1){
+		    		   
+		    		   
+		    		   
+		    		   String continent = keyArray[2];
+		    		   String territory = keyArray[1];
+		    		   String mapKey = continent + "," + territory;
+		    		   
+		    		   //change to continentHashMap
+		    		   List<String> adjacencyList = territoryMap.get(mapKey);
+		    		   
+		    		   //check if player own any adjacent territory to one which already owns
+		    		   for(String adjacentTerr : adjacencyList){
+		    			   
+		    			   String key = player + "-" + adjacentTerr + "-" + StartUpPhaseModel.terrCont.get(adjacentTerr);
+		    			   
+		    			   if(StartUpPhaseModel.playerInfo.containsKey(key)){
+		    				   
+		    				   fortifySet.add(territory + "-" +adjacentTerr);
+		    				   
+		    			   }
+		    			   
+		    		   }//end for(String adjacentTerr : adjacencyList)
+		    		   
+		    	   }//end if(PlayerClass.playerInfo.get(playerInfoKey) >= 1)
+		    	   
+	    	   }//end if(keyArray[0].equals(player) || keyArray == player){
+	    	   
+	       }//end for(String playerInfoKey : PlayerClass.playerInfo.keySet())
+	    	
+	       
+		setMsgUI("displayCheaterTerr," + player);
+
+		//print territory status before reinforcement using StartUpPhaseModel.playerInfo
+		
+		setChanged();
+		notifyObservers(this);
+		
+		//update armies in each territory for cheater player
+		for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
+			
+			
+			String [] playerVals = playerInfoKey.split("-");
+			
+			if(playerVals[0].equals(player) || playerVals[0] == player){
+				
+				
+				int playerInfoValue = StartUpPhaseModel.playerInfo.get(playerInfoKey);
+				
+		//		setPrevArmies(playerInfoValue);
+				
+				playerInfoValue = 2 * playerInfoValue;
+				
+		//		setLatestArmies(playerInfoValue);
+				
+				StartUpPhaseModel.playerInfo.put(playerInfoKey, playerInfoValue);
+				
+				setMsgUI("reinforceCheater," + playerVals[0] + "," + playerVals[1]);
+				setChanged();
+				
+				notifyObservers(this);
+				
+			}
+			
+			
+		}//end for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet())
+		
+		
+	}//end cheaterFortification
+	
+	
 
 	
 
