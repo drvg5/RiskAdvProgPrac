@@ -1,5 +1,6 @@
 package com.risk.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -900,7 +901,7 @@ public class ReinforcementPhaseModel extends Observable {
 	}//end calculateReinforcementByCards
 		
 	
-	public void reinforceAgressive(String player){
+	public void reinforceAggressive(String player){
 		
 		setMsgUI("total reinforcement print," + player);
 
@@ -976,7 +977,7 @@ public class ReinforcementPhaseModel extends Observable {
 			setLatestArmies(playerInfoValue);
 
 			setChanged();
-			setMsgUI("reinforceAgressive," + playerKeySplit[0] + "," + playerKeySplit[1]);
+			setMsgUI("reinforceAggressive," + playerKeySplit[0] + "," + playerKeySplit[1]);
 			notifyObservers(this);
 
 		}
@@ -1081,7 +1082,7 @@ public class ReinforcementPhaseModel extends Observable {
 	public void reinforceCheater(String player){
 		
 		
-		setMsgUI("reinforceCheater," + player);
+		setMsgUI("displayCheaterTerr," + player);
 
 		//print territory status before reinforcement using StartUpPhaseModel.playerInfo
 		
@@ -1096,6 +1097,7 @@ public class ReinforcementPhaseModel extends Observable {
 			
 			if(playerVals[0].equals(player) || playerVals[0] == player){
 				
+				
 				int playerInfoValue = StartUpPhaseModel.playerInfo.get(playerInfoKey);
 				
 				setPrevArmies(playerInfoValue);
@@ -1106,6 +1108,11 @@ public class ReinforcementPhaseModel extends Observable {
 				
 				StartUpPhaseModel.playerInfo.put(playerInfoKey, playerInfoValue);
 				
+				setMsgUI("reinforceCheater," + playerVals[0] + "," + playerVals[1]);
+				setChanged();
+				
+				notifyObservers(this);
+				
 			}
 			
 			
@@ -1114,8 +1121,7 @@ public class ReinforcementPhaseModel extends Observable {
 		//territory status after reinforcement using StartUpPhaseModel.playerInfo
 		
 		
-		setChanged();
-		notifyObservers(this);
+		
 		
 	}//end reinforceCheater
 
@@ -1214,20 +1220,31 @@ public class ReinforcementPhaseModel extends Observable {
 		
 		int moveReinforcements;
 		
+		int firstCount = 1;
+		
 		// loop until all reinforcement armies have been assigned
 		while (reinforcementArmies != 0){
 			
-			System.out.println("\n\t" + "Please choose a territory to reinforce : ");
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
+			System.out.println("\n\t----------------------------------------------------------------------------");
+			System.out.printf("\n\t" + "Please choose a territory to reinforce : ");
+			
+			int msg = 0;
 			
 			while(true){
 				
-				int msg = 0;
+				
 				
 				
 				if(msg == 1){
-					System.out.println("\n-------------------------------------------------------");
-					System.out.println("Please enter only a territory you own : ");
+					System.out.println("\n\t------------------------ INCORRECT INPUT --------------------------");
+					System.out.printf("\n\tPlease enter only a territory you own : ");
 				}
 				
 				//Take territory input
@@ -1235,24 +1252,35 @@ public class ReinforcementPhaseModel extends Observable {
 				territory = territoryInput.nextLine().trim().toUpperCase();
 				
 				if(playerTerritoryList.contains(territory))
+					
 					break;
 				else{
+					
 					msg = 1;
 					continue;
 				}
 				
 			}//end while
 			
-			System.out.println("\n\t" + "Choose from the total reinforcements armies to move to " + territory + " : ");
+			System.out.println("\n\t----------------------------------------------------------------------------");
+			System.out.printf("\n\t" + "Choose from the total reinforcements armies to move to " + territory + " : ");
+			
+			msg = 0;
 			
 			while(true){
 				
-				int msg = 0;
+				
 				
 				
 				if(msg == 1){
-					System.out.println("\n------------------------------------------------------------------");
-					System.out.println("Please enter some or all of the " + ReinforcementPhaseModel.reinforcement.get(player) + " reinforcement armies you have : ");
+					
+					System.out.println("\n\t------------------------ INCORRECT INPUT --------------------------");
+					
+					if(firstCount == 1)
+						System.out.printf("\n\tPlease enter some or all of the " + ReinforcementPhaseModel.reinforcement.get(player) + " reinforcement armies you have : ");
+					else
+						System.out.printf("\n\tPlease enter some or all of the remaining " + reinforcementArmies + " reinforcement armies you have : ");
+						
 				}
 				
 				//Take reinforcement armies input
@@ -1263,9 +1291,16 @@ public class ReinforcementPhaseModel extends Observable {
 					continue;
 				}
 				
+				
 				moveReinforcements = reinforcementInput.nextInt();
 				
-				if(ReinforcementPhaseModel.reinforcement.get(player) > moveReinforcements)
+				if (moveReinforcements < 0) {
+					msg = 1;
+					continue;
+				}
+				
+				
+				if(reinforcementArmies >= moveReinforcements)
 					
 					break;
 				
@@ -1281,7 +1316,7 @@ public class ReinforcementPhaseModel extends Observable {
 				
 				if (playerKeySplit[0].equals(player) || playerKeySplit[0] == player){
 
-					if (playerKeySplit[1].equals(territory) || playerKeySplit[1] == territory){
+					if (playerKeySplit[1].equalsIgnoreCase(territory)){
 						
 						int playerInfoValue = StartUpPhaseModel.playerInfo.get(playerInfoKey);
 						
@@ -1294,18 +1329,24 @@ public class ReinforcementPhaseModel extends Observable {
 						reinforcementArmies = reinforcementArmies - moveReinforcements;
 						
 						setTotalReinforcementArmies(reinforcementArmies);
+						
 						setLatestArmies(playerInfoValue);
 						
 						setMsgUI("reinforceHuman," + playerKeySplit[0] + "," + playerKeySplit[1]);
+						
 						setChanged();
 						
 						notifyObservers(this);
+						
+						break;
 						
 					}//end if (playerKeySplit[1].equals(territory) || playerKeySplit[1] == territory)
 
 				} // end if(playerVals[0].equals(player) || playerVals[0] == player)
 				
 			}//end for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet())
+			
+			firstCount = 0;
 
 		}//end while (reinforcementArmies != 0)
 		

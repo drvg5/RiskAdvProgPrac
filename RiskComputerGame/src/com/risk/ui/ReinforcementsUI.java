@@ -1,6 +1,8 @@
 package com.risk.ui;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 import com.risk.model.PlayerClass;
@@ -47,7 +49,7 @@ public class ReinforcementsUI implements Observer {
 			//"total reinforcement print," + player
 			String[] msgUISplit = msgUI.split(",");
 			
-			totalReinforcementsView(msgUISplit[1]);
+			totalReinforcementsView(msgUISplit[1],PlayerClass.currentMap);
 		}
 		
 		if(msgUI.contains("reinforceRandom")){
@@ -59,7 +61,7 @@ public class ReinforcementsUI implements Observer {
 			
 		}
 		
-		if(msgUI.contains("reinforceAgressive")){
+		if(msgUI.contains("reinforceAggressive")){
 			
 			//"reinforceAgressive," + player + "," + territory
 			String[] msgUISplit = msgUI.split(",");
@@ -73,11 +75,18 @@ public class ReinforcementsUI implements Observer {
 			placementBenevolentView(msgUISplit[1], msgUISplit[2], ((ReinforcementPhaseModel)arg));
 		}
 		
+		if(msgUI.contains("reinforceCheaterTerr")){
+			
+			//"reinforceCheater," + player
+			String[] msgUISplit = msgUI.split(",");
+			//placementCheaterView(msgUISplit[1], msgUISplit[2], ((ReinforcementPhaseModel)arg));
+		}
+
 		if(msgUI.contains("reinforceCheater")){
 			
-			//"reinforceCheater," + player + "," + territory
+			//"reinforceCheater," + player
 			String[] msgUISplit = msgUI.split(",");
-			placementBenevolentView(msgUISplit[1], msgUISplit[2], ((ReinforcementPhaseModel)arg));
+			placementCheaterView(msgUISplit[1], msgUISplit[2], ((ReinforcementPhaseModel)arg));
 		}
 		
 		if(msgUI.contains("reinforceHuman")){
@@ -241,7 +250,7 @@ public class ReinforcementsUI implements Observer {
 	
 	}
 	
-	public void totalReinforcementsView(String player){
+	public void totalReinforcementsView(String player, HashMap<String,List<String>> territoryMap){
 		
 		
 		try {
@@ -272,27 +281,45 @@ public class ReinforcementsUI implements Observer {
 			
 			String[] playerInfoVal = playerInfoKey.split("-");
 			
+			
 			if(player.equals(playerInfoVal[0]) || player == playerInfoVal[0]){
 				
-				System.out.println("\t    " + playerInfoVal[1] + " owned in " + " continent " + playerInfoVal[2]);
+				System.out.println("\n\t\t------------------------------------");
+				System.out.println("\t\t" + "Territory : " + playerInfoVal[1]);
 				
+				System.out.println("\t\t\t  " + "Continent : " + playerInfoVal[2]);
 				
-				try {
-					System.in.read();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				System.out.println("\t\t\t  " + "Armies : " + StartUpPhaseModel.playerInfo.get(playerInfoKey));
 				
-
-			}//end if(player.equals(playe...
+				System.out.printf("\t\t\t  "+"Adjacent Countries : ");
+				
+				List<String> adjacentList = territoryMap.get(playerInfoVal[2] + "," + playerInfoVal[1]);
+				
+				int index = 0;
+				for(String adjacent : adjacentList){
+					
+					if(index == 0)
+						System.out.printf(adjacent);
+					else
+						System.out.printf("," + adjacent);
+					
+					index++;
+				}//for(String adjacent : adjacentList)
+				
+			}//end if(player.equals(playerInfoVal[0])...
 			
+		}//end for(String playerInfoKey : Star...
+	
+	
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		}//end for(String playerInfoKey...
 		
-		
-		
-		System.out.println("\n\t********* RANDOMLY CHOOSING TERRITORY TO PLACE REINFORCEMENT ARMIES ONE BY ONE **********");
+		System.out.println("\n\n\n\t********************** PLACEMENT OF REINFORCEMENT ARMIES START ************************");
 
 		try {
 			System.in.read();

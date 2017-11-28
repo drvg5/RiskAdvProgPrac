@@ -218,13 +218,24 @@ public class GameDriverNew extends Object {
 	 */
 	public static int enterPlayersMenu() {
 
-		System.out.println("---------------------------------------------");
-		System.out.println("Please enter number of players : ");
-
 		int numberOfPlayers = 0;
-
-		Scanner input = new Scanner(System.in);
-		numberOfPlayers = input.nextInt();
+		
+		while(true){
+			System.out.println("---------------------------------------------");
+			System.out.println("Please enter number of players : ");
+	
+			
+			
+			try{
+				Scanner input = new Scanner(System.in);
+				numberOfPlayers = input.nextInt();
+			}
+			catch(InputMismatchException e){
+				continue;
+			}
+			break;
+		
+		}
 		return numberOfPlayers;
 	}
 

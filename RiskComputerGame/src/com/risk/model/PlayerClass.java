@@ -281,58 +281,63 @@ public class PlayerClass extends Observable {
 
 		reinforcmentModelObj.addObserver(uiObj);
 		reinforcmentModelObj.addObserver(uiCardObj);
-		// call method to calculate reinforcements by number of territories
-		String reinTerrMsg = reinforcmentModelObj.calcReinforcementsByTerr(Integer.toString(plyr));
-
-		try {
-			System.in.read();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		
+		if(currentPlyrStrategy.charAt(0) != 'c'){
+			// call method to calculate reinforcements by number of territories
+			String reinTerrMsg = reinforcmentModelObj.calcReinforcementsByTerr(Integer.toString(plyr));
+	
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+			PlayerClass.msg = "reinforcements by number of territories," + reinTerrMsg + ",";
+			setChanged();
+			notifyObservers(this);
+	
+			// call method to calculate reinforcements by cards
+			reinforcmentModelObj.calcReinforcementByCards(Integer.toString(plyr));
+			// PlayerClass.msg = "reinforcements by exchanging cards|" + reinTerrMsg + "|";
+	
+			setChanged();
+	
+			notifyObservers(this);
+	
+			try {
+				System.in.read();
+	
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+			// call method to calculate reinforcements if a player owns the whole continent
+			ArrayList<String> cntrlValMsg = reinforcmentModelObj.calcReinforcementByCntrlVal(Integer.toString(plyr),
+					continentControlValueHashMap);
+	
+			try {
+				System.in.read();
+	
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+			String[] cntrlVal = cntrlValMsg.toArray(new String[cntrlValMsg.size()]);
+	
+			PlayerClass.msg = "reinforcements by control value-";
+	
+			for (String cntrValIndividual : cntrlVal) {
+				PlayerClass.msg = PlayerClass.msg + cntrValIndividual + "-";
+			}
+	
+			setChanged();
+			notifyObservers(this);
+		
 		}
-
-		PlayerClass.msg = "reinforcements by number of territories," + reinTerrMsg + ",";
-		setChanged();
-		notifyObservers(this);
-
-		// call method to calculate reinforcements by cards
-		reinforcmentModelObj.calcReinforcementByCards(Integer.toString(plyr));
-		// PlayerClass.msg = "reinforcements by exchanging cards|" + reinTerrMsg + "|";
-
-		setChanged();
-
-		notifyObservers(this);
-
-		try {
-			System.in.read();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		// call method to calculate reinforcements if a player owns the whole continent
-		ArrayList<String> cntrlValMsg = reinforcmentModelObj.calcReinforcementByCntrlVal(Integer.toString(plyr),
-				continentControlValueHashMap);
-
-		try {
-			System.in.read();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		String[] cntrlVal = cntrlValMsg.toArray(new String[cntrlValMsg.size()]);
-
-		PlayerClass.msg = "reinforcements by control value-";
-
-		for (String cntrValIndividual : cntrlVal) {
-			PlayerClass.msg = PlayerClass.msg + cntrValIndividual + "-";
-		}
-
-		setChanged();
-		notifyObservers(this);
 
 		// ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
 
@@ -345,27 +350,34 @@ public class PlayerClass extends Observable {
 		case 'a': {
 			AggressiveBehaviorImpl agressiveObj = new AggressiveBehaviorImpl();
 			contextObj.setStrategy(agressiveObj);
-			agressiveObj.addObserver(uiObj2);
+			//agressiveObj.addObserver(uiObj2);
 			break;
 		}
 		case 'r': {
 			RandomBehaviorImpl randomObj = new RandomBehaviorImpl();
 			contextObj.setStrategy(randomObj);
-			randomObj.addObserver(uiObj2);
+			//randomObj.addObserver(uiObj2);
 			break;
 		}
 		case 'b': {
 			BenevolantBehaviorImpl benevolentObj = new BenevolantBehaviorImpl();
 			contextObj.setStrategy(benevolentObj);
-			benevolentObj.addObserver(uiObj2);
+			//benevolentObj.addObserver(uiObj2);
 			break;
 		}
 		case 'c': {
 			CheaterBehaviorImpl cheaterObj = new CheaterBehaviorImpl();
 			contextObj.setStrategy(cheaterObj);
-			cheaterObj.addObserver(uiObj2);
+			//cheaterObj.addObserver(uiObj2);
 			break;
 		}
+		
+		case 'h': {
+			HumanBehaviorImpl humanObj = new HumanBehaviorImpl();
+			contextObj.setStrategy(humanObj);
+			break;
+		}
+		
 		default :
 			break;
 		}

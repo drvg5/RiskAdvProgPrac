@@ -3,11 +3,19 @@ package com.risk.behavior;
 import java.util.HashMap;
 import java.util.List;
 
+import com.risk.model.ReinforcementPhaseModel;
+import com.risk.ui.ReinforcementsUI;
+
 public class HumanBehaviorImpl implements PlayerBehavior {
 
 	@Override
 	public void reinforce(String player) {
-		// TODO Auto-generated method stub
+
+
+		ReinforcementPhaseModel obj = new ReinforcementPhaseModel();
+		ReinforcementsUI objUI = new ReinforcementsUI();
+		obj.addObserver(objUI);
+		obj.reinforceHuman(player);
 
 	}
 
