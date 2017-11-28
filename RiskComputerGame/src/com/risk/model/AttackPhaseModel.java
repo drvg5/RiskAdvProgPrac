@@ -230,7 +230,9 @@ public class AttackPhaseModel {
 				adjacencyCheck = checkDefenderAdjacency(territoryMap);
 			}
 			// attack initiated
-			attackPossible = attackProcessAggressive((int) playerInfoKey.charAt(0), territoryMap);
+			String[] keySplitForPlyrNo = playerInfoKey.split("-");
+
+			attackPossible = attackProcessAggressive(Integer.valueOf(keySplitForPlyrNo[0]), territoryMap);
 			adjacencyCheck = false;
 
 		}
@@ -496,14 +498,94 @@ public class AttackPhaseModel {
 
 		// populating the lists for attacker and defender
 		populateListsForAttackerAndDefender(Integer.valueOf(player));
-		//
-		Integer highestNoOfArmies = StartUpPhaseModel.playerInfo.get(playerAccToPlayerNo.get(0));
-		String countryHigh = playerAccToPlayerNo.get(0);
+		// find country with max armies
+		// Integer highestNoOfArmies =
+		// StartUpPhaseModel.playerInfo.get(playerAccToPlayerNo.get(0));
+		// String countryHigh = playerAccToPlayerNo.get(0);
+
+		int highestNoOfArmies = 0;
+		String countryHigh = "";
 		for (String playerInfoKey : playerAccToPlayerNo) {
-			if (StartUpPhaseModel.playerInfo.get(playerInfoKey) > highestNoOfArmies) { }
+			if (StartUpPhaseModel.playerInfo.get(playerInfoKey) > highestNoOfArmies) {
+				highestNoOfArmies = StartUpPhaseModel.playerInfo.get(playerInfoKey);
+				countryHigh = playerInfoKey;
+			}
 		}
 
 		return countryHigh;
+
+	}
+
+	public static void conquerAllAdjacentCountries(String player, HashMap<String, List<String>> territoryMap) {
+
+		// populating the lists for attacker and defender
+		populateListsForAttackerAndDefender(Integer.valueOf(player));
+
+		// find adjacent countries
+		String[] keysplit1 = {};
+		String[] keysplit2 = {};
+
+		// first store all the countries owned by the player
+		List<String> countriesOfPlayerChosen = new ArrayList<String>();
+
+		for (String playerInfoKey : playerAccToPlayerNo) {
+			keysplit1 = playerInfoKey.split("-");
+			countriesOfPlayerChosen.add(keysplit1[1]);
+		}
+
+		// store countries of other players along with the playerInfo keys
+
+		HashMap<String, String> countriesOfOtherPlayers = new HashMap<String, String>();
+
+		for (String playerInfoKey : playerNotAccToPlayerNo) {
+			keysplit1 = playerInfoKey.split("-");
+			countriesOfOtherPlayers.put(keysplit1[1], playerInfoKey);
+		}
+
+		for (String playerInfoKey : playerAccToPlayerNo) {
+			keysplit1 = playerInfoKey.split("-");
+
+			for (String iterate : territoryMap.keySet()) {
+				keysplit2 = iterate.split(",");
+				if (keysplit1[1].equals(keysplit2[1])) {
+
+					changePlayerInfoDataForCheater(player, territoryMap.get(iterate), countriesOfOtherPlayers,
+							countriesOfPlayerChosen);
+				}
+			}
+
+		}
+
+	}
+
+	private static void changePlayerInfoDataForCheater(String player, List<String> listOfAdjacentCountries,
+			HashMap<String, String> countriesOfOtherPlayers, List<String> countriesOfPlayerChosen) {
+
+		String value = "";
+		String modifiedKey = "";
+		String[] keySplit = {};
+		Integer armies = 0;
+		for (String country : listOfAdjacentCountries) {
+			// checking if attacker's countries are present in the adjacent countries list
+			if (!countriesOfPlayerChosen.contains(country)) {
+				for (String iterate : countriesOfOtherPlayers.keySet()) {
+					if (country.equalsIgnoreCase(iterate)) {
+
+						// changing key value in playerInfo
+						// i.e. changing player data
+						value = countriesOfOtherPlayers.get(iterate);
+						keySplit = value.split("-");
+
+						keySplit[0] = player;
+						modifiedKey = keySplit[0] + "-" + keySplit[1] + "-" + keySplit[2];
+						armies = StartUpPhaseModel.playerInfo.get(value);
+						StartUpPhaseModel.playerInfo.put(modifiedKey, armies);
+						StartUpPhaseModel.playerInfo.remove(iterate);
+
+					}
+				}
+			}
+		}
 
 	}
 
