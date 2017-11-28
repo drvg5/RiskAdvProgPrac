@@ -241,7 +241,172 @@ public class FortificationPhaseModel extends Observable {
 		
 	}
 	
+public void aggressiveFortification(String player){
+		
+		List<String> fortifyList = new ArrayList<String>(fortifySet);
+		
+		fortifySetEmpty = 0;
+		
+		setPlayer(player);
+		
+		if(fortifyList.isEmpty()){
+			
+			fortifySetEmpty = 1;
+			
+			setChanged();
+			
+			notifyObservers(this);
+			
+			try {
+				System.in.read();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return;	
+		}
+		
+		int highestArmies = 0;
+				
+		TreeSet<Integer> unitsSet = new TreeSet<Integer>();
+
+		for(String path : fortifyList){
+			
+			String[] pathSplit = path.split("-");
+			
+			String fromTerr = pathSplit[0];
+			
+			String toTerr = pathSplit[1];
+			
+			
+			//populate unitsSet with the different number armies of receiving territories
+			for (String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()) {
+
+				String[] playerVals = playerInfoKey.split("-");
+
+				if (playerVals[0].equals(player) || playerVals[0] == player) {
+					
+					if(playerVals[1].equals(toTerr) || playerVals[1] == toTerr){
+						
+						unitsSet.add(StartUpPhaseModel.playerInfo.get(playerInfoKey));
+						
+					}//end if(playerVals[1].equals(fromTerr) || playerVals[1] == fromTerr)
+
+				}// end if(playerVals[0].equals(player) || playerVals[0] == player)
+
+			}// end for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet())
+			
+		}//end for(String path : fortifyList)
+		
+		
+		//get the highest number of armies among the recieving territories
+		highestArmies = unitsSet.last();
+		
+		
+		// create a list of eligible keys from playerInfo HashMap
+		// for only the player concerned with the highestArmies
+		List<String> strongestTerritoryList = new ArrayList<String>();
+
+
+		// populate strongestTerritoryList
+		for (String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()) {
+
+			String[] playerVals = playerInfoKey.split("-");
+
+			if (playerVals[0].equals(player) || playerVals[0] == player) {
+
+				if (StartUpPhaseModel.playerInfo.get(playerInfoKey) == highestArmies) {
+
+					strongestTerritoryList.add(playerInfoKey);
+
+				} // end if(StartUpPhaseModel.playerInfo.get(playerInfoKey) > highestArmies)
+
+			} // end if(playerVals[0].equals(player) || playerVals[0] == player)
+
+		} // end for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()
+
+		Random randomKey = new Random();
+
+		// choose strongest recieving territory to move armies into
+		String randomStrongestKey = strongestTerritoryList.get(randomKey.nextInt(strongestTerritoryList.size()));
+		
+		
+		
+		String toTerr = randomStrongestKey.split("-")[1];
+		
+		String fromTerr = new String();
+		
+		//get fromTerr
+		
+		for(String path : fortifyList){
+			
+			String[] pathSplit = path.split("-");
+			
+			if(toTerr.equals(pathSplit[1])){
+				
+				fromTerr = pathSplit[0];
+				break;
+				
+			}//end if(toTerr.equals(pathSplit[1]))
+			
+		}//end for(String path : fortifyList)
+		
+		int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomStrongestKey);
+		
+		String fromCont = StartUpPhaseModel.terrCont.get(fromTerr);
+		
+		String toCont = StartUpPhaseModel.terrCont.get(toTerr);
+		
+		String from = player + "-" + fromTerr + "-" + fromCont;
+		
+		String to = player + "-" + toTerr + "-" + toCont;
+		
+		int fromArmies = StartUpPhaseModel.playerInfo.get(from);
+		
+		int toArmies = StartUpPhaseModel.playerInfo.get(to);
+		
+		int value = fromArmies - 1;
+		
+		fromArmies = fromArmies - value;
+		
+		toArmies = toArmies + value;
+		
+		StartUpPhaseModel.playerInfo.put(from, fromArmies);
+		
+		StartUpPhaseModel.playerInfo.put(to, toArmies);
+		
+		setPlayer(player);
+		
+		setFortifyUnits(value);
+		
+		setUpdatedSource(fromArmies);
+		
+		setUpdatedDest(toArmies);
 	
+		setSourceTerr(fromTerr);
+		
+		setDestTerr(toTerr);
+		
+		setChanged();
+		
+		notifyObservers(this);
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+	}//end aggressiveFortification
+	
+
 	public static void main(String [] args){
 		
 		HashMap<String,List<String>> territoryMap = new HashMap<String,List<String>>();
