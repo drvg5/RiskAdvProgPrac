@@ -653,7 +653,253 @@ public class FortificationPhaseModel extends Observable {
 	}//end cheaterFortification
 	
 	
+	public void humanFortification(String player){
+		
+		List<String> fortifyList = new ArrayList<String>(fortifySet);
+		
+		fortifySetEmpty = 0;
+		
+		setPlayer(player);
+		
+		if(fortifyList.isEmpty()){
+			
+			fortifySetEmpty = 1;
+			
+			setChanged();
+			
+			notifyObservers(this);
+			
+			try {
+				System.in.read();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return;	
+		}
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//need to print the territories which can be fortified
+		
+		
+		
+		String toTerr = new String();
+		
+		String fromTerr = new String();
+		
+		int fortifyingUnits;
+		
+		
+		
+		//take input from human user
+		
+		System.out.println("\n\t----------------------------------------------------------------------------");
+		System.out.printf("\n\t" + "Please enter the territory to fortify : ");
+		
+		int msg = 0;
+		
+		
+		while(true){
 
+			if(msg == 1){
+				System.out.println("\n\t------------------------ INCORRECT INPUT --------------------------");
+				System.out.printf("\n\t" + "Please choose a territory to fortify. Please enter only a territory you own : ");
+			}
+			
+			//Take territory input
+			Scanner toTerritoryInput = new Scanner(System.in);
+			toTerr = toTerritoryInput.nextLine().trim().toUpperCase();
+			
+			int foundFlag = 0;
+			
+			int count = 0;
+			for(String path : fortifyList){
+				
+				String[] pathSplit = path.split("-");
+				
+				if(toTerr.equalsIgnoreCase(pathSplit[1])){
+					
+					fromTerr = pathSplit[0].toUpperCase();
+					
+					foundFlag = 1;
+					
+					count++;
+					
+				}//end if(toTerr.equals(pathSplit[1]))
+				
+			}//end for(String path : fortifyList)
+			
+			if(foundFlag == 0){
+				
+				msg = 1;
+				continue;
+				
+			}
+			
+			if(count > 1){
+				
+				
+				int msg2 = 0;
+				System.out.println("\n\t----------------------------------------------------------------------------");
+				System.out.printf("\n\t" + "Please enter the territory from which you would like to move the army units to " + toTerr +  " : ");
+				
+				while(true){
+
+					if(msg2 == 1){
+						System.out.println("\n\t------------------------ INCORRECT INPUT --------------------------");
+					}
+					System.out.printf("\n\t" + "Please enter only a territory which you own and is adjacent to " + toTerr + " : ");
+					
+					//Take territory input
+					Scanner fromTerritoryInput = new Scanner(System.in);
+					fromTerr = fromTerritoryInput.nextLine().trim().toUpperCase();
+					
+					int foundFrom = 0;		
+					for(String path : fortifyList){
+						
+						String[] pathSplit = path.split("-");
+						
+						if(toTerr.equalsIgnoreCase(pathSplit[1])){
+							
+							if(fromTerr.equalsIgnoreCase(pathSplit[0])){
+								
+								foundFrom = 1;
+																
+							}
+							
+						}//end if(toTerr.equals(pathSplit[1]))
+						
+					}//end for(String path : fortifyList)
+					
+					
+					if(foundFrom == 0){
+						
+						msg2 = 1;
+						continue;
+						
+					}
+					else
+						break;
+					
+				}//end while(true)
+			
+			}//end if(count > 1)
+			
+			break;
+			
+		}//end while(true)
+		
+		
+		int fromArmies = 0;
+		int toArmies = 0;
+		
+		for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
+			
+			String [] playerInfoKeySplit = playerInfoKey.split("-");
+			
+			if(playerInfoKeySplit[1].equalsIgnoreCase(fromTerr))
+				fromArmies = StartUpPhaseModel.playerInfo.get(playerInfoKey);
+			
+			if(playerInfoKeySplit[1].equalsIgnoreCase(toTerr))
+				toArmies = StartUpPhaseModel.playerInfo.get(playerInfoKey);
+			
+		}
+		
+		System.out.println("\n\t----------------------------------------------------------------------------");
+		System.out.printf("\n\t" + "You can move " + (fromArmies - 1) + " army units out of " + fromArmies + " army units present in "
+							+ fromTerr + " to " + toTerr);
+		
+		msg = 0;
+		
+		while(true){
+			
+			if(msg == 1){
+				
+				System.out.println("\n\t------------------------ INCORRECT INPUT --------------------------");
+				
+				System.out.printf("\n\tPlease enter only 1 to " + (fromArmies - 1) + " army units to move : ");
+					
+			}
+			
+			//Take reinforcement armies input
+			Scanner fortifyInput = new Scanner(System.in);
+			
+			if (!fortifyInput.hasNextInt()) {
+				msg = 1;
+				continue;
+			}
+			
+			
+			fortifyingUnits = fortifyInput.nextInt();
+			
+			if (fortifyingUnits < 0) {
+				msg = 1;
+				continue;
+			}
+			
+			
+			if(fromArmies > fortifyingUnits)
+				
+				break;
+			
+			else{
+				msg = 1;
+				continue;
+			}
+		}//end while(true)	
+		
+		String fromCont = StartUpPhaseModel.terrCont.get(fromTerr);
+		
+		String toCont = StartUpPhaseModel.terrCont.get(toTerr);
+		
+		String from = player + "-" + fromTerr + "-" + fromCont;
+		
+		String to = player + "-" + toTerr + "-" + toCont;
+		
+		int value = fortifyingUnits;
+		
+		fromArmies = fromArmies - value;
+		
+		toArmies = toArmies + value;
+		
+		StartUpPhaseModel.playerInfo.put(from, fromArmies);
+		
+		StartUpPhaseModel.playerInfo.put(to, toArmies);
+		
+		setPlayer(player);
+		
+		setFortifyUnits(value);
+		
+		setUpdatedSource(fromArmies);
+		
+		setUpdatedDest(toArmies);
+	
+		setSourceTerr(fromTerr);
+		
+		setDestTerr(toTerr);
+		
+		setChanged();
+		
+		notifyObservers(this);
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}//end humanFortification
+	
 	
 
 	public static void main(String [] args){
