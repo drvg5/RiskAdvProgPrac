@@ -109,8 +109,7 @@ public class FortificationUI implements Observer {
 		
 	}
 	
-	
-	public void displayAggressiveFortification(String player,String fromTerr, String toTerr, int randomArmies, int updatedFromArmies, int updatedToArmies){
+	public void displayAggressiveFortification(String player,String fromTerr, String toTerr, int armies, int updatedFromArmies, int updatedToArmies){
 		
 		
 		System.out.println("\n\n\t***************PERFORMING FORTIFICATION ***********************");
@@ -123,7 +122,7 @@ public class FortificationUI implements Observer {
 		}
 		System.out.println("\n\t" + "Source Territory : " + fromTerr);
 		System.out.println("\t" + "Eligible STRONGEST destination territory : " + toTerr);
-		System.out.println("\n\t" + "Moving " + randomArmies + " Army Units from " + fromTerr + " to " + toTerr);
+		System.out.println("\n\t" + "Moving " + armies + " Army Units from " + fromTerr + " to " + toTerr);
 		
 		try {
 			System.in.read();
@@ -133,8 +132,8 @@ public class FortificationUI implements Observer {
 			e.printStackTrace();
 		}
 		
-		int prevFromArmies = updatedFromArmies + randomArmies;
-		int prevToArmies = updatedToArmies - randomArmies;
+		int prevFromArmies = updatedFromArmies + armies;
+		int prevToArmies = updatedToArmies - armies;
 		
 		System.out.println("\n\t" + "Army Units in " + fromTerr + " before moving army units : " + prevFromArmies );
 		System.out.println( "\t" + "Army Units remaining in " + fromTerr + " after moving army units : "  + updatedFromArmies);
@@ -153,7 +152,7 @@ public class FortificationUI implements Observer {
 		
 	}//end displayAggressiveFortification
 	
-    public void displayBenevolentFortification(String player,String fromTerr, String toTerr, int randomArmies, int updatedFromArmies, int updatedToArmies){
+    public void displayBenevolentFortification(String player,String fromTerr, String toTerr, int armies, int updatedFromArmies, int updatedToArmies){
 		
 		
 		System.out.println("\n\n\t***************PERFORMING FORTIFICATION ***********************");
@@ -166,7 +165,7 @@ public class FortificationUI implements Observer {
 		}
 		System.out.println("\n\t" + "Source Territory : " + fromTerr);
 		System.out.println("\t" + "Eligible WEAKEST destination territory : " + toTerr);
-		System.out.println("\n\t" + "Moving " + randomArmies + " Army Units from " + fromTerr + " to " + toTerr);
+		System.out.println("\n\t" + "Moving " + armies + " Army Units from " + fromTerr + " to " + toTerr);
 		
 		try {
 			System.in.read();
@@ -176,8 +175,8 @@ public class FortificationUI implements Observer {
 			e.printStackTrace();
 		}
 		
-		int prevFromArmies = updatedFromArmies + randomArmies;
-		int prevToArmies = updatedToArmies - randomArmies;
+		int prevFromArmies = updatedFromArmies + armies;
+		int prevToArmies = updatedToArmies - armies;
 		
 		System.out.println("\n\t" + "Army Units in " + fromTerr + " before moving army units : " + prevFromArmies );
 		System.out.println( "\t" + "Army Units remaining in " + fromTerr + " after moving army units : "  + updatedFromArmies);
