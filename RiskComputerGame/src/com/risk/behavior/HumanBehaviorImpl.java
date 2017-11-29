@@ -3,7 +3,9 @@ package com.risk.behavior;
 import java.util.HashMap;
 import java.util.List;
 
+import com.risk.model.FortificationPhaseModel;
 import com.risk.model.ReinforcementPhaseModel;
+import com.risk.ui.FortificationUI;
 import com.risk.ui.ReinforcementsUI;
 
 public class HumanBehaviorImpl implements PlayerBehavior {
@@ -21,7 +23,11 @@ public class HumanBehaviorImpl implements PlayerBehavior {
 
 	@Override
 	public void fortify(String player) {
-		// TODO Auto-generated method stub
+
+		FortificationPhaseModel obj = new FortificationPhaseModel();
+		FortificationUI objUI = new FortificationUI();
+		obj.addObserver(objUI);
+		obj.humanFortification(player);
 
 	}
 

@@ -8,8 +8,10 @@ import java.util.Random;
 import java.util.TreeSet;
 
 import com.risk.model.AttackPhaseModel;
+import com.risk.model.FortificationPhaseModel;
 import com.risk.model.ReinforcementPhaseModel;
 import com.risk.model.StartUpPhaseModel;
+import com.risk.ui.FortificationUI;
 import com.risk.ui.ReinforcementsUI;
 
 public class AggressiveBehaviorImpl implements PlayerBehavior {
@@ -37,6 +39,11 @@ public class AggressiveBehaviorImpl implements PlayerBehavior {
 	@Override
 	public void fortify(String player) {
 
+		FortificationPhaseModel obj = new FortificationPhaseModel();
+		FortificationUI objUI = new FortificationUI();
+		obj.addObserver(objUI);
+		obj.aggressiveFortification(player);
+		
 	}
 
 }

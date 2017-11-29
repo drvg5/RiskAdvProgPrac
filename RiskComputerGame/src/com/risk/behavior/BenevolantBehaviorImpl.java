@@ -7,8 +7,10 @@ import java.util.Observable;
 import java.util.Random;
 import java.util.TreeSet;
 
+import com.risk.model.FortificationPhaseModel;
 import com.risk.model.ReinforcementPhaseModel;
 import com.risk.model.StartUpPhaseModel;
+import com.risk.ui.FortificationUI;
 import com.risk.ui.ReinforcementsUI;
 
 public class BenevolantBehaviorImpl implements PlayerBehavior {
@@ -26,7 +28,13 @@ public class BenevolantBehaviorImpl implements PlayerBehavior {
 
 	@Override
 	public void fortify(String player) {
-		// TODO Auto-generated method stub
+
+
+		FortificationPhaseModel obj = new FortificationPhaseModel();
+		FortificationUI objUI = new FortificationUI();
+		obj.addObserver(objUI);
+		obj.benevolentFortification(player);
+		
 
 	}
 
