@@ -185,6 +185,12 @@ public class AttackPhaseModel {
 
 	}
 
+	/**
+	 * Attack aggressively.
+	 *
+	 * @param playerInfoKey the player info key
+	 * @param territoryMap the territory map
+	 */
 	/*
 	 * This method is called when the Aggressive Player Behavior is chosen
 	 * 
@@ -266,10 +272,7 @@ public class AttackPhaseModel {
 	/**
 	 * Check defender adjacency.
 	 *
-	 * @param plyr
-	 *            the plyr
-	 * @param territoryMap
-	 *            the territory map
+	 * @param territoryMap            the territory map
 	 * @return true, if successful
 	 */
 	private static boolean checkDefenderAdjacency(HashMap<String, List<String>> territoryMap) {
@@ -304,10 +307,9 @@ public class AttackPhaseModel {
 	/**
 	 * Attack process.
 	 *
-	 * @param plyr
-	 *            the plyr
-	 * @param territoryMap
-	 *            the territory map
+	 * @param plyr            the plyr
+	 * @param territoryMap            the territory map
+	 * @return true, if successful
 	 */
 	static boolean attackProcessAggressive(int plyr, HashMap<String, List<String>> territoryMap) {
 		boolean attackPossible = true;
@@ -494,6 +496,12 @@ public class AttackPhaseModel {
 		}
 	}
 
+	/**
+	 * Find country with max armies.
+	 *
+	 * @param player the player
+	 * @return the string
+	 */
 	public static String findCountryWithMaxArmies(String player) {
 
 		// populating the lists for attacker and defender
@@ -516,6 +524,12 @@ public class AttackPhaseModel {
 
 	}
 
+	/**
+	 * Conquer all adjacent countries.
+	 *
+	 * @param player the player
+	 * @param territoryMap the territory map
+	 */
 	public static void conquerAllAdjacentCountries(String player, HashMap<String, List<String>> territoryMap) {
 
 		// populating the lists for attacker and defender
@@ -558,6 +572,14 @@ public class AttackPhaseModel {
 
 	}
 
+	/**
+	 * Change player info data for cheater.
+	 *
+	 * @param player the player
+	 * @param listOfAdjacentCountries the list of adjacent countries
+	 * @param countriesOfOtherPlayers the countries of other players
+	 * @param countriesOfPlayerChosen the countries of player chosen
+	 */
 	private static void changePlayerInfoDataForCheater(String player, List<String> listOfAdjacentCountries,
 			HashMap<String, String> countriesOfOtherPlayers, List<String> countriesOfPlayerChosen) {
 

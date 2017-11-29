@@ -3,12 +3,20 @@ package com.risk.behavior;
 import java.util.HashMap;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StrategyContext.
+ * 
+ * @author ashish
+ */
 public class StrategyContext {
 
+	/** The strategy. */
 	private PlayerBehavior strategy;
 
 	/**
-	 * Plugs in a specific strategy to be used
+	 * Plugs in a specific strategy to be used.
+	 *
 	 * @param strategy Strategy selected by User
 	 */
 	public void setStrategy(PlayerBehavior strategy) {
@@ -27,6 +35,12 @@ public class StrategyContext {
 		// return this.strategy.reinforce(a);
 	}
 
+	/**
+	 * Execute attack.
+	 *
+	 * @param player the player
+	 * @param territoryMap the territory map
+	 */
 	/*
 	 * dynamic execution for attack phase
 	 */
