@@ -37,6 +37,7 @@ public class GameDriverNew extends Object {
 		adjList = new ArrayList<String>();
 		adjList.add("Afghanistan");
 		adjList.add("Iran");
+		adjList.add("India");
 		territoryMap.put("Asia,Pakistan", adjList);
 
 		adjList = new ArrayList<String>();

@@ -57,7 +57,7 @@ public class FortificationUI implements Observer {
 			
 			String [] msgSplit = msgUI.split(",");
 			displayCheaterFortification(obj.getPlayer(),msgSplit[1],msgSplit[2],
-					msgSplit[2]);
+					msgSplit[3]);
 			
 		}
 		
@@ -73,12 +73,12 @@ public class FortificationUI implements Observer {
 			
 		}
 		
-		if(FortificationPhaseModel.fortifySetEmpty == 1){
-			displayFortificationNotPossible(obj.getPlayer());
-		}
-		else
-			displayFortification(obj.getPlayer(),obj.getSourceTerr(),obj.getDestTerr(),obj.getFortifyUnits(), obj.getUpdatedSource(), obj.getUpdatedDest());
-		
+//		if(FortificationPhaseModel.fortifySetEmpty == 1){
+//			displayFortificationNotPossible(obj.getPlayer());
+//		}
+//		else
+//			displayFortification(obj.getPlayer(),obj.getSourceTerr(),obj.getDestTerr(),obj.getFortifyUnits(), obj.getUpdatedSource(), obj.getUpdatedDest());
+//		
 	}
 	
 	public void displayFortificationNotPossible(String player){
@@ -230,7 +230,7 @@ public class FortificationUI implements Observer {
 		}
 		System.out.println("\n\t" + "User chosen Source Territory : " + fromTerr);
 		System.out.println("\t" + "User chosen Destination territory : " + toTerr);
-		System.out.println("\t" + "User chosen number of armies : " + toTerr);
+		System.out.println("\t" + "User chosen number of armies : " + armies);
 		System.out.println("\n\t" + "Moving " + armies + " Army Units from " + fromTerr + " to " + toTerr);
 		
 		try {
@@ -278,6 +278,9 @@ public class FortificationUI implements Observer {
 		System.out.println("\n\t" + "Territory : " + terr );
 		System.out.println("\n\t" + "Army Units in " + terr + " before : " + prevArmyUnits );
 		System.out.println("\n\t" + "Army Units in " + terr + " after being doubled: " + doubledArmyUnits );
+		
+	
+		System.out.println("\t---------------------------------------------------------------------------\n");
 		
 		
 		try {
@@ -339,7 +342,7 @@ public class FortificationUI implements Observer {
 			
 			String [] keySplit = key.split("-");
 			
-			System.out.println("\n\t Territory : " + keySplit[0].toUpperCase() + "\t Continent : " + keySplit[1].toUpperCase() + "\t Armies : " 
+			System.out.println("\n\t Territory : " + keySplit[1].toUpperCase() + "\t Continent : " + keySplit[2].toUpperCase() + "\t Armies : " 
 					+ StartUpPhaseModel.playerInfo.get(key));
 			
 			try {

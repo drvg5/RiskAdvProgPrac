@@ -172,25 +172,25 @@ public class PlayerClass extends Observable {
 				e.printStackTrace();
 			}
 
-			try {
-				System.in.read();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			// attack phase method called
-			PlayerClass.attackPhase(plyr,currentPlyrStrategy, territoryMap);
-			msg = "attack done";
-			setChanged();
-			notifyObservers(msg);
-
-			try {
-				System.in.read();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				System.in.read();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//
+//			// attack phase method called
+//			PlayerClass.attackPhase(plyr,currentPlyrStrategy, territoryMap);
+//			msg = "attack done";
+//			setChanged();
+//			notifyObservers(msg);
+//
+//			try {
+//				System.in.read();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 
 			// playerDominationObj.calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers,
 			// StartUpPhaseModel.totalTerr);
@@ -244,7 +244,7 @@ public class PlayerClass extends Observable {
 			}
 
 			// fortification method called
-			playerClassObj.fortificationPhase(plyr, territoryMap);
+			playerClassObj.fortificationPhase(plyr, territoryMap,currentPlyrStrategy);
 
 			msg = "fortification done," + plyr;
 			setChanged();
@@ -337,11 +337,8 @@ public class PlayerClass extends Observable {
 			setChanged();
 			notifyObservers(this);
 		
-		}
+		}//end if(currentPlyrStrategy.charAt(0) != 'c')
 
-		// ReinforcementPhaseModel.calculateReinforcement(Integer.toString(plyr));
-
-		// reinforcmentModelObj.reinforceRandom(Integer.toString(plyr));
 
 		ReinforcementsUI uiObj2 = new ReinforcementsUI();
 
@@ -350,19 +347,16 @@ public class PlayerClass extends Observable {
 		case 'a': {
 			AggressiveBehaviorImpl agressiveObj = new AggressiveBehaviorImpl();
 			contextObj.setStrategy(agressiveObj);
-			//agressiveObj.addObserver(uiObj2);
 			break;
 		}
 		case 'r': {
 			RandomBehaviorImpl randomObj = new RandomBehaviorImpl();
 			contextObj.setStrategy(randomObj);
-			//randomObj.addObserver(uiObj2);
 			break;
 		}
 		case 'b': {
 			BenevolantBehaviorImpl benevolentObj = new BenevolantBehaviorImpl();
 			contextObj.setStrategy(benevolentObj);
-			//benevolentObj.addObserver(uiObj2);
 			break;
 		}
 		case 'c': {
@@ -438,7 +432,7 @@ public class PlayerClass extends Observable {
 
 	}
 
-	public void fortificationPhase(int plyr, HashMap<String, List<String>> territoryMap) {
+	public void fortificationPhase(int plyr, HashMap<String, List<String>> territoryMap, String currentPlyrStrategy) {
 
 		try {
 			System.in.read();
@@ -448,17 +442,73 @@ public class PlayerClass extends Observable {
 			e.printStackTrace();
 		}
 
-		FortificationPhaseModel fortificationObj = new FortificationPhaseModel();
+		if(currentPlyrStrategy.charAt(0) != 'c'){
+			
+			FortificationPhaseModel fortificationObj = new FortificationPhaseModel();
+	
+			FortificationUI uiObj = new FortificationUI();
+	
+			fortificationObj.addObserver(uiObj);
+	
+			FortificationPhaseModel.createFortifySet(Integer.toString(plyr), territoryMap);
 
-		FortificationUI uiObj = new FortificationUI();
+		}//end if(currentPlyrStrategy.charAt(0) != 'c')
+		
+		switch (currentPlyrStrategy.charAt(0)) {
 
-		fortificationObj.addObserver(uiObj);
+		case 'a': {
+			
+			AggressiveBehaviorImpl agressiveObj = new AggressiveBehaviorImpl();
+			contextObj.setStrategy(agressiveObj);
+			
+			break;
+		}
+		case 'r': {
+			
+			RandomBehaviorImpl randomObj = new RandomBehaviorImpl();
+			contextObj.setStrategy(randomObj);
+		
+			break;
+		}
+		case 'b': {
+			
+			
+			BenevolantBehaviorImpl benevolentObj = new BenevolantBehaviorImpl();
+			contextObj.setStrategy(benevolentObj);
 
-		FortificationPhaseModel.createFortifySet(Integer.toString(plyr), territoryMap);
+			break;
+		}
+		case 'c': {
+			
+			CheaterBehaviorImpl cheaterObj = new CheaterBehaviorImpl();
+			contextObj.setStrategy(cheaterObj);
 
-		fortificationObj.randomFortification(Integer.toString(plyr));
+			break;
+		}
+		
+		case 'h': {
+			
+			HumanBehaviorImpl humanObj = new HumanBehaviorImpl();
+			contextObj.setStrategy(humanObj);
+			
+			break;
+		}
+		
+		default :
+			break;
+		}
+		
+		contextObj.executeFortification(Integer.toString(plyr));
 
-	}
+		try {
+			System.in.read();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}//end FortificationPhase
 
 	public boolean calcDominationValues(HashMap<String, Integer> playerInfo, int numberOfPlayers, int totalTerr) {
 

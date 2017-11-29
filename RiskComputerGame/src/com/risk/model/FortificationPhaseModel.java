@@ -223,8 +223,8 @@ public class FortificationPhaseModel extends Observable {
 		int value = 0;
 		
 		if(fromArmies > 1){
-			Random randomArmies = new Random();
 			
+			Random randomArmies = new Random();
 			value = randomArmies.nextInt(fromArmies - 1) + 1; 
 		}
 		
@@ -579,6 +579,7 @@ public class FortificationPhaseModel extends Observable {
 			if(toTerr.equals(pathSplit[1])){
 				
 				fromTerr = pathSplit[0];
+				
 				break;
 				
 			}//end if(toTerr.equals(pathSplit[1]))
@@ -609,7 +610,6 @@ public class FortificationPhaseModel extends Observable {
 		
 		StartUpPhaseModel.playerInfo.put(to, toArmies);
 		
-		
 		setMsgUI("benevolentFortify,");
 		
 		setPlayer(player);
@@ -623,7 +623,6 @@ public class FortificationPhaseModel extends Observable {
 		setSourceTerr(fromTerr);
 		
 		setDestTerr(toTerr);
-		
 		
 		setChanged();
 		
@@ -656,7 +655,9 @@ public class FortificationPhaseModel extends Observable {
     		   String mapKey = continent + "," + territory;
     		   
     		   //change to continentHashMap
-    		   List<String> adjacencyList = territoryMap.get(mapKey);
+    	//	   List<String> adjacencyList = territoryMap.get(mapKey);
+    		   
+    		   List<String> adjacencyList = PlayerClass.currentMap.get(mapKey);
     		   
     		   int otherPlayerAdjacentFlag = 0;
     		   //check if player has any adjacent territory owned by some other player to one which already owns
@@ -679,10 +680,9 @@ public class FortificationPhaseModel extends Observable {
        }//end for(String playerInfoKey : PlayerClass.playerInfo.keySet())
     	
 	       
+       //print territory status before reinforcement using StartUpPhaseModel.playerInfo
+       
 		setMsgUI("fortifyCheaterTerrPrint," + player);
-
-		//print territory status before reinforcement using StartUpPhaseModel.playerInfo
-		
 		setChanged();
 		notifyObservers(this);
 		
@@ -693,11 +693,14 @@ public class FortificationPhaseModel extends Observable {
 			
 			int playerInfoValue = StartUpPhaseModel.playerInfo.get(playerInfoKey);
 			
+			String msg = "cheaterFortify," + playerVals[1].toUpperCase() + "," + playerInfoValue;
+			
+			
 			playerInfoValue = 2 * playerInfoValue;
 			
-			setPlayer(player);
+			setMsgUI(msg + "," + playerInfoValue);
 			
-			setMsgUI("cheaterFortify," + playerVals[1].toUpperCase() + "," + playerInfoValue);
+			setPlayer(player);
 			
 			StartUpPhaseModel.playerInfo.put(playerInfoKey, playerInfoValue);
 			
@@ -877,17 +880,25 @@ public class FortificationPhaseModel extends Observable {
 			
 			String [] playerInfoKeySplit = playerInfoKey.split("-");
 			
-			if(playerInfoKeySplit[1].equalsIgnoreCase(fromTerr))
+			if(playerInfoKeySplit[1].equalsIgnoreCase(fromTerr)){
 				fromArmies = StartUpPhaseModel.playerInfo.get(playerInfoKey);
+				fromTerr = playerInfoKeySplit[1];
+			}
 			
-			if(playerInfoKeySplit[1].equalsIgnoreCase(toTerr))
+			if(playerInfoKeySplit[1].equalsIgnoreCase(toTerr)){
 				toArmies = StartUpPhaseModel.playerInfo.get(playerInfoKey);
+				toTerr = playerInfoKeySplit[1];
+		
+			}
+			
+			
 			
 		}
 		
 		System.out.println("\n\t----------------------------------------------------------------------------");
-		System.out.printf("\n\t" + "You can move " + (fromArmies - 1) + " army units out of " + fromArmies + " army units present in "
-							+ fromTerr + " to " + toTerr);
+		System.out.println("\n\t" + "You can move " + (fromArmies - 1) + " army units out of " + fromArmies + " army units present in "
+							+ fromTerr.toUpperCase() + " to " + toTerr.toUpperCase() + ".");
+		System.out.printf("\n\tPlease enter number of army units to move : ");
 		
 		msg = 0;
 		
@@ -912,7 +923,7 @@ public class FortificationPhaseModel extends Observable {
 			
 			fortifyingUnits = fortifyInput.nextInt();
 			
-			if (fortifyingUnits < 0) {
+			if (fortifyingUnits <= 0) {
 				msg = 1;
 				continue;
 			}

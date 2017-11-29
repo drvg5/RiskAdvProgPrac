@@ -391,10 +391,12 @@ public class PhaseUI implements Observer {
 		
 			String[] playerInfoVal = playerInfoKey.split("-");
 			
+			
+			
 			if(player.equals(playerInfoVal[0]) || player == playerInfoVal[0]){
 				
 				
-				System.out.println("\t    " + playerInfoVal[1] + " owned in " + " continent " + playerInfoVal[2]);
+				System.out.println("\t    " + playerInfoVal[1] + " owned in continent " + playerInfoVal[2]);
 				
 				System.out.println("\t    " + "Armies in " + playerInfoVal[1] + " : " + StartUpPhaseModel.playerInfo.get(playerInfoKey));
 					
@@ -406,6 +408,8 @@ public class PhaseUI implements Observer {
 				List<String> adjacentList = territoryMap.get(playerInfoVal[2] + "," + playerInfoVal[1]);
 				
 				int index = 0;
+				
+				
 				for(String adjacent : adjacentList){
 					
 					if(index == 0)
@@ -530,6 +534,7 @@ public class PhaseUI implements Observer {
 			String[] msgSplit = message.split(",");
 			
 			postFortificationView(msgSplit[1], ((PlayerClass) obs).currentMap);
+			
 		}
 		
 		

@@ -47,5 +47,12 @@ public class StrategyContext {
 	public void executeAttack(String player, HashMap<String, List<String>> territoryMap) {
 		this.strategy.attack(player,territoryMap);
 	}
+	
+	
+	public void executeFortification(String player) {
+
+		this.strategy.fortify(player);
+		// return this.strategy.reinforce(a);
+	}
 
 }
