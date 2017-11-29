@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.*;
 
 import com.risk.model.FortificationPhaseModel;
+import com.risk.model.StartUpPhaseModel;
 
 
 public class FortificationUI implements Observer {
@@ -47,7 +48,28 @@ public class FortificationUI implements Observer {
 		
 		if(msgUI.contains("humanFortify")){
 			
+			displayHumanFortification(obj.getPlayer(),obj.getSourceTerr(),obj.getDestTerr(),
+					obj.getFortifyUnits(), obj.getUpdatedSource(), obj.getUpdatedDest());
 			
+		}
+		
+		if(msgUI.contains("cheaterFortify")){
+			
+			String [] msgSplit = msgUI.split(",");
+			displayCheaterFortification(obj.getPlayer(),msgSplit[1],msgSplit[2],
+					msgSplit[2]);
+			
+		}
+		
+		if(msgUI.contains("fortifyPathsPrint")){
+			
+			displayFortifyPath();
+			
+		}
+		
+		if(msgUI.contains("fortifyCheaterTerrPrint")){
+			
+			displayFortifyCheaterTerr();
 			
 		}
 		
@@ -239,7 +261,100 @@ public class FortificationUI implements Observer {
 		
 	}//end displayHumanFortification
 	
+    public void displayCheaterFortification(String player,String terr, String prevArmyUnits, String doubledArmyUnits){
+		
+		
+		
+		
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("\n\t" + "Territory : " + terr );
+		System.out.println("\n\t" + "Army Units in " + terr + " before : " + prevArmyUnits );
+		System.out.println("\n\t" + "Army Units in " + terr + " after being doubled: " + doubledArmyUnits );
+		
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+	}//end displayHumanFortification
+
+    public void displayFortifyPath(){
+    	
+    	
+    	System.out.println("\n\n\t************* PATHS AVAILABLE FOR FORTIFICATION ***************");
+    	
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		for(String key : FortificationPhaseModel.fortifySet){
+			
+			String [] keySplit = key.split("-");
+			System.out.println("\n\t" + keySplit[0].toUpperCase() +" to " + keySplit[1].toUpperCase());
+			
+			try {
+				System.in.read();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}//end for(String key : FortificationPhaseModel.fortifySet)
+    	
+    }//end displayFortifyPath
 	
+    public void displayFortifyCheaterTerr(){
+    	
+    	
+    	System.out.println("\n\n\t**** TERRITORIES WITH NEIGHBOURS BELONGING TO OTHER PLAYERS ***");
+    	
+    	try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		for(String key : FortificationPhaseModel.fortifySetCheater){
+			
+			String [] keySplit = key.split("-");
+			
+			System.out.println("\n\t Territory : " + keySplit[0].toUpperCase() + "\t Continent : " + keySplit[1].toUpperCase() + "\t Armies : " 
+					+ StartUpPhaseModel.playerInfo.get(key));
+			
+			try {
+				System.in.read();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}//end for(String key : FortificationPhaseModel.fortifySet)
+    	
+		System.out.println("\n\n\t************** DOUBLING ABOVE TERRITORIES' ARMIES *************");
+    	
+    }
     
 	public void displayFortification(String player,String fromTerr, String toTerr, int randomArmies, int updatedFromArmies, int updatedToArmies){
 		
