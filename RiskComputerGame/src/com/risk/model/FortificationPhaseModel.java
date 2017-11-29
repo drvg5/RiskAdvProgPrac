@@ -8,6 +8,7 @@ public class FortificationPhaseModel extends Observable {
 	
 	public static TreeSet<String> fortifySet = new TreeSet<String>();
 	
+	public static TreeSet<String> fortifySetCheater = new TreeSet<String>();
 
 	/**
 	 * This method allows the player to move the armies after attack phase has been completed.
@@ -147,7 +148,6 @@ public class FortificationPhaseModel extends Observable {
     	
 	}//end method createFortifySet
 	
-	
 	public void randomFortification(String player){
 		
 		Random random = new Random();
@@ -182,7 +182,24 @@ public class FortificationPhaseModel extends Observable {
 			
 		}
 		
-
+		
+		setMsgUI("fortifyPathsPrint,");
+		
+		setPlayer(player);
+		
+		setChanged();
+		
+		notifyObservers(this);	
+		
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		String randomPath = fortifyList.get(random.nextInt(fortifyList.size()));
 				
 		String[] randomTerr = randomPath.split("-");
@@ -277,6 +294,23 @@ public class FortificationPhaseModel extends Observable {
 			
 			return;	
 		}
+		
+		setMsgUI("fortifyPathsPrint,");
+		
+		setPlayer(player);
+		
+		setChanged();
+		
+		notifyObservers(this);
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		
 		int highestArmies = 0;
 				
@@ -450,6 +484,24 @@ public class FortificationPhaseModel extends Observable {
 			return;	
 		}
 		
+		
+		setMsgUI("fortifyPathsPrint,");
+		
+		setPlayer(player);
+		
+		setChanged();
+		
+		notifyObservers(this);
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 		int lowestArmies = 0;
 				
 		TreeSet<Integer> unitsSet = new TreeSet<Integer>();
@@ -591,47 +643,43 @@ public class FortificationPhaseModel extends Observable {
 	
 	public void cheaterFortification(String player){
 		
-		 fortifySet.clear();
-			
-	       for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
-	    	   
-	    	   String[] keyArray = playerInfoKey.split("-");
+		fortifySetCheater.clear();
 
-	    	   if(keyArray[0].equals(player) || keyArray[0] == player){
+       for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
+    	   
+    	   String[] keyArray = playerInfoKey.split("-");
+
+    	   if(keyArray[0].equals(player) || keyArray[0] == player){
+    		      
+    		   String continent = keyArray[2];
+    		   String territory = keyArray[1];
+    		   String mapKey = continent + "," + territory;
+    		   
+    		   //change to continentHashMap
+    		   List<String> adjacencyList = territoryMap.get(mapKey);
+    		   
+    		   int otherPlayerAdjacentFlag = 0;
+    		   //check if player has any adjacent territory owned by some other player to one which already owns
+    		   for(String adjacentTerr : adjacencyList){
+    			   
+    			   String key = player + "-" + adjacentTerr + "-" + StartUpPhaseModel.terrCont.get(adjacentTerr);
+    			   
+    			   if(!StartUpPhaseModel.playerInfo.containsKey(key)){
+    				   
+    				   otherPlayerAdjacentFlag = 1;
+    				   fortifySetCheater.add(playerInfoKey);
+    				   break;
+    				   
+    			   }//end if(!StartUpPhaseModel.playerInfo.containsKey(key))
+    			   
+    		   }//end for(String adjacentTerr : adjacencyList)
 	    		   
-	    		   
-		    	   if(StartUpPhaseModel.playerInfo.get(playerInfoKey) >= 1){
-		    		   
-		    		   
-		    		   
-		    		   String continent = keyArray[2];
-		    		   String territory = keyArray[1];
-		    		   String mapKey = continent + "," + territory;
-		    		   
-		    		   //change to continentHashMap
-		    		   List<String> adjacencyList = territoryMap.get(mapKey);
-		    		   
-		    		   //check if player own any adjacent territory to one which already owns
-		    		   for(String adjacentTerr : adjacencyList){
-		    			   
-		    			   String key = player + "-" + adjacentTerr + "-" + StartUpPhaseModel.terrCont.get(adjacentTerr);
-		    			   
-		    			   if(StartUpPhaseModel.playerInfo.containsKey(key)){
-		    				   
-		    				   fortifySet.add(territory + "-" +adjacentTerr);
-		    				   
-		    			   }
-		    			   
-		    		   }//end for(String adjacentTerr : adjacencyList)
-		    		   
-		    	   }//end if(PlayerClass.playerInfo.get(playerInfoKey) >= 1)
-		    	   
-	    	   }//end if(keyArray[0].equals(player) || keyArray == player){
-	    	   
-	       }//end for(String playerInfoKey : PlayerClass.playerInfo.keySet())
-	    	
+    	   }//end if(keyArray[0].equals(player) || keyArray == player){
+    	   
+       }//end for(String playerInfoKey : PlayerClass.playerInfo.keySet())
+    	
 	       
-		setMsgUI("displayCheaterTerr," + player);
+		setMsgUI("fortifyCheaterTerrPrint," + player);
 
 		//print territory status before reinforcement using StartUpPhaseModel.playerInfo
 		
@@ -639,33 +687,24 @@ public class FortificationPhaseModel extends Observable {
 		notifyObservers(this);
 		
 		//update armies in each territory for cheater player
-		for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
-			
+		for(String playerInfoKey : fortifySetCheater){
 			
 			String [] playerVals = playerInfoKey.split("-");
 			
-			if(playerVals[0].equals(player) || playerVals[0] == player){
-				
-				
-				int playerInfoValue = StartUpPhaseModel.playerInfo.get(playerInfoKey);
-				
-		//		setPrevArmies(playerInfoValue);
-				
-				playerInfoValue = 2 * playerInfoValue;
-				
-		//		setLatestArmies(playerInfoValue);
-				
-				StartUpPhaseModel.playerInfo.put(playerInfoKey, playerInfoValue);
-				
-				setMsgUI("cheaterFortify," + playerVals[0] + "," + playerVals[1]);
-				
-				setChanged();
-				
-				notifyObservers(this);
-				
-			}//end if(playerVals[0].equals(player)
+			int playerInfoValue = StartUpPhaseModel.playerInfo.get(playerInfoKey);
 			
+			playerInfoValue = 2 * playerInfoValue;
 			
+			setPlayer(player);
+			
+			setMsgUI("cheaterFortify," + playerVals[1].toUpperCase() + "," + playerInfoValue);
+			
+			StartUpPhaseModel.playerInfo.put(playerInfoKey, playerInfoValue);
+			
+			setChanged();
+			
+			notifyObservers(this);
+
 		}//end for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet())
 		
 		
@@ -702,12 +741,23 @@ public class FortificationPhaseModel extends Observable {
 			return;	
 		}
 		
+		
+		setMsgUI("fortifyPathsPrint,");
+		
+		setPlayer(player);
+		
+		setChanged();
+		
+		notifyObservers(this);	
+		
+		
 		try {
 			System.in.read();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		
 		//need to print the territories which can be fortified
 		
