@@ -142,9 +142,11 @@ public class ReinforcementPhaseModel extends Observable {
 		reinTerrMsg = player + "," + playerTerr + "," + reinforcementArmies;
 		
 		if(ReinforcementPhaseModel.reinforcement.containsKey(player)){
+			
 			int existingReinforcements = ReinforcementPhaseModel.reinforcement.get(player);
 			reinforcementArmies = existingReinforcements + reinforcementArmies;
 			ReinforcementPhaseModel.reinforcement.put(player,reinforcementArmies);
+			
 		}
 		else
 			ReinforcementPhaseModel.reinforcement.put(player,reinforcementArmies);
@@ -1164,7 +1166,7 @@ public class ReinforcementPhaseModel extends Observable {
 			
 			int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomPlayerKey);
 			
-			setLatestArmies(playerInfoValue);
+			setPrevArmies(playerInfoValue);
 			playerInfoValue = playerInfoValue + 1;
 			
 			

@@ -96,6 +96,14 @@ public class ReinforcementsUI implements Observer {
 			placementHumanView(msgUISplit[1], msgUISplit[2], ((ReinforcementPhaseModel)arg));
 		}
 		
+		if(msgUI.contains("displayCheaterTerr")){
+			
+			//"reinforceHuman," + player + "," + territory
+			String[] msgUISplit = msgUI.split(",");
+			displayCheaterTerr(msgUISplit[1],PlayerClass.currentMap);
+		}
+		
+		
 	}//end update method
 	
 	public void calcByTerrView(String player, String terrOwned, String byTerrReinforcements){
@@ -330,6 +338,75 @@ public class ReinforcementsUI implements Observer {
 		
 		
 	}
+	
+	public void displayCheaterTerr(String player, HashMap<String,List<String>> territoryMap){
+		
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		System.out.println("\n\t" + "TERRITORIES OWNED BY PLAYER " + player + " -> \n");
+		
+		for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
+			
+			String[] playerInfoVal = playerInfoKey.split("-");
+			
+			
+			if(player.equals(playerInfoVal[0]) || player == playerInfoVal[0]){
+				
+				System.out.println("\n\t\t------------------------------------");
+				System.out.println("\t\t" + "Territory : " + playerInfoVal[1]);
+				
+				System.out.println("\t\t\t  " + "Continent : " + playerInfoVal[2]);
+				
+				System.out.println("\t\t\t  " + "Armies : " + StartUpPhaseModel.playerInfo.get(playerInfoKey));
+				
+				System.out.printf("\t\t\t  "+"Adjacent Countries : ");
+				
+				List<String> adjacentList = territoryMap.get(playerInfoVal[2] + "," + playerInfoVal[1]);
+				
+				int index = 0;
+				for(String adjacent : adjacentList){
+					
+					if(index == 0)
+						System.out.printf(adjacent);
+					else
+						System.out.printf("," + adjacent);
+					
+					index++;
+				}//for(String adjacent : adjacentList)
+				
+			}//end if(player.equals(playerInfoVal[0])...
+			
+		}//end for(String playerInfoKey : Star...
+	
+	
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		System.out.println("\n\n\n\t********************** CHEATER PLAYER REINFORCEMENT START ************************");
+
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	
 	
 	public void placementRandomView(String player, String territory, ReinforcementPhaseModel obj){
 		
