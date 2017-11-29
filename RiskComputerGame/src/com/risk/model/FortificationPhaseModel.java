@@ -162,6 +162,10 @@ public class FortificationPhaseModel extends Observable {
 			
 			fortifySetEmpty = 1;
 			
+			setMsgUI("fortifyEmpty,");
+			
+			setPlayer(player);
+			
 			setChanged();
 			
 			notifyObservers(this);
@@ -215,6 +219,8 @@ public class FortificationPhaseModel extends Observable {
 		
 		StartUpPhaseModel.playerInfo.put(to, toArmies);
 		
+		setMsgUI("randomFortify,");
+				
 		setPlayer(player);
 		
 		setFortifyUnits(value);
@@ -252,6 +258,10 @@ public class FortificationPhaseModel extends Observable {
 		if(fortifyList.isEmpty()){
 			
 			fortifySetEmpty = 1;
+			
+			setMsgUI("fortifyEmpty,");
+			
+			setPlayer(player);
 			
 			setChanged();
 			
@@ -377,6 +387,8 @@ public class FortificationPhaseModel extends Observable {
 		
 		StartUpPhaseModel.playerInfo.put(to, toArmies);
 		
+		setMsgUI("aggressiveFortify,");
+		
 		setPlayer(player);
 		
 		setFortifyUnits(value);
@@ -418,6 +430,10 @@ public class FortificationPhaseModel extends Observable {
 		if(fortifyList.isEmpty()){
 			
 			fortifySetEmpty = 1;
+			
+			setMsgUI("fortifyEmpty,");
+			
+			setPlayer(player);
 			
 			setChanged();
 			
@@ -542,6 +558,8 @@ public class FortificationPhaseModel extends Observable {
 		StartUpPhaseModel.playerInfo.put(to, toArmies);
 		
 		
+		setMsgUI("benevolentFortify,");
+		
 		setPlayer(player);
 		
 		setFortifyUnits(value);
@@ -639,19 +657,19 @@ public class FortificationPhaseModel extends Observable {
 				
 				StartUpPhaseModel.playerInfo.put(playerInfoKey, playerInfoValue);
 				
-				setMsgUI("reinforceCheater," + playerVals[0] + "," + playerVals[1]);
+				setMsgUI("cheaterFortify," + playerVals[0] + "," + playerVals[1]);
+				
 				setChanged();
 				
 				notifyObservers(this);
 				
-			}
+			}//end if(playerVals[0].equals(player)
 			
 			
 		}//end for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet())
 		
 		
 	}//end cheaterFortification
-	
 	
 	public void humanFortification(String player){
 		
@@ -664,6 +682,10 @@ public class FortificationPhaseModel extends Observable {
 		if(fortifyList.isEmpty()){
 			
 			fortifySetEmpty = 1;
+			
+			setMsgUI("fortifyEmpty,");
+			
+			setPlayer(player);
 			
 			setChanged();
 			
@@ -873,6 +895,8 @@ public class FortificationPhaseModel extends Observable {
 		StartUpPhaseModel.playerInfo.put(from, fromArmies);
 		
 		StartUpPhaseModel.playerInfo.put(to, toArmies);
+		
+		setMsgUI("humanFortify,");
 		
 		setPlayer(player);
 		
