@@ -40,7 +40,8 @@ public class FortificationUI implements Observer {
 		
 		if(msgUI.contains("benevolentFortify")){
 			
-			
+			displayBenevolentFortification(obj.getPlayer(),obj.getSourceTerr(),obj.getDestTerr(),
+					obj.getFortifyUnits(), obj.getUpdatedSource(), obj.getUpdatedDest());
 			
 		}
 		
@@ -152,8 +153,95 @@ public class FortificationUI implements Observer {
 		
 	}//end displayAggressiveFortification
 	
+    public void displayBenevolentFortification(String player,String fromTerr, String toTerr, int randomArmies, int updatedFromArmies, int updatedToArmies){
+		
+		
+		System.out.println("\n\n\t***************PERFORMING FORTIFICATION ***********************");
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("\n\t" + "Source Territory : " + fromTerr);
+		System.out.println("\t" + "Eligible WEAKEST destination territory : " + toTerr);
+		System.out.println("\n\t" + "Moving " + randomArmies + " Army Units from " + fromTerr + " to " + toTerr);
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		int prevFromArmies = updatedFromArmies + randomArmies;
+		int prevToArmies = updatedToArmies - randomArmies;
+		
+		System.out.println("\n\t" + "Army Units in " + fromTerr + " before moving army units : " + prevFromArmies );
+		System.out.println( "\t" + "Army Units remaining in " + fromTerr + " after moving army units : "  + updatedFromArmies);
+		
+		System.out.println("\n\t" + "Army Units in " + toTerr + " before recieving army units : "  + prevToArmies );
+		System.out.println("\t" + "Army Units in " + toTerr + " after recieving army units : " +  updatedToArmies);
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}//end displayBenevolentFortification
+	
+    public void displayHumanFortification(String player,String fromTerr, String toTerr, int armies, int updatedFromArmies, int updatedToArmies){
+		
+		
+		System.out.println("\n\n\t***************PERFORMING FORTIFICATION ***********************");
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("\n\t" + "User chosen Source Territory : " + fromTerr);
+		System.out.println("\t" + "User chosen Destination territory : " + toTerr);
+		System.out.println("\t" + "User chosen number of armies : " + toTerr);
+		System.out.println("\n\t" + "Moving " + armies + " Army Units from " + fromTerr + " to " + toTerr);
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		int prevFromArmies = updatedFromArmies + armies;
+		int prevToArmies = updatedToArmies - armies;
+		
+		System.out.println("\n\t" + "Army Units in " + fromTerr + " before moving army units : " + prevFromArmies );
+		System.out.println( "\t" + "Army Units remaining in " + fromTerr + " after moving army units : "  + updatedFromArmies);
+		
+		System.out.println("\n\t" + "Army Units in " + toTerr + " before recieving army units : "  + prevToArmies );
+		System.out.println("\t" + "Army Units in " + toTerr + " after recieving army units : " +  updatedToArmies);
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}//end displayHumanFortification
 	
 	
+    
 	public void displayFortification(String player,String fromTerr, String toTerr, int randomArmies, int updatedFromArmies, int updatedToArmies){
 		
 		                   
