@@ -18,45 +18,83 @@ import com.risk.ui.FortificationUI;
 import com.risk.ui.PlayerDominationView;
 import com.risk.ui.ReinforcementsUI;
 
+
 /**
- * This is an Observable Class which has implementations for state change in the
- * game play
- * 
- * 
+ * This is an Observable Class which has implementations for state change of a player as the game proceeds* 
+ * Observers for this class are {@link com.risk.ui.PhaseUI PhaseUI} and {@link com.risk.ui.PlayerDominationUI PlayerDominationUI}
  * @author Navjot
  * @author Ashish
  */
 
 public class PlayerClass extends Observable {
 
+	/** This HashMap stores the old domination values. The key stores the player as a string and it points to value which stores 
+	 * a percentage of total territories owned by that player.
+	 */
 	private HashMap<String, String> dominationOld = new HashMap<String, String>();
 
+	/** This HashMap stores the new domination values. The key stores the player as a string and it points to value which stores 
+	 * a percentage of total territories owned by that player.
+	 */
 	private HashMap<String, String> dominationNew = new HashMap<String, String>();
 
+	/**
+	 * Gets the domination old.
+	 *
+	 * @return the domination old
+	 */
 	public HashMap<String, String> getDominationOld() {
 		return dominationOld;
 	}
 
+	/**
+	 * Sets the domination old.
+	 *
+	 * @param dominationOld the domination old
+	 */
 	public void setDominationOld(HashMap<String, String> dominationOld) {
 		this.dominationOld = dominationOld;
 	}
 
+	/**
+	 * Gets the domination new.
+	 *
+	 * @return the domination new
+	 */
 	public HashMap<String, String> getDominationNew() {
 		return dominationNew;
 	}
 
+	/**
+	 * Sets the domination new.
+	 *
+	 * @param dominationNew the domination new
+	 */
 	public void setDominationNew(HashMap<String, String> dominationNew) {
 		this.dominationNew = dominationNew;
 	}
 
+	/** Stores the number of players in the game. */
 	public static int players = 0;
 
+	/** Stores the map used in the current game. */
 	public static HashMap<String, List<String>> currentMap;
 
+	/** Stores the message user by the observers. */
 	public static String msg;
 
+	/** The StrategyContext Class object. */
 	public static StrategyContext contextObj = new StrategyContext();
 
+	/**
+	 * This method is where the game starts and proceeds into various phases
+	 *
+	 * @param numberOfPlayers the number of players
+	 * @param territoryMap the territory map
+	 * @param continentControlValueHashMap the continent control value hash map
+	 * @param strategies the strategies HashMap to store behaviour of each player
+	 * @throws InterruptedException the interrupted exception
+	 */
 	public void gamePlay(int numberOfPlayers, HashMap<String, List<String>> territoryMap,
 			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies)
 			throws InterruptedException {
@@ -108,11 +146,6 @@ public class PlayerClass extends Observable {
 
 		int currentNumberOfPlayers = numberOfPlayers;
 
-		// PlayerDominationModel playerDominationObj = new PlayerDominationModel();
-
-		// PlayerDominationView playerDominationView = new PlayerDominationView();
-
-		// playerDominationObj.addObserver(playerDominationView);
 
 		msg = "roundrobin";
 
@@ -120,8 +153,7 @@ public class PlayerClass extends Observable {
 
 		notifyObservers(this);
 
-		// playerDominationObj.calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers,
-		// StartUpPhaseModel.totalTerr);
+		
 
 		// round robin for game starts
 
@@ -263,6 +295,13 @@ public class PlayerClass extends Observable {
 
 	}
 
+	/**
+	 *This method invokes the methods {@link com.risk.model.StartUpPhaseModel#terrPerPlayerPopulate terrPerPlayerPopulate} 
+	 *and {@link com.risk.model.StartUpPhaseModel#assignTerritories assignTerritories} 
+	 *to carry out the start up phase of the game.
+	 *
+	 * @param numberOfPlayers the number of players
+	 */
 	public void startUpPhase(int numberOfPlayers) {
 
 		StartUpPhaseModel.terrPerPlayerPopulate(numberOfPlayers, StartUpPhaseModel.totalTerr);
@@ -272,6 +311,14 @@ public class PlayerClass extends Observable {
 
 	}
 
+	/**
+	 * This method carries out the reinforcement phase.
+	 *
+	 * @param plyr The player number
+	 * @param currentPlyrStrategy It has behaviour of the current player
+	 * @param continentControlValueHashMap the continent control value hash map
+	 * @param currentMap the current territory map
+	 */
 	public void reinforcementPhase(int plyr, String currentPlyrStrategy, HashMap<String, Integer> continentControlValueHashMap,
 			HashMap<String, List<String>> currentMap) {
 
@@ -387,8 +434,12 @@ public class PlayerClass extends Observable {
 		}
 	}
 
-	/*
-	 * method for initiating the attack phase
+	/**
+	 * This method carries out the attack phase.
+	 *
+	 * @param plyr The player number
+	 * @param currentPlyrStrategy It has behaviour of the current player
+	 * @param territoryMap the current territory map
 	 */
 	public static void attackPhase(int plyr, String currentPlyrStrategy, HashMap<String, List<String>> territoryMap) {
 		 
@@ -432,6 +483,13 @@ public class PlayerClass extends Observable {
 
 	}
 
+	/**
+	 * This method carries out the attack phase.
+	 *
+	 * @param plyr The player number
+	 * @param territoryMap the current territory map
+	 * @param currentPlyrStrategy It has behaviour of the current player
+	 */
 	public void fortificationPhase(int plyr, HashMap<String, List<String>> territoryMap, String currentPlyrStrategy) {
 
 		try {
@@ -510,6 +568,14 @@ public class PlayerClass extends Observable {
 
 	}//end FortificationPhase
 
+	/**
+	 * This method calculates the domination values and returns true if they have changed.
+	 *
+	 * @param playerInfo the player info
+	 * @param numberOfPlayers the number of players
+	 * @param totalTerr number of total territories
+	 * @return true, if domination values change
+	 */
 	public boolean calcDominationValues(HashMap<String, Integer> playerInfo, int numberOfPlayers, int totalTerr) {
 
 		HashMap<String, String> dominationMap = new HashMap<String, String>();
@@ -585,6 +651,13 @@ public class PlayerClass extends Observable {
 
 	}
 
+	/**
+	 * This method checks if the player has won. It is invoked after each attack phase.
+	 * 
+	 *
+	 * @param plyr The player number
+	 * @return true, if a player wins
+	 */
 	public static boolean checkPlyrVictory(int plyr) {
 
 		TreeSet<Integer> playerCheck = new TreeSet<Integer>();
@@ -603,9 +676,9 @@ public class PlayerClass extends Observable {
 	}// end method checkPlyrVictory
 
 	/**
-	 * This method counts the number of players present at any instant in the game
-	 * 
-	 * @return Current Number of Players
+	 * This method counts the number of players present at any instant in the game.
+	 *
+	 * @return currentNumberOfPlyrs Current Number of Players
 	 */
 	public static int plyrsRemaining() {
 
