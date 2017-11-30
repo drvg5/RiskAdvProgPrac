@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import com.risk.model.EditMapModel;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * <h1>Controller Class for Editing Map</h1>
  * 

@@ -17,20 +17,27 @@ import com.risk.model.GameDriverNew;
 import com.risk.model.PlayerClass;
 import com.risk.model.ReinforcementPhaseModel;
 
+
+/**
+ * The Class GameModeUI show the varios buttons for load saved game, single game mode, tournament game mode and close window.
+ */
 public class GameModeUI {
 
+	/** The jframe game mode. */
 	static JInternalFrame jframeGameMode;
+	
+	/** The continent control value hash map to save. */
 	static HashMap<String, Integer> continentControlValueHashMapToSave = new HashMap<String, Integer>();
+	
+	/** The obj player class. */
 	static PlayerClass objPlayerClass = new PlayerClass();
 
 	/**
 	 * <p>
-	 * This method is used to load map file from local folder to play game
-	 * 
+	 * This method is used to load map file from local folder to play game.
+	 *
 	 * @author Dhruv
-	 * @param desktop
-	 *            To bind the InternalFrame with Main window frame
-	 * 
+	 * @param desktop            To bind the InternalFrame with Main window frame
 	 */
 
 	public static void GameModeWindow(final JDesktopPane desktop) {
@@ -138,8 +145,7 @@ public class GameModeUI {
 
 	/**
 	 * <p>
-	 * This method is used to close upload button
-	 * 
+	 * This method is used to close upload button.
 	 */
 
 	public void closeUpload() {

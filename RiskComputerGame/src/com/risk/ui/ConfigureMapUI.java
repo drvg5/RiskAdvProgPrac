@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.risk.model.ConfigureMapModel;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * <h1>Controller Class for Creating Map</h1>
  * 
