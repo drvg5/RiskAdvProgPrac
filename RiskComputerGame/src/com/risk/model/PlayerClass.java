@@ -118,6 +118,7 @@ public class PlayerClass extends Observable {
 	 * @param territoryMap the territory map
 	 * @param continentControlValueHashMap the continent control value hash map
 	 * @param strategies the strategies HashMap to store behaviour of each player
+	 * @param load boolean variable. True if a saved game is being loaded, False if it is a new game.
 	 * @throws InterruptedException the interrupted exception
 	 */
 	public void gamePlay(int numberOfPlayers, HashMap<String, List<String>> territoryMap,

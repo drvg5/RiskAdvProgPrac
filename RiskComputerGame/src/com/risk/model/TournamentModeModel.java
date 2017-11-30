@@ -199,6 +199,9 @@ public class TournamentModeModel {
 							System.out.println(selectedPlayerModeList);
 							// new GameDriverNew().gameStart(continentHashMap,
 							// continentCount,intcountOfMapselectedValue,intcountOfGameselectedValue,selectedPlayerModeList);
+							
+						//	new GameDriverNew().gameModeTournament(continentHashMapTotal,continentCountTotal,intcountOfMapselectedValue,
+						//			intcountOfGameselectedValue,selectedPlayerModeList);
 						}
 					}
 				}
