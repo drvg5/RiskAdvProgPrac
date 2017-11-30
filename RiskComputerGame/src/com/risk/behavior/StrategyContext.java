@@ -3,11 +3,12 @@ package com.risk.behavior;
 import java.util.HashMap;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * The Class StrategyContext.
- * 
- * @author ashish
+ * The Class StrategyContext contains the methods to setStartegy as per the player's behaviour
+ * and contains methods {@link com.risk.behavior.StrategyContext#executeReinforce executeReinforce},
+ * {@link com.risk.behavior.StrategyContext#executeAttack executeAttack},
+ * {@link com.risk.behavior.StrategyContext#executeFortification executeFortification}
  */
 public class StrategyContext {
 
