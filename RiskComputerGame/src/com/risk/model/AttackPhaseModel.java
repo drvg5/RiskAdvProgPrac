@@ -191,8 +191,13 @@ public class AttackPhaseModel {
 			currentAttackerAdjCountries.clear();
 
 			if (allAdjacentCountiresConquered) {
-				System.out.println("All Adjacent Countries have been Conquered");
+				System.out.println();
+				System.out.println();
+				System.out.println("---------------------------------------------------------------------------");
 
+				System.out.println("All Adjacent Countries have been Conquered");
+				System.out.println("---------------------------------------------------------------------------");
+				System.out.println();
 				allAdjacentCountiresConquered = false;
 
 				// generating new attacker
@@ -339,7 +344,13 @@ public class AttackPhaseModel {
 
 			}
 			if (allAdjacentCountiresConquered) {
+				System.out.println();
+				System.out.println();
+				System.out.println("---------------------------------------------------------------------------");
+
 				System.out.println("All Adjacent Countries have been Conquered");
+				System.out.println("---------------------------------------------------------------------------");
+				System.out.println();
 				break;
 			} else {
 				// attack initiated

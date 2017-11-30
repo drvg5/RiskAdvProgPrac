@@ -300,25 +300,25 @@ public class PlayerClass extends Observable {
 			}
 
 			
-//			try {
-//				System.in.read();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//
-//			// attack phase method called
-//			PlayerClass.attackPhase(plyr,currentPlyrStrategy, territoryMap);
-//			msg = "attack done";
-//			setChanged();
-//			notifyObservers(msg);
-//
-//			try {
-//				System.in.read();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// attack phase method called
+			PlayerClass.attackPhase(plyr,currentPlyrStrategy, territoryMap);
+			msg = "attack done";
+			setChanged();
+			notifyObservers(msg);
+
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			// playerDominationObj.calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers,
 			// StartUpPhaseModel.totalTerr);
