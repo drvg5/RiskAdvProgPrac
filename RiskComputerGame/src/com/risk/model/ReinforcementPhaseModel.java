@@ -393,7 +393,7 @@ public class ReinforcementPhaseModel extends Observable {
 	 *
 	 * @param player Player Number passed as a String
 	 */
-	public void calcReinforcementByCards(String player){
+	public void calcReinforcementByCards(String player,  String currentPlyrStrategy){
 		
 		setMsgUI("byCards," + player);
 		
@@ -401,6 +401,7 @@ public class ReinforcementPhaseModel extends Observable {
 		int prevExg = 0;
 		int foundHistoryFlag = 0;
 		int numberOfCards = 0;
+		
 		
 		
 		ArrayList<String> cardsList = new ArrayList<String>();
@@ -477,12 +478,28 @@ public class ReinforcementPhaseModel extends Observable {
 				
 				if(cardTypes == 1 || cardTypes == 3){
 					
-					boolean tradeDecision;
+					boolean tradeDecision = false;
 					
-					//randomly choose to trade in cards or not
-					Random randomDecision = new Random();
-					tradeDecision = randomDecision.nextBoolean();
+					if(currentPlyrStrategy.charAt(0) == 'h'){
+						
+						System.out.println("\t\t------------------------------------------------------------------------------------");
+						System.out.println("\n\tWould you like to exchange the cards?");
+						System.out.printf("\tPlease enter yes or y to exchange and anything else to continue : ");
+						
+						
+						Scanner inputTradeDecision = new Scanner(System.in);
+						String input = inputTradeDecision.next();
+						
+						if(input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("y"))
+							tradeDecision = true;
+						
+					}
 					
+					else{
+						//randomly choose to trade in cards or not
+						Random randomDecision = new Random();
+						tradeDecision = randomDecision.nextBoolean();
+					}
 					
 					if(tradeDecision){
 						
@@ -584,11 +601,30 @@ public class ReinforcementPhaseModel extends Observable {
 				else{
 				
 					
-					boolean tradeDecision;
+					boolean tradeDecision = false;
 					
-					//randomly choose to trade in cards or not
-					Random randomDecision = new Random();
-					tradeDecision = randomDecision.nextBoolean();
+					if(currentPlyrStrategy.charAt(0) == 'h'){
+						
+						System.out.println("\t\t------------------------------------------------------------------------------------");
+						System.out.println("\n\tWould you like to exchange the cards?");
+						System.out.printf("\tPlease enter yes or y to exchange and anything else to continue : ");
+						
+						
+						Scanner inputTradeDecision = new Scanner(System.in);
+						String input = inputTradeDecision.next();
+						
+						if(input.equalsIgnoreCase("yes") || input.equals('y'))
+							tradeDecision = true;
+						
+					}
+					
+					else{
+						//randomly choose to trade in cards or not
+						Random randomDecision = new Random();
+						tradeDecision = randomDecision.nextBoolean();
+					}
+					
+					
 					
 					if(tradeDecision){
 						

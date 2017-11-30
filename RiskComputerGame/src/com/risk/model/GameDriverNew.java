@@ -199,7 +199,7 @@ public class GameDriverNew extends Object {
 		HashMap<Integer, String> strategies = new HashMap<Integer, String>();
 		
 		strategies = enterStrategiesMenu(numberOfPlayers);
-		gameStart(territoryMap, continentControlValueHashMap, strategies, false);
+		gameStart(territoryMap, continentControlValueHashMap, strategies, false, false);
 
 	}
 
@@ -248,11 +248,7 @@ public class GameDriverNew extends Object {
 			
 			HashMap<String, List<String>> territoryMap = territoryMaps.get("M" + map);
 			
-			System.out.println("MAP:::: \n" + territoryMap);
-			
 			HashMap<String, Integer> continentControlValueHashMap = continentControlValueHashMaps.get("M" + map);
-			
-			System.out.println("Control Val ::: \n" + continentControlValueHashMap);
 			
 			while(gameNumber <= numberOfGames){
 				
@@ -284,7 +280,7 @@ public class GameDriverNew extends Object {
 				System.out.println("Strategies :: \n" + strategies);
 				
 				//start the game
-				gameStart(territoryMap, continentControlValueHashMap, strategies, false);
+				gameStart(territoryMap, continentControlValueHashMap, strategies, false, true);
 				
 				gameNumber ++;
 				
@@ -308,7 +304,7 @@ public class GameDriverNew extends Object {
 	 * @param load true, if a saved game is being loaded. false, if a new game is being loaded
 	 */
 	public void gameStart(HashMap<String, List<String>> territoryMap,
-			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies, boolean load) {
+			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies, boolean load,boolean tournament) {
 
 		
 		int numberOfPlayers = strategies.size() ;
@@ -325,7 +321,7 @@ public class GameDriverNew extends Object {
 
 					// new PlayerClass().gamePlay(numberOfPlayers, territoryMap,
 					// continentControlValueHashMap);
-					playerModel.gamePlay(numberOfPlayers, territoryMap, continentControlValueHashMap, strategies,load);
+					playerModel.gamePlay(numberOfPlayers, territoryMap, continentControlValueHashMap, strategies,load,tournament);
 
 				} catch (InterruptedException e) {
 

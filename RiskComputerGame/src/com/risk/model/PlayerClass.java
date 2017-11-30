@@ -122,9 +122,10 @@ public class PlayerClass extends Observable {
 	 * @throws InterruptedException the interrupted exception
 	 */
 	public void gamePlay(int numberOfPlayers, HashMap<String, List<String>> territoryMap,
-			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies, boolean load)
+			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies, boolean load, boolean trnmnt)
 			throws InterruptedException {
 		
+		boolean tournament = trnmnt;
 		boolean loadGame = load;
 		currentMap = territoryMap;
 
@@ -159,7 +160,7 @@ public class PlayerClass extends Observable {
 			DeployArmiesUI deployViewObj = new DeployArmiesUI();
 			startUpObj.addObserver(deployViewObj);
 	
-			startUpObj.deployArmiesRandomly(numberOfPlayers);
+			startUpObj.deployArmiesRandomly(numberOfPlayers, strategies);
 	
 			PlayerClass.msg = "postDeployStartUp";
 	
@@ -203,7 +204,7 @@ public class PlayerClass extends Observable {
 
 		// round robin for game starts
 		
-		//plyr = 
+	
 	
 		while (true) {
 
@@ -252,54 +253,59 @@ public class PlayerClass extends Observable {
 			
 			loadGame = false;
 			
-			//ask here
-			
-			
+						
 			// Save and Load Functionality
 			// -----------------------------------------------------------------------------------------------------------------------------------
 
-			System.out.println("Do you want to Save Map?");
-			try {
-				// Scanner input to save state of map
-				Scanner inputToCheckSave = new Scanner(System.in);
-				String strToCheckSave = inputToCheckSave.next();
-
-				// Upon yes, assigning required variables to SaveAndLoadGame Class object and
-				// then calling save method of ResourceManager to save to file
-				if (strToCheckSave.trim().equalsIgnoreCase("Yes") || strToCheckSave.trim().equalsIgnoreCase("Y")) {
-					objSaveAndLoadGame.mainMapToSave = currentMap;
-					objSaveAndLoadGame.dominationOldToSave = dominationOld;
-					objSaveAndLoadGame.dominationNewToSave = dominationNew;
-					objSaveAndLoadGame.playerInfoToSave = StartUpPhaseModel.playerInfo;
-					objSaveAndLoadGame.terrPerPlayerToSave = StartUpPhaseModel.terrPerPlayer;
-					objSaveAndLoadGame.terrContToSave = StartUpPhaseModel.terrCont;
-					objSaveAndLoadGame.terrPerContToSave = StartUpPhaseModel.terrPerCont;
-					objSaveAndLoadGame.reinforcementToSave = ReinforcementPhaseModel.reinforcement;
-					objSaveAndLoadGame.playerCardsToSave = ReinforcementPhaseModel.playerCards;
-					objSaveAndLoadGame.prevPlayerCardsToSave = ReinforcementPhaseModel.prevPlayerCards;
-					objSaveAndLoadGame.strategiesToSave = strategies;
-					objSaveAndLoadGame.state = "Reinforcecomplete";
-					objSaveAndLoadGame.currentPlyrStrategyToSave = currentPlyrStrategy;
-					objSaveAndLoadGame.numberOfPlayersToSave = plyr;
-					objSaveAndLoadGame.continentControlValueHashMapToSave=continentControlValueHashMap;
-					objSaveAndLoadGame.totalTerrToSave=StartUpPhaseModel.totalTerr;
-					objSaveAndLoadGame.countryTakenToSave= StartUpPhaseModel.countryTaken;
-					try {
-						ResourceManager.save(objSaveAndLoadGame, "SaveToLoadAgain");
-						System.out.println("SaveToLoadAgain is saved");
-						System.exit(0);
-
-					} catch (Exception exSave) {
-						System.out.println("Unable to Save State" + exSave.getMessage());
-					}
-				}
+			if(!tournament){
 				
-			}
+				System.out.println("\t\t------------------------------------------------------------------------------------");
+				System.out.println("\n\n\n\tDO YOU WANT TO SAVE THE MAP?");
+				System.out.printf("\tPlease enter yes or y to save and anything else to continue : ");
+				
+				try {
+					// Scanner input to save state of map
+					Scanner inputToCheckSave = new Scanner(System.in);
+					String strToCheckSave = inputToCheckSave.next();
+	
+					// Upon yes, assigning required variables to SaveAndLoadGame Class object and
+					// then calling save method of ResourceManager to save to file
+					if (strToCheckSave.trim().equalsIgnoreCase("Yes") || strToCheckSave.trim().equalsIgnoreCase("Y")) {
+						objSaveAndLoadGame.mainMapToSave = currentMap;
+						objSaveAndLoadGame.dominationOldToSave = dominationOld;
+						objSaveAndLoadGame.dominationNewToSave = dominationNew;
+						objSaveAndLoadGame.playerInfoToSave = StartUpPhaseModel.playerInfo;
+						objSaveAndLoadGame.terrPerPlayerToSave = StartUpPhaseModel.terrPerPlayer;
+						objSaveAndLoadGame.terrContToSave = StartUpPhaseModel.terrCont;
+						objSaveAndLoadGame.terrPerContToSave = StartUpPhaseModel.terrPerCont;
+						objSaveAndLoadGame.reinforcementToSave = ReinforcementPhaseModel.reinforcement;
+						objSaveAndLoadGame.playerCardsToSave = ReinforcementPhaseModel.playerCards;
+						objSaveAndLoadGame.prevPlayerCardsToSave = ReinforcementPhaseModel.prevPlayerCards;
+						objSaveAndLoadGame.strategiesToSave = strategies;
+						objSaveAndLoadGame.state = "Reinforcecomplete";
+						objSaveAndLoadGame.currentPlyrStrategyToSave = currentPlyrStrategy;
+						objSaveAndLoadGame.numberOfPlayersToSave = plyr;
+						objSaveAndLoadGame.continentControlValueHashMapToSave=continentControlValueHashMap;
+						objSaveAndLoadGame.totalTerrToSave=StartUpPhaseModel.totalTerr;
+						objSaveAndLoadGame.countryTakenToSave= StartUpPhaseModel.countryTaken;
+						try {
+							ResourceManager.save(objSaveAndLoadGame, "SaveToLoadAgain");
+							System.out.println("SaveToLoadAgain is saved");
+							System.exit(0);
+	
+						} catch (Exception exSave) {
+							System.out.println("Unable to Save State" + exSave.getMessage());
+						}
+					}
+				
+				}
+			
+				catch (Exception exInput) {
+					System.out.println("Unable to get input for Save" + exInput.getMessage());
+				}
 
-			catch (Exception exInput) {
-				System.out.println("Unable to get input for Save" + exInput.getMessage());
 			}
-
+			
 			
 			try {
 				System.in.read();
@@ -321,9 +327,7 @@ public class PlayerClass extends Observable {
 				e.printStackTrace();
 			}
 
-			// playerDominationObj.calcDominationValues(StartUpPhaseModel.playerInfo,numberOfPlayers,
-			// StartUpPhaseModel.totalTerr);
-
+			
 			// check for domination change
 			boolean checkDomination = calcDominationValues(StartUpPhaseModel.playerInfo, numberOfPlayers,
 					StartUpPhaseModel.totalTerr);
@@ -344,12 +348,20 @@ public class PlayerClass extends Observable {
 				}
 			}
 
+			
 			// if one player has all the territories i.e if player has won the game then
 			// break out of loop
-			boolean victory = PlayerClass.checkPlyrVictory(plyr);
+			boolean victory = PlayerClass.checkPlyrVictory();
+			
 			if (victory) {
 
 				msg = "PLAYER " + plyr + " WINS";
+				
+				System.out.println("---------------------------------------------------------------------------");
+				System.out.println("***************************** " + msg +"  *****************************");
+				System.out.println("---------------------------------------------------------------------------");
+				
+				
 				setChanged();
 				notifyObservers(this);
 				try {
@@ -358,6 +370,7 @@ public class PlayerClass extends Observable {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
 				break;
 			}
 
@@ -443,7 +456,7 @@ public class PlayerClass extends Observable {
 			notifyObservers(this);
 	
 			// call method to calculate reinforcements by cards
-			reinforcmentModelObj.calcReinforcementByCards(Integer.toString(plyr));
+			reinforcmentModelObj.calcReinforcementByCards(Integer.toString(plyr),currentPlyrStrategy);
 			// PlayerClass.msg = "reinforcements by exchanging cards|" + reinTerrMsg + "|";
 	
 			setChanged();
@@ -683,7 +696,7 @@ public class PlayerClass extends Observable {
 			for (int i = 1; i <= numberOfPlayers; i++) {
 
 				int terr = 0;
-				int percentage = 0;
+				float percentage = 0;
 				for (String playerInfoKey : playerInfo.keySet()) {
 
 					String[] keySplit = playerInfoKey.split("-");
@@ -698,7 +711,7 @@ public class PlayerClass extends Observable {
 
 				percentage = (terr * 100) / totalTerr;
 
-				dominationMap.put(Integer.toString(i), percentage + "%");
+				dominationMap.put(Integer.toString(i), percentage + " %");
 
 				setDominationOld(dominationMap);
 				setDominationNew(dominationMap);
@@ -749,14 +762,12 @@ public class PlayerClass extends Observable {
 
 	}
 
+	
 	/**
 	 * This method checks if the player has won. It is invoked after each attack phase.
-	 * 
-	 *
-	 * @param plyr The player number
 	 * @return true, if a player wins
 	 */
-	public static boolean checkPlyrVictory(int plyr) {
+	public static boolean checkPlyrVictory() {
 
 		TreeSet<Integer> playerCheck = new TreeSet<Integer>();
 
@@ -764,13 +775,15 @@ public class PlayerClass extends Observable {
 			String[] playerInfoArr = playerInfoKey.split("-");
 
 			playerCheck.add(Integer.valueOf(playerInfoArr[0]));
-		} // end for
+		} //end for
 
+	
 		if (playerCheck.size() == 1) {
 			return true;
-		} // end if
+		} //end if
 
 		return false;
+		
 	}// end method checkPlyrVictory
 
 	/**

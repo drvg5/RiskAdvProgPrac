@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -414,8 +415,8 @@ public class StartUpPhaseModel extends Observable {
 	 * @param numberOfPlayers
 	 *            Number Of Players
 	 */
-	public void deployArmiesRandomly(int numberOfPlayers) {
-
+	public void deployArmiesRandomly(int numberOfPlayers, HashMap<Integer, String> strategies) {
+		
 		Random randomCountry = new Random();
 
 		int maxArmies;
@@ -434,6 +435,9 @@ public class StartUpPhaseModel extends Observable {
 		while (!armiesRemainingPerPlyr.isEmpty()) {
 
 			for (int pl = 1; pl <= numberOfPlayers; pl++) {
+				
+				// set player strategy
+				String currentPlyrStrategy = strategies.get(pl);
 
 				if (!armiesRemainingPerPlyr.containsKey(String.valueOf(pl))) {
 
@@ -519,37 +523,194 @@ public class StartUpPhaseModel extends Observable {
 
 					// if no territories with 0 units remain then pick from playerAllTerritoriesList
 
-					// choose territory randomly to put armies into
-					String randomChosenCountry = playerAllTerritoriesList
-							.get(randomCountry.nextInt(playerAllTerritoriesList.size()));
+					if(currentPlyrStrategy.charAt(0) == 'h'){
+						
+						String territory = new String();
+						int deployUnits = 0;
+						
+						
+						System.out.println("\n\t----------------------------------------------------------------------------");
+						System.out.printf("\n\t" + "PLAYER "  + pl + " -> Please enter the territory to which you would like to deploy the army units : ");
+						
+						int msg = 0;
+						
+						while(true){
 
-					int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomChosenCountry);
+							if(msg == 1){
+								System.out.println("\n\t------------------------ INCORRECT INPUT --------------------------");
+							}
+							System.out.printf("\n\t" + "Please enter only a territory you own : ");
+							
+							//Take territory input
+							Scanner territoryInput = new Scanner(System.in);
+							territory = territoryInput.nextLine().trim().toUpperCase();
+							
+							int found = 0;	
+							
+							for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
+								
+								String [] playerInfoSplit = playerInfoKey.split("-");
+								
+								if(playerInfoSplit[0].equals(Integer.toString(pl))){
+									
+									if(playerInfoSplit[1].equalsIgnoreCase(territory)){
+										
+										found = 1;
+										
+										break;
+										
+									}
+									
+								}
+							
+							}
+						
+							
+							
+							if(found == 0){
+								
+								msg = 1;
+								continue;
+								
+							}
+							else
+								break;
+							
+						}//end while(true)
+				
+						System.out.println("\n\t----------------------------------------------------------------------------");
+						System.out.println("\n\t" + "You can deploy upto " + remArmies + " army units to " + territory.toUpperCase() + ".");
+						System.out.printf("\n\tPlease enter number of army units to move : ");
+						
+						msg = 0;
+						
+						while(true){
+							
+							if(msg == 1){
+								
+								System.out.println("\n\t------------------------ INCORRECT INPUT --------------------------");
+								
+								System.out.printf("\n\tPlease enter only 1 to " + remArmies + " army units to move : ");
+									
+							}
+							
+							//Take deployment armies input
+							Scanner deployment = new Scanner(System.in);
+							
+							if (!deployment.hasNextInt()) {
+								msg = 1;
+								continue;
+							}
+							
+							
+							deployUnits = deployment.nextInt();
+							
+							if (deployUnits <= 0) {
+								msg = 1;
+								continue;
+							}
+							
+							
+							if(deployUnits <= remArmies)
+								
+								break;
+							
+							else{
+								msg = 1;
+								continue;
+							}
+						}//end while(true)	
+						
+				
+				
+						int playerInfoValue = 0;
+						
+						String key = new String();
+						
+						for(String playerInfoKey : StartUpPhaseModel.playerInfo.keySet()){
+							
+							String [] playerInfoSplit = playerInfoKey.split("-");
+							
+							if(playerInfoSplit[0].equals(Integer.toString(pl))){
+								
+								if(playerInfoSplit[1].equalsIgnoreCase(territory)){
+									
+									key = playerInfoKey;
+									
+									playerInfoValue = StartUpPhaseModel.playerInfo.get(playerInfoKey);
+									
+									break;
+									
+								}
+								
+							}
+						
+						}
+						
+						playerInfoValue = playerInfoValue + deployUnits;
+						
+						StartUpPhaseModel.playerInfo.put(key, playerInfoValue);
+						
+						armiesRemainingPerPlyr.put(String.valueOf(pl), remArmies - deployUnits);
+						
+						remArmies = remArmies - deployUnits;
+						
+						if (remArmies == 0) {
+							armiesRemainingPerPlyr.remove(String.valueOf(pl));
+						}
+						
+						setCurrentPlayer(String.valueOf(pl));
+						setBeforeDeployUnits((playerInfoValue - deployUnits));
+						setAfterDeployUnits(playerInfoValue);
+						setChosenRandomTerritory(territory.toUpperCase());
+						setRemainingUnits((remArmies));
 
-					playerInfoValue = playerInfoValue + 1;
+						setChanged();
+						notifyObservers(this);
 
-					StartUpPhaseModel.playerInfo.put(randomChosenCountry, playerInfoValue);
+						try {
+							System.in.read();
 
-					armiesRemainingPerPlyr.put(String.valueOf(pl), remArmies - 1);
-
-					if (remArmies == 1) {
-						armiesRemainingPerPlyr.remove(String.valueOf(pl));
-					}
-
-					setCurrentPlayer(String.valueOf(pl));
-					setBeforeDeployUnits((playerInfoValue - 1));
-					setAfterDeployUnits(playerInfoValue);
-					setChosenRandomTerritory(randomChosenCountry.split("-")[1].toUpperCase());
-					setRemainingUnits((remArmies - 1));
-
-					setChanged();
-					notifyObservers(this);
-
-					try {
-						System.in.read();
-
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+					}//end if(currentPlyrStrategy.charAt(0) == 'h')
+					
+					else{
+						// choose territory randomly to put armies into
+						String randomChosenCountry = playerAllTerritoriesList
+								.get(randomCountry.nextInt(playerAllTerritoriesList.size()));
+	
+						int playerInfoValue = StartUpPhaseModel.playerInfo.get(randomChosenCountry);
+	
+						playerInfoValue = playerInfoValue + 1;
+	
+						StartUpPhaseModel.playerInfo.put(randomChosenCountry, playerInfoValue);
+	
+						armiesRemainingPerPlyr.put(String.valueOf(pl), remArmies - 1);
+	
+						if (remArmies == 1) {
+							armiesRemainingPerPlyr.remove(String.valueOf(pl));
+						}
+	
+						setCurrentPlayer(String.valueOf(pl));
+						setBeforeDeployUnits((playerInfoValue - 1));
+						setAfterDeployUnits(playerInfoValue);
+						setChosenRandomTerritory(randomChosenCountry.split("-")[1].toUpperCase());
+						setRemainingUnits((remArmies - 1));
+	
+						setChanged();
+						notifyObservers(this);
+	
+						try {
+							System.in.read();
+	
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 
