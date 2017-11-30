@@ -3,11 +3,26 @@ package com.risk.model;
 import java.io.IOException;
 import java.util.*;
 
+
+/**
+ * The Class FortificationPhaseModel is an Observable class which has methods for processing fortifications and also this class is being
+ * observed by an Observer {@link com.risk.ui.FortificationUI FortificationUI}
+ * to display the internal dyanmic details during the reinforcement phase.
+ * @author Navjot Kaur Bhamrah
+ * @see com.risk.ui.FortificationUI FortificationUI
+ */
 public class FortificationPhaseModel extends Observable {
 
 	
+	/** This TreeSet stores the territories in String values in form "fromTerr-toTerr" where
+	 * fromTerr is the source territory from which fortifications can be sent and toTerr is the destination territory which can recieve 
+	 * forces from fromTerr. Basically it stores paths available for fortifications.
+	 * <p>Only applicable for Aggressive, Benevolent, Human and Random Player</p> 
+	 */
 	public static TreeSet<String> fortifySet = new TreeSet<String>();
 	
+	/** This TreeSet stores the territories of cheater player where the territory has adjacent territories belonging to other players.
+	 */
 	public static TreeSet<String> fortifySetCheater = new TreeSet<String>();
 
 	/**
@@ -16,95 +31,178 @@ public class FortificationPhaseModel extends Observable {
 	 * The armies will only be moved if the there is adjacency between two countries and also
 	 * If each territory has armies equal to or more than one.
 	 * </p>
-	 * @author Navjot
 	 */
 
 	public static int fortifySetEmpty = 0;
 
+	/** The fortify units. */
 	private int fortifyUnits ;
 	
+	/** The updated source armies. */
 	private int updatedSource;
 	
+	/** The updated destination armies. */
 	private int updatedDest;
 	
+	/** The source territory. */
 	private String sourceTerr; 
 	
+	/** The destination territory. */
 	private String destTerr;
 	
+	/** The player number. */
 	private String player;
 	
+	/** The msg UI. */
 	private String msgUI;
 	
+	/**
+	 * Gets the msg UI.
+	 *
+	 * @return the msg UI
+	 */
 	public String getMsgUI() {
 		return msgUI;
 	}
 
 
+	/**
+	 * Sets the msg UI.
+	 *
+	 * @param msgUI the new msg UI
+	 */
 	public void setMsgUI(String msgUI) {
 		this.msgUI = msgUI;
 	}
 
 
+	/**
+	 * Gets the player.
+	 *
+	 * @return the player
+	 */
 	public String getPlayer() {
 		return player;
 	}
 
 
+	/**
+	 * Sets the player.
+	 *
+	 * @param player the new player
+	 */
 	public void setPlayer(String player) {
 		this.player = player;
 	}
 
 
+	/**
+	 * Gets the destination terr.
+	 *
+	 * @return the destination terr
+	 */
 	public String getDestTerr() {
 		return destTerr;
 	}
 
 
+	/**
+	 * Sets the destination territory.
+	 *
+	 * @param destTerr the new destination terr
+	 */
 	public void setDestTerr(String destTerr) {
 		this.destTerr = destTerr;
 	}
 
 
+	/**
+	 * Gets the source territory.
+	 *
+	 * @return the source terr
+	 */
 	public String getSourceTerr() {
 		return sourceTerr;
 	}
 
 
+	/**
+	 * Sets the source territory.
+	 *
+	 * @param sourceTerr the new source terr
+	 */
 	public void setSourceTerr(String sourceTerr) {
 		this.sourceTerr = sourceTerr;
 	}
 
 
+	/**
+	 * Gets the fortify units.
+	 *
+	 * @return the fortify units
+	 */
 	public int getFortifyUnits() {
 		return fortifyUnits;
 	}
 
 
+	/**
+	 * Sets the fortify units.
+	 *
+	 * @param randomUnits the new fortify units
+	 */
 	public void setFortifyUnits(int randomUnits) {
 		this.fortifyUnits = randomUnits;
 	}
 
+	/**
+	 * Gets the updated source armies.
+	 *
+	 * @return the updated source armies.
+	 */
 	public int getUpdatedSource() {
 		return updatedSource;
 	}
 
 
+	/**
+	 * Sets the updated source armies.
+	 *
+	 * @param updatedSource the new updated source armies.
+	 */
 	public void setUpdatedSource(int updatedSource) {
 		this.updatedSource = updatedSource;
 	}
 
 	
+	/**
+	 * Gets the updated destination amries.
+	 *
+	 * @return the updated destination armies
+	 */
 	public int getUpdatedDest() {
 		return updatedDest;
 	}
 
 
+	/**
+	 * Sets the updated destination armies.
+	 *
+	 * @param updatedDest the new updated destination armies
+	 */
 	public void setUpdatedDest(int updatedDest) {
 		this.updatedDest = updatedDest;
 	}
 
+	/** The territory map. */
 	public static HashMap<String,List<String>> territoryMap = new HashMap<String,List<String>>();
 	
+	/**
+	 * Populates the fortifySet Treeset with the paths available for fortification.
+	 * Only for aggressive, benevolent, random and human player
+	 * @param player the player
+	 * @param territoryMap the territory map
+	 */
 	public static void createFortifySet(String player,HashMap<String,List<String>> territoryMap){
 		
 	   fortifySet.clear();
@@ -148,6 +246,11 @@ public class FortificationPhaseModel extends Observable {
     	
 	}//end method createFortifySet
 	
+	/**
+	 * This method contains the process for fortification for random player.
+	 *
+	 * @param player the player
+	 */
 	public void randomFortification(String player){
 		
 		Random random = new Random();
@@ -264,6 +367,11 @@ public class FortificationPhaseModel extends Observable {
 		
 	}
 	
+	/**
+	 * This method contains the process for fortification for aggressive player.
+	 *
+	 * @param player the player
+	 */
     public void aggressiveFortification(String player){
 		
 		List<String> fortifyList = new ArrayList<String>(fortifySet);
@@ -452,6 +560,11 @@ public class FortificationPhaseModel extends Observable {
 		
 	}//end aggressiveFortification
 	
+	/**
+	 * This method contains the process for fortification for benevolent player.
+	 *
+	 * @param player the player
+	 */
 	public void benevolentFortification(String player){
 		
 
@@ -640,6 +753,11 @@ public class FortificationPhaseModel extends Observable {
 		
 	}//end benevolentFortification
 	
+	/**
+	 * This method contains the process for fortification for cheater player.
+	 *
+	 * @param player the player
+	 */
 	public void cheaterFortification(String player){
 		
 		fortifySetCheater.clear();
@@ -713,6 +831,11 @@ public class FortificationPhaseModel extends Observable {
 		
 	}//end cheaterFortification
 	
+	/**
+	 * This method contains the process for fortification for human player.
+	 *
+	 * @param player the player
+	 */
 	public void humanFortification(String player){
 		
 		List<String> fortifyList = new ArrayList<String>(fortifySet);
@@ -987,6 +1110,11 @@ public class FortificationPhaseModel extends Observable {
 	
 	
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String [] args){
 		
 		HashMap<String,List<String>> territoryMap = new HashMap<String,List<String>>();
