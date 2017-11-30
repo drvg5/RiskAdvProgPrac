@@ -33,9 +33,8 @@ public class TournamentModeModel {
 	public static boolean checkForCallingTournamentUI = true;
 	TournamentModeUI tournamentModeUI = new TournamentModeUI();
 	public static boolean junitMapValidationTournament;
-
-	static LinkedHashMap<String, List<String>> continentHashMapTotal = new LinkedHashMap<String, List<String>>();
-	static LinkedHashMap<String, Integer> continentCountTotal = new LinkedHashMap<String, Integer>();
+	static HashMap<String, HashMap<String, Integer>> strHashMapCount = new HashMap<String, HashMap<String, Integer>>();
+	static HashMap<String, HashMap<String, List<String>>> strHashMapMain = new HashMap<String, HashMap<String, List<String>>>();
 
 	static int count = 0;
 
@@ -44,7 +43,7 @@ public class TournamentModeModel {
 		boolean checkDuplicate;
 		HashMap<String, List<String>> continentHashMap = new HashMap<String, List<String>>();
 		HashMap<String, Integer> continentCount = new HashMap<String, Integer>();
-
+		
 		if (returnValue == 0) {
 			String UploadFileName = file.getName();
 			String fileNameWithoutExtension = FilenameUtils.removeExtension(UploadFileName);
@@ -185,19 +184,14 @@ public class TournamentModeModel {
 
 					else {
 						count++;
-						String split = "split" + count;
+						String mapcount = "M" + count;
 						junitMapValidationTournament = true;
-						continentHashMapTotal.putAll(continentHashMap);
-						continentCountTotal.putAll(continentCount);
-						continentHashMapTotal.put(split, seperator);
-						continentCountTotal.put(split, count);
+						strHashMapMain.put(mapcount, continentHashMap);
+						strHashMapCount.put(mapcount, continentCount);
+						
 
 						if (count == intcountOfMapselectedValue) {
-							System.out.println(continentHashMapTotal);
-							System.out.println(continentCountTotal);
-							System.out.println(intcountOfMapselectedValue);
-							System.out.println(intcountOfGameselectedValue);
-							System.out.println(selectedPlayerModeList);
+							
 							// new GameDriverNew().gameStart(continentHashMap,
 							// continentCount,intcountOfMapselectedValue,intcountOfGameselectedValue,selectedPlayerModeList);
 						}
