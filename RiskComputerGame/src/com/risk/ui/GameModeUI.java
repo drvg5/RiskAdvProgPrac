@@ -3,15 +3,25 @@ package com.risk.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 
+import com.risk.model.SaveAndLoadGame;
+import com.risk.model.StartUpPhaseModel;
+import com.risk.model.ResourceManager;
+import com.risk.model.GameDriverNew;
+import com.risk.model.PlayerClass;
+import com.risk.model.ReinforcementPhaseModel;
+
 public class GameModeUI {
 
 	static JInternalFrame jframeGameMode;
+	static HashMap<String, Integer> continentControlValueHashMapToSave = new HashMap<String, Integer>();
+	static PlayerClass objPlayerClass = new PlayerClass();
 
 	/**
 	 * <p>
@@ -33,11 +43,14 @@ public class GameModeUI {
 		singlePlayerBbutton.setBounds(100, 100, 200, 30);
 		JButton multiPlayerBbutton = new JButton("Tournament Mode");
 		multiPlayerBbutton.setBounds(100, 150, 200, 30);
+		JButton loadBbutton = new JButton("Load Saved Map");
+		loadBbutton.setBounds(100, 200, 200, 30);
 		JButton buttonCloseUpload = new JButton("Close");
-		buttonCloseUpload.setBounds(100, 200, 200, 30);
+		buttonCloseUpload.setBounds(100, 250, 200, 30);
 		jframeGameMode.add(singlePlayerBbutton);
 		jframeGameMode.add(multiPlayerBbutton);
 		jframeGameMode.add(buttonCloseUpload);
+		jframeGameMode.add(loadBbutton);
 		jframeGameMode.setVisible(true);
 		desktop.add(jframeGameMode);
 
@@ -61,6 +74,51 @@ public class GameModeUI {
 					e1.printStackTrace();
 				}
 
+			}
+		});
+
+		loadBbutton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					SaveAndLoadGame data = (SaveAndLoadGame) ResourceManager.load("SaveToLoadAgain");
+					PlayerClass.currentMap = data.mainMapToSave;
+					PlayerClass.setDominationOld(data.dominationOldToSave);
+					PlayerClass.setDominationNew(data.dominationNewToSave);
+					GameDriverNew.strategies = data.strategiesToSave;
+					StartUpPhaseModel.playerInfo = data.playerInfoToSave;
+					StartUpPhaseModel.terrPerPlayer = data.terrPerPlayerToSave;
+					StartUpPhaseModel.terrCont = data.terrContToSave;
+					StartUpPhaseModel.terrPerCont = data.terrPerContToSave;
+					ReinforcementPhaseModel.reinforcement = data.reinforcementToSave;
+					ReinforcementPhaseModel.playerCards = data.playerCardsToSave;
+					ReinforcementPhaseModel.prevPlayerCards = data.prevPlayerCardsToSave;
+				//	objPlayerClass.currentPlyrStrategy = data.currentPlyrStrategyToSave;
+					
+					PlayerClass.setCurrentPlayer(3);
+					
+					//= data.numberOfPlayersToSave;
+					continentControlValueHashMapToSave = data.continentControlValueHashMapToSave;
+					StartUpPhaseModel.totalTerr = data.totalTerrToSave;
+					StartUpPhaseModel.countryTaken = data.countryTakenToSave;
+					GameDriverNew gameDriver = new GameDriverNew();
+					
+					gameDriver.gameStart(PlayerClass.currentMap, continentControlValueHashMapToSave, GameDriverNew.strategies, true);
+					
+					
+					
+					
+					
+					
+//					objPlayerClass.gamePlay(objPlayerClass.plyr, PlayerClass.currentMap,
+//							continentControlValueHashMapToSave, GameDriverNew.strategies, data.state);
+					
+					
+				} catch (Exception exLoad) {
+					System.out.println("Unable to load saved data" + exLoad.getMessage());
+				}
 			}
 		});
 

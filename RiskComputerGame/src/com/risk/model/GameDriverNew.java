@@ -11,8 +11,9 @@ public class GameDriverNew extends Object {
 	PlayerClass playerModel;
 	PhaseUI phaseView;
 	PlayerDominationView dominationView;
+	public static HashMap<Integer, String> strategies = new HashMap<Integer, String>();
 
-	GameDriverNew() {
+	public GameDriverNew() {
 
 		playerModel = new PlayerClass();
 		phaseView = new PhaseUI();
@@ -164,7 +165,7 @@ public class GameDriverNew extends Object {
 		// input the strategies for the player
 		HashMap<Integer, String> strategies = new HashMap<Integer, String>();
 		strategies = enterStrategiesMenu(numberOfPlayers);
-		gameStart(territoryMap, continentControlValueHashMap, strategies);
+		gameStart(territoryMap, continentControlValueHashMap, strategies, false);
 
 	}
 
@@ -174,22 +175,24 @@ public class GameDriverNew extends Object {
 	}
 
 	public void gameStart(HashMap<String, List<String>> territoryMap,
-			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies) {
+			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies, boolean load) {
 
+		
 		int numberOfPlayers = strategies.size() ;
 
 		while (playerGTTerr != 1) {
 
 			try {
 				// numberOfPlayers = enterPlayersMenu();
-
-				StartUpPhaseModel.preStartUp(numberOfPlayers, territoryMap);
+				
+				if(!load) 
+					StartUpPhaseModel.preStartUp(numberOfPlayers, territoryMap);
 
 				try {
 
 					// new PlayerClass().gamePlay(numberOfPlayers, territoryMap,
 					// continentControlValueHashMap);
-					playerModel.gamePlay(numberOfPlayers, territoryMap, continentControlValueHashMap, strategies);
+					playerModel.gamePlay(numberOfPlayers, territoryMap, continentControlValueHashMap, strategies,load);
 
 				} catch (InterruptedException e) {
 
