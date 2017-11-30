@@ -44,7 +44,7 @@ public class GameModeUI {
 
 		jframeGameMode = new JInternalFrame("Game Mode");
 		jframeGameMode.setLayout(null);
-		jframeGameMode.setSize(400, 300);
+		jframeGameMode.setSize(400, 400); 
 		jframeGameMode.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JButton singlePlayerBbutton = new JButton("Single Game Mode");
 		singlePlayerBbutton.setBounds(100, 100, 200, 30);

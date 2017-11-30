@@ -688,15 +688,16 @@ public class AttackPhaseModel {
 			countriesOfOtherPlayers.put(keysplit1[1], playerInfoKey);
 		}
 
-		for (String playerInfoKey : playerAccToPlayerNo) {
-			keysplit1 = playerInfoKey.split("-");
+		for (String playerInfoKey : countriesOfPlayerChosen) {
+			// keysplit1 = playerInfoKey.split("-");
 
 			for (String iterate : territoryMap.keySet()) {
 				keysplit2 = iterate.split(",");
-				if (keysplit1[1].equals(keysplit2[1])) {
+				if (playerInfoKey.equals(keysplit2[1])) {
 
 					changePlayerInfoDataForCheater(player, territoryMap.get(iterate), countriesOfOtherPlayers,
 							countriesOfPlayerChosen);
+					break;
 				}
 			}
 
@@ -716,6 +717,45 @@ public class AttackPhaseModel {
 	 * @param countriesOfPlayerChosen
 	 *            the countries of player chosen
 	 */
+	// private static void changePlayerInfoDataForCheater(String player,
+	// List<String> listOfAdjacentCountries,
+	// HashMap<String, String> countriesOfOtherPlayers, List<String>
+	// countriesOfPlayerChosen) {
+	//
+	// String value = "";
+	// String modifiedKey = "";
+	// String[] keySplit = {};
+	// Integer armies = 0;
+	// for (String country : listOfAdjacentCountries) {
+	// // checking if attacker's countries are present in the adjacent countries
+	// list
+	// if (!countriesOfPlayerChosen.contains(country)) {
+	// for (String iterate : countriesOfOtherPlayers.keySet()) {
+	// if (country.equalsIgnoreCase(iterate)) {
+	//
+	// // changing key value in playerInfo
+	// // i.e. changing player data
+	// value = countriesOfOtherPlayers.get(iterate);
+	// keySplit = value.split("-");
+	//
+	// keySplit[0] = player;
+	// modifiedKey = keySplit[0] + "-" + keySplit[1] + "-" + keySplit[2];
+	// armies = StartUpPhaseModel.playerInfo.get(value);
+	// StartUpPhaseModel.playerInfo.put(modifiedKey, armies);
+	// StartUpPhaseModel.playerInfo.remove(iterate);
+	// break;
+	//
+	// }
+	// }
+	// }
+	// else
+	// {
+	// continue;
+	// }
+	// }
+	//
+	// }
+
 	private static void changePlayerInfoDataForCheater(String player, List<String> listOfAdjacentCountries,
 			HashMap<String, String> countriesOfOtherPlayers, List<String> countriesOfPlayerChosen) {
 
@@ -723,28 +763,21 @@ public class AttackPhaseModel {
 		String modifiedKey = "";
 		String[] keySplit = {};
 		Integer armies = 0;
-		for (String country : listOfAdjacentCountries) {
-			// checking if attacker's countries are present in the adjacent countries list
-			if (!countriesOfPlayerChosen.contains(country)) {
-				for (String iterate : countriesOfOtherPlayers.keySet()) {
-					if (country.equalsIgnoreCase(iterate)) {
+		int c=3;
+ 
+		for (String country : countriesOfOtherPlayers.keySet()) {
+			if (listOfAdjacentCountries.contains(country) && !(countriesOfPlayerChosen.contains(country))) {
+ 
+				value = countriesOfOtherPlayers.get(country);
+				keySplit = value.split("-");
 
-						// changing key value in playerInfo
-						// i.e. changing player data
-						value = countriesOfOtherPlayers.get(iterate);
-						keySplit = value.split("-");
-
-						keySplit[0] = player;
-						modifiedKey = keySplit[0] + "-" + keySplit[1] + "-" + keySplit[2];
-						armies = StartUpPhaseModel.playerInfo.get(value);
-						StartUpPhaseModel.playerInfo.put(modifiedKey, armies);
-						StartUpPhaseModel.playerInfo.remove(iterate);
-
-					}
-				}
+				keySplit[0] = player;
+				modifiedKey = keySplit[0] + "-" + keySplit[1] + "-" + keySplit[2];
+				armies = StartUpPhaseModel.playerInfo.get(value);
+ 				StartUpPhaseModel.playerInfo.put(modifiedKey, c++);
+				StartUpPhaseModel.playerInfo.remove(value);
 			}
 		}
-
 	}
 
 	/**
