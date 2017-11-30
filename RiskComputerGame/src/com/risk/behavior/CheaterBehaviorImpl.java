@@ -6,8 +6,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.risk.model.AttackPhaseModel;
+import com.risk.model.FortificationPhaseModel;
 import com.risk.model.ReinforcementPhaseModel;
 import com.risk.model.StartUpPhaseModel;
+import com.risk.ui.FortificationUI;
 import com.risk.ui.ReinforcementsUI;
 
 /**
@@ -34,7 +36,11 @@ public class CheaterBehaviorImpl implements PlayerBehavior {
 	 */
 	@Override
 	public void fortify(String player) {
-		// TODO Auto-generated method stub
+
+		FortificationPhaseModel obj = new FortificationPhaseModel();
+		FortificationUI objUI = new FortificationUI();
+		obj.addObserver(objUI);
+		obj.cheaterFortification(player);
 
 	}
 
