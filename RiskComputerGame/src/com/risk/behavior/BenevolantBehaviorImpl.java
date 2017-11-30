@@ -13,8 +13,16 @@ import com.risk.model.StartUpPhaseModel;
 import com.risk.ui.FortificationUI;
 import com.risk.ui.ReinforcementsUI;
 
+/**
+ * The Class BenevolantBehaviorImpl implements methods of interface {@link com.risk.behavior.PlayerBehavior PlayerBehavior}
+ * as per the BENEVOLENT player behaviour
+ * 
+ */
 public class BenevolantBehaviorImpl implements PlayerBehavior {
 
+	/* (non-Javadoc)
+	 * @see com.risk.behavior.PlayerBehavior#reinforce(java.lang.String)
+	 */
 	@Override
 
 	public void reinforce(String player){
@@ -26,6 +34,9 @@ public class BenevolantBehaviorImpl implements PlayerBehavior {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.risk.behavior.PlayerBehavior#fortify(java.lang.String)
+	 */
 	@Override
 	public void fortify(String player) {
 
@@ -38,6 +49,9 @@ public class BenevolantBehaviorImpl implements PlayerBehavior {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.risk.behavior.PlayerBehavior#attack(java.lang.String, java.util.HashMap)
+	 */
 	@Override
 	public void attack(String player, HashMap<String, List<String>> territoryMap) {
 		System.out.println("--------------------------");

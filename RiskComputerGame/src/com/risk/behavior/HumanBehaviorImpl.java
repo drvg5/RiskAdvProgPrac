@@ -8,8 +8,15 @@ import com.risk.model.ReinforcementPhaseModel;
 import com.risk.ui.FortificationUI;
 import com.risk.ui.ReinforcementsUI;
 
+/**
+ * The Class HumanBehaviorImpl implements methods of interface {@link com.risk.behavior.PlayerBehavior PlayerBehavior}
+ * as per the HUMAN player behaviour
+ */
 public class HumanBehaviorImpl implements PlayerBehavior {
 
+	/* (non-Javadoc)
+	 * @see com.risk.behavior.PlayerBehavior#reinforce(java.lang.String)
+	 */
 	@Override
 	public void reinforce(String player) {
 
@@ -21,6 +28,9 @@ public class HumanBehaviorImpl implements PlayerBehavior {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.risk.behavior.PlayerBehavior#fortify(java.lang.String)
+	 */
 	@Override
 	public void fortify(String player) {
 
@@ -31,6 +41,9 @@ public class HumanBehaviorImpl implements PlayerBehavior {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.risk.behavior.PlayerBehavior#attack(java.lang.String, java.util.HashMap)
+	 */
 	@Override
 	public void attack(String player, HashMap<String, List<String>> territoryMap) {
 		// TODO Auto-generated method stub
