@@ -9,6 +9,12 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Observable;
 
+
+/**
+ * This class is an Observable Class. It has methods to carry out the start up phase before the round robin begins.
+ * @author Ashish Sharma
+ *
+ */
 public class StartUpPhaseModel extends Observable {
 
 	/**
@@ -31,7 +37,7 @@ public class StartUpPhaseModel extends Observable {
 	public static HashMap<String, Integer> playerInfo = new HashMap<String, Integer>();
 
 	/**
-	 * HashMap for to store number of territories which must be assigned to each
+	 * HashMap to store number of territories which must be assigned to each
 	 * player initially
 	 */
 	public static HashMap<String, Integer> terrPerPlayer = new HashMap<String, Integer>();
@@ -55,55 +61,127 @@ public class StartUpPhaseModel extends Observable {
 	 */
 	public static TreeSet<String> countryTaken = new TreeSet<String>();
 
+	/**
+	 * This variable is used to store the initial armies after calculation as per the number of players
+	 */
 	public static int initialArmies = 0;
 
+	/**
+	 * This variable is used to store the total number of territories in a map after calculation.
+	 */
 	public static int totalTerr = 0;
 
+	/**
+	 * This variable is used in JUNIT tests.
+	 */
 	public static boolean junitCheckCount = true;
 
 	// variables for DeployArmiesUI
+	
+	/**
+	 * This variable stores is used in the {@link com.risk.ui.DeployArmiesUI DeployArmiesUI Class methods}
+	 */
 	private String chosenRandomTerritory;
+	
+	/**
+	 * This variable stores the current player and is used in the {@link com.risk.ui.DeployArmiesUI DeployArmiesUI Class methods}
+	 */
 	private String currentPlayer;
+	
+	/**
+	 * This variable stores the army units in a territory before deployment in start up phase.
+	 * This varibale is used in the {@link com.risk.ui.DeployArmiesUI DeployArmiesUI Class methods}
+	 */
 	private int beforeDeployUnits;
+	
+	/**
+	 * This variable stores the army units in a territory after deployment in start up phase
+	 * This varibale is used in the {@link com.risk.ui.DeployArmiesUI DeployArmiesUI Class methods}
+	 */
 	private int afterDeployUnits;
+	
+	/**
+	 * This variable stores the remaining army units for a player during deployment in the start up phase.
+	 * This varibale is used in the {@link com.risk.ui.DeployArmiesUI DeployArmiesUI Class methods}
+	 */
 	private int remainingUnits;
 
+	/**
+	 * Gets the chosen territory
+	 * @return chosenRandomTerritory chosen territory for deployment
+	 */
 	public String getChosenRandomTerritory() {
 		return chosenRandomTerritory;
 	}
 
+	/**
+	 * Sets the chosen territory
+	 * @param chosenRandomTerritory chosen territory for deployment
+	 */
 	public void setChosenRandomTerritory(String chosenRandomTerritory) {
 		this.chosenRandomTerritory = chosenRandomTerritory;
 	}
 
+	/**
+	 * Gets the current player for whose deployment is being done.
+	 * @return currentPlayer current player
+	 */
 	public String getCurrentPlayer() {
 		return currentPlayer;
 	}
 
+	/**
+	 * Sets the current player for whose deployment is being done.
+	 * @param currentPlayer current player
+	 */
 	public void setCurrentPlayer(String currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
 
+	/**
+	 * Gets the the army units in a territory before deployment in start up phase.
+	 * @return beforeDeployUnits army units in a territory before deployment
+	 */
 	public int getBeforeDeployUnits() {
 		return beforeDeployUnits;
 	}
 
+	/**
+	 * Sets the the army units in a territory before deployment in start up phase.
+	 * @param beforeDeployUnits army units in a territory before deployment
+	 */
 	public void setBeforeDeployUnits(int beforeDeployUnits) {
 		this.beforeDeployUnits = beforeDeployUnits;
 	}
 
+	/**
+	 * Gets the army units in a territory after deployment in start up phase.
+	 * @return afterDeployUnits army units in a territory after deployment
+	 */
 	public int getAfterDeployUnits() {
 		return afterDeployUnits;
 	}
 
+	/**
+	 * Sets the army units in a territory after deployment in start up phase.
+	 * @param afterDeployUnits army units in a territory after deployment
+	 */
 	public void setAfterDeployUnits(int afterDeployUnits) {
 		this.afterDeployUnits = afterDeployUnits;
 	}
 
+	/**
+	 * Gets the remaining army units for a player during deployment in the start up phase.
+	 * @return remainingUnits remaining army units for a player
+	 */
 	public int getRemainingUnits() {
 		return remainingUnits;
 	}
 
+	/**
+	 * Sets the remaining army units for a player during deployment in the start up phase.
+	 * @param remainingUnits remaining army units for a player
+	 */
 	public void setRemainingUnits(int remainingUnits) {
 		this.remainingUnits = remainingUnits;
 	}
@@ -535,7 +613,11 @@ public class StartUpPhaseModel extends Observable {
 		// } // end for(int pl = 1;pl<=numberOfPlayers;pl++)
 
 	}// end deployArmiesRandoml(int numberOfPlayers)
-
+	
+	/**
+	 * This method sets the initial number of armies as per number of players playing in a game.
+	 * @param numberOfPlayers number of players
+	 */
 	public static void setInitialArmies(int numberOfPlayers) {
 
 		if (numberOfPlayers == 2) {
