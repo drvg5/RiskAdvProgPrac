@@ -22,7 +22,7 @@ import com.risk.ui.ReinforcementsUI;
 
 /**
  * This is an Observable Class which has implementations for state change of a player as the game proceeds* 
- * Observers for this class are {@link com.risk.ui.PhaseUI PhaseUI} and {@link com.risk.ui.PlayerDominationUI PlayerDominationUI}
+ * Observers for this class are {@link com.risk.ui.PhaseUI PhaseUI} and {@link com.risk.ui.PlayerDominationView PlayerDominationView}
  * @author Navjot
  * @author Ashish Sharma
  */
