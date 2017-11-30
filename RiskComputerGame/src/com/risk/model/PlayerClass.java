@@ -1,22 +1,22 @@
 package com.risk.model;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Observable;
 import java.util.Scanner;
 import java.util.TreeSet;
 
-import com.risk.behavior.*;
+import com.risk.behavior.AggressiveBehaviorImpl;
+import com.risk.behavior.BenevolantBehaviorImpl;
+import com.risk.behavior.CheaterBehaviorImpl;
+import com.risk.behavior.HumanBehaviorImpl;
+import com.risk.behavior.RandomBehaviorImpl;
+import com.risk.behavior.StrategyContext;
 import com.risk.ui.CardExchangeUI;
 import com.risk.ui.DeployArmiesUI;
 import com.risk.ui.FortificationUI;
-import com.risk.ui.PlayerDominationView;
 import com.risk.ui.ReinforcementsUI;
 
 

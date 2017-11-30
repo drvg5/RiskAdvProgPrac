@@ -1,7 +1,13 @@
 package com.risk.model;
 
-import java.util.*;
-import com.risk.ui.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
+
+import com.risk.ui.PhaseUI;
+import com.risk.ui.PlayerDominationView;
 import com.risk.utility.RiskConstants;
 
 

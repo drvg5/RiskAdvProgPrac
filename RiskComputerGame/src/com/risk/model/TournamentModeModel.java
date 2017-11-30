@@ -18,7 +18,6 @@ import java.util.StringJoiner;
 import org.apache.commons.io.FilenameUtils;
 
 import com.risk.ui.TournamentModeUI;
-import com.risk.ui.UploadMapUI;
 
 public class TournamentModeModel {
 

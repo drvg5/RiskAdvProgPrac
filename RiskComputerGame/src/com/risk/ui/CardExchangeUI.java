@@ -1,9 +1,10 @@
 package com.risk.ui;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
-import com.risk.model.PlayerClass;
 import com.risk.model.ReinforcementPhaseModel;
 import com.risk.utility.RiskConstants;
 
