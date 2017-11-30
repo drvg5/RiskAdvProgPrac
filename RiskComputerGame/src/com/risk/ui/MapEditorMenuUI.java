@@ -9,9 +9,6 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 
-import com.risk.model.ConfigureMapModel;
-import com.risk.model.EditMapModel;
-
 /**
  * This class contains creates the menu for map editor
  * 

@@ -14,8 +14,6 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.StringJoiner;
 
-import javax.swing.JOptionPane;
-
 import org.apache.commons.io.FilenameUtils;
 
 import com.risk.ui.EditMapUI;

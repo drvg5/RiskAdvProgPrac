@@ -1,8 +1,10 @@
 package com.risk.ui;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
-import com.risk.model.*;
+import com.risk.model.PlayerClass;
 
 
 /**
