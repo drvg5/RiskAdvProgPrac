@@ -767,7 +767,7 @@ public class AttackPhaseModel {
  
 		for (String country : countriesOfOtherPlayers.keySet()) {
 			if (listOfAdjacentCountries.contains(country) && !(countriesOfPlayerChosen.contains(country))) {
-
+ 
 				value = countriesOfOtherPlayers.get(country);
 				keySplit = value.split("-");
 
