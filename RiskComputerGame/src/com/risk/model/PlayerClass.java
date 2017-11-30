@@ -578,8 +578,8 @@ public class PlayerClass extends Observable {
  			break;
 		}
 		case 'h': {
-			CheaterBehaviorImpl cheaterObj = new CheaterBehaviorImpl();
-			contextObj.setStrategy(cheaterObj);
+			HumanBehaviorImpl humanObj = new HumanBehaviorImpl();
+			contextObj.setStrategy(humanObj);
  			break;
 		}
 		default :
