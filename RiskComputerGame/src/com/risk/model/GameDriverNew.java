@@ -190,6 +190,7 @@ public class GameDriverNew extends Object {
 		numberOfPlayers = enterPlayersMenu();
 		// input the strategies for the player
 		HashMap<Integer, String> strategies = new HashMap<Integer, String>();
+		
 		strategies = enterStrategiesMenu(numberOfPlayers);
 		gameStart(territoryMap, continentControlValueHashMap, strategies, false);
 
@@ -201,9 +202,25 @@ public class GameDriverNew extends Object {
 	 * @param territoryMap the territory map
 	 * @param continentControlValueHashMap the continent control value hash map
 	 */
-	public void gameModeTournament(HashMap<String, List<String>> territoryMap,
-			HashMap<String, Integer> continentControlValueHashMap) {
-
+	public void gameModeTournament(HashMap<String ,HashMap<String, List<String>>> territoryMaps,
+			HashMap<String,HashMap<String, Integer>> continentControlValueHashMaps, int numberOfMaps,
+			int numberOfGames, List<String> behvaiourList) {
+		
+		
+		
+		//HashMap<String, List<String>> [] territoryMaps ;
+		
+		//maps
+		//control value hashmaps
+		//player behaviours
+		//number of players = strategies
+		//number of games
+		//maximum number of turns
+		
+		
+		
+		
+		
 	}
 
 	/**
