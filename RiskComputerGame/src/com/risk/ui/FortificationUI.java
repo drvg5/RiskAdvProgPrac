@@ -7,10 +7,18 @@ import com.risk.model.FortificationPhaseModel;
 import com.risk.model.StartUpPhaseModel;
 
 
+
+/**
+ * The Class FortificationUI is an Observer observing the elements of {@link com.risk.model.FortificationPhaseModel FortificationPhaseModel} Class.
+ * @author Navjot Kaur Bhamrah
+ */
 public class FortificationUI implements Observer {
 
 	
 	
+	/* (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable obs, Object arg) {
 		
@@ -81,6 +89,11 @@ public class FortificationUI implements Observer {
 //		
 	}
 	
+	/**
+	 * Display View for fortification not possible.
+	 *
+	 * @param player the player
+	 */
 	public void displayFortificationNotPossible(String player){
 		
 		
@@ -88,6 +101,16 @@ public class FortificationUI implements Observer {
 		
 	}
 	
+	/**
+	 * Displays the fortification process for Random Player.
+	 *
+	 * @param player the player
+	 * @param fromTerr Source Territory
+	 * @param toTerr Destination Territory
+	 * @param randomArmies the random armies chosen for fortification
+	 * @param updatedFromArmies the updated source territory armies 
+	 * @param updatedToArmies the updated destination territory armies 
+	 */
 	public void displayRandomFortification(String player,String fromTerr, String toTerr, int randomArmies, int updatedFromArmies, int updatedToArmies){
 		
 		
@@ -131,6 +154,16 @@ public class FortificationUI implements Observer {
 		
 	}
 	
+	/**
+	 * Displays the fortification process for Aggressive Player.
+	 *
+	 * @param player the player
+	 * @param fromTerr Source Territory
+	 * @param toTerr Destination Territory
+	 * @param armies the armies chosen for fortification
+	 * @param updatedFromArmies the updated source territory armies 
+	 * @param updatedToArmies the updated destination territory armies 
+	 */
 	public void displayAggressiveFortification(String player,String fromTerr, String toTerr, int armies, int updatedFromArmies, int updatedToArmies){
 		
 		
@@ -174,6 +207,16 @@ public class FortificationUI implements Observer {
 		
 	}//end displayAggressiveFortification
 	
+    /**
+	 * Displays the fortification process for Benevolent Player.
+	 *
+	 * @param player the player
+	 * @param fromTerr Source Territory
+	 * @param toTerr Destination Territory
+	 * @param armies the armies chosen for fortification
+	 * @param updatedFromArmies the updated source territory armies 
+	 * @param updatedToArmies the updated destination territory armies 
+	 */
     public void displayBenevolentFortification(String player,String fromTerr, String toTerr, int armies, int updatedFromArmies, int updatedToArmies){
 		
 		
@@ -217,6 +260,16 @@ public class FortificationUI implements Observer {
 		
 	}//end displayBenevolentFortification
 	
+    /**
+	 * Displays the fortification process for Human Player.
+	 *
+	 * @param player the player
+	 * @param fromTerr Source Territory
+	 * @param toTerr Destination Territory
+	 * @param armies the armies chosen for fortification
+	 * @param updatedFromArmies the updated source territory armies 
+	 * @param updatedToArmies the updated destination territory armies 
+	 */
     public void displayHumanFortification(String player,String fromTerr, String toTerr, int armies, int updatedFromArmies, int updatedToArmies){
 		
 		
@@ -261,6 +314,14 @@ public class FortificationUI implements Observer {
 		
 	}//end displayHumanFortification
 	
+    /**
+     * Displays the fortification process for Cheater Player.
+     *
+     * @param player the player
+     * @param terr the territory
+     * @param prevArmyUnits the army units in territory before increment.
+     * @param doubledArmyUnits the doubled army units in territory before increment.
+     */
     public void displayCheaterFortification(String player,String terr, String prevArmyUnits, String doubledArmyUnits){
 		
 		
@@ -295,6 +356,9 @@ public class FortificationUI implements Observer {
 		
 	}//end displayHumanFortification
 
+    /**
+     * Display fortify paths for Aggressive, Benevolent, Human and Random players.
+     */
     public void displayFortifyPath(){
     	
     	
@@ -325,6 +389,9 @@ public class FortificationUI implements Observer {
     	
     }//end displayFortifyPath
 	
+    /**
+     * Display Cheater Territories which shares a border with other players' territories.
+     */
     public void displayFortifyCheaterTerr(){
     	
     	
@@ -359,6 +426,16 @@ public class FortificationUI implements Observer {
     	
     }
     
+	/**
+	 * Display fortification. Obsolete Method.
+	 *
+	 * @param player the player
+	 * @param fromTerr the from terr
+	 * @param toTerr the to terr
+	 * @param randomArmies the random armies
+	 * @param updatedFromArmies the updated from armies
+	 * @param updatedToArmies the updated to armies
+	 */
 	public void displayFortification(String player,String fromTerr, String toTerr, int randomArmies, int updatedFromArmies, int updatedToArmies){
 		
 		                   
