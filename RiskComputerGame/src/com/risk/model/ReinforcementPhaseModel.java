@@ -11,110 +11,249 @@ import java.util.TreeSet;
 
 import com.risk.utility.RiskConstants;
 
+
+/**
+ * The Class ReinforcementPhaseModel is an Observable class which has methods for processing reiforcements and also this class is being
+ * observed by an Observer {@link com.risk.ui.ReinforcementsUI ReinforcementsUI} and {@link com.risk.ui.CardExchangeUI CardExchangeUI}
+ * to display the internal dyanmic details during the reinforcement phase.
+ * @author Ashish Sharma
+ * @see com.risk.ui.ReinforcementsUI ReinforcementsUI
+ */
 public class ReinforcementPhaseModel extends Observable {
 
+	/** The HashMap reinforcement stores the reinforcements recieved for a player in a single turn.
+	 * It updates at every single turn for a player.
+	 * <p>The key here is a String storing the player and value is the reinforcements recieved in a single turn.</p>
+	 */
 	public static HashMap<String,Integer> reinforcement = new HashMap<String,Integer>();
+	
+	/** The HashMap playerCards stores the previous history of card exchange(if any) for a particular player
+	 * and each key points to an ArrayList of the cards available.
+	 */
 	public static HashMap<String,ArrayList<String>> playerCards = new HashMap<String,ArrayList<String>>();
 	//key -> playernumber + "-" + number of times cards exchanged already
 	//value -> list of 5 current cards
 	
+	
+	/** The HashMap prevPlayerCards stores the cards before exchange.
+	 * It is used by Observer {@link com.risk.ui.CardExchangeUI CardExchangeUI} to display the cards before exchange.
+	 */
 	public static HashMap<String,ArrayList<String>> prevPlayerCards = new HashMap<String,ArrayList<String>>();
 		
+	/** The ArrayList prevCards stores the cards before exchange. */
 	//public static int reinforcment;
 	public static ArrayList<String> prevCards = new ArrayList<String>(); ;
+	
+	/** The ArrayList chosenCards stores the cards chosen for exchange. */
 	public static ArrayList<String> chosenCards = new ArrayList<String>();
+	
+	/** The ArrayList newCards stores the updated cards after exchange. */
 	public static ArrayList<String> newCards = new ArrayList<String>();
 	
+	/** The static HashMap prevPlayerInfo stores the playerInfo before the reinforcement. */
 	public static HashMap<String, Integer> prevPlayerInfo = new HashMap<String, Integer>();
 	
+	/** The totalReinforcementArmies stores the totalReinforcementArmies calculated for a player in a single turn.
+	 * This gets updated with every player and is used by Observer {@link com.risk.ui.ReinforcementsUI ReinforcementsUI} methods.
+	 */
 	private int totalReinforcementArmies ;
 	
+	/** The latestArmies stores the latestArmies for a territory owned by a player after the addition of reinforcement armies.
+	 * This gets updated with every player and is used by Observer {@link com.risk.ui.ReinforcementsUI ReinforcementsUI} methods.
+	 */
 	private int latestArmies;
 	
+	/** The prevArmies stores the prevArmies for a territory owned by a player before the addition of reinforcement armies.
+	 * This gets updated with every player and is used by Observer {@link com.risk.ui.ReinforcementsUI ReinforcementsUI} methods.
+	 */
 	private int prevArmies;
 
+	/** The  int cardArmies stores the armies calculated through card exchange for a particular player in a single turn.
+	 * This gets updated with every player.
+	 */
 	private static int cardArmies ;
 	
+	/** The String cardsMsg stores the message which varies whether cards can be exchanged or not.
+	 * This gets updated with every player and is used by Observer {@link com.risk.ui.CardExchangeUI CardExchangeUI} to run appropriate methods
+	 * as per this message.
+	 */
 	private String cardsMsg ;
 	
+	/** The String msgUI stores the message which as the process of reinforcement phase proceeds.
+	 * This gets updated with every player and is used by Observer {@link com.risk.ui.ReinforcementsUI ReinforcementsUI} to run appropriate methods
+	 * as per this message.
+	 */
 	private String msgUI ; 
 	
+	/** The ArrayList cntrlValReinforcements stores the multiple String messages all pertaining to a single player and varying on the fact
+	 * whether a player is eligible to receive the control value of a particular continent.
+	 * This is used by Observer {@link com.risk.ui.ReinforcementsUI ReinforcementsUI}.
+	 */
 	private ArrayList<String> cntrlValReinforcements = new ArrayList<>();
 	
+	/** The HashMap playerContTerr stores continents as Keys and number of territories which a player 
+	 * owns in that continent. This gets updated with every player and used for calculating the control value reinforcements. */
 	private HashMap<String,Integer> playerContTerr = new HashMap<String,Integer>();
 	
 	
 	//setters and getters
 	
 
+	/**
+	 * Gets the latest armies.
+	 *
+	 * @return the latest armies
+	 */
 	public int getLatestArmies() {
 		return latestArmies;
 	}
 
+	/**
+	 * Sets the latest armies.
+	 *
+	 * @param latestArmies the new latest armies
+	 */
 	public void setLatestArmies(int latestArmies) {
 		this.latestArmies = latestArmies;
 	}
 
+	/**
+	 * Gets the prev armies.
+	 *
+	 * @return the prev armies
+	 */
 	public int getPrevArmies() {
 		return prevArmies;
 	}
 
+	/**
+	 * Sets the prev armies.
+	 *
+	 * @param prevArmies the new prev armies
+	 */
 	public void setPrevArmies(int prevArmies) {
 		this.prevArmies = prevArmies;
 	}
 	
+	/**
+	 * Gets the card armies.
+	 *
+	 * @return the card armies
+	 */
 	public static int getCardArmies() {
 		return cardArmies;
 	}
 
+	/**
+	 * Sets the card armies.
+	 *
+	 * @param armies the new card armies
+	 */
 	public static void setCardArmies(int armies) {
 		cardArmies = armies;
 	}
 	
+	/**
+	 * Gets the cards msg.
+	 *
+	 * @return the cards msg
+	 */
 	public String getCardsMsg() {
 		return cardsMsg;
 	}
 
+	/**
+	 * Sets the cards msg.
+	 *
+	 * @param cardsMsg the new cards msg
+	 */
 	public void setCardsMsg(String cardsMsg) {
 		this.cardsMsg = cardsMsg;
 	}
 	
+	/**
+	 * Gets the player cont terr.
+	 *
+	 * @return the player cont terr
+	 */
 	public HashMap<String, Integer> getPlayerContTerr() {
 		return playerContTerr;
 	}
 
+	/**
+	 * Sets the player cont terr.
+	 *
+	 * @param playerContTerr the player cont terr
+	 */
 	public void setPlayerContTerr(HashMap<String, Integer> playerContTerr) {
 		this.playerContTerr = playerContTerr;
 	}
 
+	/**
+	 * Gets the cntrl val reinforcements.
+	 *
+	 * @return the cntrl val reinforcements
+	 */
 	public ArrayList<String> getCntrlValReinforcements() {
 		return cntrlValReinforcements;
 	}
 
+	/**
+	 * Sets the cntrl val reinforcements.
+	 *
+	 * @param cntrlValReinforcements the new cntrl val reinforcements
+	 */
 	public void setCntrlValReinforcements(ArrayList<String> cntrlValReinforcements) {
 		this.cntrlValReinforcements = cntrlValReinforcements;
 	}
 
+	/**
+	 * Gets the msg UI.
+	 *
+	 * @return the msg UI
+	 */
 	public String getMsgUI(){
 		
 		return msgUI;
 	}
 	
+	/**
+	 * Sets the msg UI.
+	 *
+	 * @param msgUI the new msg UI
+	 */
 	public void setMsgUI(String msgUI){
 		
 		this.msgUI = msgUI;
 	}
 	
+	/**
+	 * Gets the total reinforcement armies.
+	 *
+	 * @return the total reinforcement armies
+	 */
 	public int getTotalReinforcementArmies() {
 		return totalReinforcementArmies;
 	}
 
+	/**
+	 * Sets the total reinforcement armies.
+	 *
+	 * @param totalReinforcementArmies the new total reinforcement armies
+	 */
 	public void setTotalReinforcementArmies(int totalReinforcementArmies) {
 		this.totalReinforcementArmies = totalReinforcementArmies;
 	}
 
 	
 	
+	/**
+	 * This method calculates reinforcements by territories owned by a player.
+	 *
+	 * @param player Player Number passed as a String
+	 * @return String The return String contains of the player, the number of territories owned by player and the reinforcements calculated
+	 * all separated by a comma ','
+	 */
 	public String calcReinforcementsByTerr(String player){
 		
 		String reinTerrMsg;
@@ -161,6 +300,15 @@ public class ReinforcementPhaseModel extends Observable {
 	}
 	
 	
+	/**
+	 * This method calculates reinforcements by control value of the continents.
+	 * It adds up to the reinforcements armies for a player a number equal to the control value of the continents the player owns
+	 *
+	 * @param player Player Number passed as a String
+	 * @param continentControlValueHashMap The HashMap continentControlValueHashMap stores the control value of the continents
+	 * @return Return an ArrayList cntrlValMsg containing for a player appropriate messages for each continent.
+	 * 
+	 */
 	public ArrayList<String> calcReinforcementByCntrlVal(String player, HashMap<String, Integer> continentControlValueHashMap){
 		
 		ArrayList<String> cntrlValMsg = new ArrayList<String>();
@@ -240,6 +388,11 @@ public class ReinforcementPhaseModel extends Observable {
 	}//end method calcReinforcementByCntrlVal
 	
 	
+	/**
+	 * This method calculates reinforcements by exchange of cards a player has.
+	 *
+	 * @param player Player Number passed as a String
+	 */
 	public void calcReinforcementByCards(String player){
 		
 		setMsgUI("byCards," + player);
@@ -903,6 +1056,12 @@ public class ReinforcementPhaseModel extends Observable {
 	}//end calculateReinforcementByCards
 		
 	
+	/**
+	 * This method is defines the reinforcement process for aggressive player.
+	 * It is invoked in {@link com.risk.behavior.AggressiveBehaviorImpl#reinforce(String) reinforce} 
+	 * method of {@link com.risk.behavior.AggressiveBehaviorImpl AggressiveBehaviorImpl} class
+	 * @param player Player Number passed as a String
+	 */
 	public void reinforceAggressive(String player){
 		
 		setMsgUI("total reinforcement print," + player);
@@ -986,6 +1145,12 @@ public class ReinforcementPhaseModel extends Observable {
 		
 	}
 
+	/**
+	 * This method is defines the reinforcement process for benevolent player.
+	 * It is invoked in {@link com.risk.behavior.BenevolantBehaviorImpl#reinforce(String) reinforce} 
+	 * method of {@link com.risk.behavior.BenevolantBehaviorImpl BenevolantBehaviorImpl} class
+	 * @param player Player Number passed as a String
+	 */
 	public void reinforceBenevolent(String player){
 		
 		
@@ -1081,6 +1246,12 @@ public class ReinforcementPhaseModel extends Observable {
 		
 	}
 
+	/**
+	 * This method is defines the reinforcement process for cheater player.
+	 * It is invoked in {@link com.risk.behavior.CheaterBehaviorImpl#reinforce(String) reinforce} 
+	 * method of {@link com.risk.behavior.CheaterBehaviorImpl CheaterBehaviorImpl} class
+	 * @param player Player Number passed as a String
+	 */
 	public void reinforceCheater(String player){
 		
 		
@@ -1124,6 +1295,12 @@ public class ReinforcementPhaseModel extends Observable {
 		
 	}//end reinforceCheater
 
+	/**
+	 * This method is defines the reinforcement process for random player.
+	 * It is invoked in {@link com.risk.behavior.RandomBehaviorImpl#reinforce(String) reinforce} 
+	 * method of {@link com.risk.behavior.RandomBehaviorImpl RandomBehaviorImpl} class
+	 * @param player Player Number passed as a String
+	 */
 	public void reinforceRandom(String player){
 		
 		setMsgUI("total reinforcement print," + player);
@@ -1187,6 +1364,12 @@ public class ReinforcementPhaseModel extends Observable {
 		
 	}//end reinforceRandom
 
+	/**
+	 * This method is defines the reinforcement process for human player.
+	 * It is invoked in {@link com.risk.behavior.HumanBehaviorImpl#reinforce(String) reinforce} 
+	 * method of {@link com.risk.behavior.HumanBehaviorImpl HumanBehaviorImpl} class
+	 * @param player Player Number passed as a String
+	 */
 	public void reinforceHuman(String player){
 		
 		setMsgUI("total reinforcement print," + player);

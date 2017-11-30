@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * PlayerDominationModel is an Observable class
+ * @author Ashish Sharma
+ *
+ */
 public class PlayerDominationModel extends Observable{
 
 	

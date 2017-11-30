@@ -21,7 +21,7 @@ public class StartUpPhaseModel extends Observable {
 	 * <ul>
 	 * <li>2-Germany-Europe</li>
 	 * <li>3-England-Europe</li>
-	 * <li>2-India-Europe</li>
+	 * <li>2-India-Asia</li>
 	 * </ul>
 	 * <p>
 	 * The <strong>VALUE</strong> to which each key points is the number of army
