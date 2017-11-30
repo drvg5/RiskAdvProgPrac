@@ -516,6 +516,7 @@ public class PlayerClass extends Observable {
 			break;
 		}
 		
+		
 		default :
 			break;
 		}

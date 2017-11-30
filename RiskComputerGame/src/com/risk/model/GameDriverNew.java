@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 import com.risk.ui.PhaseUI;
@@ -210,7 +211,7 @@ public class GameDriverNew extends Object {
 	 */
 	public void gameModeTournament(HashMap<String ,HashMap<String, List<String>>> territoryMaps,
 			HashMap<String,HashMap<String, Integer>> continentControlValueHashMaps, int numberOfMaps,
-			int numberOfGames, List<String> behvaiourList) {
+			int numberOfGames, List<String> behaviorList) {
 		
 		
 		
@@ -223,9 +224,78 @@ public class GameDriverNew extends Object {
 		//number of games
 		//maximum number of turns
 		
+		int map = 1;
+		int gameNumber = 1;
+		
+		int numberOfPlayers = behaviorList.size();
+		
+		List<String> behaviorListLocal = behaviorList;
+		
+		HashMap<String ,HashMap<String, List<String>>> gameMapsHashMap = territoryMaps;
+		
+		//HashMap<String, List<String>> territoryMap = territoryMaps.get(Integer.toString(gameNumber));
+		
+		//HashMap<String, Integer> continentControlValueHashMap = continentControlValueHashMaps.get(Integer.toString(gameNumber));
 		
 		
+		System.out.println("---------------------------------------------------------------------------");
+		System.out.println("**************************** TOURNAMENT STARTS ****************************");
+		System.out.println("---------------------------------------------------------------------------");
 		
+		//outer loop for switching maps
+		while(map <= numberOfMaps){
+		
+			
+			HashMap<String, List<String>> territoryMap = territoryMaps.get("M" + map);
+			
+			System.out.println("MAP:::: \n" + territoryMap);
+			
+			HashMap<String, Integer> continentControlValueHashMap = continentControlValueHashMaps.get("M" + map);
+			
+			System.out.println("Control Val ::: \n" + continentControlValueHashMap);
+			
+			while(gameNumber <= numberOfGames){
+				
+				System.out.println("\n\n\n---------------------------------------------------------------------------");
+				System.out.println("**************************** GAME " + gameNumber + " BEGINS ****************************");
+				System.out.println("----------------------------------------------------------------------------");
+				
+				
+				HashMap<Integer,String> strategies = new HashMap<Integer,String>();
+				
+				int player = 1;
+				
+				//populate strategies HashMap
+				while(!behaviorListLocal.isEmpty()){
+					
+					Random random = new Random();
+					
+					int randomIndex = random.nextInt(behaviorListLocal.size());
+					
+					String behavior = behaviorListLocal.get(randomIndex);
+					
+					strategies.put(player,behavior.toLowerCase());
+					
+					behaviorListLocal.remove(randomIndex);
+					
+					player++;
+				}
+				
+				System.out.println("Strategies :: \n" + strategies);
+				
+				//start the game
+				gameStart(territoryMap, continentControlValueHashMap, strategies, false);
+				
+				gameNumber ++;
+				
+				System.out.println("\n\n\n---------------------------------------------------------------------------");
+				System.out.println("**************************** GAME " + gameNumber + " ENDS ****************************");
+				System.out.println("----------------------------------------------------------------------------");
+			}
+			
+			map++;
+		
+		}//end while(map <= numberOfMaps)
 		
 	}
 

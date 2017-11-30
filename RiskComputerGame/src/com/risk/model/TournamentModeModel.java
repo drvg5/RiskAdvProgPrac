@@ -33,10 +33,16 @@ public class TournamentModeModel {
 	TournamentModeUI tournamentModeUI = new TournamentModeUI();
 	public static boolean junitMapValidationTournament;
 
-	static LinkedHashMap<String, List<String>> continentHashMapTotal = new LinkedHashMap<String, List<String>>();
-	static LinkedHashMap<String, Integer> continentCountTotal = new LinkedHashMap<String, Integer>();
+//	static LinkedHashMap<String, List<String>> continentHashMapTotal = new LinkedHashMap<String, List<String>>();
+//	static LinkedHashMap<String, Integer> continentCountTotal = new LinkedHashMap<String, Integer>();
 
 	static int count = 0;
+	
+	
+	static HashMap<String, HashMap<String, Integer>> strHashMapCount = new HashMap<String, HashMap<String, Integer>>();
+	static HashMap<String, HashMap<String, List<String>>> strHashMapMain = new HashMap<String, HashMap<String, List<String>>>();
+	
+	
 
 	public void loadHashMap(int returnValue, File file, int intcountOfMapselectedValue, int intcountOfGameselectedValue,
 			List<String> selectedPlayerModeList) {
@@ -183,25 +189,31 @@ public class TournamentModeModel {
 					}
 
 					else {
-						count++;
-						String split = "split" + count;
+					
+//						String split = "split" + count;
 						junitMapValidationTournament = true;
-						continentHashMapTotal.putAll(continentHashMap);
-						continentCountTotal.putAll(continentCount);
-						continentHashMapTotal.put(split, seperator);
-						continentCountTotal.put(split, count);
+//						continentHashMapTotal.putAll(continentHashMap);
+//						continentCountTotal.putAll(continentCount);
+//						continentHashMapTotal.put(split, seperator);
+//						continentCountTotal.put(split, count);
+						
+						count++;
+						String mapcount = "M" + count;
+						junitMapValidationTournament = true;
+						strHashMapMain.put(mapcount, continentHashMap);
+						strHashMapCount.put(mapcount, continentCount);
 
 						if (count == intcountOfMapselectedValue) {
-							System.out.println(continentHashMapTotal);
-							System.out.println(continentCountTotal);
+//							System.out.println(continentHashMapTotal);
+//							System.out.println(continentCountTotal);
 							System.out.println(intcountOfMapselectedValue);
 							System.out.println(intcountOfGameselectedValue);
 							System.out.println(selectedPlayerModeList);
 							// new GameDriverNew().gameStart(continentHashMap,
 							// continentCount,intcountOfMapselectedValue,intcountOfGameselectedValue,selectedPlayerModeList);
 							
-						//	new GameDriverNew().gameModeTournament(continentHashMapTotal,continentCountTotal,intcountOfMapselectedValue,
-						//			intcountOfGameselectedValue,selectedPlayerModeList);
+						  new GameDriverNew().gameModeTournament(strHashMapMain,strHashMapCount,intcountOfMapselectedValue,
+								intcountOfGameselectedValue,selectedPlayerModeList);
 						}
 					}
 				}
