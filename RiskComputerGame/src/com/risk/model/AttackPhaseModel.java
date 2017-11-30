@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 import com.risk.utility.RiskConstants;
 
-
 /**
  * The Class AttackPhaseModel.
  * 
@@ -60,6 +59,7 @@ public class AttackPhaseModel {
 	/** The card get. */
 	static boolean cardGet = false;
 
+	/** The all adjacent countires conquered. */
 	static boolean allAdjacentCountiresConquered = false;
 
 	// for getting data from player info entries for the specific player
@@ -71,6 +71,7 @@ public class AttackPhaseModel {
 	// list for attacked candidates
 	static List<String> playerNotAccToPlayerNo = new ArrayList<String>();
 
+	/** The current attacker adj countries. */
 	static List<String> currentAttackerAdjCountries = new ArrayList<String>();
 
 	/** The random. */
@@ -307,7 +308,6 @@ public class AttackPhaseModel {
 					countriesOfotherPlayers.add(keysplit[1]);
 				}
 
-
 				if (!currentAttackerAdjCountries.isEmpty()) {
 					for (String country : currentAttackerAdjCountries) {
 						if (countriesOfotherPlayers.contains(country)) {
@@ -332,8 +332,6 @@ public class AttackPhaseModel {
 				// getting number of defender armies
 				noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(defenderKey);
 
- 
-				 
 				// checking if defender selected is eligible or not
 				currentAttackerAdjCountries.clear();
 
@@ -355,7 +353,7 @@ public class AttackPhaseModel {
 				attackPossible = attackProcessAggressive(Integer.valueOf(keySplitForPlyrNo[0]), territoryMap);
 				adjacencyCheck = false;
 			}
- 
+
 		}
 
 		// adding cards after attack is completed
@@ -386,9 +384,9 @@ public class AttackPhaseModel {
 
 	/**
 	 * Check defender adjacency.
-	 * 
-	 * @param plyr
 	 *
+	 * @param plyr
+	 *            the plyr
 	 * @param territoryMap
 	 *            the territory map
 	 * @return true, if successful
