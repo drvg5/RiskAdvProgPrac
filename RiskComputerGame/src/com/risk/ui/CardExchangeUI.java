@@ -7,11 +7,20 @@ import com.risk.model.PlayerClass;
 import com.risk.model.ReinforcementPhaseModel;
 import com.risk.utility.RiskConstants;
 
+
+/**
+ * The Class CardExchangeUI is an Observer observing the elements of {@link com.risk.model.ReinforcementPhaseModel ReinforcementPhaseModel} Class.
+ * @see java.util.Observer
+ * @author Ashish Sharma
+ */
 public class CardExchangeUI implements Observer {
 
-
-	
-	
+	/**
+	 * Card exchange view.
+	 *
+	 * @param player the player
+	 * @param msg the message whether the card exchange can be done or not
+	 */
 	public void cardExchangeView(String player, String msg){
 		
 		
@@ -202,6 +211,9 @@ public class CardExchangeUI implements Observer {
 	
 	}
 
+	/* (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable obs, Object arg) {
 
@@ -219,11 +231,6 @@ public class CardExchangeUI implements Observer {
 		
 	}
 		
-		
-	
-	
-	
-
 
 }
 
