@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Observable;
+import java.util.Scanner;
 import java.util.TreeSet;
 
 import com.risk.behavior.*;
@@ -31,19 +32,20 @@ public class PlayerClass extends Observable {
 	/** This HashMap stores the old domination values. The key stores the player as a string and it points to value which stores 
 	 * a percentage of total territories owned by that player.
 	 */
-	private HashMap<String, String> dominationOld = new HashMap<String, String>();
+	private static HashMap<String, String> dominationOld = new HashMap<String, String>();
 
 	/** This HashMap stores the new domination values. The key stores the player as a string and it points to value which stores 
 	 * a percentage of total territories owned by that player.
 	 */
-	private HashMap<String, String> dominationNew = new HashMap<String, String>();
+	private static HashMap<String, String> dominationNew = new HashMap<String, String>();
+	
 
 	/**
 	 * Gets the domination old.
 	 *
 	 * @return the domination old
 	 */
-	public HashMap<String, String> getDominationOld() {
+	public static HashMap<String, String> getDominationOld() {
 		return dominationOld;
 	}
 
@@ -52,8 +54,8 @@ public class PlayerClass extends Observable {
 	 *
 	 * @param dominationOld the domination old
 	 */
-	public void setDominationOld(HashMap<String, String> dominationOld) {
-		this.dominationOld = dominationOld;
+	public static void setDominationOld(HashMap<String, String> dominationOld) {
+		PlayerClass.dominationOld = dominationOld;
 	}
 
 	/**
@@ -61,7 +63,7 @@ public class PlayerClass extends Observable {
 	 *
 	 * @return the domination new
 	 */
-	public HashMap<String, String> getDominationNew() {
+	public static HashMap<String, String> getDominationNew() {
 		return dominationNew;
 	}
 
@@ -70,8 +72,29 @@ public class PlayerClass extends Observable {
 	 *
 	 * @param dominationNew the domination new
 	 */
-	public void setDominationNew(HashMap<String, String> dominationNew) {
-		this.dominationNew = dominationNew;
+	public static void setDominationNew(HashMap<String, String> dominationNew) {
+		PlayerClass.dominationNew = dominationNew;
+	}
+
+	/**
+	 *  Stores the current player
+	 */
+	private static int currentPlayer ;
+	
+	/**
+	 * Gets the current player
+	 * @return currentPlayer current player
+	 */
+	public static int getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	/**
+	 * Sets the current player
+	 * @param currentPlayer Current Player
+	 */
+	public static void setCurrentPlayer(int currentPlayer) {
+		PlayerClass.currentPlayer = currentPlayer;
 	}
 
 	/** Stores the number of players in the game. */
@@ -85,6 +108,8 @@ public class PlayerClass extends Observable {
 
 	/** The StrategyContext Class object. */
 	public static StrategyContext contextObj = new StrategyContext();
+	
+	SaveAndLoadGame objSaveAndLoadGame = new SaveAndLoadGame();
 
 	/**
 	 * This method is where the game starts and proceeds into various phases
@@ -96,74 +121,89 @@ public class PlayerClass extends Observable {
 	 * @throws InterruptedException the interrupted exception
 	 */
 	public void gamePlay(int numberOfPlayers, HashMap<String, List<String>> territoryMap,
-			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies)
+			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies, boolean load)
 			throws InterruptedException {
-
+		
+		boolean loadGame = load;
 		currentMap = territoryMap;
 
 		PlayerClass.players = numberOfPlayers;
 
 		PlayerClass playerClassObj = new PlayerClass();
-
-		// startUpPhase method called
-		playerClassObj.startUpPhase(numberOfPlayers);
-
-		PlayerClass.msg = "preDeployStartUp";
-
-		setChanged();
-
-		notifyObservers(this);
-
-		try {
-			System.in.read();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		StartUpPhaseModel startUpObj = new StartUpPhaseModel();
-		DeployArmiesUI deployViewObj = new DeployArmiesUI();
-		startUpObj.addObserver(deployViewObj);
-
-		startUpObj.deployArmiesRandomly(numberOfPlayers);
-
-		PlayerClass.msg = "postDeployStartUp";
-
-		setChanged();
-
-		notifyObservers(this);
-
-		try {
-			System.in.read();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		calcDominationValues(StartUpPhaseModel.playerInfo, numberOfPlayers, StartUpPhaseModel.totalTerr);
-
+		
 		int plyr = 1;
+		
+		if(loadGame)
+			plyr = playerClassObj.getCurrentPlayer();
 
+		if(!loadGame) {
+			
+			// startUpPhase method called
+			playerClassObj.startUpPhase(numberOfPlayers);
+	
+			PlayerClass.msg = "preDeployStartUp";
+	
+			setChanged();
+	
+			notifyObservers(this);
+	
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+			StartUpPhaseModel startUpObj = new StartUpPhaseModel();
+			DeployArmiesUI deployViewObj = new DeployArmiesUI();
+			startUpObj.addObserver(deployViewObj);
+	
+			startUpObj.deployArmiesRandomly(numberOfPlayers);
+	
+			PlayerClass.msg = "postDeployStartUp";
+	
+			setChanged();
+	
+			notifyObservers(this);
+	
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			calcDominationValues(StartUpPhaseModel.playerInfo, numberOfPlayers, StartUpPhaseModel.totalTerr);
+
+			plyr = 1;
+			
+		}//end if(!loadGame)
+		
+		
 		int currentNumberOfPlayers = numberOfPlayers;
 
+		
+		if(!loadGame) {
+			msg = "roundrobin";
+	
+			setChanged();
+	
+			notifyObservers(this);
+			
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-		msg = "roundrobin";
-
-		setChanged();
-
-		notifyObservers(this);
-
+		}//end if(!loadGame)
 		
 
 		// round robin for game starts
-
-		try {
-			System.in.read();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		
+		//plyr = 
+	
 		while (true) {
 
 			// calculate number of players after each round robin to update in case a player
@@ -175,35 +215,91 @@ public class PlayerClass extends Observable {
 				plyr = 1;
 
 			}
+			
 			// set player strategy
 			String currentPlyrStrategy = strategies.get(plyr);
+			
+			if(!loadGame) {
+				
+				msg = "reinforceHead," + plyr;
+	
+				setChanged();
+				notifyObservers(this);
+	
+				try {
+					System.in.read();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	
+				// reinforcement phase method called
+				playerClassObj.reinforcementPhase(plyr,currentPlyrStrategy, continentControlValueHashMap, currentMap);
+	
+				msg = "reinforce done," + plyr;
+				setChanged();
+				notifyObservers(msg);
+	
+				try {
+					System.in.read();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}//end if(!loadGame)
+			
+			
+			loadGame = false;
+			
+			//ask here
+			
+			
+			// Save and Load Functionality
+			// -----------------------------------------------------------------------------------------------------------------------------------
 
-			msg = "reinforceHead," + plyr;
-
-			setChanged();
-			notifyObservers(this);
-
+			System.out.println("Do you want to Save Map?");
 			try {
-				System.in.read();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// Scanner input to save state of map
+				Scanner inputToCheckSave = new Scanner(System.in);
+				String strToCheckSave = inputToCheckSave.next();
+
+				// Upon yes, assigning required variables to SaveAndLoadGame Class object and
+				// then calling save method of ResourceManager to save to file
+				if (strToCheckSave.trim().equalsIgnoreCase("Yes") || strToCheckSave.trim().equalsIgnoreCase("Y")) {
+					objSaveAndLoadGame.mainMapToSave = currentMap;
+					objSaveAndLoadGame.dominationOldToSave = dominationOld;
+					objSaveAndLoadGame.dominationNewToSave = dominationNew;
+					objSaveAndLoadGame.playerInfoToSave = StartUpPhaseModel.playerInfo;
+					objSaveAndLoadGame.terrPerPlayerToSave = StartUpPhaseModel.terrPerPlayer;
+					objSaveAndLoadGame.terrContToSave = StartUpPhaseModel.terrCont;
+					objSaveAndLoadGame.terrPerContToSave = StartUpPhaseModel.terrPerCont;
+					objSaveAndLoadGame.reinforcementToSave = ReinforcementPhaseModel.reinforcement;
+					objSaveAndLoadGame.playerCardsToSave = ReinforcementPhaseModel.playerCards;
+					objSaveAndLoadGame.prevPlayerCardsToSave = ReinforcementPhaseModel.prevPlayerCards;
+					objSaveAndLoadGame.strategiesToSave = strategies;
+					objSaveAndLoadGame.state = "Reinforcecomplete";
+					objSaveAndLoadGame.currentPlyrStrategyToSave = currentPlyrStrategy;
+					objSaveAndLoadGame.numberOfPlayersToSave = plyr;
+					objSaveAndLoadGame.continentControlValueHashMapToSave=continentControlValueHashMap;
+					objSaveAndLoadGame.totalTerrToSave=StartUpPhaseModel.totalTerr;
+					objSaveAndLoadGame.countryTakenToSave= StartUpPhaseModel.countryTaken;
+					try {
+						ResourceManager.save(objSaveAndLoadGame, "SaveToLoadAgain");
+						System.out.println("SaveToLoadAgain is saved");
+						System.exit(0);
+
+					} catch (Exception exSave) {
+						System.out.println("Unable to Save State" + exSave.getMessage());
+					}
+				}
+				
 			}
 
-			// reinforcement phase method called
-			playerClassObj.reinforcementPhase(plyr,currentPlyrStrategy, continentControlValueHashMap, currentMap);
-
-			msg = "reinforce done," + plyr;
-			setChanged();
-			notifyObservers(msg);
-
-			try {
-				System.in.read();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			catch (Exception exInput) {
+				System.out.println("Unable to get input for Save" + exInput.getMessage());
 			}
 
+			
 //			try {
 //				System.in.read();
 //			} catch (IOException e) {
