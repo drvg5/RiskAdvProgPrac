@@ -8,7 +8,7 @@ import java.util.Map;
 
 import com.risk.ui.SaveMapUponConfigUI;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * <h1>Save Map Upon Config Model</h1>
  * <p>

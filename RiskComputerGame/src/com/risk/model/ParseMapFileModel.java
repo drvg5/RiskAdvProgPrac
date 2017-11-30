@@ -18,7 +18,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.risk.ui.UploadMapUI;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * <h1>Parse MapFile Model</h1>
  * <p>

@@ -43,7 +43,6 @@ public class TournamentModeUI {
 	 * Gets the tournament input.
 	 *
 	 * @param desktop the desktop
-	 * @return the tournament input
 	 */
 	public static void getTournamentInput(final JDesktopPane desktop) {
 

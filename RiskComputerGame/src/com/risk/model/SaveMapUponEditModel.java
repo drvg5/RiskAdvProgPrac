@@ -9,7 +9,7 @@ import java.util.StringJoiner;
 
 import com.risk.ui.SaveMapUponEditUI;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * <h1>Save Map Upon Edit Model</h1>
  * <p>

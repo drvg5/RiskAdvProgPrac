@@ -6,10 +6,20 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The Class GameDriverModel.
+ */
 public class GameDriverModel {
 
+	/** The playerGTTerr is flag which goes to 1 when the number of players entered by the user is greater than the number of territories on the map*/
 	public static int playerGTTerr = 0;
 	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 * @throws InterruptedException the interrupted exception
+	 */
 	public static void main(String[] args) throws InterruptedException{
 		
 		HashMap<String,List<String>> territoryMap = new HashMap<String,List<String>>();
@@ -192,7 +202,8 @@ public class GameDriverModel {
 	}
 	
 	/**
-	 * 
+	 * Enter players menu.
+	 *
 	 * @return numberOfPlayers
 	 */
 	public static int enterPlayersMenu(){
@@ -207,6 +218,12 @@ public class GameDriverModel {
 	}
 	
 	
+	/**
+	 * Player info display.
+	 *
+	 * @param player the player
+	 * @param territoryMap the territory map
+	 */
 	public static void playerInfoDisplay(String player, HashMap<String,List<String>> territoryMap){
 		
 		

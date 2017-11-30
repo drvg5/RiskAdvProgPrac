@@ -4,15 +4,30 @@ import java.util.*;
 import com.risk.ui.*;
 import com.risk.utility.RiskConstants;
 
+
+/**
+ * The Class GameDriverNew launches the single game mode, tournament game mode and the load game method.
+ */
 public class GameDriverNew extends Object {
 
+	/** The playerGTTerr is flag which goes to 1 when the number of players entered by the user is greater than the number of territories on the map*/
 	public static int playerGTTerr = 0;
 
+	/** The PlayerClass object. */
 	PlayerClass playerModel;
+	
+	/** The PhaseUI object. */
 	PhaseUI phaseView;
+	
+	/** The PlayerDominationView object. */
 	PlayerDominationView dominationView;
+	
+	/** The strategies HashMap stores the behaviour of each player. */
 	public static HashMap<Integer, String> strategies = new HashMap<Integer, String>();
 
+	/**
+	 * Instantiates a new game driver new.
+	 */
 	public GameDriverNew() {
 
 		playerModel = new PlayerClass();
@@ -23,6 +38,11 @@ public class GameDriverNew extends Object {
 		playerModel.addObserver(phaseView);
 	}
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 
 		GameDriverNew gameDriver = new GameDriverNew();
@@ -155,6 +175,12 @@ public class GameDriverNew extends Object {
 
 	}
 
+	/**
+	 * Game mode single.
+	 *
+	 * @param territoryMap the territory map
+	 * @param continentControlValueHashMap the continent control value hash map
+	 */
 	public void gameModeSingle(HashMap<String, List<String>> territoryMap,
 			HashMap<String, Integer> continentControlValueHashMap) {
 
@@ -169,11 +195,25 @@ public class GameDriverNew extends Object {
 
 	}
 
+	/**
+	 * Method gameModeTournament launches the tournament mode for the RISK game.
+	 *
+	 * @param territoryMap the territory map
+	 * @param continentControlValueHashMap the continent control value hash map
+	 */
 	public void gameModeTournament(HashMap<String, List<String>> territoryMap,
 			HashMap<String, Integer> continentControlValueHashMap) {
 
 	}
 
+	/**
+	 * This method launches the single mode game and also the previously saved game.
+	 *
+	 * @param territoryMap the territory map
+	 * @param continentControlValueHashMap the continent control value hash map
+	 * @param strategies the strategies
+	 * @param load true, if a saved game is being loaded. false, if a new game is being loaded
+	 */
 	public void gameStart(HashMap<String, List<String>> territoryMap,
 			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies, boolean load) {
 
@@ -217,7 +257,8 @@ public class GameDriverNew extends Object {
 	}
 
 	/**
-	 * 
+	 * Enter number of players menu.
+	 *
 	 * @return numberOfPlayers
 	 */
 	public static int enterPlayersMenu() {
@@ -243,6 +284,12 @@ public class GameDriverNew extends Object {
 		return numberOfPlayers;
 	}
 
+	/**
+	 * Enter player strategies menu.
+	 *
+	 * @param numberOfPlayers the number of players
+	 * @return the hash map
+	 */
 	public static HashMap<Integer, String> enterStrategiesMenu(int numberOfPlayers) {
 
 		System.out.println("---------------------------------------------");

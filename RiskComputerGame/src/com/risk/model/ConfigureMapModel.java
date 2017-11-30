@@ -10,7 +10,7 @@ import javax.swing.JDesktopPane;
 import com.risk.ui.ConfigureMapUI;
 import com.risk.ui.SaveMapUponConfigUI;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * <h1>Configure Map Model</h1>
  * <p>

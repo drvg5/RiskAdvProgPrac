@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 import com.risk.utility.RiskConstants;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class AttackPhaseModel.
  * 

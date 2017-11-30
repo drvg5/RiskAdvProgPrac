@@ -20,7 +20,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.risk.ui.EditMapUI;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * <h1>Edit Map Model</h1>
  * <p>
