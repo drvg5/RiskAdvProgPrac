@@ -21,13 +21,30 @@ import javax.swing.event.ListSelectionListener;
 
 import com.risk.model.TournamentModeModel;
  
+
+/**
+ * The Class TournamentModeUI shows buttons for tournament mode elements such as number of players, maps, strategies, etc.
+ */
 public class TournamentModeUI {
 
+	/** The jframe tournament. */
 	static JInternalFrame jframeTournament = new JInternalFrame();
+	
+	/** The intcount of gameselected value. */
 	static int intcountOfGameselectedValue;
+	
+	/** The intcount of mapselected value. */
 	static int intcountOfMapselectedValue;
+	
+	/** The selected player mode list. */
 	static List<String> selectedPlayerModeList;
 
+	/**
+	 * Gets the tournament input.
+	 *
+	 * @param desktop the desktop
+	 * @return the tournament input
+	 */
 	public static void getTournamentInput(final JDesktopPane desktop) {
 
 		JButton buttonCloseUpload = new JButton("Close");
@@ -240,6 +257,11 @@ public class TournamentModeUI {
 
 	}
 
+	/**
+	 * Show error message for upload.
+	 *
+	 * @param i the i
+	 */
 	public void showErrorMessageForUpload(int i) {
 		if (i == 1) {
 			JOptionPane.showMessageDialog(null, "Invalid Map!File extension is wrong", "Upload Error",

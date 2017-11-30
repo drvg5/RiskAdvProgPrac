@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.risk.model.SaveMapUponConfigModel;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * <h1>Save Map Upon ConfigUI</h1>
  * <p>

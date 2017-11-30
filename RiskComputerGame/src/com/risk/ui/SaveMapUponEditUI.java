@@ -30,7 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import com.risk.model.SaveMapUponEditModel;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * <h1>Save Map Upon EditUI</h1>
  * <p>

@@ -9,10 +9,17 @@ import com.risk.model.PlayerClass;
 import com.risk.model.ReinforcementPhaseModel;
 import com.risk.model.StartUpPhaseModel;
 
+
+/**
+ * The Class ReinforcementsUI is an Observer observing the elements of {@link com.risk.model.ReinforcementPhaseModel ReinforcementPhaseModel} Class.
+ */
 public class ReinforcementsUI implements Observer {
 
 	
 	
+	/* (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable obs, Object arg) {
 		// TODO Auto-generated method stub
@@ -106,6 +113,13 @@ public class ReinforcementsUI implements Observer {
 		
 	}//end update method
 	
+	/**
+	 * View for reinforcements calculation by territory.
+	 *
+	 * @param player the player
+	 * @param terrOwned the terr owned
+	 * @param byTerrReinforcements the by terr reinforcements
+	 */
 	public void calcByTerrView(String player, String terrOwned, String byTerrReinforcements){
 		
 		System.out.println("\n\t******CALCULATION OF REINFORCEMENTS BY NUMBER OF TERRITORIES OWNED******");
@@ -114,6 +128,13 @@ public class ReinforcementsUI implements Observer {
 		
 	}//end method calcByTerrView
 
+	/**
+	 * View for reinforcements calculation by continent control value.
+	 *
+	 * @param player the player
+	 * @param ctrlValMsg the ctrl val msg
+	 * @param territoryMap the territory map
+	 */
 	public void calcByCtrlValView(String player, ArrayList<String> ctrlValMsg, HashMap<String,List<String>> territoryMap){
 		
 		
@@ -258,6 +279,12 @@ public class ReinforcementsUI implements Observer {
 	
 	}
 	
+	/**
+	 * * View for total reinforcements.
+	 *
+	 * @param player the player
+	 * @param territoryMap the territory map
+	 */
 	public void totalReinforcementsView(String player, HashMap<String,List<String>> territoryMap){
 		
 		
@@ -339,6 +366,12 @@ public class ReinforcementsUI implements Observer {
 		
 	}
 	
+	/**
+	 * Displays the cheater territories which have neighbours to other players.
+	 *
+	 * @param player the player
+	 * @param territoryMap the territory map
+	 */
 	public void displayCheaterTerr(String player, HashMap<String,List<String>> territoryMap){
 		
 		
@@ -408,6 +441,13 @@ public class ReinforcementsUI implements Observer {
 	
 	
 	
+	/**
+	 * Displays the reinforcement process for Random Player.
+	 *
+	 * @param player the player
+	 * @param territory the territory
+	 * @param obj ReinforcementPhaseModel object
+	 */
 	public void placementRandomView(String player, String territory, ReinforcementPhaseModel obj){
 		
 		try {
@@ -425,6 +465,13 @@ public class ReinforcementsUI implements Observer {
 		
 	}
 	
+	/**
+	 * Displays the reinforcement process for Aggressive Player.
+	 *
+	 * @param player the player
+	 * @param territory the territory
+	 * @param obj ReinforcementPhaseModel object
+	 */
 	public void placementAggressiveView(String player, String territory, ReinforcementPhaseModel obj){
 		
 		try {
@@ -440,6 +487,13 @@ public class ReinforcementsUI implements Observer {
 
 	}
 	
+	/**
+	 * Displays the reinforcement process for Benevolent Player.
+	 *
+	 * @param player the player
+	 * @param territory the territory
+	 * @param obj ReinforcementPhaseModel object
+	 */
 	public void placementBenevolentView(String player, String territory, ReinforcementPhaseModel obj){
 		
 		try {
@@ -455,6 +509,13 @@ public class ReinforcementsUI implements Observer {
 
 	}
 	
+	/**
+	 * Displays the reinforcement process for Cheater Player.
+	 *
+	 * @param player the player
+	 * @param territory the territory
+	 * @param obj ReinforcementPhaseModel object
+	 */
 	public void placementCheaterView(String player, String territory, ReinforcementPhaseModel obj){
 		
 		try {
@@ -469,6 +530,13 @@ public class ReinforcementsUI implements Observer {
 
 	}
 
+	/**
+	 * Displays the reinforcement process for Human Player.
+	 *
+	 * @param player the player
+	 * @param territory the territory
+	 * @param obj ReinforcementPhaseModel object
+	 */
 	public void placementHumanView(String player, String territory, ReinforcementPhaseModel obj){
 		
 		try {
