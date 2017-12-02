@@ -54,6 +54,13 @@ public class HumanBehaviorImpl implements PlayerBehavior {
 	 */
 	@Override
 	public void attack(String player, HashMap<String, List<String>> territoryMap) {
+
+		AttackPhaseModel.populateListsForAttackerAndDefender(Integer.valueOf(player));
+
+		if (AttackPhaseModel.playerAccToPlayerNo.isEmpty()) {
+			System.out.println("PLAYER CHOSEN HAS BEEN CONQUERED");
+			return;
+		}
 		AttackPhaseModel.attackCountryRandomly(Integer.parseInt(player), territoryMap);
 
 	}

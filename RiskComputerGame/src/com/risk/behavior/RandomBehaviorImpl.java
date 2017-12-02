@@ -10,12 +10,15 @@ import com.risk.ui.FortificationUI;
 import com.risk.ui.ReinforcementsUI;
 
 /**
-* The Class RandomBehaviorImpl implements methods of interface {@link com.risk.behavior.PlayerBehavior PlayerBehavior}
-* as per the RANDOM player behaviour
-*/
+ * The Class RandomBehaviorImpl implements methods of interface
+ * {@link com.risk.behavior.PlayerBehavior PlayerBehavior} as per the RANDOM
+ * player behaviour
+ */
 public class RandomBehaviorImpl implements PlayerBehavior {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.risk.behavior.PlayerBehavior#reinforce(java.lang.String)
 	 */
 	@Override
@@ -28,7 +31,9 @@ public class RandomBehaviorImpl implements PlayerBehavior {
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.risk.behavior.PlayerBehavior#fortify(java.lang.String)
 	 */
 	@Override
@@ -41,12 +46,21 @@ public class RandomBehaviorImpl implements PlayerBehavior {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.risk.behavior.PlayerBehavior#attack(java.lang.String, java.util.HashMap)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.risk.behavior.PlayerBehavior#attack(java.lang.String,
+	 * java.util.HashMap)
 	 */
 	@Override
 	public void attack(String player, HashMap<String, List<String>> territoryMap) {
-		
+
+		AttackPhaseModel.populateListsForAttackerAndDefender(Integer.valueOf(player));
+
+		if (AttackPhaseModel.playerAccToPlayerNo.isEmpty()) {
+			System.out.println("PLAYER CHOSEN HAS BEEN CONQUERED");
+			return;
+		}
 		AttackPhaseModel.attackCountryRandomly(Integer.parseInt(player), territoryMap);
 	}
 

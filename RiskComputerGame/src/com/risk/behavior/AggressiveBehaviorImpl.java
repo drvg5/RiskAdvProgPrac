@@ -38,6 +38,11 @@ public class AggressiveBehaviorImpl implements PlayerBehavior {
 
 		// find the strongest country of the chosen player
 		String playerInfoKey = AttackPhaseModel.findCountryWithMaxArmies(player);
+		if(AttackPhaseModel.playerAccToPlayerNo.isEmpty())
+		{
+			System.out.println("PLAYER CHOSEN HAS BEEN CONQUERED");
+			return;
+		}
 		// attack with strongest country
  		AttackPhaseModel.attackAggressively(playerInfoKey, territoryMap);
 

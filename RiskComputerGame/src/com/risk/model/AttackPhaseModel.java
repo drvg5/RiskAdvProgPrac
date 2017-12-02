@@ -65,11 +65,11 @@ public class AttackPhaseModel {
 	// for getting data from player info entries for the specific player
 	/** The player acc to player no. */
 	// list for attackers
-	static List<String> playerAccToPlayerNo = new ArrayList<String>();
+	public static List<String> playerAccToPlayerNo = new ArrayList<String>();
 
 	/** The player not acc to player no. */
 	// list for attacked candidates
-	static List<String> playerNotAccToPlayerNo = new ArrayList<String>();
+	public static List<String> playerNotAccToPlayerNo = new ArrayList<String>();
 
 	/** The current attacker adj countries. */
 	static List<String> currentAttackerAdjCountries = new ArrayList<String>();
@@ -109,14 +109,9 @@ public class AttackPhaseModel {
 
 		// global key initialized
 		int randomNoGenerated = random.nextInt(playerAccToPlayerNo.size());
-		if (randomNoGenerated == 0) {
-			// randomly select attacker
-			attackerKey = playerAccToPlayerNo.get(randomNoGenerated + 1);
-		} else {
-			// randomly select attacker
-			attackerKey = playerAccToPlayerNo.get(randomNoGenerated);
 
-		}
+		// randomly select attacker
+		attackerKey = playerAccToPlayerNo.get(randomNoGenerated);
 
 		// getting number of attacker armies
 		noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attackerKey);
@@ -132,15 +127,10 @@ public class AttackPhaseModel {
 			// attacker country changed if one army is remaining
 			if (StartUpPhaseModel.playerInfo.get(attackerKey) == 1) {
 				randomNoGenerated = random.nextInt(playerAccToPlayerNo.size());
-				if (randomNoGenerated == 0) {
-					// randomly select attacker
-					attackerKey = playerAccToPlayerNo.get(randomNoGenerated + 1);
 
-				} else {
-					// randomly select attacker
-					attackerKey = playerAccToPlayerNo.get(randomNoGenerated);
+				// randomly select attacker
+				attackerKey = playerAccToPlayerNo.get(randomNoGenerated);
 
-				}
 				// getting number of attacker armies
 				noOfAttackerArmies = StartUpPhaseModel.playerInfo.get(attackerKey);
 			}
@@ -170,13 +160,9 @@ public class AttackPhaseModel {
 
 				randomNoGenerated = random.nextInt(playerNotAccToPlayerNo.size());
 
-				if (randomNoGenerated == 0) {
-					// randomly select defender
-					defenderKey = playerNotAccToPlayerNo.get(randomNoGenerated + 1);
-				} else {
-					// randomly select defender
-					defenderKey = playerNotAccToPlayerNo.get(randomNoGenerated);
-				}
+				// randomly select defender
+				defenderKey = playerNotAccToPlayerNo.get(randomNoGenerated);
+
 				// getting number of defender armies
 				noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(defenderKey);
 
@@ -201,36 +187,31 @@ public class AttackPhaseModel {
 
 				// generating new attacker
 				randomNoGenerated = random.nextInt(playerAccToPlayerNo.size());
-				if (randomNoGenerated == 0) {
-					// randomly select attacker
-					attackerKey = playerAccToPlayerNo.get(randomNoGenerated + 1);
 
-				} else {
-					// randomly select attacker
-					attackerKey = playerAccToPlayerNo.get(randomNoGenerated);
+				// randomly select attacker
+				attackerKey = playerAccToPlayerNo.get(randomNoGenerated);
 
-				}
 				// checking if the attacker is in a position to attack or not
 				noOfArmiesCheck = checkForAtttackerArmies();
 
 				if (noOfArmiesCheck) {
-					
+
 					Random randomDecision = new Random();
 					int decision = randomDecision.nextInt(1);
 					String attackDecision = new String();
-					
-					if(decision == 1){
+
+					if (decision == 1) {
 						attackDecision = "Attacking Again? YES";
 						attackAgain = "yes";
 					}
-					if(decision == 0){
+					if (decision == 0) {
 						attackDecision = "Attacking Again? NO";
 						attackAgain = "no";
 					}
 					// asking user permission to attack
 					System.out.println("\n\t--------------------------------------------------------------");
 					System.out.println("\t\t" + attackDecision);
-					
+
 				} else {
 					System.out.println("\n\t--------------------------------------------------------------");
 					System.out.println("\t\tATTACK NOT POSSIBLE AS ANY OF THE ATTACKER ARMIES ARE NOT MORE THAN 1  ");
@@ -247,12 +228,12 @@ public class AttackPhaseModel {
 					Random randomDecision = new Random();
 					int decision = randomDecision.nextInt(1);
 					String attackDecision = new String();
-					
-					if(decision == 1){
+
+					if (decision == 1) {
 						attackDecision = "Attacking Again? YES";
 						attackAgain = "yes";
 					}
-					if(decision == 0){
+					if (decision == 0) {
 						attackDecision = "Attacking Again? NO";
 						attackAgain = "no";
 					}
@@ -319,6 +300,7 @@ public class AttackPhaseModel {
 		// checking if defender selected is adjacent or not
 
 		while (attackPossible) {
+
 			while (adjacencyCheck == false) {
 
 				List<String> countriesOfotherPlayers = new ArrayList<String>();
@@ -342,13 +324,10 @@ public class AttackPhaseModel {
 				}
 
 				int randomNoGenerated = random.nextInt(playerNotAccToPlayerNo.size());
-				if (randomNoGenerated == 0) {
-					// randomly select defender
-					defenderKey = playerNotAccToPlayerNo.get(randomNoGenerated + 1);
-				} else {
-					// randomly select defender
-					defenderKey = playerNotAccToPlayerNo.get(randomNoGenerated);
-				}
+
+				// randomly select defender
+				defenderKey = playerNotAccToPlayerNo.get(randomNoGenerated);
+
 				// getting number of defender armies
 				noOfDefenderArmies = StartUpPhaseModel.playerInfo.get(defenderKey);
 
@@ -593,21 +572,20 @@ public class AttackPhaseModel {
 							if (StartUpPhaseModel.playerInfo.get(defenderKey) != null
 									&& StartUpPhaseModel.playerInfo.get(defenderKey) > 0) {
 								if (StartUpPhaseModel.playerInfo.get(attackerKey) > 1) {
-									
+
 									Random randomDecision = new Random();
 									int decision = randomDecision.nextInt(1);
 									String attackDecision = new String();
-									
-									if(decision == 1){
+
+									if (decision == 1) {
 										attackDecision = "Attacking Same Country Again? YES";
 										attackSameCountryAgain = "yes";
 									}
-									if(decision == 0){
+									if (decision == 0) {
 										attackDecision = "Attacking Same Country Again? NO";
 										attackSameCountryAgain = "no";
 									}
-									
-									
+
 									if (!attackSameCountryAgain.trim().equalsIgnoreCase("Yes")
 											&& !attackSameCountryAgain.trim().equalsIgnoreCase("Y")) {
 										return;
@@ -636,7 +614,7 @@ public class AttackPhaseModel {
 	 * @param plyr
 	 *            the plyr
 	 */
-	private static void populateListsForAttackerAndDefender(int plyr) {
+	public static void populateListsForAttackerAndDefender(int plyr) {
 
 		// removing elements of the list as data has changed
 		playerAccToPlayerNo.clear();
