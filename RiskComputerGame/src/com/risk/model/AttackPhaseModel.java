@@ -161,7 +161,7 @@ public class AttackPhaseModel {
 						}
 					}
 
-					if (!checkValidityOfDef) {
+					if (checkValidityOfDef == false) {
 						allAdjacentCountiresConquered = true;
 						break;
 					}
@@ -214,11 +214,23 @@ public class AttackPhaseModel {
 				noOfArmiesCheck = checkForAtttackerArmies();
 
 				if (noOfArmiesCheck) {
+					
+					Random randomDecision = new Random();
+					int decision = randomDecision.nextInt(1);
+					String attackDecision = new String();
+					
+					if(decision == 1){
+						attackDecision = "Attacking Again? YES";
+						attackAgain = "yes";
+					}
+					if(decision == 0){
+						attackDecision = "Attacking Again? NO";
+						attackAgain = "no";
+					}
 					// asking user permission to attack
 					System.out.println("\n\t--------------------------------------------------------------");
-					System.out.println("\t\tDo you want to attack again? ");
-					System.out.println("\t\tPlease enter Yes or No :");
-					attackAgain = input.next();
+					System.out.println("\t\t" + attackDecision);
+					
 				} else {
 					System.out.println("\n\t--------------------------------------------------------------");
 					System.out.println("\t\tATTACK NOT POSSIBLE AS ANY OF THE ATTACKER ARMIES ARE NOT MORE THAN 1  ");
@@ -227,24 +239,32 @@ public class AttackPhaseModel {
 			} else {
 				// attack initiated
 				attackProcessRandom(plyr, territoryMap);
-
+				adjacencyCheck = false;
 				// checking if the attacker is in a position to attack or not
 				noOfArmiesCheck = checkForAtttackerArmies();
 
 				if (noOfArmiesCheck) {
+					Random randomDecision = new Random();
+					int decision = randomDecision.nextInt(1);
+					String attackDecision = new String();
+					
+					if(decision == 1){
+						attackDecision = "Attacking Again? YES";
+						attackAgain = "yes";
+					}
+					if(decision == 0){
+						attackDecision = "Attacking Again? NO";
+						attackAgain = "no";
+					}
 					// asking user permission to attack
 					System.out.println("\n\t--------------------------------------------------------------");
-					System.out.println("\t\tDo you want to attack again? ");
-					System.out.println("\t\tPlease enter Yes or No :");
-					attackAgain = input.next();
+					System.out.println("\t\t" + attackDecision);
 				} else {
 					System.out.println("\n\t--------------------------------------------------------------");
 					System.out.println("\t\tATTACK NOT POSSIBLE AS ANY OF THE ATTACKER ARMIES ARE NOT MORE THAN 1  ");
 				}
 
 			}
-
-			adjacencyCheck = false;
 
 		}
 
@@ -573,11 +593,21 @@ public class AttackPhaseModel {
 							if (StartUpPhaseModel.playerInfo.get(defenderKey) != null
 									&& StartUpPhaseModel.playerInfo.get(defenderKey) > 0) {
 								if (StartUpPhaseModel.playerInfo.get(attackerKey) > 1) {
-									System.out.println(
-											"\t--------------------------------------------------------------");
-									System.out.println("\t\tDo you want to attack the Same Country again? ");
-									System.out.println("\t\tPlease enter  Yes or No : ");
-									attackSameCountryAgain = input.next();
+									
+									Random randomDecision = new Random();
+									int decision = randomDecision.nextInt(1);
+									String attackDecision = new String();
+									
+									if(decision == 1){
+										attackDecision = "Attacking Same Country Again? YES";
+										attackSameCountryAgain = "yes";
+									}
+									if(decision == 0){
+										attackDecision = "Attacking Same Country Again? NO";
+										attackSameCountryAgain = "no";
+									}
+									
+									
 									if (!attackSameCountryAgain.trim().equalsIgnoreCase("Yes")
 											&& !attackSameCountryAgain.trim().equalsIgnoreCase("Y")) {
 										return;
@@ -763,21 +793,26 @@ public class AttackPhaseModel {
 		String modifiedKey = "";
 		String[] keySplit = {};
 		Integer armies = 0;
-		int c=3;
- 
+		int c = 3;
+
+		List<String> listOfKeysToBeRemoved = new ArrayList<String>();
+
 		for (String country : countriesOfOtherPlayers.keySet()) {
 			if (listOfAdjacentCountries.contains(country) && !(countriesOfPlayerChosen.contains(country))) {
- 
+
 				value = countriesOfOtherPlayers.get(country);
 				keySplit = value.split("-");
 
 				keySplit[0] = player;
 				modifiedKey = keySplit[0] + "-" + keySplit[1] + "-" + keySplit[2];
 				armies = StartUpPhaseModel.playerInfo.get(value);
- 				StartUpPhaseModel.playerInfo.put(modifiedKey, c++);
+				StartUpPhaseModel.playerInfo.put(modifiedKey, c);
+				++c;
+				listOfKeysToBeRemoved.add(value);
 				StartUpPhaseModel.playerInfo.remove(value);
 			}
 		}
+
 	}
 
 	/**
@@ -791,7 +826,7 @@ public class AttackPhaseModel {
 	 */
 	public static void rollDice() throws InterruptedException {
 
-		Thread.sleep(1000);
+		Thread.sleep(100);
 		int diceRollsForAttacker, diceRollsForDefender;
 		List<Integer> diceArrayForAttackers = new ArrayList<Integer>();
 		List<Integer> diceArrayForDefenders = new ArrayList<Integer>();
@@ -929,7 +964,7 @@ public class AttackPhaseModel {
 			String[] defenderKeySplit = defenderKey.split("-");
 			if (noOfDefenderArmies <= 0) {
 
-				Thread.sleep(1000);
+				Thread.sleep(100);
 				System.out.println();
 				System.out.println();
 				System.out.println("\t\tDEFENDER ARMIES DEPLETED");
@@ -960,7 +995,7 @@ public class AttackPhaseModel {
 
 				// adding cards after a COUNTRY is conquered is completed
 				addCards(attackerPlayer);
-				Thread.sleep(2000);
+				Thread.sleep(100);
 
 			} else if (noOfAttackerArmies <= 0) {
 				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - "
@@ -979,10 +1014,10 @@ public class AttackPhaseModel {
 				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - "
 						+ attackerKeySplit[1] + " --> number of armies : " + "1");
 
-				Thread.sleep(2000);
+				Thread.sleep(100);
 
 			} else {
-				Thread.sleep(2000);
+				Thread.sleep(100);
 				System.out.println("\t\tATTACK COMPLETED");
 				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - "
 						+ attackerKeySplit[1] + " --> number of armies : " + noOfAttackerArmies);
@@ -1019,7 +1054,7 @@ public class AttackPhaseModel {
 
 			if (noOfDefenderArmies <= 0) {
 
-				Thread.sleep(1000);
+				Thread.sleep(100);
 
 				System.out.println();
 				System.out.println();
@@ -1044,7 +1079,7 @@ public class AttackPhaseModel {
 				StartUpPhaseModel.playerInfo.remove(defenderKey);
 				// adding cards after a COUNTRY is conquered is completed
 				addCards(attackerPlayer);
-				Thread.sleep(2000);
+				Thread.sleep(100);
 
 			} else if (noOfAttackerArmies <= 0) {
 
@@ -1065,10 +1100,10 @@ public class AttackPhaseModel {
 				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - "
 						+ attackerKeySplit[1] + " --> number of armies : " + "1");
 
-				Thread.sleep(2000);
+				Thread.sleep(100);
 
 			} else {
-				Thread.sleep(2000);
+				Thread.sleep(100);
 				System.out.println("\t\tATTACK COMPLETED");
 				System.out.println("\n\n\t\t" + "PLAYER " + attackerPlayer + " : Attacking Territory - "
 						+ attackerKeySplit[1] + " --> number of armies : " + noOfAttackerArmies);

@@ -112,7 +112,7 @@ public class GameModeUI {
 					StartUpPhaseModel.countryTaken = data.countryTakenToSave;
 					GameDriverNew gameDriver = new GameDriverNew();
 					
-					gameDriver.gameStart(PlayerClass.currentMap, continentControlValueHashMapToSave, GameDriverNew.strategies, true, false);
+					gameDriver.gameStart(PlayerClass.currentMap, continentControlValueHashMapToSave, GameDriverNew.strategies, true, false,0);
 					
 					
 					

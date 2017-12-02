@@ -213,7 +213,7 @@ public class TournamentModeModel {
 							// continentCount,intcountOfMapselectedValue,intcountOfGameselectedValue,selectedPlayerModeList);
 							
 						  new GameDriverNew().gameModeTournament(strHashMapMain,strHashMapCount,intcountOfMapselectedValue,
-								intcountOfGameselectedValue,selectedPlayerModeList);
+								intcountOfGameselectedValue,selectedPlayerModeList,10);
 						}
 					}
 				}

@@ -222,6 +222,24 @@ public class PhaseUI implements Observer {
 		
 	}
 	
+	public void roundRobinsHeader(String roundrobins){
+		
+//		System.out.println("---------------------------------------------------------------------------");
+		System.out.println("\n\n\n");
+		System.out.println("*************************** ROUND ROBIN " + roundrobins + " ****************************");
+		System.out.println("\n");
+//		System.out.println("---------------------------------------------------------------------------");
+		
+		
+		try {
+			System.in.read();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void reinforcementViewHeader(String player){
 		
 		System.out.println("---------------------------------------------------------------------------");
@@ -507,6 +525,14 @@ public class PhaseUI implements Observer {
 			roundRobinHeader();
 			
 		}
+		
+		if(message.contains("ROUND")) {
+			
+			String[] msgSplit = message.split(",");
+			roundRobinsHeader(msgSplit[1]);
+			
+		}
+	
 		
 		if(message.contains("reinforceHead")){
 			

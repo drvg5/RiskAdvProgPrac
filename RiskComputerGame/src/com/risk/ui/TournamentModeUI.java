@@ -15,7 +15,11 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerListModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -38,6 +42,9 @@ public class TournamentModeUI {
 	
 	/** The selected player mode list. */
 	static List<String> selectedPlayerModeList;
+	
+	/** The intcount of number of round robins value. */
+	static int intCountOfRoundRobins;
 
 	/**
 	 * Gets the tournament input.
@@ -50,6 +57,16 @@ public class TournamentModeUI {
 		buttonCloseUpload.setBounds(300, 350, 140, 30);
 		String[] countOfMap = new String[] { "0", "1", "2", "3", "4", "5" };
 		String[] countOfGame = new String[] { "1", "2", "3", "4", "5" };
+		
+		
+		String[] arrRounds = new String[41];
+		for(int i = 10; i <=50; i++){
+			
+			arrRounds[i-10] = Integer.toString(i);
+		}
+		
+		String[] countOfRounds = arrRounds;
+		
 		DefaultListModel<String> modelPlayerMode = new DefaultListModel<>();
 
 		final JList<String> jlistPlayerMode;
@@ -67,8 +84,11 @@ public class TournamentModeUI {
 		jlistPlayerMode.setBounds(160, 140, 80, 80);
 		JLabel labelCountOfTurns = new JLabel("No.Of Game Turns");
 		labelCountOfTurns.setBounds(20, 100, 140, 25);
-		JTextField textCountOfTurns = new JTextField();
-		textCountOfTurns.setBounds(160, 100, 80, 25);
+		SpinnerListModel roundModel = new SpinnerListModel(countOfRounds);
+		final JSpinner jomboCountOfRounds = new JSpinner(roundModel);
+		jomboCountOfRounds.setBounds(160, 100, 80, 25);
+//		JTextField textCountOfTurns = new JTextField();
+//		textCountOfTurns.setBounds(160, 100, 80, 25);
 		final JFileChooser fileChooser = new JFileChooser();
 		JLabel labelMapCount = new JLabel("No.Of Maps");
 		labelMapCount.setBounds(20, 250, 100, 25);
@@ -101,6 +121,21 @@ public class TournamentModeUI {
 			}
 		});
 
+		jomboCountOfRounds.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				 
+				String roundRobins = (String) jomboCountOfRounds.getValue();
+				
+				intCountOfRoundRobins = Integer.parseInt(roundRobins);
+				
+			
+				
+			}
+		});
+		
+		
 		jomboCountOfMap.addActionListener(new ActionListener() {
 
 			@Override
@@ -156,7 +191,9 @@ public class TournamentModeUI {
 				intcountOfGameselectedValue = Integer.parseInt(countOfGameselectedValue);
 			}
 		});
+		
 
+		
 		buttonMap1.addActionListener(new ActionListener() {
 
 			@Override
@@ -240,9 +277,10 @@ public class TournamentModeUI {
 		jframeTournament.add(jomboCountOfGame);
 		jframeTournament.add(jlistPlayerMode);
 		jframeTournament.add(labelCountOfTurns);
+		jframeTournament.add(jomboCountOfRounds);
 		jframeTournament.add(labelGameCount);
 		jframeTournament.add(labelPlayerMode);
-		jframeTournament.add(textCountOfTurns);
+//		jframeTournament.add(textCountOfTurns);
 		jframeTournament.add(buttonMap1);
 		jframeTournament.add(buttonMap2);
 		jframeTournament.add(buttonMap3);

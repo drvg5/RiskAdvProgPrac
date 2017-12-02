@@ -52,7 +52,7 @@ public class SaveAndLoadGame implements java.io.Serializable {
 	public HashMap<String, Integer> continentControlValueHashMapToSave = new HashMap<String, Integer>();
 	
 	/** The number of players to save. */
-	public int numberOfPlayersToSave;
+	public int currentPlayer;
 	
 	/** The current plyr strategy to save. */
 	public String currentPlyrStrategyToSave;
