@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.risk.model.ReinforcementPhaseModel;
 import com.risk.model.StartUpPhaseModel;
 
-public class TestReinforcementPhaseModel {
+public class ReinforcementPhaseModelTest {
 
 	@Test
 	public void ReinforcementarmiesCountByTerritory() {

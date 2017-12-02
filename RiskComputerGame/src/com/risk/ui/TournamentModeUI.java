@@ -56,7 +56,7 @@ public class TournamentModeUI {
 		JButton buttonCloseUpload = new JButton("Close");
 		buttonCloseUpload.setBounds(300, 350, 140, 30);
 		String[] countOfMap = new String[] { "0", "1", "2", "3", "4", "5" };
-		String[] countOfGame = new String[] { "1", "2", "3", "4", "5" };
+		String[] countOfGame = new String[] { "0","1", "2", "3", "4", "5" };
 		
 		
 		String[] arrRounds = new String[41];

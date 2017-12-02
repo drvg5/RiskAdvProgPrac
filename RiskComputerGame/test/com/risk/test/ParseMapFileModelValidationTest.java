@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.risk.model.ParseMapFileModel;
 
-public class TestParseMapFileModelValidation {
+public class ParseMapFileModelValidationTest {
 	@Test
 	public void checkMapValidationFormat() {
 		ParseMapFileModel testParseMapFileModel = new ParseMapFileModel();

@@ -109,10 +109,33 @@ public class PlayerClass extends Observable {
 	/** The StrategyContext Class object. */
 	public static StrategyContext contextObj = new StrategyContext();
 	
+	/** The current players treeset object. */
 	public static TreeSet<Integer> playerTreeSet = new TreeSet<Integer>();
 	
+	/** The current players list object. */
 	public static ArrayList<Integer> playersList = new ArrayList<Integer>();
 	
+	/** The current player index in players list */
+	public static int playersIndex;
+	
+	/**
+	 * Gets the players index.
+	 *
+	 * @return the players index
+	 */
+	public static int getPlayersIndex() {
+		return playersIndex;
+	}
+
+	/**
+	 * Sets the players index.
+	 *
+	 * @param playersIndex the new players index
+	 */
+	public static void setPlayersIndex(int playersIndex) {
+		PlayerClass.playersIndex = playersIndex;
+	}
+
 	SaveAndLoadGame objSaveAndLoadGame = new SaveAndLoadGame();
 
 	/**
@@ -126,7 +149,8 @@ public class PlayerClass extends Observable {
 	 * @throws InterruptedException the interrupted exception
 	 */
 	public void gamePlay(int numberOfPlayers, HashMap<String, List<String>> territoryMap,
-			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies, boolean load, boolean trnmnt, int rounds)
+			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies, boolean load, 
+			boolean trnmnt, int rounds, int currentPlayerIndex)
 			throws InterruptedException {
 		
 		
@@ -148,9 +172,11 @@ public class PlayerClass extends Observable {
 		
 		int plyr;
 		
-		int plyrIndex = 0;
+		//int plyrIndex = 0;
 		
-		plyr = playersList.get(plyrIndex);
+		PlayerClass.setPlayersIndex(0);
+		
+		plyr = playersList.get(PlayerClass.getPlayersIndex());
 		
 //		int plyr = 1;
 		
@@ -159,9 +185,10 @@ public class PlayerClass extends Observable {
 		if(loadGame){
 			
 			//uncomment this
-			//plyrIndex = playerClassObj.getCurrentPlayerIndex();
+			PlayerClass.setPlayersIndex(currentPlayerIndex); 
 			
-			plyrIndex = playersList.get(plyrIndex);
+			
+			plyr =  playersList.get(PlayerClass.getPlayersIndex());
 		
 			//plyr = playerClassObj.getCurrentPlayer();
 			
@@ -206,8 +233,8 @@ public class PlayerClass extends Observable {
 			
 			
 
-			plyrIndex = 0;
-			plyr = playersList.get(plyrIndex);
+			PlayerClass.setPlayersIndex(0);
+			plyr  =  playersList.get(PlayerClass.getPlayersIndex());
 			
 		}//end if(!loadGame)
 		
@@ -261,10 +288,11 @@ public class PlayerClass extends Observable {
 			currentNumberOfPlayers = PlayerClass.plyrsRemaining();
 
 			// reset plyr to player 1 once all players have got their turn to play
-			if (plyrIndex >= currentNumberOfPlayers) {
+			if (PlayerClass.getPlayersIndex() >= currentNumberOfPlayers) {
 				
+				PlayerClass.setPlayersIndex(0);
 			
-				plyrIndex = 0;
+			//	plyrIndex = 0;
 				//plyr = playersList.get(plyrIndex);
 				
 				if(tournament){
@@ -295,7 +323,9 @@ public class PlayerClass extends Observable {
 
 			}
 			
-			plyr = playersList.get(plyrIndex);
+			plyr = playersList.get(PlayerClass.getPlayersIndex());
+			
+			
 			
 			// set player strategy
 			String currentPlyrStrategy = strategies.get(plyr);
@@ -350,6 +380,8 @@ public class PlayerClass extends Observable {
 					// Upon yes, assigning required variables to SaveAndLoadGame Class object and
 					// then calling save method of ResourceManager to save to file
 					if (strToCheckSave.trim().equalsIgnoreCase("Yes") || strToCheckSave.trim().equalsIgnoreCase("Y")) {
+					
+						
 						objSaveAndLoadGame.mainMapToSave = currentMap;
 						objSaveAndLoadGame.dominationOldToSave = dominationOld;
 						objSaveAndLoadGame.dominationNewToSave = dominationNew;
@@ -367,6 +399,9 @@ public class PlayerClass extends Observable {
 						objSaveAndLoadGame.continentControlValueHashMapToSave=continentControlValueHashMap;
 						objSaveAndLoadGame.totalTerrToSave=StartUpPhaseModel.totalTerr;
 						objSaveAndLoadGame.countryTakenToSave= StartUpPhaseModel.countryTaken;
+						objSaveAndLoadGame.currentPlyrIndexToSave = PlayerClass.getPlayersIndex();
+						objSaveAndLoadGame.currentPlyrsTreeSetToSave = PlayerClass.playerTreeSet;
+						objSaveAndLoadGame.playersListToSave = PlayerClass.playersList;
 						try {
 							ResourceManager.save(objSaveAndLoadGame, "SaveToLoadAgain");
 							System.out.println("SaveToLoadAgain is saved");
@@ -479,7 +514,8 @@ public class PlayerClass extends Observable {
 			}
 
 			//plyr++;
-			plyrIndex++;
+			PlayerClass.setPlayersIndex(PlayerClass.getPlayersIndex() + 1); 
+			//plyrIndex++;
 		} // end while(true)
 
 	}
@@ -821,14 +857,13 @@ public class PlayerClass extends Observable {
 
 			percentage = (terr * 100) / totalTerr;
 
-			dominationMap.put(Integer.toString(i), percentage + "%");
+			dominationMap.put(Integer.toString(i), percentage + " %");
 
 		}
 
 		setDominationNew(dominationMap);
 		
-		System.out.println("Domination Old -> " + getDominationOld());
-		System.out.println("Domination New -> " + getDominationNew());
+	
 
 
 		if (dominationNew.equals(dominationOld)) {

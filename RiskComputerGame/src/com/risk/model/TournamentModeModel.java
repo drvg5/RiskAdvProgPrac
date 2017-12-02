@@ -31,7 +31,7 @@ public class TournamentModeModel {
 	final String strContinent = "[Continents]";
 	public static boolean checkForCallingTournamentUI = true;
 	TournamentModeUI tournamentModeUI = new TournamentModeUI();
-	public static boolean junitMapValidationTournament;
+	public static boolean junitMapValidationT;
 
 //	static LinkedHashMap<String, List<String>> continentHashMapTotal = new LinkedHashMap<String, List<String>>();
 //	static LinkedHashMap<String, Integer> continentCountTotal = new LinkedHashMap<String, Integer>();
@@ -190,27 +190,13 @@ public class TournamentModeModel {
 
 					else {
 					
-//						String split = "split" + count;
-						junitMapValidationTournament = true;
-//						continentHashMapTotal.putAll(continentHashMap);
-//						continentCountTotal.putAll(continentCount);
-//						continentHashMapTotal.put(split, seperator);
-//						continentCountTotal.put(split, count);
-						
+						junitMapValidationT = true;
 						count++;
 						String mapcount = "M" + count;
-						junitMapValidationTournament = true;
 						strHashMapMain.put(mapcount, continentHashMap);
 						strHashMapCount.put(mapcount, continentCount);
 
 						if (count == intcountOfMapselectedValue) {
-//							System.out.println(continentHashMapTotal);
-//							System.out.println(continentCountTotal);
-							System.out.println(intcountOfMapselectedValue);
-							System.out.println(intcountOfGameselectedValue);
-							System.out.println(selectedPlayerModeList);
-							// new GameDriverNew().gameStart(continentHashMap,
-							// continentCount,intcountOfMapselectedValue,intcountOfGameselectedValue,selectedPlayerModeList);
 							
 						  new GameDriverNew().gameModeTournament(strHashMapMain,strHashMapCount,intcountOfMapselectedValue,
 								intcountOfGameselectedValue,selectedPlayerModeList,10);

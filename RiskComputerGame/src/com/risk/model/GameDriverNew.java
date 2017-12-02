@@ -199,7 +199,7 @@ public class GameDriverNew extends Object {
 		HashMap<Integer, String> strategies = new HashMap<Integer, String>();
 		
 		strategies = enterStrategiesMenu(numberOfPlayers);
-		gameStart(territoryMap, continentControlValueHashMap, strategies, false, false,0);
+		gameStart(territoryMap, continentControlValueHashMap, strategies, false, false,0,0 );
 
 	}
 
@@ -280,7 +280,7 @@ public class GameDriverNew extends Object {
 				System.out.println("Strategies :: \n" + strategies);
 				
 				//start the game
-				gameStart(territoryMap, continentControlValueHashMap, strategies, false, true, rounds);
+				gameStart(territoryMap, continentControlValueHashMap, strategies, false, true, rounds, 0);
 				
 				gameNumber ++;
 				
@@ -304,7 +304,7 @@ public class GameDriverNew extends Object {
 	 * @param load true, if a saved game is being loaded. false, if a new game is being loaded
 	 */
 	public void gameStart(HashMap<String, List<String>> territoryMap,
-			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies, boolean load,boolean tournament, int rounds) {
+			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies, boolean load,boolean tournament, int rounds, int currentPlayerIndex) {
 
 		
 		int numberOfPlayers = strategies.size() ;
@@ -321,7 +321,7 @@ public class GameDriverNew extends Object {
 
 					// new PlayerClass().gamePlay(numberOfPlayers, territoryMap,
 					// continentControlValueHashMap);
-					playerModel.gamePlay(numberOfPlayers, territoryMap, continentControlValueHashMap, strategies,load,tournament,rounds);
+					playerModel.gamePlay(numberOfPlayers, territoryMap, continentControlValueHashMap, strategies,load,tournament,rounds, currentPlayerIndex);
 
 				} catch (InterruptedException e) {
 

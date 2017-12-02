@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.risk.ui.EditMapUI;
 
-public class TestEditMapUI {
+public class EditMapUITest {
 
 	@Test
 	public void checkRepeatValue() {

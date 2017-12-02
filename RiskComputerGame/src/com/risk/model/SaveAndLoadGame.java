@@ -65,4 +65,15 @@ public class SaveAndLoadGame implements java.io.Serializable {
 	
 	/** The total terr to save. */
 	public  int totalTerrToSave = 0;
+	
+	
+	
+	/** The current plyr index to save. */
+	public int currentPlyrIndexToSave;
+	
+	/** The current plyrs tree set to save. */
+	public TreeSet<Integer> currentPlyrsTreeSetToSave = new TreeSet<Integer>();
+	
+	/** The players list to save. */
+	public  ArrayList<Integer> playersListToSave = new ArrayList<Integer>();
 }

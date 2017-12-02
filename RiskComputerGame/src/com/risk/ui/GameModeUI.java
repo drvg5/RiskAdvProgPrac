@@ -102,9 +102,10 @@ public class GameModeUI {
 					ReinforcementPhaseModel.reinforcement = data.reinforcementToSave;
 					ReinforcementPhaseModel.playerCards = data.playerCardsToSave;
 					ReinforcementPhaseModel.prevPlayerCards = data.prevPlayerCardsToSave;
-				//	objPlayerClass.currentPlyrStrategy = data.currentPlyrStrategyToSave;
-					
-					PlayerClass.setCurrentPlayer(3);
+					PlayerClass.setPlayersIndex(data.currentPlyrIndexToSave);
+					PlayerClass.playerTreeSet = data.currentPlyrsTreeSetToSave;
+					PlayerClass.playersList = data.playersListToSave;
+				
 					
 					//= data.numberOfPlayersToSave;
 					continentControlValueHashMapToSave = data.continentControlValueHashMapToSave;
@@ -112,7 +113,7 @@ public class GameModeUI {
 					StartUpPhaseModel.countryTaken = data.countryTakenToSave;
 					GameDriverNew gameDriver = new GameDriverNew();
 					
-					gameDriver.gameStart(PlayerClass.currentMap, continentControlValueHashMapToSave, GameDriverNew.strategies, true, false,0);
+					gameDriver.gameStart(PlayerClass.currentMap, continentControlValueHashMapToSave, GameDriverNew.strategies, true, false,0, PlayerClass.getPlayersIndex());
 					
 					
 					

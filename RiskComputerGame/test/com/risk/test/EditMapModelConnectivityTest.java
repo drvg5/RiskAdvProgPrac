@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import com.risk.model.EditMapModel;
 
-public class TestEditMapModelConnectivity {
+public class EditMapModelConnectivityTest {
 	@Before
 	public void BeforeMethod() {
 

@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import com.risk.model.ConfigureMapModel;
 
-public class TestConfigureMapModel {
+public class ConfigureMapModelTest {
 	@Before
 	public void BeforeMethod() {
 

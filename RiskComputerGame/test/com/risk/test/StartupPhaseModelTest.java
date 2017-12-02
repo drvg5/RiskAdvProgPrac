@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.risk.model.StartUpPhaseModel;
 
-public class TestStartupPhaseModel {
+public class StartupPhaseModelTest {
 
 	@Test
 	public void validArmyCount() {

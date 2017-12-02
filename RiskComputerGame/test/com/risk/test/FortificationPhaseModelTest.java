@@ -12,7 +12,7 @@ import org.junit.Test;
 import com.risk.model.FortificationPhaseModel;
 import com.risk.model.StartUpPhaseModel;
 
-public class TestFortificationPhaseModel {
+public class FortificationPhaseModelTest {
 	
 	@Test
 	public void FortificationPhaseCheck() {

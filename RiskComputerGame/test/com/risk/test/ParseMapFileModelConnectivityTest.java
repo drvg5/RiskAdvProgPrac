@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import com.risk.model.ParseMapFileModel;
 
-public class TestParseMapFileModelConnectivity {
+public class ParseMapFileModelConnectivityTest {
 
 	@Test
 	public void checkMapValidationConnectivity() {

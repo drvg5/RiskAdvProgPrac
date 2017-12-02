@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.risk.model.EditMapModel;
 import com.risk.ui.EditMapUI;
 
-public class TestEditMapModelValidation {
+public class EditMapModelValidationTest {
 	@Test
 	public void checkEditMapValidationFormat() {
 		EditMapModel testEditMapModel = new EditMapModel();
