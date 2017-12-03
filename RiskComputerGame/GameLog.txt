@@ -1,0 +1,1516 @@
+---------------------------------------------
+Please enter number of players : 
+---------------------------------------------
+Choose player Strategies : 
+AGGRESSIVE : a 
+BENEVOLENT : b
+CHEATER : c
+RANDOM : r
+HUMAN : h
+---------------------------------------------
+Please choose the strategy for player 1 : 
+---------------------------------------------
+Please choose the strategy for player 2 : 
+---------------------------------------------
+Please choose the strategy for player 3 : 
+---------------------------------------------
+Please choose the strategy for player 4 : 
+---------------------------------------------------------------------------
+***************************** START UP PHASE   ****************************
+---------------------------------------------------------------------------
+
+	TOTAL NUMBER OF TERRITORIES ON THE MAP : 19
+	TOTAL NUMBER OF PLAYERS IN THE GAME : 4
+
+
+	Number of Territories assigned to PLAYER 1 : 4
+	Number of Territories assigned to PLAYER 2 : 5
+	Number of Territories assigned to PLAYER 3 : 5
+	Number of Territories assigned to PLAYER 4 : 5
+
+	NUMBER OF ARMY UNITS PROVIDED INITIALLY TO EACH PLAYER : 30
+
+
+	TERRITORIES ASSIGNED TO PLAYER 1 -> 
+
+		------------------------------------
+		Territory : Mexico
+			  Continent : North America
+			  Armies : 0
+			  Adjacent Countries : USA
+		------------------------------------
+		Territory : Japan
+			  Continent : Asia
+			  Armies : 0
+			  Adjacent Countries : China,Russia
+		------------------------------------
+		Territory : Ireland
+			  Continent : Europe
+			  Armies : 0
+			  Adjacent Countries : England,Canada
+		------------------------------------
+		Territory : Canada
+			  Continent : North America
+			  Armies : 0
+			  Adjacent Countries : Russia,Ireland,USA
+
+	TERRITORIES ASSIGNED TO PLAYER 2 -> 
+
+		------------------------------------
+		Territory : Spain
+			  Continent : Europe
+			  Armies : 0
+			  Adjacent Countries : France,Italy
+		------------------------------------
+		Territory : England
+			  Continent : Europe
+			  Armies : 0
+			  Adjacent Countries : France,Ireland
+		------------------------------------
+		Territory : Italy
+			  Continent : Europe
+			  Armies : 0
+			  Adjacent Countries : Spain,Greece,Germany
+		------------------------------------
+		Territory : Germany
+			  Continent : Europe
+			  Armies : 0
+			  Adjacent Countries : France,Ukraine
+		------------------------------------
+		Territory : India
+			  Continent : Asia
+			  Armies : 0
+			  Adjacent Countries : China,Pakistan,Sri Lanka
+
+	TERRITORIES ASSIGNED TO PLAYER 3 -> 
+
+		------------------------------------
+		Territory : Iran
+			  Continent : Asia
+			  Armies : 0
+			  Adjacent Countries : Pakistan,Afghanistan,Greece
+		------------------------------------
+		Territory : Greece
+			  Continent : Europe
+			  Armies : 0
+			  Adjacent Countries : Italy,Iran
+		------------------------------------
+		Territory : Afghanistan
+			  Continent : Asia
+			  Armies : 0
+			  Adjacent Countries : Pakistan,Iran
+		------------------------------------
+		Territory : France
+			  Continent : Europe
+			  Armies : 0
+			  Adjacent Countries : England,Spain,Germany
+		------------------------------------
+		Territory : Russia
+			  Continent : Asia
+			  Armies : 0
+			  Adjacent Countries : China,Japan,Canada
+
+	TERRITORIES ASSIGNED TO PLAYER 4 -> 
+
+		------------------------------------
+		Territory : Sri Lanka
+			  Continent : Asia
+			  Armies : 0
+			  Adjacent Countries : India
+		------------------------------------
+		Territory : China
+			  Continent : Asia
+			  Armies : 0
+			  Adjacent Countries : India,Japan,Russia
+		------------------------------------
+		Territory : USA
+			  Continent : North America
+			  Armies : 0
+			  Adjacent Countries : Canada
+		------------------------------------
+		Territory : Ukraine
+			  Continent : Europe
+			  Armies : 0
+			  Adjacent Countries : Russia,Germany
+		------------------------------------
+		Territory : Pakistan
+			  Continent : Asia
+			  Armies : 0
+			  Adjacent Countries : Afghanistan,Iran,India
+
+
+
+
+	******DEPLOYING ARMIES RANDOMLY IN ROUND ROBIN FASHION******
+
+	Territory chosen by PLAYER 1 --> MEXICO
+	Army units currently in MEXICO --> 0
+	Army units after update in MEXICO --> 1
+	Armies remaining for PLAYER 1 --> 29
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> INDIA
+	Army units currently in INDIA --> 0
+	Army units after update in INDIA --> 1
+	Armies remaining for PLAYER 2 --> 29
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> RUSSIA
+	Army units currently in RUSSIA --> 0
+	Army units after update in RUSSIA --> 1
+	Armies remaining for PLAYER 3 --> 29
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> UKRAINE
+	Army units currently in UKRAINE --> 0
+	Army units after update in UKRAINE --> 1
+	Armies remaining for PLAYER 4 --> 29
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> IRELAND
+	Army units currently in IRELAND --> 0
+	Army units after update in IRELAND --> 1
+	Armies remaining for PLAYER 1 --> 28
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> ENGLAND
+	Army units currently in ENGLAND --> 0
+	Army units after update in ENGLAND --> 1
+	Armies remaining for PLAYER 2 --> 28
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> FRANCE
+	Army units currently in FRANCE --> 0
+	Army units after update in FRANCE --> 1
+	Armies remaining for PLAYER 3 --> 28
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> CHINA
+	Army units currently in CHINA --> 0
+	Army units after update in CHINA --> 1
+	Armies remaining for PLAYER 4 --> 28
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> JAPAN
+	Army units currently in JAPAN --> 0
+	Army units after update in JAPAN --> 1
+	Armies remaining for PLAYER 1 --> 27
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> GERMANY
+	Army units currently in GERMANY --> 0
+	Army units after update in GERMANY --> 1
+	Armies remaining for PLAYER 2 --> 27
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> AFGHANISTAN
+	Army units currently in AFGHANISTAN --> 0
+	Army units after update in AFGHANISTAN --> 1
+	Armies remaining for PLAYER 3 --> 27
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> USA
+	Army units currently in USA --> 0
+	Army units after update in USA --> 1
+	Armies remaining for PLAYER 4 --> 27
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> CANADA
+	Army units currently in CANADA --> 0
+	Army units after update in CANADA --> 1
+	Armies remaining for PLAYER 1 --> 26
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> ITALY
+	Army units currently in ITALY --> 0
+	Army units after update in ITALY --> 1
+	Armies remaining for PLAYER 2 --> 26
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> IRAN
+	Army units currently in IRAN --> 0
+	Army units after update in IRAN --> 1
+	Armies remaining for PLAYER 3 --> 26
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> PAKISTAN
+	Army units currently in PAKISTAN --> 0
+	Army units after update in PAKISTAN --> 1
+	Armies remaining for PLAYER 4 --> 26
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> CANADA
+	Army units currently in CANADA --> 1
+	Army units after update in CANADA --> 2
+	Armies remaining for PLAYER 1 --> 25
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> SPAIN
+	Army units currently in SPAIN --> 0
+	Army units after update in SPAIN --> 1
+	Armies remaining for PLAYER 2 --> 25
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> GREECE
+	Army units currently in GREECE --> 0
+	Army units after update in GREECE --> 1
+	Armies remaining for PLAYER 3 --> 25
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> SRI LANKA
+	Army units currently in SRI LANKA --> 0
+	Army units after update in SRI LANKA --> 1
+	Armies remaining for PLAYER 4 --> 25
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> IRELAND
+	Army units currently in IRELAND --> 1
+	Army units after update in IRELAND --> 2
+	Armies remaining for PLAYER 1 --> 24
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> ENGLAND
+	Army units currently in ENGLAND --> 1
+	Army units after update in ENGLAND --> 2
+	Armies remaining for PLAYER 2 --> 24
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> GREECE
+	Army units currently in GREECE --> 1
+	Army units after update in GREECE --> 2
+	Armies remaining for PLAYER 3 --> 24
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> PAKISTAN
+	Army units currently in PAKISTAN --> 1
+	Army units after update in PAKISTAN --> 2
+	Armies remaining for PLAYER 4 --> 24
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> MEXICO
+	Army units currently in MEXICO --> 1
+	Army units after update in MEXICO --> 2
+	Armies remaining for PLAYER 1 --> 23
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> SPAIN
+	Army units currently in SPAIN --> 1
+	Army units after update in SPAIN --> 2
+	Armies remaining for PLAYER 2 --> 23
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> IRAN
+	Army units currently in IRAN --> 1
+	Army units after update in IRAN --> 2
+	Armies remaining for PLAYER 3 --> 23
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> CHINA
+	Army units currently in CHINA --> 1
+	Army units after update in CHINA --> 2
+	Armies remaining for PLAYER 4 --> 23
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> MEXICO
+	Army units currently in MEXICO --> 2
+	Army units after update in MEXICO --> 3
+	Armies remaining for PLAYER 1 --> 22
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> SPAIN
+	Army units currently in SPAIN --> 2
+	Army units after update in SPAIN --> 3
+	Armies remaining for PLAYER 2 --> 22
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> FRANCE
+	Army units currently in FRANCE --> 1
+	Army units after update in FRANCE --> 2
+	Armies remaining for PLAYER 3 --> 22
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> CHINA
+	Army units currently in CHINA --> 2
+	Army units after update in CHINA --> 3
+	Armies remaining for PLAYER 4 --> 22
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> CANADA
+	Army units currently in CANADA --> 2
+	Army units after update in CANADA --> 3
+	Armies remaining for PLAYER 1 --> 21
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> ITALY
+	Army units currently in ITALY --> 1
+	Army units after update in ITALY --> 2
+	Armies remaining for PLAYER 2 --> 21
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> GREECE
+	Army units currently in GREECE --> 2
+	Army units after update in GREECE --> 3
+	Armies remaining for PLAYER 3 --> 21
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> USA
+	Army units currently in USA --> 1
+	Army units after update in USA --> 2
+	Armies remaining for PLAYER 4 --> 21
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> JAPAN
+	Army units currently in JAPAN --> 1
+	Army units after update in JAPAN --> 2
+	Armies remaining for PLAYER 1 --> 20
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> ITALY
+	Army units currently in ITALY --> 2
+	Army units after update in ITALY --> 3
+	Armies remaining for PLAYER 2 --> 20
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> AFGHANISTAN
+	Army units currently in AFGHANISTAN --> 1
+	Army units after update in AFGHANISTAN --> 2
+	Armies remaining for PLAYER 3 --> 20
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> USA
+	Army units currently in USA --> 2
+	Army units after update in USA --> 3
+	Armies remaining for PLAYER 4 --> 20
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> JAPAN
+	Army units currently in JAPAN --> 2
+	Army units after update in JAPAN --> 3
+	Armies remaining for PLAYER 1 --> 19
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> ENGLAND
+	Army units currently in ENGLAND --> 2
+	Army units after update in ENGLAND --> 3
+	Armies remaining for PLAYER 2 --> 19
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> IRAN
+	Army units currently in IRAN --> 2
+	Army units after update in IRAN --> 3
+	Armies remaining for PLAYER 3 --> 19
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> CHINA
+	Army units currently in CHINA --> 3
+	Army units after update in CHINA --> 4
+	Armies remaining for PLAYER 4 --> 19
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> IRELAND
+	Army units currently in IRELAND --> 2
+	Army units after update in IRELAND --> 3
+	Armies remaining for PLAYER 1 --> 18
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> ENGLAND
+	Army units currently in ENGLAND --> 3
+	Army units after update in ENGLAND --> 4
+	Armies remaining for PLAYER 2 --> 18
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> AFGHANISTAN
+	Army units currently in AFGHANISTAN --> 2
+	Army units after update in AFGHANISTAN --> 3
+	Armies remaining for PLAYER 3 --> 18
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> USA
+	Army units currently in USA --> 3
+	Army units after update in USA --> 4
+	Armies remaining for PLAYER 4 --> 18
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> IRELAND
+	Army units currently in IRELAND --> 3
+	Army units after update in IRELAND --> 4
+	Armies remaining for PLAYER 1 --> 17
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> GERMANY
+	Army units currently in GERMANY --> 1
+	Army units after update in GERMANY --> 2
+	Armies remaining for PLAYER 2 --> 17
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> AFGHANISTAN
+	Army units currently in AFGHANISTAN --> 3
+	Army units after update in AFGHANISTAN --> 4
+	Armies remaining for PLAYER 3 --> 17
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> PAKISTAN
+	Army units currently in PAKISTAN --> 2
+	Army units after update in PAKISTAN --> 3
+	Armies remaining for PLAYER 4 --> 17
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> MEXICO
+	Army units currently in MEXICO --> 3
+	Army units after update in MEXICO --> 4
+	Armies remaining for PLAYER 1 --> 16
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> SPAIN
+	Army units currently in SPAIN --> 3
+	Army units after update in SPAIN --> 4
+	Armies remaining for PLAYER 2 --> 16
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> GREECE
+	Army units currently in GREECE --> 3
+	Army units after update in GREECE --> 4
+	Armies remaining for PLAYER 3 --> 16
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> PAKISTAN
+	Army units currently in PAKISTAN --> 3
+	Army units after update in PAKISTAN --> 4
+	Armies remaining for PLAYER 4 --> 16
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> MEXICO
+	Army units currently in MEXICO --> 4
+	Army units after update in MEXICO --> 5
+	Armies remaining for PLAYER 1 --> 15
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> INDIA
+	Army units currently in INDIA --> 1
+	Army units after update in INDIA --> 2
+	Armies remaining for PLAYER 2 --> 15
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> RUSSIA
+	Army units currently in RUSSIA --> 1
+	Army units after update in RUSSIA --> 2
+	Armies remaining for PLAYER 3 --> 15
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> USA
+	Army units currently in USA --> 4
+	Army units after update in USA --> 5
+	Armies remaining for PLAYER 4 --> 15
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> MEXICO
+	Army units currently in MEXICO --> 5
+	Army units after update in MEXICO --> 6
+	Armies remaining for PLAYER 1 --> 14
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> SPAIN
+	Army units currently in SPAIN --> 4
+	Army units after update in SPAIN --> 5
+	Armies remaining for PLAYER 2 --> 14
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> IRAN
+	Army units currently in IRAN --> 3
+	Army units after update in IRAN --> 4
+	Armies remaining for PLAYER 3 --> 14
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> CHINA
+	Army units currently in CHINA --> 4
+	Army units after update in CHINA --> 5
+	Armies remaining for PLAYER 4 --> 14
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> IRELAND
+	Army units currently in IRELAND --> 4
+	Army units after update in IRELAND --> 5
+	Armies remaining for PLAYER 1 --> 13
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> SPAIN
+	Army units currently in SPAIN --> 5
+	Army units after update in SPAIN --> 6
+	Armies remaining for PLAYER 2 --> 13
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> GREECE
+	Army units currently in GREECE --> 4
+	Army units after update in GREECE --> 5
+	Armies remaining for PLAYER 3 --> 13
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> PAKISTAN
+	Army units currently in PAKISTAN --> 4
+	Army units after update in PAKISTAN --> 5
+	Armies remaining for PLAYER 4 --> 13
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> JAPAN
+	Army units currently in JAPAN --> 3
+	Army units after update in JAPAN --> 4
+	Armies remaining for PLAYER 1 --> 12
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> GERMANY
+	Army units currently in GERMANY --> 2
+	Army units after update in GERMANY --> 3
+	Armies remaining for PLAYER 2 --> 12
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> IRAN
+	Army units currently in IRAN --> 4
+	Army units after update in IRAN --> 5
+	Armies remaining for PLAYER 3 --> 12
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> UKRAINE
+	Army units currently in UKRAINE --> 1
+	Army units after update in UKRAINE --> 2
+	Armies remaining for PLAYER 4 --> 12
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> IRELAND
+	Army units currently in IRELAND --> 5
+	Army units after update in IRELAND --> 6
+	Armies remaining for PLAYER 1 --> 11
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> ENGLAND
+	Army units currently in ENGLAND --> 4
+	Army units after update in ENGLAND --> 5
+	Armies remaining for PLAYER 2 --> 11
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> IRAN
+	Army units currently in IRAN --> 5
+	Army units after update in IRAN --> 6
+	Armies remaining for PLAYER 3 --> 11
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> USA
+	Army units currently in USA --> 5
+	Army units after update in USA --> 6
+	Armies remaining for PLAYER 4 --> 11
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> CANADA
+	Army units currently in CANADA --> 3
+	Army units after update in CANADA --> 4
+	Armies remaining for PLAYER 1 --> 10
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> ITALY
+	Army units currently in ITALY --> 3
+	Army units after update in ITALY --> 4
+	Armies remaining for PLAYER 2 --> 10
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> AFGHANISTAN
+	Army units currently in AFGHANISTAN --> 4
+	Army units after update in AFGHANISTAN --> 5
+	Armies remaining for PLAYER 3 --> 10
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> CHINA
+	Army units currently in CHINA --> 5
+	Army units after update in CHINA --> 6
+	Armies remaining for PLAYER 4 --> 10
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> IRELAND
+	Army units currently in IRELAND --> 6
+	Army units after update in IRELAND --> 7
+	Armies remaining for PLAYER 1 --> 9
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> SPAIN
+	Army units currently in SPAIN --> 6
+	Army units after update in SPAIN --> 7
+	Armies remaining for PLAYER 2 --> 9
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> AFGHANISTAN
+	Army units currently in AFGHANISTAN --> 5
+	Army units after update in AFGHANISTAN --> 6
+	Armies remaining for PLAYER 3 --> 9
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> CHINA
+	Army units currently in CHINA --> 6
+	Army units after update in CHINA --> 7
+	Armies remaining for PLAYER 4 --> 9
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> IRELAND
+	Army units currently in IRELAND --> 7
+	Army units after update in IRELAND --> 8
+	Armies remaining for PLAYER 1 --> 8
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> INDIA
+	Army units currently in INDIA --> 2
+	Army units after update in INDIA --> 3
+	Armies remaining for PLAYER 2 --> 8
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> GREECE
+	Army units currently in GREECE --> 5
+	Army units after update in GREECE --> 6
+	Armies remaining for PLAYER 3 --> 8
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> PAKISTAN
+	Army units currently in PAKISTAN --> 5
+	Army units after update in PAKISTAN --> 6
+	Armies remaining for PLAYER 4 --> 8
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> JAPAN
+	Army units currently in JAPAN --> 4
+	Army units after update in JAPAN --> 5
+	Armies remaining for PLAYER 1 --> 7
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> ENGLAND
+	Army units currently in ENGLAND --> 5
+	Army units after update in ENGLAND --> 6
+	Armies remaining for PLAYER 2 --> 7
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> RUSSIA
+	Army units currently in RUSSIA --> 2
+	Army units after update in RUSSIA --> 3
+	Armies remaining for PLAYER 3 --> 7
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> UKRAINE
+	Army units currently in UKRAINE --> 2
+	Army units after update in UKRAINE --> 3
+	Armies remaining for PLAYER 4 --> 7
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> JAPAN
+	Army units currently in JAPAN --> 5
+	Army units after update in JAPAN --> 6
+	Armies remaining for PLAYER 1 --> 6
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> INDIA
+	Army units currently in INDIA --> 3
+	Army units after update in INDIA --> 4
+	Armies remaining for PLAYER 2 --> 6
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> GREECE
+	Army units currently in GREECE --> 6
+	Army units after update in GREECE --> 7
+	Armies remaining for PLAYER 3 --> 6
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> SRI LANKA
+	Army units currently in SRI LANKA --> 1
+	Army units after update in SRI LANKA --> 2
+	Armies remaining for PLAYER 4 --> 6
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> IRELAND
+	Army units currently in IRELAND --> 8
+	Army units after update in IRELAND --> 9
+	Armies remaining for PLAYER 1 --> 5
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> INDIA
+	Army units currently in INDIA --> 4
+	Army units after update in INDIA --> 5
+	Armies remaining for PLAYER 2 --> 5
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> FRANCE
+	Army units currently in FRANCE --> 2
+	Army units after update in FRANCE --> 3
+	Armies remaining for PLAYER 3 --> 5
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> SRI LANKA
+	Army units currently in SRI LANKA --> 2
+	Army units after update in SRI LANKA --> 3
+	Armies remaining for PLAYER 4 --> 5
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> MEXICO
+	Army units currently in MEXICO --> 6
+	Army units after update in MEXICO --> 7
+	Armies remaining for PLAYER 1 --> 4
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> INDIA
+	Army units currently in INDIA --> 5
+	Army units after update in INDIA --> 6
+	Armies remaining for PLAYER 2 --> 4
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> RUSSIA
+	Army units currently in RUSSIA --> 3
+	Army units after update in RUSSIA --> 4
+	Armies remaining for PLAYER 3 --> 4
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> CHINA
+	Army units currently in CHINA --> 7
+	Army units after update in CHINA --> 8
+	Armies remaining for PLAYER 4 --> 4
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> CANADA
+	Army units currently in CANADA --> 4
+	Army units after update in CANADA --> 5
+	Armies remaining for PLAYER 1 --> 3
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> ENGLAND
+	Army units currently in ENGLAND --> 6
+	Army units after update in ENGLAND --> 7
+	Armies remaining for PLAYER 2 --> 3
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> AFGHANISTAN
+	Army units currently in AFGHANISTAN --> 6
+	Army units after update in AFGHANISTAN --> 7
+	Armies remaining for PLAYER 3 --> 3
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> USA
+	Army units currently in USA --> 6
+	Army units after update in USA --> 7
+	Armies remaining for PLAYER 4 --> 3
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> CANADA
+	Army units currently in CANADA --> 5
+	Army units after update in CANADA --> 6
+	Armies remaining for PLAYER 1 --> 2
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> GERMANY
+	Army units currently in GERMANY --> 3
+	Army units after update in GERMANY --> 4
+	Armies remaining for PLAYER 2 --> 2
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> GREECE
+	Army units currently in GREECE --> 7
+	Army units after update in GREECE --> 8
+	Armies remaining for PLAYER 3 --> 2
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> CHINA
+	Army units currently in CHINA --> 8
+	Army units after update in CHINA --> 9
+	Armies remaining for PLAYER 4 --> 2
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> MEXICO
+	Army units currently in MEXICO --> 7
+	Army units after update in MEXICO --> 8
+	Armies remaining for PLAYER 1 --> 1
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> ITALY
+	Army units currently in ITALY --> 4
+	Army units after update in ITALY --> 5
+	Armies remaining for PLAYER 2 --> 1
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> RUSSIA
+	Army units currently in RUSSIA --> 4
+	Army units after update in RUSSIA --> 5
+	Armies remaining for PLAYER 3 --> 1
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> CHINA
+	Army units currently in CHINA --> 9
+	Army units after update in CHINA --> 10
+	Armies remaining for PLAYER 4 --> 1
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 1 --> JAPAN
+	Army units currently in JAPAN --> 6
+	Army units after update in JAPAN --> 7
+	No army units remaining to deploy for PLAYER 1
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 2 --> ITALY
+	Army units currently in ITALY --> 5
+	Army units after update in ITALY --> 6
+	No army units remaining to deploy for PLAYER 2
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 3 --> RUSSIA
+	Army units currently in RUSSIA --> 5
+	Army units after update in RUSSIA --> 6
+	No army units remaining to deploy for PLAYER 3
+	----------------------------------------------------
+
+	Territory chosen by PLAYER 4 --> PAKISTAN
+	Army units currently in PAKISTAN --> 6
+	Army units after update in PAKISTAN --> 7
+	No army units remaining to deploy for PLAYER 4
+	----------------------------------------------------
+
+
+	**************DEPLOYMENT OF ARMIES COMPLETED****************
+
+
+	************** TERRITORIES AFTER DEPLOYMENT ****************
+
+
+	TERRITORIES ASSIGNED TO PLAYER 1 -> 
+
+		------------------------------------
+		Territory : Mexico
+			  Continent : North America
+			  Armies : 8
+			  Adjacent Countries : USA
+		------------------------------------
+		Territory : Japan
+			  Continent : Asia
+			  Armies : 7
+			  Adjacent Countries : China,Russia
+		------------------------------------
+		Territory : Ireland
+			  Continent : Europe
+			  Armies : 9
+			  Adjacent Countries : England,Canada
+		------------------------------------
+		Territory : Canada
+			  Continent : North America
+			  Armies : 6
+			  Adjacent Countries : Russia,Ireland,USA
+
+	TERRITORIES ASSIGNED TO PLAYER 2 -> 
+
+		------------------------------------
+		Territory : Spain
+			  Continent : Europe
+			  Armies : 7
+			  Adjacent Countries : France,Italy
+		------------------------------------
+		Territory : England
+			  Continent : Europe
+			  Armies : 7
+			  Adjacent Countries : France,Ireland
+		------------------------------------
+		Territory : Italy
+			  Continent : Europe
+			  Armies : 6
+			  Adjacent Countries : Spain,Greece,Germany
+		------------------------------------
+		Territory : Germany
+			  Continent : Europe
+			  Armies : 4
+			  Adjacent Countries : France,Ukraine
+		------------------------------------
+		Territory : India
+			  Continent : Asia
+			  Armies : 6
+			  Adjacent Countries : China,Pakistan,Sri Lanka
+
+	TERRITORIES ASSIGNED TO PLAYER 3 -> 
+
+		------------------------------------
+		Territory : Iran
+			  Continent : Asia
+			  Armies : 6
+			  Adjacent Countries : Pakistan,Afghanistan,Greece
+		------------------------------------
+		Territory : Greece
+			  Continent : Europe
+			  Armies : 8
+			  Adjacent Countries : Italy,Iran
+		------------------------------------
+		Territory : Afghanistan
+			  Continent : Asia
+			  Armies : 7
+			  Adjacent Countries : Pakistan,Iran
+		------------------------------------
+		Territory : France
+			  Continent : Europe
+			  Armies : 3
+			  Adjacent Countries : England,Spain,Germany
+		------------------------------------
+		Territory : Russia
+			  Continent : Asia
+			  Armies : 6
+			  Adjacent Countries : China,Japan,Canada
+
+	TERRITORIES ASSIGNED TO PLAYER 4 -> 
+
+		------------------------------------
+		Territory : Sri Lanka
+			  Continent : Asia
+			  Armies : 3
+			  Adjacent Countries : India
+		------------------------------------
+		Territory : China
+			  Continent : Asia
+			  Armies : 10
+			  Adjacent Countries : India,Japan,Russia
+		------------------------------------
+		Territory : USA
+			  Continent : North America
+			  Armies : 7
+			  Adjacent Countries : Canada
+		------------------------------------
+		Territory : Ukraine
+			  Continent : Europe
+			  Armies : 3
+			  Adjacent Countries : Russia,Germany
+		------------------------------------
+		Territory : Pakistan
+			  Continent : Asia
+			  Armies : 7
+			  Adjacent Countries : Afghanistan,Iran,India
+
+
+---------------------------------------------------------------------------
+************************ START UP PHASE COMPLETED *************************
+---------------------------------------------------------------------------
+
+
+*************************** ROUND ROBIN STARTS ****************************
+
+
+
+
+
+
+*************************** ROUND ROBIN 1 ****************************
+
+
+---------------------------------------------------------------------------
+********************* REINFORCEMENTS FOR PLAYER 1 *************************
+---------------------------------------------------------------------------
+
+	TERRITORIES OWNED BY PLAYER 1 -> 
+
+
+		------------------------------------
+		Territory : Mexico
+			  Continent : North America
+			  Armies : 8
+			  Adjacent Countries : USA
+		------------------------------------
+		Territory : Japan
+			  Continent : Asia
+			  Armies : 7
+			  Adjacent Countries : China,Russia
+		------------------------------------
+		Territory : Ireland
+			  Continent : Europe
+			  Armies : 9
+			  Adjacent Countries : England,Canada
+		------------------------------------
+		Territory : Canada
+			  Continent : North America
+			  Armies : 6
+			  Adjacent Countries : Russia,Ireland,USA
+
+
+	********************** CHEATER PLAYER REINFORCEMENT START ************************
+
+	Territory chosen : Mexico
+		Army units in territory doubled. Updated from 8 to 16
+
+	Territory chosen : Japan
+		Army units in territory doubled. Updated from 7 to 14
+
+	Territory chosen : Ireland
+		Army units in territory doubled. Updated from 9 to 18
+
+	Territory chosen : Canada
+		Army units in territory doubled. Updated from 6 to 12
+
+	STATUS OF TERRITORIES OWNED BY PLAYER 1 -> 
+	    Mexico owned in  continent North America
+	    Armies in Mexico : 16
+	    Adjacent territories to Mexico are USA
+	-------------------------------------------------------------------
+	    Japan owned in  continent Asia
+	    Armies in Japan : 14
+	    Adjacent territories to Japan are China,Russia
+	-------------------------------------------------------------------
+	    Ireland owned in  continent Europe
+	    Armies in Ireland : 18
+	    Adjacent territories to Ireland are England,Canada
+	-------------------------------------------------------------------
+	    Canada owned in  continent North America
+	    Armies in Canada : 12
+	    Adjacent territories to Canada are Russia,Ireland,USA
+	-------------------------------------------------------------------
+---------------------------------------------------------------------------
+**************** REINFORCEMENT PHASE FOR PLAYER 1 ENDS ********************
+---------------------------------------------------------------------------
+		------------------------------------------------------------------------------------
+
+
+
+	DO YOU WANT TO SAVE THE MAP?
+	Please enter yes or y to save and anything else to continue : ---------------------------------------------------------------------------
+****************** ATTACK PHASE FOR PLAYER 1 BEGINS ***********************
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+CHEATER STRATEGY TO BE IMPLEMENTED
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+PLAYER 1 STATS BEFORE CHEATING
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+1-Mexico-North America		16
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Spain-Europe		7
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-Japan-Asia		14
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-England-Europe		7
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Italy-Europe		6
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+4-Sri Lanka-Asia		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+3-Iran-Asia		6
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+3-Greece-Europe		8
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+4-China-Asia		10
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-Ireland-Europe		18
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+3-Afghanistan-Asia		7
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Germany-Europe		4
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+4-USA-North America		7
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+4-Ukraine-Europe		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+4-Pakistan-Asia		7
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-India-Asia		6
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+3-France-Europe		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-Canada-North America		12
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+3-Russia-Asia		6
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+CHEATER STRATEGY IMPLEMENTED
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+PLAYER 1 STATS AFTER CHEATING
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+1-Mexico-North America		16
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Spain-Europe		7
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-Japan-Asia		14
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Italy-Europe		6
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+4-Sri Lanka-Asia		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+3-Iran-Asia		6
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+3-Greece-Europe		8
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-USA-North America		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-Ireland-Europe		18
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+3-Afghanistan-Asia		7
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Germany-Europe		4
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-Russia-Asia		4
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+4-Ukraine-Europe		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-England-Europe		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+4-Pakistan-Asia		7
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-India-Asia		6
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+3-France-Europe		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-Canada-North America		12
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-China-Asia		4
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+********************* FORTIFICATION FOR PLAYER 1 *************************
+---------------------------------------------------------------------------
+
+	STATUS OF TERRITORIES OWNED BY PLAYER 1 -> 
+	    Mexico owned in  continent North America
+	    Armies in Mexico : 16
+	    Adjacent territories to Mexico are USA
+	-------------------------------------------------------------------
+	    Japan owned in  continent Asia
+	    Armies in Japan : 14
+	    Adjacent territories to Japan are China,Russia
+	-------------------------------------------------------------------
+	    USA owned in  continent North America
+	    Armies in USA : 3
+	    Adjacent territories to USA are Canada
+	-------------------------------------------------------------------
+	    Ireland owned in  continent Europe
+	    Armies in Ireland : 18
+	    Adjacent territories to Ireland are England,Canada
+	-------------------------------------------------------------------
+	    Russia owned in  continent Asia
+	    Armies in Russia : 4
+	    Adjacent territories to Russia are China,Japan,Canada
+	-------------------------------------------------------------------
+	    England owned in  continent Europe
+	    Armies in England : 3
+	    Adjacent territories to England are France,Ireland
+	-------------------------------------------------------------------
+	    Canada owned in  continent North America
+	    Armies in Canada : 12
+	    Adjacent territories to Canada are Russia,Ireland,USA
+	-------------------------------------------------------------------
+	    China owned in  continent Asia
+	    Armies in China : 4
+	    Adjacent territories to China are India,Japan,Russia
+	-------------------------------------------------------------------
+
+
+	**** TERRITORIES WITH NEIGHBOURS BELONGING TO OTHER PLAYERS ***
+
+	 Territory : CHINA	 Continent : ASIA	 Armies : 4
+
+	 Territory : ENGLAND	 Continent : EUROPE	 Armies : 3
+
+
+	************** DOUBLING ABOVE TERRITORIES' ARMIES *************
+
+	Territory : CHINA
+
+	Army Units in CHINA before : 4
+
+	Army Units in CHINA after being doubled: 8
+	---------------------------------------------------------------------------
+
+
+	Territory : ENGLAND
+
+	Army Units in ENGLAND before : 3
+
+	Army Units in ENGLAND after being doubled: 6
+	---------------------------------------------------------------------------
+
+
+	TERRITORIES STATUS' OWNED BY PLAYER 1 AFTER FORTIFICATION PHASE -> 
+
+	    Mexico owned in continent North America
+	    Armies in Mexico : 16
+	    Adjacent territories to Mexico are USA
+	-----------------------------------------------------------------------
+	    Japan owned in continent Asia
+	    Armies in Japan : 14
+	    Adjacent territories to Japan are China,Russia
+	-----------------------------------------------------------------------
+	    USA owned in continent North America
+	    Armies in USA : 3
+	    Adjacent territories to USA are Canada
+	-----------------------------------------------------------------------
+	    Ireland owned in continent Europe
+	    Armies in Ireland : 18
+	    Adjacent territories to Ireland are England,Canada
+	-----------------------------------------------------------------------
+	    Russia owned in continent Asia
+	    Armies in Russia : 4
+	    Adjacent territories to Russia are China,Japan,Canada
+	-----------------------------------------------------------------------
+	    England owned in continent Europe
+	    Armies in England : 6
+	    Adjacent territories to England are France,Ireland
+	-----------------------------------------------------------------------
+	    Canada owned in continent North America
+	    Armies in Canada : 12
+	    Adjacent territories to Canada are Russia,Ireland,USA
+	-----------------------------------------------------------------------
+	    China owned in continent Asia
+	    Armies in China : 8
+	    Adjacent territories to China are India,Japan,Russia
+	-----------------------------------------------------------------------
+---------------------------------------------------------------------------------
+******************* FORTIFICATION PHASE FOR PLAYER 1 ENDS **********************
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------
+********************* REINFORCEMENTS FOR PLAYER 2 *************************
+---------------------------------------------------------------------------
+
+	TERRITORIES OWNED BY PLAYER 2 -> 
+
+
+		------------------------------------
+		Territory : Spain
+			  Continent : Europe
+			  Armies : 7
+			  Adjacent Countries : France,Italy
+		------------------------------------
+		Territory : Italy
+			  Continent : Europe
+			  Armies : 6
+			  Adjacent Countries : Spain,Greece,Germany
+		------------------------------------
+		Territory : Germany
+			  Continent : Europe
+			  Armies : 4
+			  Adjacent Countries : France,Ukraine
+		------------------------------------
+		Territory : India
+			  Continent : Asia
+			  Armies : 6
+			  Adjacent Countries : China,Pakistan,Sri Lanka
+
+
+	********************** CHEATER PLAYER REINFORCEMENT START ************************
+
+	Territory chosen : Spain
+		Army units in territory doubled. Updated from 7 to 14
+
+	Territory chosen : Italy
+		Army units in territory doubled. Updated from 6 to 12
+
+	Territory chosen : Germany
+		Army units in territory doubled. Updated from 4 to 8
+
+	Territory chosen : India
+		Army units in territory doubled. Updated from 6 to 12
+
+	STATUS OF TERRITORIES OWNED BY PLAYER 2 -> 
+	    Spain owned in  continent Europe
+	    Armies in Spain : 14
+	    Adjacent territories to Spain are France,Italy
+	-------------------------------------------------------------------
+	    Italy owned in  continent Europe
+	    Armies in Italy : 12
+	    Adjacent territories to Italy are Spain,Greece,Germany
+	-------------------------------------------------------------------
+	    Germany owned in  continent Europe
+	    Armies in Germany : 8
+	    Adjacent territories to Germany are France,Ukraine
+	-------------------------------------------------------------------
+	    India owned in  continent Asia
+	    Armies in India : 12
+	    Adjacent territories to India are China,Pakistan,Sri Lanka
+	-------------------------------------------------------------------
+---------------------------------------------------------------------------
+**************** REINFORCEMENT PHASE FOR PLAYER 2 ENDS ********************
+---------------------------------------------------------------------------
+		------------------------------------------------------------------------------------
+
+
+
+	DO YOU WANT TO SAVE THE MAP?
+	Please enter yes or y to save and anything else to continue : ---------------------------------------------------------------------------
+****************** ATTACK PHASE FOR PLAYER 2 BEGINS ***********************
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+CHEATER STRATEGY TO BE IMPLEMENTED
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+PLAYER 2 STATS BEFORE CHEATING
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+1-Mexico-North America		16
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Spain-Europe		14
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-Japan-Asia		14
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Italy-Europe		12
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+4-Sri Lanka-Asia		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+3-Iran-Asia		6
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+3-Greece-Europe		8
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-USA-North America		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-Ireland-Europe		18
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+3-Afghanistan-Asia		7
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Germany-Europe		8
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-Russia-Asia		4
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+4-Ukraine-Europe		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-England-Europe		6
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+4-Pakistan-Asia		7
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-India-Asia		12
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+3-France-Europe		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-Canada-North America		12
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-China-Asia		8
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+CHEATER STRATEGY IMPLEMENTED
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+PLAYER 2 STATS AFTER CHEATING
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+1-Mexico-North America		16
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Sri Lanka-Asia		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Spain-Europe		14
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-Japan-Asia		14
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Italy-Europe		12
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-China-Asia		5
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+3-Iran-Asia		6
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-USA-North America		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Greece-Europe		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-Ireland-Europe		18
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+3-Afghanistan-Asia		7
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Germany-Europe		8
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-Russia-Asia		4
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-England-Europe		6
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-India-Asia		12
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+1-Canada-North America		12
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Ukraine-Europe		3
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-France-Europe		4
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+2-Pakistan-Asia		4
+---------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+*************************** WORLD DOMINATION STATISTICS ********************************
+----------------------------------------------------------------------------------------
+**                       PLAYER 1 DOMINATES 36.0 % OF THE TOTAL WORLD                    **
+**                       PLAYER 2 DOMINATES 52.0 % OF THE TOTAL WORLD                    **
+**                       PLAYER 3 DOMINATES 10.0 % OF THE TOTAL WORLD                    **
+**                       PLAYER 4 DOMINATES 0.0 % OF THE TOTAL WORLD                    **
+----------------------------------------------------------------------------------------
+****************************************************************************************
+----------------------------------------------------------------------------------------
