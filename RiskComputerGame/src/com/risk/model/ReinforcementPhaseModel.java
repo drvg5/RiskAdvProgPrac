@@ -260,7 +260,7 @@ public class ReinforcementPhaseModel extends Observable {
 		
 		int reinforcementArmies = 0;
 		int playerTerr = 0;
-		
+		ReinforcementPhaseModel.reinforcement.clear();
 		
 		//calculate reinforcement armies by number of countries owned
 		for(String plyrVal : StartUpPhaseModel.playerInfo.keySet()){
@@ -392,6 +392,7 @@ public class ReinforcementPhaseModel extends Observable {
 	 * This method calculates reinforcements by exchange of cards a player has.
 	 *
 	 * @param player Player Number passed as a String
+	 * @param currentPlyrStrategy the current plyr strategy
 	 */
 	public void calcReinforcementByCards(String player,  String currentPlyrStrategy){
 		

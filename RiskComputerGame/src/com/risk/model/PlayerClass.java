@@ -135,17 +135,26 @@ public class PlayerClass extends Observable {
 	public static void setPlayersIndex(int playersIndex) {
 		PlayerClass.playersIndex = playersIndex;
 	}
+	
+	/** The game victor. */
+	public static String victor = new String();
 
+
+
+	/** The SaveAndLoadGame object. */
 	SaveAndLoadGame objSaveAndLoadGame = new SaveAndLoadGame();
 
 	/**
-	 * This method is where the game starts and proceeds into various phases
+	 * This method is where the game starts and proceeds into various phases.
 	 *
 	 * @param numberOfPlayers the number of players
 	 * @param territoryMap the territory map
 	 * @param continentControlValueHashMap the continent control value hash map
 	 * @param strategies the strategies HashMap to store behaviour of each player
 	 * @param load boolean variable. True if a saved game is being loaded, False if it is a new game.
+	 * @param trnmnt the trnmnt
+	 * @param rounds the rounds
+	 * @param currentPlayerIndex the current player index
 	 * @throws InterruptedException the interrupted exception
 	 */
 	public void gamePlay(int numberOfPlayers, HashMap<String, List<String>> territoryMap,
@@ -153,6 +162,8 @@ public class PlayerClass extends Observable {
 			boolean trnmnt, int rounds, int currentPlayerIndex)
 			throws InterruptedException {
 		
+		
+		victor = new String();
 		
 		int roundRobins = 1;
 		boolean tournament = trnmnt;
@@ -302,6 +313,8 @@ public class PlayerClass extends Observable {
 						System.out.println("***************************** GAME ENDS  *****************************");
 						System.out.println("---------------------------------------------------------------------------");
 						
+						victor = null; 
+						
 						 break;
 					}
 				}
@@ -325,8 +338,7 @@ public class PlayerClass extends Observable {
 			
 			plyr = playersList.get(PlayerClass.getPlayersIndex());
 			
-			
-			
+						
 			// set player strategy
 			String currentPlyrStrategy = strategies.get(plyr);
 			
@@ -357,6 +369,7 @@ public class PlayerClass extends Observable {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
 			}//end if(!loadGame)
 			
 			
@@ -472,10 +485,13 @@ public class PlayerClass extends Observable {
 				msg = "PLAYER " + plyr + " WINS";
 				
 				System.out.println("---------------------------------------------------------------------------");
-				System.out.println("***************************** " + msg +"  *****************************");
+				System.out.println("***************************** " + msg +"  ******************************");
 				System.out.println("---------------------------------------------------------------------------");
 				
-				
+				if(!tournament){
+					
+					System.exit(0);
+				}
 				setChanged();
 				notifyObservers(this);
 				try {
@@ -485,7 +501,27 @@ public class PlayerClass extends Observable {
 					e.printStackTrace();
 				}
 				
+				dominationOld.clear();
+				dominationNew.clear();
+				
+				victor = " PLAYER " + plyr;
+				
+				ReinforcementPhaseModel.prevPlayerInfo.clear();
+				ReinforcementPhaseModel.chosenCards.clear();
+				ReinforcementPhaseModel.newCards.clear();
+				ReinforcementPhaseModel.playerCards.clear();
+				ReinforcementPhaseModel.prevCards.clear();
+				ReinforcementPhaseModel.prevPlayerCards.clear();
+				ReinforcementPhaseModel.reinforcement.clear();
+				
+				FortificationPhaseModel.fortifySet.clear();
+				FortificationPhaseModel.fortifySetCheater.clear();
+				FortificationPhaseModel.territoryMap.clear();
+				FortificationPhaseModel.fortifySetEmpty = 0;
+				
+				StartUpPhaseModel.initialArmies = 0;
 				break;
+				
 			}
 
 			msg = "pre fortification," + plyr;
@@ -838,6 +874,8 @@ public class PlayerClass extends Observable {
 			return false;
 
 		} // end if(getDominationOld().isEmpty())
+		
+		setDominationOld(getDominationNew());
 
 		for (int i = 1; i <= numberOfPlayers; i++) {
 
@@ -863,7 +901,7 @@ public class PlayerClass extends Observable {
 
 		setDominationNew(dominationMap);
 		
-	
+		
 
 
 		if (dominationNew.equals(dominationOld)) {

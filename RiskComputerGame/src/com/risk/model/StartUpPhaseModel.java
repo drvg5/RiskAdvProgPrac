@@ -204,6 +204,12 @@ public class StartUpPhaseModel extends Observable {
 	 */
 	public static void preStartUp(int numberOfPlayers, HashMap<String, List<String>> territoryMap) {
 
+		totalTerr = 0;
+		countryTaken.clear();
+		terrCont.clear();
+		terrPerCont.clear();
+		
+		
 		// populate countryTaken and terrCont
 		for (String terrMapKey : territoryMap.keySet()) {
 
@@ -267,6 +273,8 @@ public class StartUpPhaseModel extends Observable {
 
 	public static void terrPerPlayerPopulate(int numberOfPlayers, int numberOfTerr) {
 
+		terrPerPlayer.clear();
+		
 		if (numberOfPlayers > numberOfTerr) {
 			junitCheckCount = false;
 		}
@@ -318,7 +326,9 @@ public class StartUpPhaseModel extends Observable {
 	 *            Number Of Territories
 	 */
 	public static void assignTerritories(int numberOfPlayers, TreeSet<String> countryTaken, int numberOfTerr) {
-
+		
+		playerInfo.clear();
+		
 		StartUpPhaseModel.setInitialArmies(numberOfPlayers);
 
 		// Creating a List of TreeSet countryTaken elements
@@ -388,7 +398,7 @@ public class StartUpPhaseModel extends Observable {
 						playerInfo.put(playerKey, 0);
 
 						// modify countryTaken to indicate that country has been assigned to a player
-						countryTaken.add(randomTerr[0] + "-0");
+						countryTaken.add(randomTerr[0] + "-1");
 
 						countryTaken.remove(randomVal);
 
@@ -410,10 +420,10 @@ public class StartUpPhaseModel extends Observable {
 	 * HashMap
 	 * <p>
 	 * Each player is given 10 armies initially
-	 * </p>
-	 * 
-	 * @param numberOfPlayers
-	 *            Number Of Players
+	 * </p>.
+	 *
+	 * @param numberOfPlayers            Number Of Players
+	 * @param strategies the strategies
 	 */
 	public void deployArmiesRandomly(int numberOfPlayers, HashMap<Integer, String> strategies) {
 		

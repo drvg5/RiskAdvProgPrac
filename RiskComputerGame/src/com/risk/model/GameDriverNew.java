@@ -1,5 +1,6 @@
 package com.risk.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -31,6 +32,9 @@ public class GameDriverNew extends Object {
 	
 	/** The strategies HashMap stores the behaviour of each player. */
 	public static HashMap<Integer, String> strategies = new HashMap<Integer, String>();
+	
+	/** The victoryStatistics keep the statistics for different games. */
+	public static HashMap<String, String> victoryStatistics = new HashMap<String, String>();
 
 	/**
 	 * Instantiates a new game driver new.
@@ -206,8 +210,12 @@ public class GameDriverNew extends Object {
 	/**
 	 * Method gameModeTournament launches the tournament mode for the RISK game.
 	 *
-	 * @param territoryMap the territory map
-	 * @param continentControlValueHashMap the continent control value hash map
+	 * @param territoryMaps the territory maps
+	 * @param continentControlValueHashMaps the continent control value hash maps
+	 * @param numberOfMaps the number of maps
+	 * @param numberOfGames the number of games
+	 * @param behaviorList the behavior list
+	 * @param rounds the rounds
 	 */
 	public void gameModeTournament(HashMap<String ,HashMap<String, List<String>>> territoryMaps,
 			HashMap<String,HashMap<String, Integer>> continentControlValueHashMaps, int numberOfMaps,
@@ -229,37 +237,72 @@ public class GameDriverNew extends Object {
 		
 		int numberOfPlayers = behaviorList.size();
 		
-		List<String> behaviorListLocal = behaviorList;
+		List<String> behaviorListLocal = new ArrayList<String>();
+		
+		System.out.println("territoryMaps.keySet() :: " + territoryMaps.keySet()); 
 		
 		HashMap<String ,HashMap<String, List<String>>> gameMapsHashMap = territoryMaps;
 		
 		//HashMap<String, List<String>> territoryMap = territoryMaps.get(Integer.toString(gameNumber));
 		
 		//HashMap<String, Integer> continentControlValueHashMap = continentControlValueHashMaps.get(Integer.toString(gameNumber));
-		
+		System.out.println("numberOfMaps :: " + numberOfMaps);
+		System.out.println("numberOfGames :: " + numberOfGames);
 		
 		System.out.println("---------------------------------------------------------------------------");
 		System.out.println("**************************** TOURNAMENT STARTS ****************************");
 		System.out.println("---------------------------------------------------------------------------");
 		
+		
 		//outer loop for switching maps
 		while(map <= numberOfMaps){
 		
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			HashMap<String, List<String>> territoryMap = territoryMaps.get("M" + map);
 			
 			HashMap<String, Integer> continentControlValueHashMap = continentControlValueHashMaps.get("M" + map);
 			
+			gameNumber = 1;
+			
+			System.out.println("\n\n\n---------------------------------------------------------------------------");
+			System.out.println("**************************** NEW MAP M" + map + " LOADED ********************************");
+			System.out.println("---------------------------------------------------------------------------");
+			
 			while(gameNumber <= numberOfGames){
 				
+				try {
+					System.in.read();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				System.out.println("Game number : " + gameNumber);
+				System.out.println("Total Games : " + numberOfGames);
+				System.out.println("Number of Rounds per game : " + rounds);
+				System.out.println("\nTerritory map M" + map + " : \n" + territoryMap);
+				System.out.println("\nControl Value of Continent on map M" + map + " : \n" + continentControlValueHashMap );
 				System.out.println("\n\n\n---------------------------------------------------------------------------");
-				System.out.println("**************************** GAME " + gameNumber + " BEGINS ****************************");
-				System.out.println("----------------------------------------------------------------------------");
+				System.out.println("****************************** GAME " + gameNumber + " BEGINS ******************************");
+				System.out.println("---------------------------------------------------------------------------");
 				
 				
 				HashMap<Integer,String> strategies = new HashMap<Integer,String>();
 				
 				int player = 1;
+				
+				for(String behaviour : behaviorList){
+					
+					behaviorListLocal.add(behaviour);
+				}
+				
+				System.out.println("List of Behaviours Selected -> " + behaviorList);
 				
 				//populate strategies HashMap
 				while(!behaviorListLocal.isEmpty()){
@@ -277,21 +320,99 @@ public class GameDriverNew extends Object {
 					player++;
 				}
 				
-				System.out.println("Strategies :: \n" + strategies);
+				System.out.println("Strategy of each player -> " + strategies);
 				
+				playerGTTerr = 0;
+
+				try {
+					System.in.read();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				GameDriverNew gameObj = new GameDriverNew();
 				//start the game
-				gameStart(territoryMap, continentControlValueHashMap, strategies, false, true, rounds, 0);
+				gameObj.gameStart(territoryMap, continentControlValueHashMap, strategies, false, true, rounds, 0);
+				
+				System.out.println("\n\n\n---------------------------------------------------------------------------");
+				System.out.println("**************************** GAME " + gameNumber + " ENDS **********************************");
+				System.out.println("---------------------------------------------------------------------------");
+			
+				try {
+					System.in.read();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				String victoryKey = "Map " + map + " - Game " + gameNumber + " ";
+				String value = new String();
+				if(PlayerClass.victor != null){
+					
+					value = PlayerClass.victor;
+					
+				}
+				else
+					value = " DRAW";
+				
+				victoryStatistics.put(victoryKey,value);
+				
 				
 				gameNumber ++;
 				
-				System.out.println("\n\n\n---------------------------------------------------------------------------");
-				System.out.println("**************************** GAME " + gameNumber + " ENDS ****************************");
-				System.out.println("----------------------------------------------------------------------------");
+				
+				if(gameNumber > numberOfGames)
+					break;
+				
 			}
 			
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			System.out.println("\n\n\n---------------------------------------------------------------------------");
+			System.out.println("************************** GAMES ON MAP M " + map + " OVER ********************************");
+			System.out.println("---------------------------------------------------------------------------");
+			
 			map++;
+			
+			
+			if(map > numberOfMaps)
+				break;
+			
+			
 		
 		}//end while(map <= numberOfMaps)
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("---------------------------------------------------------------------------");
+		System.out.println("***************************** TOURNAMENT ENDS *****************************");
+		System.out.println("---------------------------------------------------------------------------");
+	
+		
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		System.out.println("*************************** VICTORY STATISTICS ****************************");
+		System.out.println(victoryStatistics);
+		System.exit(0);
 		
 	}
 
@@ -302,25 +423,34 @@ public class GameDriverNew extends Object {
 	 * @param continentControlValueHashMap the continent control value hash map
 	 * @param strategies the strategies
 	 * @param load true, if a saved game is being loaded. false, if a new game is being loaded
+	 * @param tournament the tournament
+	 * @param rounds the rounds
+	 * @param currentPlayerIndex the current player index
 	 */
 	public void gameStart(HashMap<String, List<String>> territoryMap,
 			HashMap<String, Integer> continentControlValueHashMap, HashMap<Integer, String> strategies, boolean load,boolean tournament, int rounds, int currentPlayerIndex) {
 
 		
 		int numberOfPlayers = strategies.size() ;
-
+		
+		
 		while (playerGTTerr != 1) {
-
+			
 			try {
 				// numberOfPlayers = enterPlayersMenu();
 				
+				
 				if(!load) 
+					
 					StartUpPhaseModel.preStartUp(numberOfPlayers, territoryMap);
 
 				try {
 
 					// new PlayerClass().gamePlay(numberOfPlayers, territoryMap,
 					// continentControlValueHashMap);
+					
+					
+					
 					playerModel.gamePlay(numberOfPlayers, territoryMap, continentControlValueHashMap, strategies,load,tournament,rounds, currentPlayerIndex);
 
 				} catch (InterruptedException e) {
